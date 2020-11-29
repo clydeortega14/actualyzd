@@ -260,7 +260,7 @@
             <div class="border-top pt-5">
             <p>
         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        Copyright &copy;<script>document.write(new Date().getFullYear());</script> made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Lifeline EAP</a>
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> made with <i class="icon-heart" aria-hidden="true"></i> by <a href="#" target="_blank" >Lifelines EAP</a>
         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
       </p>
             </div>
