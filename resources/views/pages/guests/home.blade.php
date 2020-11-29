@@ -106,30 +106,30 @@
             <h2 class="text-black mb-4">Reasons for having a Mental Health Policy in your work place</h2>
             <p class="mb-4">
 
-              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                <div><h3 class="m-0">Raise awareness on mental health issues;</h3></div>
-              </div>
+               <div class="d-flex align-items-center custom-icon-wrap mb-3">
+                  <span class="custom-icon-inner mr-3"><span class="icon icon-settings"></span></span>
+                  <div><p class="m-0">Raise awareness on mental health issues.</p></div>
+                </div>
 
-              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                <div><h3 class="m-0">Correct the stigma and discrimination associated with mental health condition;</h3></div>
-              </div>
+                <div class="d-flex align-items-center custom-icon-wrap mb-3">
+                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                  <div><p class="m-0">Correct the stigma and discrimination associated with mental health condition.</p></div>
+                </div>
 
-              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                <div><h3 class="m-0">Identify and provide support individuals at risk;</h3></div>
-              </div>
+                <div class="d-flex align-items-center custom-icon-wrap mb-3">
+                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                  <div><p class="m-0">Identify and provide support individuals at risk.</p></div>
+                </div>
 
-              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                <div><h3 class="m-0">Facilitate access of individuals at risk;</h3></div>
-              </div>
+                <div class="d-flex align-items-center custom-icon-wrap mb-3">
+                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                  <div><p class="m-0">Facilitate access of individuals at risk.</p></div>
+                </div>
 
-              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
-                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                <div><h3 class="m-0">Facilitate access of individuals with, mental health conditions to treatment and psychosocial support;</h3></div>
-              </div>
+                <div class="d-flex align-items-center custom-icon-wrap mb-3">
+                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                  <div><p class="m-0">Facilitate access of individuals with, mental health conditions to treatment and psychosocial support.</p></div>
+                </div>
             </p>
 
           </div>
