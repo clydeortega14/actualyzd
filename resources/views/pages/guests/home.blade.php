@@ -105,10 +105,31 @@
           <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
             <h2 class="text-black mb-4">Reasons for having a Mental Health Policy in your work place</h2>
             <p class="mb-4">
-            	Reports say that 1 in 5 Filipino adults suffer from a form of mental illness, In 2012, The World Health Organization (WHO) reported that an average of 7 Filipinos
-            	died by suicide each day. These Statistics are certainly alarming. But it is not all bad news because last June 21 2018, President Duterte finally signed the Mental Health Law,
-            	providing Filipinos with affordable and accessible mental health services. But what does this mean for companies and employers?
-            	Chapter V, Sec 25 of the Mental Health Law states that: "Employees shall develop appropriate policies and programs on mental health in the workplace designed to (1) raise awareness on mental health issues; (2) correct the stigma and discrimination associated with mental health conditions; (3) identify and provide support for individuals at risk; and (4) facilitate access of individuals with mental health conditions to treatment and psychosocial support. "
+
+              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                <div><h3 class="m-0">Raise awareness on mental health issues;</h3></div>
+              </div>
+
+              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                <div><h3 class="m-0">Correct the stigma and discrimination associated with mental health condition;</h3></div>
+              </div>
+
+              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                <div><h3 class="m-0">Identify and provide support individuals at risk;</h3></div>
+              </div>
+
+              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                <div><h3 class="m-0">Facilitate access of individuals at risk;</h3></div>
+              </div>
+
+              <div class="d-flex align-items-center custom-icon-wrap custom-icon-light mb-3">
+                <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
+                <div><h3 class="m-0">Facilitate access of individuals with, mental health conditions to treatment and psychosocial support;</h3></div>
+              </div>
             </p>
 
           </div>
