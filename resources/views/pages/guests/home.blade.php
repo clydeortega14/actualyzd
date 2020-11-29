@@ -95,7 +95,7 @@
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 text-center"  data-aos="fade-up" data-aos-delay="">
             <h2 class="section-title">About Us</h2>
-            <p>Lifeline EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
+            <p>Lifelines EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
           </div>
         </div>
         <div class="row mb-5 align-items-center">
