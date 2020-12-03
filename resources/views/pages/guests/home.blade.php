@@ -1,32 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>LifeLine EAP</title>
+@extends('layouts.layout1.master')
 
-	<link rel="stylesheet" href="{{ asset('oneschool/fonts/icomoon/style.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('oneschool/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('oneschool/css/jquery-ui.css') }}">
-    <link rel="stylesheet" href="{{ asset('oneschool/css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('oneschool/css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('oneschool/css/owl.theme.default.min.css') }}">
+@section('content')
 
-    <link rel="stylesheet" href="{{ asset('oneschool/css/jquery.fancybox.min.css')  }}">
-
-    <link rel="stylesheet" href="{{ asset('oneschool/css/bootstrap-datepicker.css')  }}">
-
-    <link rel="stylesheet" href="{{ asset('oneschool/fonts/flaticon/font/flaticon.css')  }}">
-
-    <link rel="stylesheet" href="{{ asset('oneschool/css/aos.css')  }}">
-
-    <link rel="stylesheet" href="{{ asset('oneschool/css/style.css')  }}">
-
-</head>
-<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-	
-  
   <div class="site-wrap">
 
     <div class="site-mobile-menu site-navbar-target">
@@ -59,7 +35,7 @@
           <div class="ml-auto w-25">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu site-menu-dark js-clone-nav mr-auto d-none d-lg-block m-0 p-0">
-                <li class="cta"><a href="#contact-section" class="nav-link"><span>Contact Us</span></a></li>
+                {{-- <li><a href="#contact-section" class=""><span>Contact Us</span></a></li> --}}
               </ul>
             </nav>
             <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right"><span class="icon-menu h3"></span></a>
@@ -69,22 +45,35 @@
       
     </header>
 
-    <div class="intro-section single-cover" id="home-section">
+    <div class="intro-section" id="home-section">
       
-      <div class="slide-1 " style="background-image: url('oneschool/images/img_2.jpg');" data-stellar-background-ratio="0.5">
+      <div class="slide-1">
         <div class="container">
-          	<div class="row align-items-center">
-            <div class="col-12">
-              <div class="row justify-content-center align-items-center text-center">
-                <div class="col-lg-6">
-                  <h1 data-aos="fade-up" data-aos-delay="0">BE FINE, WITH LIFELINE</h1>
-                </div>
+            <div class="row align-items-center">
+              <div class="col-12">
+                <div class="row justify-content-center align-items-center text-center">
+                  <div class="col-lg-6">
+                    <h1 data-aos="fade-up" data-aos-delay="0" style="font-size: 3rem">BE FINE, WITH LIFELINE</h1>
+                    <p class="mb-4 text-white"  data-aos="fade-up" data-aos-delay="200">Lifelines EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
+                    <p data-aos="fade-up" data-aos-delay="300"><a href="#" class="btn btn-white btn-outline-white py-3 px-5 btn-pill">Learn More</a></p>
+                  </div>
 
-                
+                  
+                </div>
               </div>
+              
             </div>
-            
-          	</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section courses-title" id="courses-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-lg-7 text-center" data-aos="fade-up" data-aos-delay="">
+            <h2 data-aos="fade-up" data-aos-delay="0" class="section-title">Services</h2>
+            <p class="mb-4 text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi incidunt aliquid veritatis quos nobis. Quisquam voluptate quos natus repellat, corrupti magnam nihil saepe tempora hic fuga est reprehenderit repudiandae iusto.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -274,24 +263,4 @@
     
   </div> <!-- .site-wrap -->
 
-  
-
-
-  <script src="{{ asset('oneschool/js/jquery-3.3.1.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery-migrate-3.0.1.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery-ui.js') }}"></script>
-  <script src="{{ asset('oneschool/js/popper.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/owl.carousel.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery.stellar.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery.countdown.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery.easing.1.3.js') }}"></script>
-  <script src="{{ asset('oneschool/js/aos.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery.fancybox.min.js') }}"></script>
-  <script src="{{ asset('oneschool/js/jquery.sticky.js') }}"></script>
-
-  
-  <script src="{{ asset('oneschool/js/main.js') }}"></script>
-</body>
-</html>
+@stop
