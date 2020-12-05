@@ -1,9 +1,11 @@
 /* Base */
 body {
   line-height: 1.7;
-  color: gray;
+  color: #696969;
   font-weight: 300;
-  font-size: 1.1rem; }
+  font-size: 1.0rem;
+  font-family: "Lato", Arial, sans-serif; 
+}
 
 ::-moz-selection {
   background: #000;
@@ -77,6 +79,7 @@ h1, h2, h3, h4, h5,
     border-color: #000;
     background: #000;
     color: #fff; }
+
     .btn.btn-black:hover {
       color: #000;
       background-color: transparent; }
@@ -99,7 +102,7 @@ h1, h2, h3, h4, h5,
       color: #fff;
       background-color: transparent; }
       .btn.btn-white.btn-outline-white:hover {
-        border-color: #fff;
+        border-color: transparent;
         background: #fff;
         color: #000; }
   .btn.btn-pill {
@@ -647,7 +650,9 @@ h1, h2, h3, h4, h5,
 
 .slide-1 {
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  background-image: url("/oneschool/images/background1.jpg"); 
+}
   .slide-1:before {
     content: "";
     position: absolute;
@@ -655,7 +660,9 @@ h1, h2, h3, h4, h5,
     width: 100%;
     background: #343a40;
     opacity: .9;
-    border-bottom-right-radius: 0px; }
+    border-bottom-right-radius: 0px;
+    background: linear-gradient(0deg, rgba(34,193,195,0.5) 0%, rgba(253,187,45,0.5) 100%);
+     }
     @media (max-width: 991.98px) {
       .slide-1:before {
         width: 100%; } }
@@ -994,9 +1001,14 @@ h1, h2, h3, h4, h5,
 
 .courses-title {
   padding-bottom: 13rem;
-  background: #7971ea; }
+  background-color: #20B2AA;
+  background-repeat: no-repeat;
+   }
   .courses-title .section-title {
-    color: #fff; }
+    color: #E0FFFF; }
+  .courses-title p {
+    color: #E0FFFF;
+  }
 
 .courses-entry-wrap {
   margin-top: -282px; }
