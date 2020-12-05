@@ -14,3 +14,5 @@
 
   
   <script src="{{ asset('oneschool/js/main.js') }}"></script>
+
+  @yield('custom_js')
