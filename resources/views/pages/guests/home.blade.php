@@ -1,6 +1,5 @@
 @extends('layouts.layout1.master')
 
-
 @section('content')
 
   <div class="site-wrap">
@@ -25,9 +24,9 @@
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
                 <li><a href="#home-section" class="nav-link">Home</a></li>
+                <li><a href="#services-section" class="nav-link">Services</a></li>
                 <li><a href="#about-section" class="nav-link">About Us</a></li>
                 <li><a href="#benefits-section" class="nav-link">Benefits</a></li>
-                <li><a href="#services-section" class="nav-link">Services</a></li>
               </ul>
             </nav>
           </div>
@@ -50,9 +49,9 @@
         <div class="container">
             <div class="row align-items-center">
               <div class="col-12">
-                <div class="row justify-content-center align-items-center text-center">
-                  <div class="col-lg-6">
-                    <h1 data-aos="fade-up" data-aos-delay="0" style="font-size: 3rem">BE FINE, WITH LIFELINE</h1>
+                <div class="row align-items-center">
+                  <div class="col-lg-6 mb-4">
+                    <h1 data-aos="fade-up" data-aos-delay="0" style="font-size: 3rem;">BE FINE, WITH LIFELINE</h1>
                     <p class="mb-4 text-white"  data-aos="fade-up" data-aos-delay="200">Lifelines EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
                     <p data-aos="fade-up" data-aos-delay="300"><a href="#services-section" class="btn btn-white btn-outline-white py-3 px-5 btn-pill">Learn More</a></p>
                   </div>
@@ -64,14 +63,22 @@
             </div>
         </div>
       </div>
+
+      <div class="custom-shape-divider-bottom-1607324809">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+      </div>
     </div>
+
+    
 
     <div class="site-section courses-title" id="services-section">
       <div class="container">
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 text-center" data-aos="fade-up" data-aos-delay="">
             <h2 data-aos="fade-up" data-aos-delay="0" class="section-title">Services</h2>
-            <p class="mb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi incidunt aliquid veritatis quos nobis. Quisquam voluptate quos natus repellat, corrupti magnam nihil saepe tempora hic fuga est reprehenderit repudiandae iusto.</p>
+            <p class="mb-4 text-size-150">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi incidunt aliquid veritatis quos nobis. Quisquam voluptate quos natus repellat, corrupti magnam nihil saepe tempora hic fuga est reprehenderit repudiandae iusto.</p>
           </div>
         </div>
       </div>
@@ -87,7 +94,7 @@
               <figure class="m-0">
                 <a href="course-single.html"><img src="/oneschool/images/pic3.jpg" alt="Image" class="img-fluid"></a>
               </figure>
-              <div class="course-inner-text py-4 px-4">
+              <div class="course-inner-text py-4 px-4 text-center">
                 <h3><a href="#">Flexible Counseling and Wellness Coaching</a></h3>
                 <p>This will help your employees deal with work or personal issues that may impact their performance </p>
               </div>
@@ -179,50 +186,18 @@
 
 
     <div class="site-section" id="about-section">
-      <div class="container">
+      <div class="container-fluid">
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 text-center"  data-aos="fade-up" data-aos-delay="">
-            <h2 class="section-title">About Lifelines EAP</h2>
-            <p>Lifelines EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
-          </div>
-        </div>
-        <div class="row mb-5 align-items-center">
-          <div class="col-lg-7 mb-5" data-aos="fade-up" data-aos-delay="100">
-            <img src="{{ asset('oneschool/images/undraw_youtube_tutorial.svg') }}" alt="Image" class="img-fluid">
-          </div>
-          <div class="col-lg-4 ml-auto" data-aos="fade-up" data-aos-delay="200">
-            <h2 class="text-black mb-4">Reasons for having a Mental Health Policy in your work place</h2>
-            <p class="mb-4">
-
-               <div class="d-flex align-items-center custom-icon-wrap mb-3">
-                  <span class="custom-icon-inner mr-3"><span class="icon icon-settings"></span></span>
-                  <div><p class="m-0">Raise awareness on mental health issues.</p></div>
-                </div>
-
-                <div class="d-flex align-items-center custom-icon-wrap mb-3">
-                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                  <div><p class="m-0">Correct the stigma and discrimination associated with mental health condition.</p></div>
-                </div>
-
-                <div class="d-flex align-items-center custom-icon-wrap mb-3">
-                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                  <div><p class="m-0">Identify and provide support individuals at risk.</p></div>
-                </div>
-
-                <div class="d-flex align-items-center custom-icon-wrap mb-3">
-                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                  <div><p class="m-0">Facilitate access of individuals at risk.</p></div>
-                </div>
-
-                <div class="d-flex align-items-center custom-icon-wrap mb-3">
-                  <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-settings"></span></span></div>
-                  <div><p class="m-0">Facilitate access of individuals with, mental health conditions to treatment and psychosocial support.</p></div>
-                </div>
+            <h2 class="section-title">Reasons For Having a Mental Health Policy In Your Work Place</h2>
+            <p style="font-size: 1.5rem;">Reports say that 1 in 5 Filipino adults suffer from a form of mental illness. In 2012, the World Health Organization (WHO) reported that an average of 7 Filipinos died by suicide each day. These statistics are certainly alarming. But it is not all bad news because last Jun 21st 2018, President Duterte finally signed the Mental Health Law, providing Filipinos with affordable and accessible mental health services. But what does that mean for companies and employers?
+            Chapter V, Sec. 25 of the Mental Health Law states that:
+            “Employers shall develop appropriate policies and programs on mental health in the workplace designed to (1) raise awareness on mental health issues; (2) correct the stigma and discrimination associated with mental health conditions; (3) identify and provide support for individuals at risk; and (4) facilitate access of individuals with mental health conditions to treatment and psychosocial support.”
+            The Mental Health Law does not only cover public mental health services, but it also covers the promotion of mental health and policies in the workplace.  It states that companies must have a mental health policy in place for their employees by February 26, 2020. If you don’t have a policy yet, don’t worry. Lifeline will help you set one up.
+            We .can help provide you the services to comply with the national Mental Health Act.
             </p>
-
           </div>
         </div>
-
       </div>
     </div>
 
@@ -232,7 +207,7 @@
         <div class="row mb-5 justify-content-center">
           <div class="col-lg-7 mb-5 text-center"  data-aos="fade-up" data-aos-delay="">
             <h2 class="section-title">Benefits</h2>
-            <p class="mb-5">We've created our own unique preventative measures designed to resolve and manage workplace conflicts, personal concerns and life challenges - most within out EAP services.</p>
+            <p class="mb-5 text-size-150">We've created our own unique preventative measures designed to resolve and manage workplace conflicts, personal concerns and life challenges - most within out EAP services.</p>
           </div>
         </div>
 
