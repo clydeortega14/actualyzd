@@ -12,3 +12,5 @@
 */
 
 Route::get('/', 'GuestsController@index')->name('home');
+
+Route::get('/contact-us', 'GuestsController@contactUs')->name('contact.us');

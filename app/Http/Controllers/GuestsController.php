@@ -10,4 +10,8 @@ class GuestsController extends Controller
     {
     	return view('pages.guests.home');
     }
+    public function contactUs()
+    {
+    	return view('pages.guests.contact');
+    }
 }

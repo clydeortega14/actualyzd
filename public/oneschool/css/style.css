@@ -18,7 +18,9 @@ body {
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
-  transition: .3s all ease; }
+  transition: .3s all ease;
+  color: #008080; 
+}
   a:hover {
     text-decoration: none; }
 
@@ -36,8 +38,16 @@ h1, h2, h3, h4, h5,
   color: #FFD700 !important;
 }
 
+.text-green-800 {
+  color: #D3D3D3 !important; }
+
 .bg-black {
   background: #000 !important; }
+.bg-black-200 {
+  background: #2F4F4F !important; }
+
+.bg-green-1000 {
+  background: #008080 !important; }
 
 .color-black-opacity-5 {
   color: rgba(0, 0, 0, 0.5); }
@@ -108,7 +118,7 @@ h1, h2, h3, h4, h5,
       .btn.btn-white.btn-outline-white:hover {
         border-color: transparent;
         background: #fff;
-        color: #000; }
+        color: #20B2AA; }
   .btn.btn-pill {
     border-radius: 30px; }
 
@@ -754,7 +764,7 @@ h1, h2, h3, h4, h5,
   margin-bottom: 1.5rem; }
 
 .section-title {
-  font-size: 2.0rem;
+  font-size: 2.5rem;
   color: #008080;
   margin-bottom: 1.8rem;
   font-weight: 600; }
@@ -915,7 +925,7 @@ h1, h2, h3, h4, h5,
     font-size: .9rem;
     letter-spacing: .1rem;
     text-transform: uppercase;
-    color: #000;
+    color: #fff;
     margin-bottom: 1.5rem;
     font-weight: 900; }
   .footer-section .footer-links li {
@@ -1038,7 +1048,7 @@ h1, h2, h3, h4, h5,
    }
   .courses-title .section-title {
     color: #008080;
-    font-size: 2.0rem; }
+    font-size: 2.8rem; }
   /*.courses-title p {
     font-size: 1.5rem;
   }*/
@@ -1089,7 +1099,8 @@ h1, h2, h3, h4, h5,
       margin-right: .5rem; }
   .course h3 {
     font-size: 1.15rem;
-    color: #000; }
+    color: #008080;
+    text-align: center; }
   .course .stats {
     font-size: .9rem; }
   .course:hover {
