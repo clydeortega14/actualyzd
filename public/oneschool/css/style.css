@@ -18,7 +18,9 @@ body {
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
-  transition: .3s all ease; }
+  transition: .3s all ease;
+  color: #008080; 
+}
   a:hover {
     text-decoration: none; }
 
@@ -32,8 +34,20 @@ h1, h2, h3, h4, h5,
 .text-black {
   color: #000 !important; }
 
+.text-gold {
+  color: #FFD700 !important;
+}
+
+.text-green-800 {
+  color: #D3D3D3 !important; }
+
 .bg-black {
   background: #000 !important; }
+.bg-black-200 {
+  background: #2F4F4F !important; }
+
+.bg-green-1000 {
+  background: #008080 !important; }
 
 .color-black-opacity-5 {
   color: rgba(0, 0, 0, 0.5); }
@@ -104,7 +118,7 @@ h1, h2, h3, h4, h5,
       .btn.btn-white.btn-outline-white:hover {
         border-color: transparent;
         background: #fff;
-        color: #000; }
+        color: #20B2AA; }
   .btn.btn-pill {
     border-radius: 30px; }
 
@@ -302,15 +316,17 @@ h1, h2, h3, h4, h5,
 .site-logo {
   position: relative;
   font-weight: 900;
-  font-size: 1.3rem; }
+  font-size: 1.5rem; }
   .site-logo a {
-    color: #fff; }
+    color: #008B8B; }
 
 .site-navbar {
   margin-bottom: 0px;
   z-index: 1999;
   position: absolute;
-  width: 100%; }
+  width: 100%;
+  background: #fff;
+   }
   .site-navbar .container-fluid {
     padding-left: 7rem;
     padding-right: 7rem; }
@@ -333,11 +349,11 @@ h1, h2, h3, h4, h5,
       display: inline-block; }
       .site-navbar .site-navigation .site-menu > li > a {
         padding: 5px 20px;
-        color: #fff;
+        color: #008B8B;
         display: inline-block;
         text-decoration: none !important; }
         .site-navbar .site-navigation .site-menu > li > a:hover {
-          color: #fff; }
+          color: #20B2AA; }
     .site-navbar .site-navigation .site-menu .has-children {
       position: relative; }
       .site-navbar .site-navigation .site-menu .has-children > a {
@@ -362,7 +378,7 @@ h1, h2, h3, h4, h5,
         border-top: 2px solid #7971ea;
         -webkit-box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.1);
         box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.1);
-        border-left: 1px solid #edf0f5;
+        border-left: 1px solid #edf0f5; 
         border-right: 1px solid #edf0f5;
         border-bottom: 1px solid #edf0f5;
         padding: 0px 0;
@@ -584,7 +600,7 @@ h1, h2, h3, h4, h5,
     .sticky-wrapper .site-navbar .site-menu > li {
       display: inline-block; }
       .sticky-wrapper .site-navbar .site-menu > li > a.active {
-        color: #fff;
+        color: #20B2AA;
         position: relative; }
         .sticky-wrapper .site-navbar .site-menu > li > a.active:after {
           height: 2px;
@@ -597,20 +613,21 @@ h1, h2, h3, h4, h5,
   .sticky-wrapper.is-sticky .site-navbar {
     -webkit-box-shadow: 4px 0 20px -5px rgba(0, 0, 0, 0.2);
     box-shadow: 4px 0 20px -5px rgba(0, 0, 0, 0.2);
-    background: #fff; }
+    background: #20B2AA; }
     .sticky-wrapper.is-sticky .site-navbar .site-logo a {
-      color: #000; }
+      color: #fff; }
     .sticky-wrapper.is-sticky .site-navbar .site-menu > li {
       display: inline-block; }
       .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a {
         padding: 5px 20px;
-        color: #000;
+        color: #fff;
         display: inline-block;
         text-decoration: none !important; }
         .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a:hover {
-          color: #7971ea; }
+          color: #66CDAA; }
         .sticky-wrapper.is-sticky .site-navbar .site-menu > li > a.active:after {
-          background: #7971ea; }
+          /*Border Background color*/
+          background: #fff; }
   .sticky-wrapper .shrink {
     padding-top: 10px !important;
     padding-bottom: 10px !important; }
@@ -619,8 +636,8 @@ h1, h2, h3, h4, h5,
 .intro-section {
   position: relative; }
   .intro-section, .intro-section .container > .row {
-    height: 100vh;
-    min-height: 900px; }
+    height: 70vh;
+    min-height: 650px; }
   .intro-section.single-cover, .intro-section.single-cover .container > .row {
     height: 50vh;
     min-height: 400px; }
@@ -651,17 +668,17 @@ h1, h2, h3, h4, h5,
 .slide-1 {
   background-size: cover;
   background-position: center;
-  background-image: url("/oneschool/images/background1.jpg"); 
+  background-color: #20B2AA;
 }
   .slide-1:before {
     content: "";
     position: absolute;
     height: 100%;
     width: 100%;
-    background: #343a40;
+    /*background: #343a40;*/
     opacity: .9;
     border-bottom-right-radius: 0px;
-    background: linear-gradient(0deg, rgba(34,193,195,0.5) 0%, rgba(253,187,45,0.5) 100%);
+    /*background: linear-gradient(0deg, rgba(34,193,195,0.5) 0%, rgba(253,187,45,0.5) 100%);*/
      }
     @media (max-width: 991.98px) {
       .slide-1:before {
@@ -677,6 +694,29 @@ h1, h2, h3, h4, h5,
       opacity: 1;
       visibility: visible;
       margin-top: 0px; }
+
+    /* WAVY CSS BACKGROUND*/
+  .custom-shape-divider-bottom-1607324809 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+  }
+
+  .custom-shape-divider-bottom-1607324809 svg {
+      position: relative;
+      display: block;
+      width: calc(131% + 1.3px);
+      height: 245px;
+  }
+
+  .custom-shape-divider-bottom-1607324809 .shape-fill {
+      fill: #fff;
+  }
+  /* END WAVY CSS BACKGROUND*/
 
 .form-box {
   padding: 40px;
@@ -724,13 +764,15 @@ h1, h2, h3, h4, h5,
   margin-bottom: 1.5rem; }
 
 .section-title {
-  font-size: 3rem;
-  color: #000;
+  font-size: 2.5rem;
+  color: #008080;
   margin-bottom: 1.8rem;
-  font-weight: 900; }
+  font-weight: 600; }
+
   @media (max-width: 991.98px) {
     .section-title {
       font-size: 1.5rem; } }
+}
 
 .counter .icon-wrap {
   margin-right: 1.5rem; }
@@ -883,7 +925,7 @@ h1, h2, h3, h4, h5,
     font-size: .9rem;
     letter-spacing: .1rem;
     text-transform: uppercase;
-    color: #000;
+    color: #fff;
     margin-bottom: 1.5rem;
     font-weight: 900; }
   .footer-section .footer-links li {
@@ -1001,13 +1043,22 @@ h1, h2, h3, h4, h5,
 
 .courses-title {
   padding-bottom: 13rem;
-  background-color: #20B2AA;
+  background-color: #fff;
   background-repeat: no-repeat;
    }
   .courses-title .section-title {
-    color: #E0FFFF; }
-  .courses-title p {
-    color: #E0FFFF;
+    color: #008080;
+    font-size: 2.8rem; }
+  /*.courses-title p {
+    font-size: 1.5rem;
+  }*/
+
+  /*FONT SIZE*/
+  .text-size-150 {
+    font-size: 1.5rem;
+  }
+  .text-size-100 {
+    font-size: 1rem;
   }
 
 .courses-entry-wrap {
@@ -1048,7 +1099,8 @@ h1, h2, h3, h4, h5,
       margin-right: .5rem; }
   .course h3 {
     font-size: 1.15rem;
-    color: #000; }
+    color: #008080;
+    text-align: center; }
   .course .stats {
     font-size: .9rem; }
   .course:hover {
