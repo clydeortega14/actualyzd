@@ -327,7 +327,7 @@
         </div>
 
         <div class="row mb-5">
-          <div class="col-sm-12 col-md-6">
+          <div class="col-sm-12 col-md-6 mb-3">
             <div class="card h-100 shadow">
               <div class="card-body">
                 <h5>The COVID-19 Pandemic has caused spike in anxiety and depression due to various stress factors:</h5>
@@ -342,7 +342,7 @@
             </div>
           </div>
 
-          <div class="col-sm-12 col-md-6">
+          <div class="col-sm-12 col-md-6 mb-3">
             <div class="card h-100 shadow">
               <div class="card-body">
                 <h5>Benefits of seeking professional help:</h5>
