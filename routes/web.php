@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', 'GuestsController@index')->name('home');
+Route::get('/', 'GuestsController@index')->name('guests.home');
 
 Route::get('/contact-us', 'GuestsController@contactUs')->name('contact.us');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

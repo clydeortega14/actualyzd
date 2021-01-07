@@ -18,7 +18,7 @@
       
       <div class="container-fluid">
         <div class="d-flex align-items-center">
-          <div class="site-logo mr-auto w-25"><a href="{{ route('home') }}">Psychline EAP</a></div>
+          <div class="site-logo mr-auto w-25"><a href="{{ route('guests.home') }}">Psychline EAP</a></div>
 
           <div class="mx-auto text-center">
             <nav class="site-navigation position-relative text-right" role="navigation">
@@ -34,6 +34,10 @@
 
           <div class="ml-auto w-25">
             <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
+                <li><a href="{{ url('/login') }}" class="nav-link">Sign In</a></li>
+                <li><a href="{{ url('/register') }}" class="nav-link">Sign Up</a></li>
+              </ul>
               <ul class="site-menu main-menu site-menu-dark js-clone-nav mr-auto d-none d-lg-block m-0 p-0">
               </ul>
             </nav>
