@@ -1,4 +1,4 @@
-<script src="{{ asset('oneschool/js/jquery-3.3.1.min.js') }}"></script>
+  <script src="{{ asset('oneschool/js/jquery-3.3.1.min.js') }}"></script>
   <script src="{{ asset('oneschool/js/jquery-migrate-3.0.1.min.js') }}"></script>
   <script src="{{ asset('oneschool/js/jquery-ui.js') }}"></script>
   <script src="{{ asset('oneschool/js/popper.min.js') }}"></script>

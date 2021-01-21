@@ -19,7 +19,7 @@ a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
-  color: #008080; 
+  color: #fff; 
 }
   a:hover {
     text-decoration: none; }
@@ -88,11 +88,15 @@ h1, h2, h3, h4, h5,
     outline: none;
     -webkit-box-shadow: none !important;
     box-shadow: none !important; }
-  .btn.btn-black {
+  .btn.btn-primary {
     border-width: 2px;
-    border-color: #000;
-    background: #000;
-    color: #fff; }
+    border-color: #0E7898;
+    background: #0E7898;
+    color: #fff !important; }
+  .btn.btn-primary:hover {
+    background-color: #039DD5 !important;
+    border-color: #039DD5;
+  }
 
     .btn.btn-black:hover {
       color: #000;
@@ -318,7 +322,7 @@ h1, h2, h3, h4, h5,
   font-weight: 900;
   font-size: 1.5rem; }
   .site-logo a {
-    color: #008B8B; }
+    color: #696969; }
 
 .site-navbar {
   margin-bottom: 0px;
@@ -349,11 +353,12 @@ h1, h2, h3, h4, h5,
       display: inline-block; }
       .site-navbar .site-navigation .site-menu > li > a {
         padding: 5px 20px;
-        color: #008B8B;
+        color: #696969;
         display: inline-block;
-        text-decoration: none !important; }
+        text-decoration: none !important; 
+        font-weight: bold; }
         .site-navbar .site-navigation .site-menu > li > a:hover {
-          color: #20B2AA; }
+          color: #53C5DC; }
     .site-navbar .site-navigation .site-menu .has-children {
       position: relative; }
       .site-navbar .site-navigation .site-menu .has-children > a {
@@ -613,7 +618,7 @@ h1, h2, h3, h4, h5,
   .sticky-wrapper.is-sticky .site-navbar {
     -webkit-box-shadow: 4px 0 20px -5px rgba(0, 0, 0, 0.2);
     box-shadow: 4px 0 20px -5px rgba(0, 0, 0, 0.2);
-    background: #20B2AA; }
+    background: #53C5DC; }
     .sticky-wrapper.is-sticky .site-navbar .site-logo a {
       color: #fff; }
     .sticky-wrapper.is-sticky .site-navbar .site-menu > li {
@@ -637,18 +642,18 @@ h1, h2, h3, h4, h5,
   position: relative; }
   .intro-section, .intro-section .container > .row {
     height: 70vh;
-    min-height: 650px; }
+    min-height: 650px;}
   .intro-section.single-cover, .intro-section.single-cover .container > .row {
     height: 50vh;
     min-height: 400px; }
   .intro-section h1 {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
     font-weight: 700;
     color: #fff;
     margin-bottom: 1.5rem; }
   .intro-section p {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 1.1rem; }
+    font-size: 1.5rem; }
 
 .img-absolute {
   position: absolute;
@@ -668,7 +673,7 @@ h1, h2, h3, h4, h5,
 .slide-1 {
   background-size: cover;
   background-position: center;
-  background-color: #20B2AA;
+  background-color: #53C5DC;
 }
   .slide-1:before {
     content: "";

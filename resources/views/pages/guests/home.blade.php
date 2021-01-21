@@ -23,25 +23,15 @@
           <div class="mx-auto text-center">
             <nav class="site-navigation position-relative text-right" role="navigation">
               <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
-                <li><a href="#home-section" class="nav-link">Home</a></li>
-                <li><a href="#services-section" class="nav-link">Services</a></li>
-                <li><a href="#about-section" class="nav-link">About Us</a></li>
-                <li><a href="#benefits-section" class="nav-link">Benefits</a></li>
-                <li><a href="#by-the-numbers" class="nav-link">By The Numbers</a></li>
+                {{-- <li><a href="#home-section" class="nav-link">Home</a></li> --}}
+                <li><a href="#about-section" class="nav-link">ABOUT US</a></li>
+                <li><a href="#services-section" class="nav-link">SERVICES</a></li>
+                <li><a href="#contact" class="nav-link">CONTACT</a></li>
+                <li><a href="{{ route('login') }}" class="btn btn-primary">LOG IN</a></li>
+                {{-- <li><a href="#benefits-section" class="nav-link">Benefits</a></li>
+                <li><a href="#by-the-numbers" class="nav-link">By The Numbers</a></li> --}}
               </ul>
             </nav>
-          </div>
-
-          <div class="ml-auto w-25">
-            <nav class="site-navigation position-relative text-right" role="navigation">
-              <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
-                <li><a href="{{ url('/login') }}" class="nav-link">Sign In</a></li>
-                <li><a href="{{ url('/register') }}" class="nav-link">Sign Up</a></li>
-              </ul>
-              <ul class="site-menu main-menu site-menu-dark js-clone-nav mr-auto d-none d-lg-block m-0 p-0">
-              </ul>
-            </nav>
-            <a href="#" class="d-inline-block d-lg-none site-menu-toggle js-menu-toggle text-black float-right"><span class="icon-menu h3"></span></a>
           </div>
         </div>
       </div>
@@ -49,22 +39,18 @@
     </header>
 
     <div class="intro-section" id="home-section">
-      
       <div class="slide-1">
         <div class="container">
             <div class="row align-items-center">
-              <div class="col-sm-12">
-                <div class="row align-items-center">
-                  <div class="col-lg-6 mb-4">
-                    <h1 data-aos="fade-up" data-aos-delay="0" style="font-size: 2.5rem;">BE FINE, WITH PSYCHLINE</h1>
-                    <p class="mb-4 text-white"  data-aos="fade-up" data-aos-delay="200">Psychline EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
-                    <p data-aos="fade-up" data-aos-delay="300"><a href="#services-section" class="btn btn-white btn-outline-white py-3 px-5 btn-pill">Learn More</a></p>
-                  </div>
-
-                  
-                </div>
+              <div class="col-lg-6 mb-4">
+                <h1 data-aos="fade-up" data-aos-delay="0">Be fine, with Psychline</h1>
+                <p class="mb-4 text-white"  data-aos="fade-up" data-aos-delay="200">Psychline EAP helps organizations and businesses empower their people and promote their mental health and holistic wellbeing.</p>
+                <a href="#services-section" class="btn btn-primary">Learn More</a>
               </div>
-              
+
+              <div class="col-lg-6 mb-4">
+                <img src="{{ asset('oneschool/images/undraw_teaching.svg') }}">
+              </div>
             </div>
         </div>
       </div>
@@ -76,7 +62,26 @@
       </div>
     </div>
 
-    
+    <div class="site-section" id="reasons">
+      <div class="container-fluid" style="padding: 4em; font-size: 1.3rem;">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <img src="{{ asset('oneschool/images/undraw_teacher.svg') }}">
+          </div>
+
+          <div class="col-md-6">
+              <h1 class="text-center">Reasons For Having a Mental Health Policy In Your Work Place</h1>
+              <p style="padding: 2em; color: red !important;"><b>Last Jun 21st 2018, President Duterte finally signed the Mental Health Law, providing Filipinos with affordable and accessible mental health services. But what does that mean for companies and employers?<br>
+              <br>
+              Chapter V, Sec. 25 of the Mental Health Law states that:<br>
+              <br>
+              “Employers shall develop appropriate policies and programs on mental health in the workplace designed to raise awareness on mental health issues; correct the stigma and discrimination associated with mental health conditions; identify and provide support for individuals at risk; and facilitate access of individuals with mental health conditions to treatment and psychosocial support.”<br>
+              <br>
+              If you don’t have a policy yet, don’t worry. Lifeline will help you set one up. We can help provide you the services to comply with the national Mental Health Act</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="site-section courses-title" id="services-section">
       <div class="container">
