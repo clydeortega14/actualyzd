@@ -7,7 +7,6 @@
 	<title>Psychline EAP</title>
 
 	{{-- FONT AWESOME --}}
-	{{-- <link rel="stylesheet" href="{{ asset('assets/font-awesome/css/all.min.css') }}"> --}}
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
 	@include('layouts.layout1.partials._links')

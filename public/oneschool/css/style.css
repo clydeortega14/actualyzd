@@ -19,7 +19,7 @@ a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
-  color: #fff; 
+  color: #525252; 
 }
   a:hover {
     text-decoration: none; }

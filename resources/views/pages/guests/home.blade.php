@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <div class="site-section courses-entry-wrap"  data-aos="fade-up" data-aos-delay="100">
+    <div class="site-section courses-entry-wrap aos-init aos-animate"  data-aos="fade-up" data-aos-delay="100">
       <div class="container">
         <div class="row justify-content-center">
 
@@ -177,29 +177,6 @@
               </div>
             </div>
           </div>
-      </div>
-    </div>
-
-
-    <div class="site-section" id="about-section">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-sm-12 col-md-6 col-lg-6 d-flex align-items-center">
-            <img src="/oneschool/images/mind.png" alt="img" class="img-fluid">
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <h2 class="section-title">Reasons For Having a Mental Health Policy In Your Work Place.</h2>
-            <p class="text-size-100">Reports say that 1 in 5 Filipino adults suffer from a form of mental illness. In 2012, the World Health Organization (WHO) reported that an average of 7 Filipinos died by suicide each day. These statistics are certainly alarming. But it is not all bad news because last Jun 21st 2018, President Duterte finally signed the Mental Health Law, providing Filipinos with affordable and accessible mental health services. But what does that mean for companies and employers?</p>
-
-            <p>Chapter V, Sec. 25 of the Mental Health Law states that:</p>
-            <p>
-              “Employers shall develop appropriate policies and programs on mental health in the workplace designed to (1) raise awareness on mental health issues; (2) correct the stigma and discrimination associated with mental health conditions; (3) identify and provide support for individuals at risk; and (4) facilitate access of individuals with mental health conditions to treatment and psychosocial support.”
-            </p>
-            <p>
-              The Mental Health Law does not only cover public mental health services, but it also covers the promotion of mental health and policies in the workplace.  It states that companies must have a mental health policy in place for their employees by February 26, 2020. If you don’t have a policy yet, don’t worry. Psychline EAP will help you set one up.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
 
