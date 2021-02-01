@@ -38,5 +38,8 @@ Route::middleware('auth')->group(function(){
 	// Book now
 	Route::get('book-a-schedule', 'SchedulesController@bookSchedule')->name('book.now');
 
+	// Show Schedule
+	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
+
 });
 

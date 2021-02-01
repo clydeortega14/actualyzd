@@ -20,4 +20,9 @@ class SchedulesController extends Controller
     {
     	return view('pages.schedules.book-now');
     }
+
+    public function show()
+    {
+        return view('pages.schedules.show');
+    }
 }

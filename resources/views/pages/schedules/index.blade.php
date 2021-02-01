@@ -17,7 +17,7 @@
 	            <div class="card">
 	                <div class="header">
 	                    <h2>
-	                        Schedules <small>Description text here...</small>
+	                        Schedules
 	                    </h2>
 	                            
 			            <a href="{{ route('book.now') }}" class="btn btn-primary header-dropdown m-r--5 pull-right">Book Now</a>
@@ -54,26 +54,33 @@
                                 						<th>Psychologist</th>
                                 						<th>Schedule</th>
                                 						<th>Status</th>
-                                						<th></th>
+                                						<th>Action</th>
                                 					</tr>
                                 				</thead>
                                 				<tbody>
                                 					<tr>
                                 						<td>Homar</td>
-                                						<td>Depressed</td>
+                                						<td>
+                                                            <a href="{{ route('schedule.show') }}">Depressed</a>
+                                                        </td>
                                 						<td>Victor Ortiza</td>
                                 						<td><span class="badge bg-orange">February 4, 2021, 8:30 am - 10:00 am</span></td>
                                 						<td>
                                 							<span class="badge bg-blue">New</span>
                                 						</td>
                                 						<td>
-                                							<button class="btn btn-primary waves-effect btn-block">Action</button>
+                                                            <a href="#" class="btn btn-success waves-effect btn-xs">Confirm</a>
+                                                            <a href="#" class="btn btn-danger waves-effect btn-xs">Cancel</a>
+                                                            <a href="#" class="btn btn-warning waves-effect btn-xs">Reschedule</a>
+                                							
                                 						</td>
                                 					</tr>
 
                                 					<tr>
                                 						<td>Gloria</td>
-                                						<td>Been thinking of my losses, and don't know what to do</td>
+                                						<td>
+                                                           <a href="{{ route('schedule.show') }}"> Been thinking of my losses, and don't know what to do </a>
+                                                        </td>
                                 						<td>Bonito</td>
                                 						<td>
                                 							<span class="badge bg-orange">February 4, 2021, 8:30 am - 10:00 am</span>
@@ -82,9 +89,12 @@
                                 							<span class="badge bg-blue">New</span>
                                 						</td>
                                 						<td>
-                                							<button class="btn btn-primary waves-effect btn-block">Action</button>
+                                							<a href="#" class="btn btn-success waves-effect btn-xs">Confirm</a>
+                                                            <a href="#" class="btn btn-danger waves-effect btn-xs">Cancel</a>
+                                                            <a href="#" class="btn btn-warning waves-effect btn-xs">Reschedule</a>
                                 						</td>
                                 					</tr>
+
                                 				</tbody>
                                 			</table>
                                 		</div>
