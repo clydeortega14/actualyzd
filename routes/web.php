@@ -13,8 +13,30 @@
 
 Route::get('/', 'GuestsController@index')->name('guests.home');
 
+Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
+
+Route::get('/careers', 'GuestsController@careers')->name('careers.index');
+
 Route::get('/contact-us', 'GuestsController@contactUs')->name('contact.us');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+/* For Authenticated Users Only*/
+Route::middleware('auth')->group(function(){
+
+	Route::get('/home', 'HomeController@index')->name('home');
+
+	// Clients Routes
+	Route::resource('clients', 'ClientsController');
+
+	// Psychologists
+	Route::resource('psychologists', 'PsychologistsController');
+
+	// Schedules
+	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
+
+	// Book now
+	Route::get('book-a-schedule', 'SchedulesController@bookSchedule')->name('book.now');
+
+});
+

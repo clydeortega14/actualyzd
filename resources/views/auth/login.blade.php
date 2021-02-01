@@ -1,4 +1,74 @@
-@extends('layouts.app')
+@extends('guest-layouts.master')
+
+@section('title', 'LogIn Page')
+
+@section('content')
+
+    <div class="login-box">
+        <div class="logo">
+            <a href="javascript:void(0);">Psychline<b>EAP</b></a>
+            <small></small>
+        </div>
+        <div class="card">
+            <div class="body">
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="msg">Sign in to start your session</div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line @error('email') error @enderror">
+                            <input type="email" class="form-control @error('email') error @enderror" name="email" value="{{ old('email') }}" placeholder="Email Address" required autofocus>
+                        </div>
+                        @error('email')
+                            <label class="error">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line @error('password') error @enderror">
+                            <input type="password" class="form-control @error('password') error @enderror" name="password" placeholder="Password" required>
+                        </div>
+                        @error('password')
+                            <label class="error">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8 p-t-5">
+                            <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-pink">
+                            <label for="rememberme">Remember Me</label>
+                        </div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
+                        </div>
+                    </div>
+                    <div class="row m-t-15 m-b--20">
+                        <div class="col-xs-6 align-right">
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+@section('custom_js')
+
+<script src="{{ asset('admin-bsb/js/pages/examples/sign-in.js') }}"></script>
+
+@endsection
+
+
+
+
+
+
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -71,3 +141,4 @@
     </div>
 </div>
 @endsection
+ --}}

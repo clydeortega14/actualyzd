@@ -14,4 +14,14 @@ class GuestsController extends Controller
     {
     	return view('pages.guests.contact');
     }
+
+    public function clients()
+    {
+    	return view('pages.guests.clients.index');
+    }
+
+    public function careers()
+    {
+    	return view('pages.guests.career.index');
+    }
 }
