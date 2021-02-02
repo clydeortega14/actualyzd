@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Client;
 
 class ClientsController extends Controller
 {
@@ -13,7 +14,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        return view('pages.superadmin.clients.index');
+        $clients = Client::with('user')->get();
+
+        return view('pages.superadmin.clients.index', compact('clients'));
     }
 
     /**

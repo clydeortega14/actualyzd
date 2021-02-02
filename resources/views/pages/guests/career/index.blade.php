@@ -14,8 +14,11 @@
         	<div class="body">
         		<div class="msg">Please Fill out this form</div>
 
+                @include('alerts.message')
 
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="{{ route('careers.store') }}" method="POST">
+
+                    @csrf
                     
                     <div class="row clearfix">
                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -24,7 +27,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="firstname" id="first-name" class="form-control" placeholder="Enter your firstname">
+                                    <input type="text" name="firstname" id="first-name" class="form-control" value="{{ old('firstname') }}" placeholder="Enter your firstname">
                                 </div>
                             </div>
                         </div>
@@ -37,7 +40,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="middlename" id="middle-name" class="form-control" placeholder="Enter your middlename">
+                                    <input type="text" name="middlename" id="middle-name" class="form-control" value="{{ old('middlename') }}" placeholder="Enter your middlename">
                                 </div>
                             </div>
                         </div>
@@ -50,7 +53,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="lastname" id="last-name" class="form-control" placeholder="Enter your lastname">
+                                    <input type="text" name="lastname" id="last-name" class="form-control" value="{{ old('lastname') }}" placeholder="Enter your lastname">
                                 </div>
                             </div>
                         </div>
@@ -63,7 +66,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address">
+                                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" placeholder="Enter your email address">
                                 </div>
                             </div>
                         </div>
@@ -76,7 +79,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="date" name="birthdate" id="birthdate" class="form-control" placeholder="Enter your birthdate">
+                                    <input type="date" name="birthdate" id="birthdate" class="form-control" value="{{ old('birthdate') }}" placeholder="Enter your birthdate">
                                 </div>
                             </div>
                         </div>
@@ -89,7 +92,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="contact_number" id="contact-number" class="form-control" placeholder="Enter your contact number">
+                                    <input type="text" name="contact_number" id="contact-number" value="{{ old('contact_number') }}" class="form-control" placeholder="Enter your contact number">
                                 </div>
                             </div>
                         </div>
@@ -102,7 +105,7 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea class="form-control no-resize" rows="4" name="home_address" id="home-address" placeholder="Enter your home address"></textarea>
+                                    <textarea class="form-control no-resize" rows="4" name="home_address" value="{{ old('home_address') }}" id="home-address" placeholder="Enter your home address"></textarea>
                                 </div>
                             </div>
                         </div>

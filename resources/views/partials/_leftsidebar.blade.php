@@ -62,13 +62,6 @@
         </li>
 
         <li>
-            <a href="#">
-                <i class="material-icons">home</i>
-                <span>Book Now</span>
-            </a>
-        </li>
-
-        <li>
             <a href="javascript:void(0);" class="menu-toggle">
                 <i class="material-icons">widgets</i>
                 <span>Access Rights</span>

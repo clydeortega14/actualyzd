@@ -15,7 +15,11 @@ Route::get('/', 'GuestsController@index')->name('guests.home');
 
 Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
 
-Route::get('/careers', 'GuestsController@careers')->name('careers.index');
+Route::post('/guest-clients', 'GuestsController@store')->name('guest.clients.store');
+
+Route::get('/careers', 'CareersController@index')->name('careers.index');
+
+Route::post('/careers', 'CareersController@store')->name('careers.store');
 
 Route::get('/contact-us', 'GuestsController@contactUs')->name('contact.us');
 

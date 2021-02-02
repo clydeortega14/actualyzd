@@ -9,7 +9,7 @@ class Psychologist extends Model
     protected $fillable = [
 
     	'user_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'contact_number', 'email',
-    	'address', 'license_type_id', 'avatar', 'resume'
+    	'address', 'avatar', 'resume'
 
     ];
 

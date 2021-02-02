@@ -15,7 +15,11 @@
         	<div class="body">
         		<div class="msg">Please Fill out this form</div>
 
-                <form class="form-horizontal">
+                @include('alerts.message')
+
+                <form class="form-horizontal" action="{{ route('guest.clients.store') }}" method="POST">
+
+                    @csrf
 
                     <div class="row clearfix">
                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -23,9 +27,14 @@
                         </div>
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" name="company_name" id="company-name" class="form-control" placeholder="Enter your company name">
+
+                                <div class="form-line @error('name') error @enderror ">
+                                    <input type="text" name="name" id="company-name" class="form-control @error('name') error @enderror " value="{{ old('name') }}" placeholder="Enter your company name">
                                 </div>
+
+                                @error('name')
+                                    <label class="error">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -36,9 +45,12 @@
                         </div>
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" name="company_email" id="company-email" class="form-control" placeholder="Enter your company email">
+                                <div class="form-line @error('email') error @enderror">
+                                    <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror" value="{{ old('email') }}" placeholder="Enter your company email">
                                 </div>
+                                @error('email')
+                                    <label class="error">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -49,9 +61,12 @@
                         </div>
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <input type="text" name="contact_number" id="contact-number" class="form-control" placeholder="Enter your contact number">
+                                <div class="form-line @error('contact_number') error @enderror">
+                                    <input type="text" name="contact_number" id="contact-number" class="form-control @error('contact_number') error @enderror" value="{{ old('contact_number') }}" placeholder="Enter your contact number">
                                 </div>
+                                @error('contact_number')
+                                    <label class="error">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -62,9 +77,12 @@
                         </div>
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <input type="number" name="number_of_employees" id="no-of-employees" class="form-control" placeholder="How many employees you have ? ">
+                                <div class="form-line @error('no_of_employees') error @enderror">
+                                    <input type="number" name="no_of_employees" id="no-of-employees" class="form-control @error('no_of_employees') error @enderror" value="{{ old('no_of_employees') }}" placeholder="How many employees you have ? ">
                                 </div>
+                                @error('no_of_employees')
+                                    <label class="error">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -75,9 +93,12 @@
                         </div>
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
-                                <div class="form-line">
-                                    <textarea class="form-control no-resize" rows="4" name="company_address" id="company-address" placeholder="Enter your company address"></textarea>
+                                <div class="form-line @error('address') error @enderror">
+                                    <textarea class="form-control no-resize  @error('address') error @enderror" rows="4" name="address" id="company-address" placeholder="Enter your company address">{{ old('address') }}</textarea>
                                 </div>
+                                @error('address')
+                                    <label class="error">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>

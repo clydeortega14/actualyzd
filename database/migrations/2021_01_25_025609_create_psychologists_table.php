@@ -23,7 +23,6 @@ class CreatePsychologistsTable extends Migration
             $table->string('contact_number');
             $table->string('email');
             $table->text('address');
-            $table->unsignedSmallInteger('license_type_id');
             $table->string('avatar')->nullable();
             $table->string('resume')->nullable();
             $table->timestamps();
@@ -31,9 +30,6 @@ class CreatePsychologistsTable extends Migration
 
             //foreign keys
             $table->foreign('user_id')->references('id')->on('users')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->foreign('license_type_id')->references('id')->on('license_types')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
     }

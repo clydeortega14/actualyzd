@@ -114,7 +114,7 @@
 					<div class="body">
 						<ul class="list-group">
                             <li class="list-group-item">
-                            	<img src="{{ asset('admin-bsb/images/client-empty-logo.png') }}" class="img-responsive img-circle" height="70" width="70" style="display: block; margin-left: auto; margin-right: auto;width: 50%;">
+                            	<img src="{{ asset('admin-bsb/images/empty-image.png') }}" class="img-responsive img-circle" height="70" width="70" style="display: block; margin-left: auto; margin-right: auto;width: 50%;">
                             </li>
                             <li class="list-group-item">
                             	Date <span class="badge bg-orange">February 25, 2021 8:30 am - 10:00 am</span>

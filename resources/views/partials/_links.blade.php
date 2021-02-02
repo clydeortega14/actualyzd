@@ -14,6 +14,9 @@
 <!-- Animation Css -->
 <link href="{{ asset('admin-bsb/plugins/animate-css/animate.css') }}" rel="stylesheet" />
 
+<!-- JQuery DataTable Css -->
+<link href="{{ asset('admin-bsb/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+
 <!-- Morris Chart Css-->
 <link href="{{ asset('admin-bsb/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
 

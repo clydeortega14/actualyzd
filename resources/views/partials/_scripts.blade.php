@@ -13,6 +13,10 @@
 <!-- Waves Effect Plugin Js -->
 <script src="{{ asset('admin-bsb/plugins/node-waves/waves.js') }}"></script>
 
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ asset('admin-bsb/plugins/jquery-datatable/jquery.dataTables.js') }} "></script>
+<script src="{{ asset('admin-bsb/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+
 <!-- Jquery CountTo Plugin Js -->
 <script src="{{ asset('admin-bsb/plugins/jquery-countto/jquery.countTo.js') }}"></script>
 
@@ -36,6 +40,9 @@
 
 <!-- Demo Js -->
 <script src="{{ asset('admin-bsb/js/demo.js') }}"></script>
+
+<!-- Data Table custom -->
+<script src="{{ asset('admin-bsb/js/pages/tables/jquery-datatable.js') }}"></script>
 
 <!-- Custom js for every page -->
 @yield('custom_js')
