@@ -6,7 +6,7 @@
 
     <div class="login-box">
         <div class="logo">
-            <a href="javascript:void(0);">Psychline<b>EAP</b></a>
+            <a href="javascript:void(0);">LogIn <b> Here</b></a>
             <small></small>
         </div>
         <div class="card">

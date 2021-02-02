@@ -6,7 +6,7 @@
 	
 	<div class="login-box">
 		<div class="logo">
-            <a href="javascript:void(0);">Psychologist Career </a>
+            <a href="javascript:void(0);">Careers</a>
             <small></small>
         </div>
 
@@ -14,69 +14,127 @@
         	<div class="body">
         		<div class="msg">Please Fill out this form</div>
 
-        		<div class="form-group">
-        			<div class="form-line">
-        				<input type="text" name="fname" class="form-control" placeholder="Firstname">
-        			</div>
-        		</div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <input type="text" name="mname" class="form-control" placeholder="Middlename">
+                <form class="form-horizontal">
+                    
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="first-name">Firstname</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="firstname" id="first-name" class="form-control" placeholder="Enter your firstname">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <input type="text" name="lname" class="form-control" placeholder="Lastname">
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="middle-name">Middlename</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="middlename" id="middle-name" class="form-control" placeholder="Enter your middlename">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <input type="date" name="birthdate" class="form-control" placeholder="Birthdate">
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="last-name">Lastname</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="lastname" id="last-name" class="form-control" placeholder="Enter your lastname">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="help-info">Please enter your birthdate</div>
-                </div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <input type="text" name="contact_number" class="form-control" placeholder="Contact Number">
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email address">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <input type="email" name="email" class="form-control" placeholder="Email">
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="birthdate">Birthdate</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="date" name="birthdate" id="birthdate" class="form-control" placeholder="Enter your birthdate">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <div class="form-line">
-                        <textarea class="form-control no-resize" rows="4" name="address" placeholder="Address"></textarea>
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="contact-number">Contact Number</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="contact_number" id="contact-number" class="form-control" placeholder="Enter your contact number">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-
-                <div class="form-group">
-                    <div class="form-line">
-                        <select class="form-control show-tick" name="license_type">
-                            <option value="">-- Please select --</option>
-                            <option value="10">License One</option>
-                            <option value="20">License Two</option>
-                            <option value="30">License Three</option>
-                        </select>
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="home-address">Home Address</label>
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <textarea class="form-control no-resize" rows="4" name="home_address" id="home-address" placeholder="Enter your home address"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="help-info">Select the type of license you have</div>
-                </div>
-                <br>
 
-        		<div class="row">
-        			<div class="col-xs-6 pull-right">
-        				<a href="#" class="btn btn-danger">Cancel</a>
-        				<button class="btn btn-primary">Submit</button>
-        			</div>
-        		</div>
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                            <label for="home-address">Resume / CV</label>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="file" name="resume" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <img src="{{ asset('admin-bsb/images/empty-image.png') }}" alt="Resume" class="img-responsive img-circle" height="150" width="150" style="display: block; margin-left: auto; margin-right: auto;width: 50%;">
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-12">
+                            <div class="pull-right">
+                                <a href="#" class="btn btn-danger btn-lg waves-effect">Cancel</a>
+                                <button class="btn btn-primary btn-lg waves-effect">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
 
         	</div>
         </div>
