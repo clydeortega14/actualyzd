@@ -10,6 +10,9 @@
 <!-- Slimscroll Plugin Js -->
 <script src="{{ asset('admin-bsb/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
 
+<!-- Sweetalert2 Plugin JS -->
+<script src="{{ asset('assets/sweetalert2/dist/sweetalert2.min.js') }}"></script>
+
 <!-- Waves Effect Plugin Js -->
 <script src="{{ asset('admin-bsb/plugins/node-waves/waves.js') }}"></script>
 

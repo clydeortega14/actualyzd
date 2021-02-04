@@ -17,6 +17,9 @@
 <!-- JQuery DataTable Css -->
 <link href="{{ asset('admin-bsb/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
 
+<!-- Sweetalert2 Plugin CSS -->
+<link href="{{ asset('assets/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet"></link>
+
 <!-- Morris Chart Css-->
 <link href="{{ asset('admin-bsb/plugins/morrisjs/morris.css') }}" rel="stylesheet" />
 

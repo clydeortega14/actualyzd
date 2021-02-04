@@ -30,63 +30,46 @@
                         </ul>
 	    			</div>
 
-	    			<div class="body">
+	    			<div class="body" id="main">
 	    				<div class="table-responsive">
-                            <table class="table table-hover dashboard-task-infos">
+                            <table class="table table-hover table-striped table-bordered basic-datatable">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>License</th>
                                         <th>Contact</th>
                                         <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                        	<div class="user-info">
-                                        		
-                                        	<div class="image">
-                                        		<img src="{{ asset('admin-bsb/images/user.png') }}" height="48" width="48" class="img-circle">
-                                        	</div>
-                                        	</div>
-                                        </td>
-                                        <td>Juan Tamad</td>
-                                        <td>juan@tamad.gmail.com</td>
-                                        <td>...</td>
-                                        <td>099823433</td>
-                                        <td>
-                                            <span class="label bg-green">Active</span>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning btn-sm">Action</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                        	<div class="user-info">
-                                        		
-                                        	<div class="image">
-                                        		<img src="{{ asset('admin-bsb/images/user.png') }}" height="48" width="48" class="img-circle">
-                                        	</div>
-                                        	</div>
-                                        </td>
-                                        <td>Pablo Escomorino</td>
-                                        <td>pablo@morino21.gmail.com</td>
-                                        <td>...</td>
-                                        <td>09383784832</td>
-                                        <td>
-                                            <span class="label bg-red">Inactive</span>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning btn-sm">Action</a>
-                                        </td>
-                                    </tr>
+                                    @foreach($psychologists as $psychologist)
+                                        <tr>
+                                            <td>
+                                            	<div class="user-info">
+                                                	<div class="image">
+                                                		<img src="{{ $psychologist->my_avatar }}" height="48" width="48" class="img-circle">
+                                                	</div>
+                                            	</div>
+                                            </td>
+                                            <td>{{ $psychologist->full_name }}</td>
+                                            <td>{{ $psychologist->email }}</td>
+                                            <td>{{ $psychologist->contact_number }}</td>
+                                            <td>
+                                                <span class="label bg-red">Inactive</span>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary btn-xs">
+                                                    <i class="material-icons">info</i>
+                                                </a> |
 
-                                    
+                                                <a href="#" class="btn btn-info btn-xs activate-button">
+                                                    <i class="material-icons">visibility</i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -95,5 +78,88 @@
 	    	</div>
 	    </div>
 	</div>
+
+@endsection
+
+@section('custom_js')
+
+<script type="text/javascript" src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
+    
+    <script>
+        
+        $(function(){
+
+
+            const psychologist = {
+
+                initialize(){
+
+                    this.globalVars()
+                    this.cacheDom()
+                    this.events()
+
+                },
+                events(){
+                    //glolabl this
+                    _this = this;
+
+                    this.$activateBtn.click(function(e){
+
+                        _this.sweet_alert.confirmDialog()
+                            .then((result) => {
+
+                                if(result.isConfirmed){
+
+                                    // Perform ajax request
+
+                                    
+                                    _this.sweet_alert.success('successfully activated')
+
+                                }
+                                
+                            })
+                            .catch( (error) => {
+                                console.log(error)
+                            } )
+                    })
+                },
+                globalVars(){
+
+                    this.sweet_alert = new SweetAlert();
+                },
+                main: $('#main'),
+                cacheDom(){
+
+                    this.$activateBtn = this.main.find('.activate-button')
+                },
+                ajax(object){
+
+
+                    $.ajaxSetup({
+
+                        headers: {
+
+                            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+
+                    return $.ajax({
+
+                        url: object.url,
+                        method: object.method,
+                        data: object.data
+
+                    }).fail(error => {
+
+                        this.sweet_alert.error()
+                    })
+                }
+
+            }
+
+            psychologist.initialize();
+        })
+
+    </script>
 
 @endsection

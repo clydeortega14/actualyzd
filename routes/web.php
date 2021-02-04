@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function(){
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');
 
+	// Psychologists Ajax Request
+	Route::post('async/activate-psychologist', 'PsychologistsController@activate');
+
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 

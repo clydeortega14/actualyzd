@@ -6,10 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Psychologist;
-use App\Files\FileManager;
+use App\User;
+use App\Http\Traits\Files\FileTrait;
 
 class CareersController extends Controller
 {
+    use FileTrait;
+
+
     public function index()
     {
     	return view('pages.guests.career.index');
@@ -27,23 +31,25 @@ class CareersController extends Controller
     		if($request->hasFile('resume')){
 
     			// Validate file
-    			$this->validateFile();
+    			$this->validateFile($request->all())->validate();
     			
-    			$file_manager = new FileManager($request->file('resume'));
+    			$file = $request->file('resume');
 
-    			// Store file to storage
-    			$file_manager->storeToStorage('public/images');
+                // filename to store 
+                $resume = $this->filenameToStore($file);
 
-    			$resume = $file_manager->fileToStore();
+                // store file to storage
+                $this->storeToStorage($file, 'public/images/resume');
+
 
     		}else{
 
     			$resume = null;
     		}
 
-
+            
     		// proceed to storing data to db
-    		Psychologist::create($this->data($data) + ['resume' => $resume]);
+    		Psychologist::create($this->data($request->all()) + ['resume' => $resume]);
     		
     	} catch (Exception $e) {
     		
@@ -70,21 +76,16 @@ class CareersController extends Controller
     		'address' => 'required'
     	]);
     }
-    protected function validateFile()
+    protected function validateFile(array $data)
     {
     	// file extension should only be jpeg, png, jpg, bmp
     	// file size should only be 1024 megabytes
 
-    	return $this->validate([
+        return Validator::make($data, [
 
-    		'resume' => ['required', 'mimes:jpeg,bmp,png,jpg', 'size:1024']
+            'resume' => ['mimes:jpeg,bmp,png,jpg', 'max:1024']
 
-    	]);
-    }
-
-    protected function create(array $data)
-    {
-    	return Psychologist::create($this->data($data));
+        ]);
     }
 
     protected function data(array $data)
@@ -92,8 +93,8 @@ class CareersController extends Controller
     	return [
 
     		'first_name' => $data['firstname'],
-    		'middlename' => $data['middle_name'],
-    		'lastname' => $data['middle_name'],
+    		'middle_name' => $data['middlename'],
+    		'last_name' => $data['lastname'],
     		'email' => $data['email'],
     		'birthdate' => $data['birthdate'],
     		'contact_number' => $data['contact_number'],
