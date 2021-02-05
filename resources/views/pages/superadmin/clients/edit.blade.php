@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="row clearfix">
-			<div class="col-md-6">
+			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="body">
 						<form class="form-line">
