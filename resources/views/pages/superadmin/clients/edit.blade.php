@@ -1,34 +1,33 @@
 @extends('admin-layouts.master')
 
-@section('title', 'Clients')
+@section('title', 'Edit Client')
 
 
 @section('content')
-	
+
 	<div class="container-fluid">
 		<div class="block-header">
-			<h2>Edit {{ $client->name }}</h2>
+			<h2>Edit Client</h2>
 		</div>
 
 		<div class="row clearfix">
-			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+			<div class="col-md-6">
 				<div class="card">
 					<div class="body">
-						<div class="row clearfix">
-							<div class="col-sm-12">
-								<img src="{{ $client->our_logo}}" height="50" width="50" class="img-responsive img-circle" style="display: block; margin-left: auto; margin-right: auto;width: 50%;">
-							</div>
-						</div>
-
-						<form action="" method="POST">
-
+						<form class="form-line">
 							@csrf
 
+							<div class="row clearfix justify-content-center">
+								<div class="col-md-12">
+									<img src="{{ $client->our_logo }}" class="img-responsive img-circle" height="100" width="100" style="display: block; margin-left: auto; margin-right: auto;width: 50%;">
+								</div>
+							</div>
+
 							<div class="row clearfix">
-		                        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-6 form-control-label">
+		                        <div class="col-lg-3 col-md-3 col-sm-2 col-xs-4 form-control-label">
 		                            <label for="company-name">Company Name</label>
 		                        </div>
-		                        <div class="col-lg-9 col-md-9 col-sm-7 col-xs-6">
+		                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
 		                            <div class="form-group">
 
 		                                <div class="form-line @error('name') error @enderror ">
@@ -43,16 +42,15 @@
 		                    </div>
 
 		                    <div class="row clearfix">
-		                        <div class="col-lg-3 col-md-3 col-sm-5 col-xs-6 form-control-label">
+
+		                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-5 form-control-label">
 		                            <label for="company-email">Company Email</label>
 		                        </div>
-		                        <div class="col-lg-9 col-md-9 col-sm-7 col-xs-6">
+		                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-7">
 		                            <div class="form-group">
-
-		                                <div class="form-line @error('email') error @enderror ">
-		                                    <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror " value="{{ $client->email }}" readonly>
+		                                <div class="form-line @error('email') error @enderror">
+		                                    <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror" value="{{ $client->email }}" readonly>
 		                                </div>
-
 		                                @error('email')
 		                                    <label class="error">{{ $message }}</label>
 		                                @enderror
