@@ -32,7 +32,7 @@
                                     @foreach($clients as $client)
                                         <tr>
                                             
-                                            <td><img src="{{ $client->ourLogo() }}" height="40" width="40"  class="img-responsive img-circle"></td>
+                                            <td><img src="{{ $client->our_logo }}" height="40" width="40"  class="img-responsive img-circle"></td>
                                             <td>{{ $client->name }}</td>
                                             <td>{{ $client->number_of_employees }}</td>
                                             <td>{{ $client->contact_number }}</td>

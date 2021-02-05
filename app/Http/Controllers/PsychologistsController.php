@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Psychologist;
+use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class PsychologistsController extends Controller
 {
@@ -13,7 +16,9 @@ class PsychologistsController extends Controller
      */
     public function index()
     {
-        return view('pages.superadmin.psychologists.index');
+        $psychologists = Psychologist::with('user')->get();
+
+        return view('pages.superadmin.psychologists.index', compact('psychologists'));
     }
 
     /**
@@ -80,5 +85,41 @@ class PsychologistsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function activate(Request $request)
+    {
+        $psychologist = Psychologist::findOrFail($request->psychologist_id);
+
+        DB::beginTransaction();
+
+        try {
+
+            if(is_null($psychologist->user_id)){
+
+                $user = User::firstOrCreate([
+                    'name' => $psychologist->full_name, 
+                    'email' => $psychologist->email, 
+                    'password' => Hash::make('123456'), 
+                    'is_active' => true 
+                ]);
+
+            }else{
+
+                $user = $psychologist->user;
+            }
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return response()->json(['status' => 'exception', 'message' => $e->getMessage() ], 500);
+            
+        }
+
+        DB::commit();
+
+        return response()->json(['status' => 'success', 'message' => 'successfully ']);
+
     }
 }

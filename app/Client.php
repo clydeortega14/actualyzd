@@ -23,7 +23,7 @@ class Client extends Model
      	return $this->belongsTo('App\User');
      }
 
-     public function ourLogo()
+     public function getOurLogoAttribute()
      {
         return !is_null($this->logo) ? asset('storage/images/'.$this->logo) : asset('admin-bsb/images/empty-image.png');
      }
