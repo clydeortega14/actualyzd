@@ -73,7 +73,11 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $client = Client::findOrFail($id);
+
+        $client->update(['is_active' => $request->status ]);
+
+        return redirect()->route('clients.index')->with('success', 'Successfully Updated');
     }
 
     /**

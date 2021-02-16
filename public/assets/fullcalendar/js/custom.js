@@ -14,15 +14,34 @@ document.addEventListener('DOMContentLoaded', function() {
       selectable: true,
       businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
+      select: function(arg) {
+
+        $('#create-schedule').modal('show')
+        
+        // var title = prompt('Event Title:');
+        // if (title) {
+        //   calendar.addEvent({
+        //     title: title,
+        //     start: arg.start,
+        //     end: arg.end,
+        //     allDay: arg.allDay
+        //   })
+        // }
+        calendar.unselect()
+      },
       events: [
         {
           title: 'All Day Event',
-          start: '2020-09-04'
+          start: '2020-09-04',
+          color: 'red',
+          textColor: 'white'
         },
         {
           title: 'Long Event',
           start: '2020-09-07',
-          end: '2020-09-10'
+          end: '2020-09-10',
+          color: 'orange',
+          textColor: 'white'
         },
         {
           groupId: 999,
@@ -69,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
           url: 'http://google.com/',
           start: '2020-09-28'
         }
-      ]
+      ],
     });
 
     calendar.render();

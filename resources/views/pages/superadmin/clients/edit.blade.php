@@ -14,8 +14,12 @@
 			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
 				<div class="card">
 					<div class="body">
-						<form class="form-line">
+						<form class="form-line" action="{{ route('clients.update', $client->id) }}" method="POST">
 							@csrf
+
+							@if(isset($client))
+								@method('PUT')
+							@endif
 
 							<div class="row clearfix justify-content-center">
 								<div class="col-md-12">
@@ -127,8 +131,8 @@
 		                    <div class="row clearfix">
 		                    	<div class="col-md-12">
 		                    		<div class="pull-right">
-		                    			<a href="#" class="btn btn-danger btn-lg waves-effect">Cancel</a>
-		                    			<button type="button" class="btn btn-primary btn-lg waves-effect">Save Changes</button>
+		                    			<a href="{{ route('clients.index') }}" class="btn btn-danger btn-lg waves-effect">Cancel</a>
+		                    			<button type="submit" class="btn btn-primary btn-lg waves-effect">Save Changes</button>
 		                    		</div>
 		                    	</div>
 		                    </div>

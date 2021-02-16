@@ -15,19 +15,16 @@
 		<div class="row clearfix">
 	        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	            <div class="card">
-	                <div class="header">
-	                    <h2>
-	                        Schedules
-	                    </h2>
-	                            
-			            <a href="{{ route('book.now') }}" class="btn btn-primary header-dropdown m-r--5 pull-right">Book Now</a>
+	                <div class="header">	                            
+			            <a href="{{ route('book.now') }}" class="btn btn-primary">Book Now</a>
+                        <a href="{{ route('psychologist.create.schedule') }}" class="btn btn-info">Create new schedule</a>
 	                </div>
 
 	                <div class="body">
 	                	<!-- Nav tabs -->
                         <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                            <li role="presentation" class="active"><a href="#calendar-schedule" data-toggle="tab">Calendar Schedule</a></li>
-                            <li role="presentation"><a href="#schedule-request" data-toggle="tab">Schedule Request <span class="badge bg-red">5</span></a> </li>
+                            <li role="presentation" class="active"><a href="#calendar-schedule" data-toggle="tab">Schedules</a></li>
+                            <li role="presentation"><a href="#schedule-request" data-toggle="tab"> Counselings <span class="badge bg-red">5</span></a> </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -36,7 +33,7 @@
                             	<div class="row clearfix">
                             		<div class="col-sm-12">
 	                    				<div id="calendar"></div>
-                            			
+                                        @include('pages.schedules.modals.create-schedule')
                             		</div>
                             	</div>
                                 
@@ -118,5 +115,16 @@
 
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
+    <script type="text/javascript">
+        
+        $(function(){
+
+            $('.datetimepicker').bootstrapMaterialDatePicker({
+                format: 'dddd DD MMMM YYYY - HH:mm',
+                clearButton: true,
+                weekStart: 1
+            });
+        })
+    </script>
 
 @endsection

@@ -36,17 +36,19 @@ Route::middleware('auth')->group(function(){
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');
 
-	// Psychologists Ajax Request
-	Route::post('async/activate-psychologist', 'PsychologistsController@activate');
-
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
 	// Book now
 	Route::get('book-a-schedule', 'SchedulesController@bookSchedule')->name('book.now');
-
 	// Show Schedule
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
+	// create my schedule
+	Route::prefix('psychologist')->group(function(){
+
+		Route::get('schedules', 'SchedulesController@createSchedule')->name('psychologist.create.schedule');
+
+	});
 
 });
 

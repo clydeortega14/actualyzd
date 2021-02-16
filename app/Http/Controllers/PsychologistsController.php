@@ -86,40 +86,4 @@ class PsychologistsController extends Controller
     {
         //
     }
-
-    public function activate(Request $request)
-    {
-        $psychologist = Psychologist::findOrFail($request->psychologist_id);
-
-        DB::beginTransaction();
-
-        try {
-
-            if(is_null($psychologist->user_id)){
-
-                $user = User::firstOrCreate([
-                    'name' => $psychologist->full_name, 
-                    'email' => $psychologist->email, 
-                    'password' => Hash::make('123456'), 
-                    'is_active' => true 
-                ]);
-
-            }else{
-
-                $user = $psychologist->user;
-            }
-            
-        } catch (Exception $e) {
-
-            DB::rollback();
-
-            return response()->json(['status' => 'exception', 'message' => $e->getMessage() ], 500);
-            
-        }
-
-        DB::commit();
-
-        return response()->json(['status' => 'success', 'message' => 'successfully ']);
-
-    }
 }

@@ -25,4 +25,8 @@ class SchedulesController extends Controller
     {
         return view('pages.schedules.show');
     }
+    public function createSchedule()
+    {
+        return view('pages.schedules.create');
+    }
 }

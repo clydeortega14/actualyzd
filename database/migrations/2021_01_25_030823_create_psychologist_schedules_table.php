@@ -15,12 +15,16 @@ class CreatePsychologistSchedulesTable extends Migration
     {
         Schema::create('psychologist_schedules', function (Blueprint $table) {
             $table->mediumIncrements('id');
-            $table->unsignedInteger('psycho_id');
-            $table->datetime('schedule');
-            $table->boolean('is_active');
+            $table->unsignedBigInteger('psychologist');
+            $table->string('title');
+            $table->dateTime('start');
+            $table->dateTime('end');
+            $table->boolean('allDay');
+            $table->string('color');
+            $table->string('textColor');
 
             //foreign key 
-            $table->foreign('psycho_id')->references('id')->on('psychologists')
+            $table->foreign('psychologist')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
         });

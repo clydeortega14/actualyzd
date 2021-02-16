@@ -15,13 +15,15 @@
 	    	<div class="col-12">
 	    		<div class="card">
 	    			<div class="body">
+                        @include('alerts.message')
 	    				<div class="table-responsive">
                             <table class="table table-hover basic-datatable table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         
                                         <th>Logo</th>
-                                        <th>Company Name</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
                                         <th>No. of employees</th>
                                         <th>Contact</th>
                                         <th>Status</th>
@@ -32,15 +34,23 @@
                                     @foreach($clients as $client)
                                         <tr>
                                             
-                                            <td><img src="{{ $client->our_logo }}" height="40" width="40"  class="img-responsive img-circle"></td>
+                                            <td>
+                                                <img src="{{ $client->our_logo }}" height="40" width="40"  class="img-responsive img-circle">
+                                            </td>
                                             <td>{{ $client->name }}</td>
+                                            <td>{{ $client->email }}</td>
                                             <td>{{ $client->number_of_employees }}</td>
                                             <td>{{ $client->contact_number }}</td>
                                             <td>
-                                                <span class="label bg-red">Inactive</span>
+                                                @php
+                                                    $active = $client->is_active;
+                                                @endphp
+                                                <span class="label {{ $active ? 'bg-green' : 'bg-red' }}">{{ $active ? 'Active' : 'Inactive' }}</span>
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-warning btn-sm">Action</a>
+                                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-xs">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
