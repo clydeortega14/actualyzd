@@ -4,7 +4,8 @@
             <div class="modal-header">
                 <h4 class="modal-title" id="defaultModalLabel">Create Your Schedule Now!</h4>
             </div>
-            <form>
+            <form action="{{ route('psychologist.store.schedule') }}" method="POST">
+                @csrf
                 <div class="modal-body">
                     
                     <label for="title">Title</label>
@@ -14,17 +15,33 @@
                         </div>
                     </div>
 
-                    <label for="start">Start</label>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" name="start" id="start" class="datetimepicker form-control" placeholder="Start Date & Time">
+                    <label for="start">Start Date & Time</label>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="form-line">
+                                <input type="date" name="start_date" id="start-date" class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-line">
+                                <input type="time" name="start_time" id="start-time" class="form-control" placeholder="Start Time">
+                            </div>
                         </div>
                     </div>
 
-                    <label for="end">End</label>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="text" name="end" id="end" class="datetimepicker form-control" placeholder="End Date & Time">
+                    <label for="end">End Date & Time</label>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="form-line">
+                                <input type="date" name="end_date" id="end-date" class="form-control" placeholder="End Date">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-line">
+                                <input type="time" name="end_time" id="end-time" class="form-control" placeholder="End Time">
+                            </div>
                         </div>
                     </div>
 
@@ -51,7 +68,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary waves-effect">CREATE SCHEDULE</button>
+                    <button type="submit" class="btn btn-primary waves-effect">CREATE SCHEDULE</button>
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
                 </div>
             </form>

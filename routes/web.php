@@ -46,7 +46,9 @@ Route::middleware('auth')->group(function(){
 	// create my schedule
 	Route::prefix('psychologist')->group(function(){
 
-		Route::get('schedules', 'SchedulesController@createSchedule')->name('psychologist.create.schedule');
+		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
+
+		Route::post('schedule', 'SchedulesController@storeSchedule')->name('psychologist.store.schedule');
 
 	});
 

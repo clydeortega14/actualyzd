@@ -1,4 +1,50 @@
-document.addEventListener('DOMContentLoaded', function() {
+Main();
+
+function Main(){
+
+    //declare global variable
+    let schedules = [];
+
+    // Render Calender
+    getEvents();
+    renderCalendar()
+
+
+  function getEvents()
+  {
+    $.ajax({
+      url: '/psychologist/schedules',
+      method: 'GET',
+      async: false,
+      success: function(res){
+        schedules = res.map(object => {
+          return {
+            title: object.title,
+            start: object.start,
+            end: object.end,
+          }
+        })
+      },
+      error: function(error){
+        console.log(error)
+      }
+    })
+    
+    return schedules;
+  }
+
+  function parseDate()
+  {
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day);
+
+    return today;
+  }
+
+  function renderCalendar(){
+
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -7,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
-      initialDate: '2020-09-12',
+      initialDate: parseDate(),
       weekNumbers: true,
       editable: true,
       navLinks: true,
@@ -15,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function() {
       businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
       select: function(arg) {
+        
+        $('#start-date').val(arg.startStr)
 
         $('#create-schedule').modal('show')
         
@@ -29,67 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // }
         calendar.unselect()
       },
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2020-09-04',
-          color: 'red',
-          textColor: 'white'
-        },
-        {
-          title: 'Long Event',
-          start: '2020-09-07',
-          end: '2020-09-10',
-          color: 'orange',
-          textColor: 'white'
-        },
-        {
-          groupId: 999,
-          title: 'Repeating Event',
-          start: '2020-09-09T16:00:00'
-        },
-        {
-          groupId: 999,
-          title: 'Repeating Event',
-          start: '2020-09-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2020-09-11',
-          end: '2020-09-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2020-09-12T10:30:00',
-          end: '2020-09-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2020-09-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2020-09-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2020-09-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2020-09-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2020-09-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2020-09-28'
-        }
-      ],
+      events: schedules
     });
 
     calendar.render();
-  });
+  }
+}
+  

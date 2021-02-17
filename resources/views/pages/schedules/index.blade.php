@@ -17,7 +17,7 @@
 	            <div class="card">
 	                <div class="header">	                            
 			            <a href="{{ route('book.now') }}" class="btn btn-primary">Book Now</a>
-                        <a href="{{ route('psychologist.create.schedule') }}" class="btn btn-info">Create new schedule</a>
+                        {{-- <a href="{{ route('psychologist.create.schedule') }}" class="btn btn-info">Create new schedule</a> --}}
 	                </div>
 
 	                <div class="body">
