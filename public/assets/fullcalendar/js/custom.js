@@ -2,12 +2,13 @@ Main();
 
 function Main(){
 
-    //declare global variable
-    let schedules = [];
+  //declare global variable
+  let schedules = [];
+  let calendar;
 
-    // Render Calender
-    getEvents();
-    renderCalendar()
+  // Render Calender
+  getEvents();
+  renderCalendar()
 
 
   function getEvents()
@@ -19,7 +20,9 @@ function Main(){
       success: function(res){
         schedules = res.map(object => {
           return {
+            id: object.id,
             title: object.title,
+            allDay: object.allDay,
             start: object.start,
             end: object.end,
           }
@@ -33,51 +36,80 @@ function Main(){
     return schedules;
   }
 
-  function parseDate()
+  /* Parse Date */
+  function parseDate(date)
   {
-    var now = new Date();
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = now.getFullYear()+"-"+(month)+"-"+(day);
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var today = date.getFullYear()+"-"+(month)+"-"+(day);
 
     return today;
   }
 
-  function renderCalendar(){
+  /* Parse Time */
+  function parseTime(date)
+  {
+      var hour = ("0" + date.getHours()).slice(-2);
+      var minutes = ("0" + date.getMinutes()).slice(-2);
+      var seconds = ("0" + date.getSeconds()).slice(-2);
 
+      return hour+":"+minutes+":"+seconds;
+  }
+
+  /* Initialize Calender */
+  function renderCalendar()
+  {
     var calendarEl = document.getElementById('calendar');
+    var now = new Date();
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+      calendar = new FullCalendar.Calendar(calendarEl, {
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
-      initialDate: parseDate(),
+      initialDate: parseDate(now),
       weekNumbers: true,
       editable: true,
       navLinks: true,
       selectable: true,
       businessHours: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      select: function(arg) {
-        
-        $('#start-date').val(arg.startStr)
+      select(arg){
 
-        $('#create-schedule').modal('show')
+        $('#create-schedule').modal('show');
+        $('#title').val("");
+        $('#start-date').val(arg.startStr);
+        $('#start-time').val("");
+        $('#end-date').val("");
+        $('#end-time').val("");
+        $('#sched-id').val("");
+        $('#allDay').prop('checked', false);
         
-        // var title = prompt('Event Title:');
-        // if (title) {
-        //   calendar.addEvent({
-        //     title: title,
-        //     start: arg.start,
-        //     end: arg.end,
-        //     allDay: arg.allDay
-        //   })
-        // }
         calendar.unselect()
       },
+      eventClick(arg){
+
+          let mySched = schedules.find(sched => sched.id == arg.event.id);
+          let split_start = mySched.start.split(" ");
+          let split_end = mySched.end.split(" ");
+          let start_date = split_start[0];
+          let start_time = split_start[1];
+          let end_date = split_end[0];
+          let end_time = split_end[1];
+
+          $('#create-schedule').modal('show');
+          $('#title').val(mySched.title)
+          $('#start-date').val(start_date)
+          $('#start-time').val(start_time)
+          $('#end-date').val(end_date)
+          $('#end-time').val(end_time)
+          $('#sched-id').val(mySched.id)
+          mySched.allDay == 1 ? $('#allDay').prop('checked', true) : $('#allDay').prop('checked', false);
+
+      },
       events: schedules
+
     });
 
     calendar.render();

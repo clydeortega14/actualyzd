@@ -8,7 +8,7 @@ class PsychologistSchedule extends Model
 {
     protected $fillable = [
 
-    	'psychologist', 'title', 'start', 'end', 'allDay', 'color', 'textColor'
+    	'psychologist', 'title', 'start', 'end', 'allDay'
     ];
 
 

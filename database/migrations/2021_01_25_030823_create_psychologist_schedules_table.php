@@ -20,8 +20,6 @@ class CreatePsychologistSchedulesTable extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
             $table->boolean('allDay');
-            $table->string('color');
-            $table->string('textColor');
 
             //foreign key 
             $table->foreign('psychologist')->references('id')->on('users')

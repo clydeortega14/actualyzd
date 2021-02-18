@@ -114,17 +114,6 @@
 @section('custom_js')
 
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
-    <script type="text/javascript">
-        
-        $(function(){
-
-            $('.datetimepicker').bootstrapMaterialDatePicker({
-                format: 'dddd DD MMMM YYYY - HH:mm',
-                clearButton: true,
-                weekStart: 1
-            });
-        })
-    </script>
+	<script type="module" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
 
 @endsection

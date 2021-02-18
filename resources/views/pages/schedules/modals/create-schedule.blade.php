@@ -2,12 +2,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="defaultModalLabel">Create Your Schedule Now!</h4>
+                <h4 class="modal-title" id="defaultModalLabel">Create / Update Schedule</h4>
             </div>
             <form action="{{ route('psychologist.store.schedule') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     
+                    <input type="hidden" name="sched_id" value="" id="sched-id">
+
                     <label for="title">Title</label>
                     <div class="form-group">
                         <div class="form-line">
@@ -46,29 +48,15 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="demo-checkbox">
+                        {{-- <div class="demo-checkbox"> --}}
                             <input type="checkbox" id="allDay" name="allDay" />
                             <label for="allDay">All Day</label>
-                        </div>
-                    </div>
-
-                    <label for="color">Background Color</label>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="color" name="color" id="color" class="form-control">
-                        </div>
-                    </div>
-
-                    <label for="textColor">Text Color</label>
-                    <div class="form-group">
-                        <div class="form-line">
-                            <input type="color" name="textColor" id="textColor" class="form-control">
-                        </div>
+                        {{-- </div> --}}
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary waves-effect">CREATE SCHEDULE</button>
+                    <button type="submit" class="btn btn-primary waves-effect">Submit</button>
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
                 </div>
             </form>
