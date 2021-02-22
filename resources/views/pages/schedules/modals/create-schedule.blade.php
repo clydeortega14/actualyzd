@@ -3,12 +3,38 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="defaultModalLabel">Create / Update Schedule</h4>
+                <div style="display: none;" id="div-delete">
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('delete-form').submit();">Delete</a>
+                    <form id="delete-form" action="{{ route('psychologist.delete.schedule') }}" method="POST" style="display: none;">
+                        @csrf
+                        <input type="text" name="sched_id" value="" class="sched-id">
+                    </form>
+                </div>
             </div>
             <form action="{{ route('psychologist.store.schedule') }}" method="POST">
                 @csrf
                 <div class="modal-body">
+
                     
-                    <input type="hidden" name="sched_id" value="" id="sched-id">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label for="start-date">Date</label>
+                            <div class="form-line">
+                                <input type="date" name="start_date" id="start-date" class="form-control" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label>Time Lists</label>
+                            @foreach($time_lists as $time)
+                                <div class="form-group">
+                                    <input type="checkbox" id="time{{$time->id}}" name="time_lists[]" value="{{ $time->id }}"/>
+                                    <label for="time{{$time->id}}">{{ $time->parseTimeFrom().' - '.$time->parseTimeTo() }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    {{-- <input type="hidden" name="sched_id" value="" class="sched-id">
 
                     <label for="title">Title</label>
                     <div class="form-group">
@@ -48,11 +74,9 @@
                     </div>
 
                     <div class="form-group">
-                        {{-- <div class="demo-checkbox"> --}}
-                            <input type="checkbox" id="allDay" name="allDay" />
-                            <label for="allDay">All Day</label>
-                        {{-- </div> --}}
-                    </div>
+                        <input type="checkbox" id="allDay" name="allDay" />
+                        <label for="allDay">All Day</label>
+                    </div> --}}
 
                 </div>
                 <div class="modal-footer">

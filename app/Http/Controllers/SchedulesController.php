@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DateTime;
 use App\PsychologistSchedule;
+use App\TimeList;
 
 class SchedulesController extends Controller
 {
     public function index()
     {
-    	return view('pages.schedules.index');
+        $time_lists = TimeList::all();
+        
+    	return view('pages.schedules.index', compact('time_lists'));
     }
     
     public function bookSchedule()
@@ -30,15 +33,30 @@ class SchedulesController extends Controller
     }
     public function storeSchedule(Request $request)
     {
-        is_null($request->sched_id) || $request->sched_id == "" ?
 
-            $this->create($request) : 
+        foreach($request->time_lists as $time)
+        {
+            PsychologistSchedule::create([
+                'psychologist' => auth()->user()->id,
+                'start' => $request->start_date,
+                'end' => $request->start_date,
+                'time' => $time
+            ]);
+        }
+        // is_null($request->sched_id) || $request->sched_id == "" ?
 
-            $this->update($request);
+        //     $this->create($request) : 
+
+        //     $this->update($request);
         
         return redirect()->back();
     }
+    public function delete(Request $request)
+    {
+        PsychologistSchedule::where('id', $request->sched_id)->delete();
 
+        return redirect()->back();
+    }
     protected function create(Request $request)
     {
         return PsychologistSchedule::firstOrCreate($this->data($request) + ['psychologist' => auth()->user()->id ]);

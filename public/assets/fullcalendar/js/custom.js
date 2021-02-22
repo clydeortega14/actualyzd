@@ -21,10 +21,10 @@ function Main(){
         schedules = res.map(object => {
           return {
             id: object.id,
-            title: object.title,
-            allDay: object.allDay,
             start: object.start,
             end: object.end,
+            display: 'background',
+            color: 'green'
           }
         })
       },
@@ -59,8 +59,8 @@ function Main(){
   /* Initialize Calender */
   function renderCalendar()
   {
-    var calendarEl = document.getElementById('calendar');
-    var now = new Date();
+      var calendarEl = document.getElementById('calendar');
+      var now = new Date();
 
       calendar = new FullCalendar.Calendar(calendarEl, {
       headerToolbar: {
@@ -83,7 +83,8 @@ function Main(){
         $('#start-time').val("");
         $('#end-date').val("");
         $('#end-time').val("");
-        $('#sched-id').val("");
+        $('.sched-id').val("");
+        $('#div-delete').hide();
         $('#allDay').prop('checked', false);
         
         calendar.unselect()
@@ -104,7 +105,8 @@ function Main(){
           $('#start-time').val(start_time)
           $('#end-date').val(end_date)
           $('#end-time').val(end_time)
-          $('#sched-id').val(mySched.id)
+          $('.sched-id').val(mySched.id)
+          $('#div-delete').show();
           mySched.allDay == 1 ? $('#allDay').prop('checked', true) : $('#allDay').prop('checked', false);
 
       },

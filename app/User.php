@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Client');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany('App\PsychologistSchedule', 'psychologist', 'id');
+    }
+
     public function psychologist()
     {
         return $this->belongsTo('App\Psychologist');

@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('schedule', 'SchedulesController@storeSchedule')->name('psychologist.store.schedule');
 
+		Route::post('delete-schedule', 'SchedulesController@delete')->name('psychologist.delete.schedule');
+
 	});
 
 });

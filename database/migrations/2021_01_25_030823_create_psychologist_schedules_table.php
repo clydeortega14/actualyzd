@@ -16,10 +16,8 @@ class CreatePsychologistSchedulesTable extends Migration
         Schema::create('psychologist_schedules', function (Blueprint $table) {
             $table->mediumIncrements('id');
             $table->unsignedBigInteger('psychologist');
-            $table->string('title');
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->boolean('allDay');
+            $table->date('start');
+            $table->date('end');
 
             //foreign key 
             $table->foreign('psychologist')->references('id')->on('users')
