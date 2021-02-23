@@ -10,7 +10,10 @@ class TimeList extends Model
 
     public $timestamps = false;
 
-    
+    public function schedules(){
+
+        return $this->hasMany(PsychologistSchedule::class, 'time');
+    }
     public function parseTimeFrom()
     {
     	return date("g:i a", strtotime($this->from));

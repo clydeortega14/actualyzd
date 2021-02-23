@@ -26,12 +26,13 @@
 
                         <div class="col-sm-6">
                             <label>Time Lists</label>
-                            @foreach($time_lists as $time)
+                            <div id="time-lists"></div>
+                            {{-- @foreach($time_lists as $time)
                                 <div class="form-group">
                                     <input type="checkbox" id="time{{$time->id}}" name="time_lists[]" value="{{ $time->id }}"/>
                                     <label for="time{{$time->id}}">{{ $time->parseTimeFrom().' - '.$time->parseTimeTo() }}</label>
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                     {{-- <input type="hidden" name="sched_id" value="" class="sched-id">

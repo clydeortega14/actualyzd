@@ -51,6 +51,20 @@ class SchedulesController extends Controller
         
         return redirect()->back();
     }
+
+    public function timeSchedule(Request $request)
+    {
+        // GET User schedule according to date selected
+        $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)
+            ->where('start', $request->start)
+            ->get();
+
+        $time_lists = TimeList::all();
+
+        return response()->json(['schedules' => $schedules, 'time_lists' => $time_lists ]);
+
+
+    }
     public function delete(Request $request)
     {
         PsychologistSchedule::where('id', $request->sched_id)->delete();

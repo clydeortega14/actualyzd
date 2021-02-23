@@ -78,8 +78,50 @@ function Main(){
       select(arg){
 
         $('#create-schedule').modal('show');
-        $('#title').val("");
         $('#start-date').val(arg.startStr);
+
+        // Request time list first to server
+        $.ajax({
+          url: `/psychologist/time-schedules`,
+          method: 'GET',
+          data: {
+            start: arg.startStr
+          },
+          success: function(data){
+
+            $('#time-lists').empty()
+
+            data.time_lists.forEach((time, index) => {
+
+              let checked;
+              let sched = data.schedules.find(schedule => schedule.time === time.id);
+
+              if(sched !== undefined){
+
+                checked = 'checked';
+              }
+              
+
+              $('#time-lists').append(`
+                  <div class="form-group">
+                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked}/>
+                    <label for="time${time.id}">${time.from} - ${time.to}</label>
+                  </div>
+                `)
+              
+            })
+            
+          },
+          error: function(error)
+          {
+            console.log(error)
+          }
+        })
+        // must show timelist
+
+
+
+        $('#title').val("");
         $('#start-time').val("");
         $('#end-date').val("");
         $('#end-time').val("");

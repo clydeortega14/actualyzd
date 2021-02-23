@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('delete-schedule', 'SchedulesController@delete')->name('psychologist.delete.schedule');
 
+		// Ajax
+		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
+
 	});
 
 });
