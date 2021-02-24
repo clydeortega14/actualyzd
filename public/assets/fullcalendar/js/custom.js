@@ -5,12 +5,13 @@ function Main(){
   //declare global variable
   let schedules = [];
   let calendar;
+  let date_parser = new DateParser;
 
   // Render Calender
   getEvents();
   renderCalendar()
 
-
+  
   function getEvents()
   {
     $.ajax({
@@ -35,27 +36,6 @@ function Main(){
     
     return schedules;
   }
-
-  /* Parse Date */
-  function parseDate(date)
-  {
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    var today = date.getFullYear()+"-"+(month)+"-"+(day);
-
-    return today;
-  }
-
-  /* Parse Time */
-  function parseTime(date)
-  {
-      var hour = ("0" + date.getHours()).slice(-2);
-      var minutes = ("0" + date.getMinutes()).slice(-2);
-      var seconds = ("0" + date.getSeconds()).slice(-2);
-
-      return hour+":"+minutes+":"+seconds;
-  }
-
   /* Initialize Calender */
   function renderCalendar()
   {
@@ -68,7 +48,7 @@ function Main(){
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
       },
-      initialDate: parseDate(now),
+      initialDate: date_parser.parseDate(now),
       weekNumbers: true,
       editable: true,
       navLinks: true,
@@ -96,20 +76,16 @@ function Main(){
               let checked;
               let sched = data.schedules.find(schedule => schedule.time === time.id);
 
-              if(sched !== undefined){
-
-                checked = 'checked';
-              }
-              
+              if(sched !== undefined) checked = 'checked';
 
               $('#time-lists').append(`
-                  <div class="form-group">
-                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked}/>
-                    <label for="time${time.id}">${time.from} - ${time.to}</label>
-                  </div>
-                `)
+                <div class="form-group">
+                  <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} />
+                  <label for="time${time.id}">${date_parser.convertTime(time.from)} - ${date_parser.convertTime(time.to)}</label>
+                </div>
+              `)
               
-            })
+            });
             
           },
           error: function(error)
@@ -117,9 +93,6 @@ function Main(){
             console.log(error)
           }
         })
-        // must show timelist
-
-
 
         $('#title').val("");
         $('#start-time').val("");
@@ -130,27 +103,6 @@ function Main(){
         $('#allDay').prop('checked', false);
         
         calendar.unselect()
-      },
-      eventClick(arg){
-
-          let mySched = schedules.find(sched => sched.id == arg.event.id);
-          let split_start = mySched.start.split(" ");
-          let split_end = mySched.end.split(" ");
-          let start_date = split_start[0];
-          let start_time = split_start[1];
-          let end_date = split_end[0];
-          let end_time = split_end[1];
-
-          $('#create-schedule').modal('show');
-          $('#title').val(mySched.title)
-          $('#start-date').val(start_date)
-          $('#start-time').val(start_time)
-          $('#end-date').val(end_date)
-          $('#end-time').val(end_time)
-          $('.sched-id').val(mySched.id)
-          $('#div-delete').show();
-          mySched.allDay == 1 ? $('#allDay').prop('checked', true) : $('#allDay').prop('checked', false);
-
       },
       events: schedules
 

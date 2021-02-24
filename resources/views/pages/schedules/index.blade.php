@@ -10,7 +10,7 @@
 
 @section('content')
 
-	<div class="container-fluid">
+	<div class="container-fluid" id="main-index">
 
 		<div class="row clearfix">
 	        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -113,6 +113,7 @@
 @section('custom_js')
 
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/date.js') }}"></script>
 	<script type="module" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
 
 @endsection
