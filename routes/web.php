@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function(){
 		// Ajax
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
+		Route::get('available', 'SchedulesController@psychologists')->name('psychologist.available');
 	});
 
 });

@@ -15,9 +15,17 @@ class AddTimeToPsychologistSchedulesTable extends Migration
     {
         Schema::table('psychologist_schedules', function (Blueprint $table) {
             $table->unsignedInteger('time');
+            $table->unsignedSmallInteger('status')->nullable();
+            $table->unsignedBigInteger('book_with')->nullable();
 
             //foreign
             $table->foreign('time')->references('id')->on('time_lists')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('status')->references('id')->on('psycho_sched_statuses')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('book_with')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -30,8 +38,7 @@ class AddTimeToPsychologistSchedulesTable extends Migration
     public function down()
     {
         Schema::table('psychologist_schedules', function (Blueprint $table) {
-            $table->dropForeign('psychologist_schedules_time_foreign');
-            $table->dropColumn('time');
+            $table->dropColumn(['time', 'status', 'users']);
         });
     }
 }

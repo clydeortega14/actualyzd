@@ -15,7 +15,7 @@ class CreateCounselingSchedulesTable extends Migration
     {
         Schema::create('counseling_schedules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedMediumInteger('psycho_sched_id');
+            $table->unsignedBigInteger('psycho_sched_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedSmallInteger('counseling_type_id');
             $table->unsignedSmallInteger('channel');

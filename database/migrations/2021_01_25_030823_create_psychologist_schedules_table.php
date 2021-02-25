@@ -14,7 +14,7 @@ class CreatePsychologistSchedulesTable extends Migration
     public function up()
     {
         Schema::create('psychologist_schedules', function (Blueprint $table) {
-            $table->mediumIncrements('id');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('psychologist');
             $table->date('start');
             $table->date('end');
