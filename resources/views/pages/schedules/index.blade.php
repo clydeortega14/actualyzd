@@ -10,29 +10,10 @@
 
 @section('content')
 
-	<div class="container-fluid" id="main-index">
+	<div class="container" id="main-index">
 
 		<div class="row clearfix">
-            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <div class="card">
-                    <div class="header">
-                        Psychologists
-                    </div>
-
-                    <div class="body">
-                        <div class="form-group">
-                            <input type="radio" id="example1" name="psychologist" class="with-gap" />
-                            <label for="example1">Psychologist One</label>
-                        </div>  
-
-                        <div class="form-group">
-                            <input type="radio" id="example2" name="psychologist" class="with-gap" />
-                            <label for="example2">Psychologist Two</label>
-                        </div>  
-                    </div>
-                </div>
-            </div>
-	        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+	        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	            <div class="card">
 	                <div class="body">
 	                	<!-- Nav tabs -->

@@ -32,4 +32,8 @@ class PsychologistSchedule extends Model
     {
         return $this->belongsTo(TimeList::class, 'time');
     }
+    public function bookWith()
+    {
+        return $this->belongsTo(User::class, 'book_with');
+    }
 }

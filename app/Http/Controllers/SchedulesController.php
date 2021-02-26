@@ -13,11 +13,6 @@ class SchedulesController extends Controller
     {   
     	return view('pages.schedules.index');
     }
-    
-    public function bookSchedule()
-    {
-    	return view('pages.schedules.book-now');
-    }
 
     public function show()
     {
@@ -26,7 +21,6 @@ class SchedulesController extends Controller
     public function getSchedules()
     {
         $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)->get();
-
         return response()->json($schedules);
     }
     public function storeSchedule(Request $request)
@@ -58,7 +52,7 @@ class SchedulesController extends Controller
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)
             ->where('start', $request->start)
-            ->with(['time', 'status'])
+            ->with(['time', 'status', 'bookWith'])
             ->get();
 
         $time_lists = TimeList::all();

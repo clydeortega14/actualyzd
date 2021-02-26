@@ -58,7 +58,7 @@ function Main(){
       select(arg){
 
         $('#create-schedule').modal('show');
-        $('#start-date').val(arg.startStr);
+        $('.start-date').val(arg.startStr);
         $('#create-schedule-modal-label').text(arg.startStr)
         $('#psychologist-available').empty();
 
@@ -96,6 +96,7 @@ function Main(){
             $schedules_table_body.empty();
             // Schedules Table
             data.schedules.forEach((schedule, index) => {
+              console.log(schedule)
               $schedules_table_body.append(scheduleDetailsTemp(schedule));
             })
             
@@ -140,7 +141,7 @@ function Main(){
           <td>
             ${ date_parser.convertTime(schedule.time.from) } - ${ date_parser.convertTime(schedule.time.to) }
           </td>
-          <td>N/A</td>
+          <td>${schedule.book_with === null ? 'N/A' : schedule.book_with.name}</td>
           <td>
             <span class="${schedule.status.class}">${schedule.status.status}</span>
           </td>
@@ -162,7 +163,7 @@ $(document).ready(function(){
       e.preventDefault();
 
       let value = $(this).val();
-      let start = $('#start-date').val();
+      let start = $('.start-date').val();
 
       $.ajax({
         url: '/psychologist/available',

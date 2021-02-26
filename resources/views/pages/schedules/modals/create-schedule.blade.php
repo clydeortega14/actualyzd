@@ -16,7 +16,7 @@
                 @csrf
                 <div class="modal-body">
 
-                    <input type="hidden" name="start_date" id="start-date" class="form-control" readonly>
+                    <input type="hidden" name="start_date" class="form-control start-date" readonly>
                     <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
                             <label>Time Lists</label>
@@ -36,9 +36,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody id="schedules-table">
-                                        
-                                    </tbody>
+                                    <tbody id="schedules-table"></tbody>
                                 </table>
                             </div>
 
@@ -52,26 +50,32 @@
             </form>
 
 
-            <div class="modal-body">
-                <h4 class="text-center">Book Now</h4>
-                <hr>
-                <div class="row clearfix">
-                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
-                        <label>Time Lists</label>
-                        <div id="counseling-time-lists">
-                            
+            <form action="{{ route('book.now') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <h4 class="text-center">Book Now</h4>
+                    <hr>
+
+                    <input type="hidden" name="start_date" class="form-control start-date" readonly>
+
+                    <div class="row clearfix">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
+                            <label>Time Lists</label>
+                            <div id="counseling-time-lists"></div>
                         </div>
-                    </div>
 
-                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                        <label>Psychologists</label>
-
-                        <div class="row clearfix" id="psychologist-available">
-                            
+                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                            <label>Psychologists</label>
+                            <div class="row clearfix" id="psychologist-available"></div>
                         </div>
                     </div>
                 </div>
-            </div> 
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary waves-effect">Book Now</button>
+                    <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

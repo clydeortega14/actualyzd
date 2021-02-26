@@ -39,10 +39,9 @@ Route::middleware('auth')->group(function(){
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
-	// Book now
-	Route::get('book-a-schedule', 'SchedulesController@bookSchedule')->name('book.now');
 	// Show Schedule
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
+
 	// create my schedule
 	Route::prefix('psychologist')->group(function(){
 
@@ -56,6 +55,13 @@ Route::middleware('auth')->group(function(){
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
 		Route::get('available', 'SchedulesController@psychologists')->name('psychologist.available');
+	});
+
+
+	Route::prefix('bookings')->group(function(){
+
+		Route::post('book', 'BookingController@bookNow')->name('book.now');
+
 	});
 
 });

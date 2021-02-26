@@ -5,7 +5,7 @@
                 <img src="http://placehold.it/500x300">
                 <div class="caption text-center">
                     <div class="form-group">
-                        <input type="radio" id="psych{{ $psych->id }}" name="psychologist" value="{{ $psych->id }}" class="with-gap" />
+                        <input type="radio" id="psych{{ $psych->id }}" name="psychologist" value="{{ $psych->psych->id }}" class="with-gap" />
                         <label for="psych{{ $psych->id }}">{{ $psych->psych->name }}</label>
                     </div>
                 </div>
