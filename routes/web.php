@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function(){
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');
 
+	// Users
+	Route::resource('users', 'UsersController');
+
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
