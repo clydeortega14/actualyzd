@@ -10,7 +10,7 @@
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-4">
-						<a href="{{ route('users.create') }}" class="btn btn-info">Create Schedule</a>
+						<a href="{{ route('users.create') }}" class="btn btn-info">Create User</a>
 					</div>
 
 					<div class="card-body">

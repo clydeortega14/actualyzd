@@ -39,6 +39,12 @@ Route::middleware('auth')->group(function(){
 	// Users
 	Route::resource('users', 'UsersController');
 
+	// Roles
+	Route::resource('roles', 'RolesController');
+	
+	// Permissions
+	Route::resource('permissions', 'PermissionsController');
+
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
