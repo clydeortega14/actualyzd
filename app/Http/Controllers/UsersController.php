@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
+use DB;
 
 class UsersController extends Controller
 {
@@ -14,7 +16,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::whereHas('roles', function($q){
+
+            // Must not include user with role superadmin in the list
+            $q->whereNotIn('name', ['superadmin']);
+
+        })->with(['roles'])->get();
 
         return view('pages.superadmin.users.index', compact('users'));
     }
@@ -26,7 +33,16 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('pages.superadmin.users.create');
+        $roles = Role::where(function($query){
+
+            if(auth()->user()->hasRole('admin')){
+
+                $query->whereNotIn('name', ['superadmin', 'psychologist']);
+            }
+
+        })->with(['permissions'])->get();
+
+        return view('pages.superadmin.users.create', compact('roles'));
     }
 
     /**
@@ -37,7 +53,43 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'unique:users'],
+            'password' => ['required', 'confirmed']
+        ]);
+
+
+        DB::beginTransaction();
+
+        try {
+
+            
+            $user = User::create([
+
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password
+
+            ]);
+
+            if($request->has('roles')){
+
+                $this->hasRoles($request->roles, $user->id);
+            }
+
+            
+        } catch (Exception $e) {
+            
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+
+        return redirect()->route('users.index')->with('success', 'New users has been added');
     }
 
     /**
@@ -83,5 +135,19 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function hasRoles($roles, $user_id)
+    {
+        foreach($roles as $role)
+        {
+
+            DB::table('role_user')->insert([
+                'user_id' => $user_id,
+                'role_id' => $role
+            ]);
+        }
+        
     }
 }

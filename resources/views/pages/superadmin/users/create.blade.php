@@ -11,9 +11,11 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-body">
-						<div class="row justify-content-center">
-							<div class="col-sm-5">
-								
+						<form action="{{ route('users.store') }}" method="POST">
+							@csrf
+							<div class="row justify-content-center">
+								<div class="col-sm-5">
+									
 									<div class="form-group">
 										<label>Name <small class="text-danger">*</small></label>
 										<input type="text" name="name" class="form-control" placeholder="Enter Name" required>
@@ -37,33 +39,39 @@
 
 									<div class="form-group d-flex justify-content-end">
 										<a href="{{ route('users.index') }}" class="btn btn-danger mr-2">Cancel</a>
-										<button class="btn btn-primary">Submit</button>
+										<button type="submit" class="btn btn-primary">Submit</button>
 									</div>
-								
-							</div>
-							<div class="col-sm-5">
-								
-								<h3>Roles</h3>
-								<div class="table-responsive">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Role</th>
-											</tr>
-										</thead>
+									
+								</div>
+								<div class="col-sm-5">
+									
+									<h3>Roles</h3>
+									<div class="table-responsive">
+										<table class="table table-bordered">
+											<thead>
+												<tr>
+													<th></th>
+													<th>Role</th>
+													<th>Permissions</th>
+												</tr>
+											</thead>
 
-										<tbody>
-											<tr>
-												<td><input type="checkbox" name="roles[]"></td>
-												<td>Client Admin</td>
-											</tr>
-										</tbody>
-									</table>
+											<tbody>
+												@foreach($roles as $role)
+												<tr>
+													<td>
+														<input type="checkbox" name="roles[]" value="{{ $role->id }}">
+													</td>
+													<td>{{ $role->display_name }}</td>
+													<td><span class="badge badge-danger">no permissions available</span></td>
+												</tr>
+												@endforeach
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
-						</div>
-						
+						</form>
 					</div>
 				</div>
 			</div>

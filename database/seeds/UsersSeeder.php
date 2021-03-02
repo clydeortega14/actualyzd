@@ -17,7 +17,8 @@ class UsersSeeder extends Seeder
 			['name' => 'Psychologist Three', 'email' => 'psychologist3@psychline.ph', 'password' => 'password', 'is_active' => true ],
 			['name' => 'Psychologist Four', 'email' => 'psychologist4@psychline.ph', 'password' => 'password', 'is_active' => true ],
 			['name' => 'Psychologist Five', 'email' => 'psychologist5@psychline.ph', 'password' => 'password', 'is_active' => true ],
-			['name' => 'Client', 'email' => 'client@psychline.ph', 'password' => 'password', 'is_active' => true ]
+			['name' => 'Client Admin', 'email' => 'clientadmin@psychline.ph', 'password' => 'password', 'is_active' => true ],
+            ['name' => 'Member', 'email' => 'clientmember@psychline.ph', 'password' => 'password', 'is_active' => true ]
 
 		];
 	}
