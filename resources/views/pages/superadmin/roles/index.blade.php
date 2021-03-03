@@ -1,6 +1,5 @@
 @extends('layouts.sb-admin.master')
 
-
 @section('content')
 	
 	<div class="container-fluid">
@@ -19,6 +18,7 @@
 								<thead>
 									<tr>
 										<th>Name</th>
+										<th>Description</th>
 										<th>Permission</th>
 										<th></th>
 									</tr>
@@ -27,9 +27,22 @@
 								<tbody>
 									@foreach($roles as $role)
 										<tr>
-											<td>{{ $role->name }}</td>
-											<td>N/A</td>
-											<td></td>
+											<td>{{ $role->display_name }}</td>
+											<td>Description</td>
+											<td>
+												@if(count($role->permissions) > 0)
+													@foreach($role->permissions as $permission)
+														<span class="{{ $permission->class }}">{{ $permission->name }}</span>
+													@endforeach
+												@else
+													<span class="badge badge-danger">not available</span>
+												@endif
+											</td>
+											<td>
+												<a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info btn-sm">
+													<i class="fa fa-edit"></i>
+												</a>
+											</td>
 										</tr>
 									@endforeach
 								</tbody>

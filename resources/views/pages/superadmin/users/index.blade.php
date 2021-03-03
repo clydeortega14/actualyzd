@@ -18,6 +18,7 @@
 							<table class="table table-bordered" width="100%" cellspacing="0">
 								<thead>
 									<tr>
+										<th></th>
 										<th>Name</th>
 										<th>Email</th>
 										<th>Status</th>
@@ -32,6 +33,7 @@
 											$active = $user->is_active;
 										@endphp
 										<tr>
+											<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
 											<td>{{ $user->name }}</td>
 											<td>{{ $user->email }}</td>
 											<td>
@@ -39,9 +41,22 @@
 													{{ $active ? 'Active' : 'Inactive' }}
 												</span>
 											</td>
-											<td>N/A</td>
 											<td>
-												<a href="#" class="btn btn-sm btn-primary">{{ $active ? 'Deactivate' : 'Activate' }}</a>
+												@if(count($user->roles) > 0)
+													@foreach($user->roles as $role)
+														<span class="badge badge-primary">{{ $role->name }}</span>
+													@endforeach
+												@else
+													<span class="badge badge-danger">Not Available</span>
+												@endif
+											</td>
+											<td>
+												<a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">
+													<i class="fa fa-edit"></i>
+												</a> | 
+												<a href="#" class="btn btn-sm btn-danger">
+													<i class="fa fa-trash"></i>
+												</a>
 											</td>
 										</tr>
 

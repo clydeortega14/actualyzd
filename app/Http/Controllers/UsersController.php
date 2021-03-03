@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -33,14 +34,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $roles = Role::where(function($query){
-
-            if(auth()->user()->hasRole('admin')){
-
-                $query->whereNotIn('name', ['superadmin', 'psychologist']);
-            }
-
-        })->with(['permissions'])->get();
+        $roles = $this->rolesQuery();
 
         return view('pages.superadmin.users.create', compact('roles'));
     }
@@ -66,13 +60,7 @@ class UsersController extends Controller
         try {
 
             
-            $user = User::create([
-
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $request->password
-
-            ]);
+            $user = User::create($this->userData($request->toArray()) + ['password' => Hash::make($request->password) ]);
 
             if($request->has('roles')){
 
@@ -111,6 +99,11 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+
+        $user = User::findOrFail($id);
+        $roles = $this->rolesQuery();
+
+        return view('pages.superadmin.users.create', compact('user', 'roles'));
         //
     }
 
@@ -123,7 +116,23 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if($request->has('status')){
+
+            $user->update(['is_active' => $request->status ]);
+
+        }else{
+            
+            $user->update($this->userData($request->toArray()));
+        }
+
+        DB::table('role_user')->where('user_id', $user->id)->delete();
+        if($request->has('roles')){
+            $this->hasRoles($request->roles, $user->id);
+        }
+
+        return redirect()->route('users.index')->with('success', 'Successfully Updated');
     }
 
     /**
@@ -149,5 +158,27 @@ class UsersController extends Controller
             ]);
         }
         
+    }
+
+    public function rolesQuery()
+    {
+        return Role::where(function($query){
+
+            if(auth()->user()->hasRole('admin')){
+
+                $query->whereNotIn('name', ['superadmin', 'psychologist']);
+            }
+
+        })->with(['permissions'])->get();
+    }
+
+    public function userData(array $data)
+    {
+        return [
+
+            'name' => $data['name'],
+            'email' => $data['email']
+
+        ];
     }
 }
