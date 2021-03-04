@@ -10,12 +10,15 @@
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-4">
-						<a href="{{ route('users.create') }}" class="btn btn-info">Create User</a>
+						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm float-right">
+							<i class="fa fa-plus"></i>
+							<span>Create User</span>
+						</a>
 					</div>
 
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" width="100%" cellspacing="0">
+							<table class="table table-hover" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th></th>
@@ -51,10 +54,10 @@
 												@endif
 											</td>
 											<td>
-												<a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-primary">
+												<a href="{{ route('users.edit', $user->id) }}" >
 													<i class="fa fa-edit"></i>
 												</a> | 
-												<a href="#" class="btn btn-sm btn-danger">
+												<a href="#">
 													<i class="fa fa-trash"></i>
 												</a>
 											</td>

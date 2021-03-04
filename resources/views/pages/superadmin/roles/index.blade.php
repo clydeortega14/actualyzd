@@ -9,12 +9,15 @@
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-4">
-						<a href="{{ route('roles.create') }}" class="btn btn-info">Create Role</a>
+						<a href="{{ route('roles.create') }}" class="btn btn-info btn-sm float-right">
+							<i class="fa fa-plus"></i>
+							<span>Create Role</span>
+						</a>
 					</div>
 
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" width="100%" cellspacing="0">
+							<table class="table table-hover" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th>Name</th>
@@ -39,7 +42,7 @@
 												@endif
 											</td>
 											<td>
-												<a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info btn-sm">
+												<a href="{{ route('roles.edit', $role->id) }}">
 													<i class="fa fa-edit"></i>
 												</a>
 											</td>

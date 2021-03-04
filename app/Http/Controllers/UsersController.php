@@ -19,10 +19,21 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::whereHas('roles', function($q){
+        $users = User::where(function($query){
 
-            // Must not include user with role superadmin in the list
-            $q->whereNotIn('name', ['superadmin']);
+            if(auth()->user()){
+                $query->whereNotIn('id', [auth()->user()->id]);
+            }
+
+            if(!auth()->user()->hasRole('superadmin')){
+
+                $query->whereNotIn('id', [1]);
+            }
+
+            if(auth()->user()->hasRole('admin')){
+                // get all users that belongs to this client only
+                // $query->whereIn('')
+            }
 
         })->with(['roles'])->get();
 
@@ -129,9 +140,21 @@ class UsersController extends Controller
             $user->update($this->userData($request->toArray()));
         }
 
-        DB::table('role_user')->where('user_id', $user->id)->delete();
+        
+        // check if request has roles
         if($request->has('roles')){
+            // delete all roles for this user
+            $this->deleteRoleUser($user->id);
+
+            // add the new role to user
             $this->hasRoles($request->roles, $user->id);
+        }else{
+
+            // check if user has existing roles
+            if(count($user->roles) > 0){
+                // delete all roles belongs to user
+                $this->deleteRoleUser($user->id);
+            }
         }
 
         return redirect()->route('users.index')->with('success', 'Successfully Updated');

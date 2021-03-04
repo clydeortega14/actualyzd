@@ -32,6 +32,11 @@ trait RoleTrait {
         
     }
 
+    public function deleteRoleUser($userid)
+    {
+        return \DB::table('role_user')->where('user_id', $userid)->delete();
+    }
+
     public function rolesQuery()
     {
         return Role::where(function($query){

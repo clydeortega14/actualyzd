@@ -14,8 +14,12 @@
 						@php
 							$hasRole = isset($role) ? true : false;
 						@endphp
-						<form action="{{ route('roles.store') }}" method="POST">
+						<form action="{{ $hasRole ? route('roles.update', $role->id) : route('roles.store') }}" method="POST">
 							@csrf
+
+							@if($hasRole)
+								@method('PUT')
+							@endif
 						<div class="row justify-content-between">
 							<div class="col-sm-5">
 								
@@ -54,12 +58,37 @@
 										</thead>
 
 										<tbody>
-											<tr>
-												<td><input type="checkbox" name="permissions[]"></td>
-												<td>
-													<span class="badge badge-primary">can.view.dashboard</span>
-												</td>
-											</tr>
+											@foreach($permissions as $permission)
+												<tr>
+													<td>
+														@if($hasRole)
+															@php
+																$checked = '';
+															@endphp
+
+															@if(count($role->permissions) > 0)
+																@foreach($role->permissions as $role_permission)
+																	@if($role_permission->id == $permission->id)
+																		@php
+																			$checked = 'checked';
+																		@endphp
+																	@endif
+																@endforeach
+																<input type="checkbox" name="permissions[]" value="{{ $permission->id }}" {{$checked}}>
+															@else
+																<input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+															@endif
+														@else
+
+															<input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+														@endif
+														
+													</td>
+													<td>
+														<span class="{{ $permission->class }}">{{ $permission->name }}</span>
+													</td>
+												</tr>
+											@endforeach
 										</tbody>
 									</table>
 								</div>
