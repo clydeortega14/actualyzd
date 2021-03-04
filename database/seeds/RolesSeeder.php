@@ -2,9 +2,12 @@
 
 use Illuminate\Database\Seeder;
 use App\Role;
+use App\Http\Traits\Roles\RoleTrait;
 
 class RolesSeeder extends Seeder
 {
+    use RoleTrait;
+
 	public function __construct()
 	{
 		$this->roles = [
@@ -26,9 +29,10 @@ class RolesSeeder extends Seeder
         foreach($this->roles as $role)
         {
         	Role::create([
-        		'name' => $role['name'],
-        		'display_name' => $role['display_name']
-        	]);
+                'name' => $role['name'],
+                'display_name' => $role['display_name'],
+                'class' => array_rand($this->classes())
+            ]);
         }
     }
 }

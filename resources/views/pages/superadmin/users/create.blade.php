@@ -62,7 +62,7 @@
 
 									
 								</div>
-								<div class="col-sm-5">
+								<div class="col-sm-7">
 									
 									<h3>Roles</h3>
 									<div class="table-responsive">
@@ -102,7 +102,15 @@
 														
 													</td>
 													<td>{{ $role->display_name }}</td>
-													<td><span class="badge badge-danger">no permissions available</span></td>
+													<td>
+														@if(count($role->permissions) > 0)
+															@foreach($role->permissions as $permission)
+																<span class="{{ $permission->class }}">{{ $permission->name }}</span>
+															@endforeach
+														@else
+														<span class="badge badge-danger">no permissions available</span>
+														@endif
+													</td>
 												</tr>
 												@endforeach
 											</tbody>

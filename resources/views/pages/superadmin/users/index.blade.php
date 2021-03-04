@@ -44,7 +44,7 @@
 											<td>
 												@if(count($user->roles) > 0)
 													@foreach($user->roles as $role)
-														<span class="badge badge-primary">{{ $role->name }}</span>
+														<span class="{{ $role->class }}">{{ $role->name }}</span>
 													@endforeach
 												@else
 													<span class="badge badge-danger">Not Available</span>

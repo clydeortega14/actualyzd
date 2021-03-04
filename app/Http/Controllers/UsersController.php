@@ -7,9 +7,11 @@ use App\User;
 use App\Role;
 use DB;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Traits\Roles\RoleTrait;
 
 class UsersController extends Controller
 {
+    use RoleTrait;
     /**
      * Display a listing of the resource.
      *
@@ -144,32 +146,6 @@ class UsersController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-
-    public function hasRoles($roles, $user_id)
-    {
-        foreach($roles as $role)
-        {
-
-            DB::table('role_user')->insert([
-                'user_id' => $user_id,
-                'role_id' => $role
-            ]);
-        }
-        
-    }
-
-    public function rolesQuery()
-    {
-        return Role::where(function($query){
-
-            if(auth()->user()->hasRole('admin')){
-
-                $query->whereNotIn('name', ['superadmin', 'psychologist']);
-            }
-
-        })->with(['permissions'])->get();
     }
 
     public function userData(array $data)

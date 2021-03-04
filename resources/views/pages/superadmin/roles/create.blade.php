@@ -11,27 +11,32 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-body">
-						<div class="row justify-content-center">
+						@php
+							$hasRole = isset($role) ? true : false;
+						@endphp
+						<form action="{{ route('roles.store') }}" method="POST">
+							@csrf
+						<div class="row justify-content-between">
 							<div class="col-sm-5">
 								
 								<div class="form-group">
 									<label>Name <small class="text-danger">(required)</small></label>
-									<input type="text" name="name" class="form-control" placeholder="Enter Name" required>
+									<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $hasRole ? $role->name : old('name') }}" required {{  $hasRole ? 'disabled' : ''}}>
 								</div>
 
 								<div class="form-group">
 									<label>Display Name <small>(Optional)</small></label>
-									<input type="text" name="display_name" class="form-control" placeholder="Enter Display Name" required>
+									<input type="text" name="display_name" class="form-control" placeholder="Enter Display Name" value="{{ $hasRole ? $role->display_name : old('display_name') }}" required>
 								</div>
 
 
 								<div class="form-group">
 									<label>Description <small>(Optional)</small></label>
-									<textarea class="form-control" rows="4" cols="10" name="description" placeholder="Enter Description"></textarea>
+									<textarea class="form-control" rows="4" cols="10" name="description" placeholder="Enter Description">{{ $hasRole ? $role->description : old('description') }}</textarea>
 								</div>
 
 								<div class="form-group d-flex justify-content-end">
-									<a href="{{ route('users.index') }}" class="btn btn-danger mr-2">Cancel</a>
+									<a href="{{ route('roles.index') }}" class="btn btn-danger mr-2">Cancel</a>
 									<button class="btn btn-primary">Submit</button>
 								</div>
 								
@@ -60,7 +65,7 @@
 								</div>
 							</div>
 						</div>
-						
+						</form>
 					</div>
 				</div>
 			</div>

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use DB;
+use App\Http\Traits\Roles\RoleTrait;
 
 class RolesController extends Controller
 {
+    use RoleTrait;
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,12 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where(function($query){
+            $user = auth()->user();
+            if($user->hasRole('admin')){
+                $query->whereNotIn('name', ['superadmin', 'psychologist']);
+            }
+        })->with(['permissions'])->get();
 
         return view('pages.superadmin.roles.index', compact('roles'));
     }
@@ -37,7 +45,24 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'max:255']
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            Role::create($this->roleData($request->toArray() ));
+            
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e;
+        }
+
+        DB::commit();
+
+        return redirect()->route('roles.index')->with('success', 'Successfully Created');
     }
 
     /**
@@ -59,7 +84,8 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        return view('pages.superadmin.roles.create', compact('role'));
     }
 
     /**

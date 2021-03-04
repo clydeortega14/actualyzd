@@ -28,7 +28,7 @@
 									@foreach($roles as $role)
 										<tr>
 											<td>{{ $role->display_name }}</td>
-											<td>Description</td>
+											<td>{{ $role->description }}</td>
 											<td>
 												@if(count($role->permissions) > 0)
 													@foreach($role->permissions as $permission)
