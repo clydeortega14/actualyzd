@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function(){
 
 
 	Route::prefix('bookings')->group(function(){
-
+		Route::get('/', 'BookingController@index')->name('bookings.index');
 		Route::post('book', 'BookingController@bookNow')->name('book.now');
 
 	});

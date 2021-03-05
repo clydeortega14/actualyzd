@@ -27,6 +27,10 @@
 
 <body id="page-top">
 
+    <div id="app">
+        
+
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -102,7 +106,10 @@
         </div>
     </div>
 
+    </div>
+
     <!-- Bootstrap core JavaScript-->
+
     <script src="{{ asset('sb-admin/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -111,6 +118,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('sb-admin/js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Custom Ajax -->
+    <script src="{{ asset('js/ajax.js') }}"></script>
 
     <!-- Js Scripts -->
     @yield('js_scripts')

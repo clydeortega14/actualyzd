@@ -8,6 +8,10 @@ use App\PsychologistSchedule;
 
 class BookingController extends Controller
 {
+    public function index()
+    {
+        return view('pages.bookings.index');
+    }
     public function bookNow(Request $request)
     {
     	DB::beginTransaction();

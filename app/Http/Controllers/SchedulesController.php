@@ -21,7 +21,10 @@ class SchedulesController extends Controller
     public function getSchedules()
     {
         $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)->get();
-        return response()->json($schedules);
+        $collections = collect($schedules);
+        $unique = $collections->unique('start');
+
+        return response()->json($unique->values()->all());
     }
     public function storeSchedule(Request $request)
     {

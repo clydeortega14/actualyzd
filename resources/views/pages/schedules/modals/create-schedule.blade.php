@@ -1,8 +1,8 @@
 <div class="modal fade" id="create-schedule" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title text-center" id="create-schedule-modal-label">Create / Update Schedule</h4>
+                <h4 class="modal-title" id="create-schedule-modal-label">Create / Update Schedule</h4>
                 <hr>
                 <div style="display: none;" id="div-delete">
                     <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('delete-form').submit();">Delete</a>
@@ -18,14 +18,15 @@
 
                     <input type="hidden" name="start_date" class="form-control start-date" readonly>
                     <div class="row">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
-                            <label>Time Lists</label>
-                            <div id="schedules-time-lists"></div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
+                            <h3>Time Lists</h3>
+                            <div class="row" id="schedules-time-lists"></div>
+                            <hr>
                         </div>
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             
                             <div class="table-responsive">
-                                <label>Schedule Details</label>
+                                <h3>Schedule Details</h3>
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -49,7 +50,7 @@
                 </div>
             </form>
 
-
+{{-- 
             <form action="{{ route('book.now') }}" method="POST">
                 @csrf
                 <div class="modal-body">
@@ -75,7 +76,7 @@
                     <button type="submit" class="btn btn-primary waves-effect">Book Now</button>
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Cancel</button>
                 </div>
-            </form>
+            </form> --}}
         </div>
     </div>
 </div>
