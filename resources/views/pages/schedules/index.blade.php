@@ -40,8 +40,14 @@
 		window.addEventListener('load', (event) => {
 
 			getSchedules();
+
 			let calendarOptions = {
 
+				headerToolbar: {
+			        left: 'prev,next today',
+			        center: 'title',
+			        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+			    },
 				editable: true,
 		      	navLinks:  true,
 		      	selectable:  true,

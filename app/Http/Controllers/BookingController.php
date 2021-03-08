@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\PsychologistSchedule;
+use App\TimeList;
 
 class BookingController extends Controller
 {
     public function index()
     {
-        return view('pages.bookings.index');
+        $time_lists = TimeList::with(['schedules'])->get();
+
+        return view('pages.bookings.index', compact('time_lists'));
     }
     public function bookNow(Request $request)
     {

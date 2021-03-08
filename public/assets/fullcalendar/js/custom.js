@@ -8,11 +8,7 @@ class CustomCalendar {
   {
     let calendarEl = document.getElementById('calendar');
     this.calendar = new FullCalendar.Calendar(calendarEl, {
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-      },
+      headerToolbar: options.headerToolbar,
       initialView: 'dayGridMonth',
       editable: options.editable,
       navLinks: options.navLinks,
