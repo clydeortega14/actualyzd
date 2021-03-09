@@ -12,7 +12,7 @@ class SweetAlert {
 
 	      icon: 'error',
 	      title: 'Oops...',
-	      text: 'Something went wrong!',
+	      text: 'Interal Server Error!',
 	    })
 	}
 

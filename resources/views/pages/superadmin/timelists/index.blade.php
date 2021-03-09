@@ -38,7 +38,7 @@
                                     		<a href="{{ route('time-lists.edit', $time->id ) }}">
                                     			<i class="fa fa-edit"></i>
                                     		</a> |
-                                    		<a href="#" class="delete-time">
+                                    		<a href="#" class="delete-time" data-id="{{ $time->id }}">
                                     			<i class="fa fa-trash"></i>
                                     		</a>
                                     	</td>
@@ -63,18 +63,28 @@
 			const ajax = new Ajax;
 
 			$('.delete-time').on('click', function(e){
+
 				e.preventDefault();
+
 				sweet_alert.confirmDialog().then((result) => {
+
 					if(result.isConfirmed){
+
 						ajax.request({
 
-							url: `/time-lists/${$(this).attr('data-id')}/delete`,
+							url: `/time-lists/${$(this).attr('data-id')}`,
 							method: 'DELETE',
-						}).done()
-						sweet_alert.success('Confirmed')
+
+						}).done(data => {
+
+							$(this).closest('tr').remove();
+							sweet_alert.success(data.message);
+
+						});
+
 					}else{
 
-						sweet_alert.error('Denied')
+						sweet_alert.success('File is safe!')
 					}
 				})
 			})

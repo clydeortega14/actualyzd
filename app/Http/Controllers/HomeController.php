@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Client;
 
 class HomeController extends Controller
 {
@@ -24,8 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $clients = Client::where('is_active', false)->get();
 
-        return view('home', compact('clients'));
+        return view('home');
     }
 }

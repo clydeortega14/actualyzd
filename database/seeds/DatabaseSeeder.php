@@ -18,5 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionRoleSeeder::class);
         $this->call(TimeSeeder::class);
         $this->call(ScheduleStatusSeeder::class);
+        $this->call(AssessmentCategories::class);
+        $this->call(AssessmentOptions::class);
+        $this->call(OptionChoices::class);
     }
 }

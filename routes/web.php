@@ -39,14 +39,30 @@ Route::middleware('auth')->group(function(){
 	// Users
 	Route::resource('users', 'UsersController');
 
-	// Roles
-	Route::resource('roles', 'RolesController');
-	
-	// Permissions
-	Route::resource('permissions', 'PermissionsController');
+	/*--- All Set Ups ---*/
+	Route::prefix('set-up')->group(function(){
 
-	// Timelists
-	Route::resource('time-lists', 'TimeListsController');
+		// Roles
+		Route::resource('roles', 'RolesController');
+		
+		// Permissions
+		Route::resource('permissions', 'PermissionsController');
+
+		// Timelists
+		Route::resource('time-lists', 'TimeListsController');
+
+		// Assessment Groups
+		Route::prefix('assessment')->group(function(){
+
+			// Categories
+			Route::resource('categories', 'AssessmentCategoryController');
+
+			// Options
+			Route::resource('options', 'AssessmentOptionController');
+
+		});
+
+	});
 
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');

@@ -1,3 +1,5 @@
+const sweet_alert = new SweetAlert;
+
 class Ajax {
 
 	constructor(){
@@ -16,8 +18,11 @@ class Ajax {
 			url: config.url,
 			method: config.method,
 			data: config.data,
+			
 		}).fail(error=>{
-			console.log(error)
+
+			sweet_alert.error()
+
 		})
 	}
 
