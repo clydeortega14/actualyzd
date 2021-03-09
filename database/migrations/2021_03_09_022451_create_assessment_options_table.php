@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLicenseTypesTable extends Migration
+class CreateAssessmentOptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLicenseTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('license_types', function (Blueprint $table) {
+        Schema::create('assessment_options', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('name');
         });
@@ -26,6 +26,6 @@ class CreateLicenseTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('license_types');
+        Schema::dropIfExists('assessment_options');
     }
 }

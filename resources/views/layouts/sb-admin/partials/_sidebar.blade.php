@@ -44,7 +44,7 @@
 
 <!-- Nav Item - Utilities Collapse Menu -->
 <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{{ route('time-lists.index') }}">
         <i class="fas fa-fw fa-clock"></i>
         <span>Time Lists</span>
     </a>

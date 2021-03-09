@@ -116,6 +116,11 @@
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('sb-admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
+    <!-- Sweet Alert Js Deliver CDN -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Sweet Alert 2 Custom js -->
+    <script src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('sb-admin/js/sb-admin-2.min.js') }}"></script>
 

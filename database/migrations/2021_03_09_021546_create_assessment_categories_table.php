@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCounselingStatusesTable extends Migration
+class CreateAssessmentCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateCounselingStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('counseling_statuses', function (Blueprint $table) {
+        Schema::create('assessment_categories', function (Blueprint $table) {
             $table->smallIncrements('id');
             $table->string('name');
-            $table->string('class')->nullable();
         });
     }
 
@@ -27,6 +26,6 @@ class CreateCounselingStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('counseling_statuses');
+        Schema::dropIfExists('assessment_categories');
     }
 }
