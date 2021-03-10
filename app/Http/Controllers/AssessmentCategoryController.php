@@ -14,7 +14,7 @@ class AssessmentCategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::get();
 
         return view('pages.superadmin.assessments.categories.index', compact('categories'));
     }
@@ -26,7 +26,7 @@ class AssessmentCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.superadmin.assessments.categories.create');
     }
 
     /**
