@@ -8,7 +8,9 @@
 
 	<div class="row">
 		<div class="col-sm-12">
+
 			{{ Breadcrumbs::render('options.show', $option) }}
+			
 			<div class="card">
 				<div class="card-body">
 					<div class="row">
