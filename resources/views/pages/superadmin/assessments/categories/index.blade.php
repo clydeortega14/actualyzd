@@ -55,10 +55,12 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<a href="{{ route('categories.create') }}" class="btn btn-info btn-sm float-right mb-2">
+						<a href="#" class="btn btn-info btn-sm float-right mb-2" data-toggle="modal" data-target="#new-question">
 							<i class="fa fa-plus"></i>
 							<span>New Question</span>
 						</a>
+
+						@include('pages.superadmin.assessments.categories.modals.new-category')
 						<table class="table">
 							<thead>
 								<tr>
@@ -75,3 +77,51 @@
 	</div>
 
 @stop
+
+@section('js_scripts')
+<script>
+
+	let options = @json($options)
+
+	$(function(){
+
+		let $option_choices = $('#option-choices')
+		let $choices_lists = $('#choices-lists')
+		$option_choices.hide()
+
+		$('select[name="option"]').change(function(){
+
+			let id = $(this).find('option:selected').val();
+			const choices = options.find(option => option.id == id).choices;
+			$option_choices.show()
+			$choices_lists.empty()
+			choices.forEach((choice, index) => {
+				$choices_lists.append(choicesTemp(choice));
+			})
+		})
+
+		$(document).on('click', '.edit-choice', function(e){
+			e.preventDefault()
+			alert('sample')
+		})
+	})
+
+	function choicesTemp(choice)
+	{
+		return `
+			
+			<div class="d-sm-flex align-items-center justify-content-between mt-4 border-bottom">
+    			<div class="choice-field">
+    				<span class="pr-3 choice-value">${choice.value}</span>
+    				<span class="choice-display-name">${choice.display_name}</span>
+    			</div>
+    			<div>
+    				<a href="#"><i class="fa fa-edit edit-choice"></i></a>
+    				<a href="#"><i class="fa fa-trash"></i></a>
+    			</div>
+    		</div>
+		`;
+	}
+</script>
+
+@endsection

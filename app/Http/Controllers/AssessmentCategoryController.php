@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AssessmentCategory as Category;
+use App\AssessmentOption as option;
 
 class AssessmentCategoryController extends Controller
 {
@@ -15,8 +16,11 @@ class AssessmentCategoryController extends Controller
     public function index()
     {
         $categories = Category::get();
+        $options = Option::with(['choices'])->get();
 
-        return view('pages.superadmin.assessments.categories.index', compact('categories'));
+        // return $options;
+
+        return view('pages.superadmin.assessments.categories.index', compact('categories', 'options'));
     }
 
     /**
