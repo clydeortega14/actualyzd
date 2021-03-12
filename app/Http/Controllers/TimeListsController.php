@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Timelist;
+use App\TimeList;
 
 class TimeListsController extends Controller
 {
@@ -14,7 +14,7 @@ class TimeListsController extends Controller
      */
     public function index()
     {
-        $timelists = Timelist::get();
+        $timelists = TimeList::get();
         return view('pages.superadmin.timelists.index', compact('timelists'));
     }
 
@@ -41,7 +41,7 @@ class TimeListsController extends Controller
             'to' => ['required']
         ]);
 
-        Timelist::create($this->requestData());
+        TimeList::create($this->requestData());
 
         return redirect()->route('time-lists.index')->with('success', 'Successfully Created');
     }
