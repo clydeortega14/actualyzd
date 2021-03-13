@@ -81,7 +81,8 @@
 @section('js_scripts')
 <script>
 
-	let options = @json($options)
+	let options = @json($options);
+	let editmode = false;
 
 	$(function(){
 
@@ -102,21 +103,69 @@
 
 		$(document).on('click', '.edit-choice', function(e){
 			e.preventDefault()
-			alert('sample')
+			let $this = $(this);
+			let data_id = $this.attr('data-id');
+			let edit_fields = [`#choice-value-${data_id}`, `#choice-display-name-${data_id}`]
+
+			editChoice($this, edit_fields);
+			
 		})
 	})
+
+	function editChoice(fn, editable_fields)
+	{
+		if(fn.attr('editing') != '1'){
+			let buttons = $(`
+					<button type="submit" class="btn btn-sm btn-primary">
+						<i class="fa fa-check"></i>
+					</button>
+				`)
+
+			fn.attr('editing', 1);
+			fn.replaceWith(buttons)
+			if(Array.isArray(editable_fields)){
+				editable_fields.forEach((dom, index) => {
+					edit(dom)
+				})
+			}else{
+
+				editable(editable_fields)
+			}
+		}else{
+
+			fn.removeAttr('editing');
+		}
+	}
+
+	function savedChanges()
+	{
+		let saved = $('<span class="pr-3 editable" />').text($())
+	}
+
+	function edit(dom)
+	{
+		let input = $('<input type="text" class="editing" />').val($(this).text());
+		editable(dom, input);
+	}
+
+	function editable(dom, editable)
+	{
+		$(document).find(dom).each(function(){
+			$(this).replaceWith(editable)
+		});
+	}
 
 	function choicesTemp(choice)
 	{
 		return `
 			
-			<div class="d-sm-flex align-items-center justify-content-between mt-4 border-bottom">
-    			<div class="choice-field">
-    				<span class="pr-3 choice-value">${choice.value}</span>
-    				<span class="choice-display-name">${choice.display_name}</span>
+			<div class="d-sm-flex align-items-center justify-content-between mt-4 border-bottom" id="choice-field-${choice.id}">
+    			<div>
+    				<span class="pr-3 editable" id="choice-value-${choice.id}">${choice.value}</span>
+    				<span class="editable" id="choice-display-name-${choice.id}">${choice.display_name}</span>
     			</div>
     			<div>
-    				<a href="#"><i class="fa fa-edit edit-choice"></i></a>
+    				<a href="#"><i class="fa fa-edit edit-choice" data-id="${choice.id}"></i></a>
     				<a href="#"><i class="fa fa-trash"></i></a>
     			</div>
     		</div>

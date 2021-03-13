@@ -42,6 +42,15 @@
 					<div id="choices-lists">
 						
 					</div>
+					<div class="d-sm-flex align-items-center justify-content-between mt-4">
+						<div>
+							<input type="text" name="value">
+							<input type="text" name="display_name">
+						</div>
+						<div>
+							<button type="button" class="btn btn-primary btn-sm">Add</button>
+						</div>
+					</div>
         		</div>
         	</div>
         </div>

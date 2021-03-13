@@ -18,8 +18,6 @@ class AssessmentCategoryController extends Controller
         $categories = Category::get();
         $options = Option::with(['choices'])->get();
 
-        // return $options;
-
         return view('pages.superadmin.assessments.categories.index', compact('categories', 'options'));
     }
 
