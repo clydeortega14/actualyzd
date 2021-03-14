@@ -21,6 +21,9 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('sb-admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+    <!-- Sweet Alert 2 css -->
+    <link rel="stylesheet" href="{{ asset('assets/sweetalert2/dist/sweetalert2.min.css') }}">
+
     <!-- css links -->
     @yield('css_links')
 
@@ -117,8 +120,8 @@
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('sb-admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
-    <!-- Sweet Alert Js Deliver CDN -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- Sweet Alert 2 -->
+    <script src="{{ asset('assets/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
     <!-- Sweet Alert 2 Custom js -->
     <script src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
 

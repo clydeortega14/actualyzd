@@ -6,7 +6,7 @@
 
 	{{ Breadcrumbs::render('categories.index') }}
 
-	<div class="row">
+	<div class="row" id="parent">
 		<div class="col-sm-4">
 			<div class="card mb-3">
 				<div class="card-header">
@@ -34,7 +34,7 @@
 								@foreach($categories as $category)
 									<tr>
 										<td>
-											<a href="#">{{ $category->name }}</a></td>
+											<a href="#" class="category-button" data-id="{{ $category->id}}">{{ $category->name }}</a></td>
 										<td></td>
 										<td>
 											<a href="#"><i class="fa fa-bars"></i></a>
@@ -69,6 +69,7 @@
 									<th></th>
 								</tr>
 							</thead>
+							<tbody id="table-questionnaires"></tbody>
 						</table>
 					</div>
 				</div>
@@ -82,8 +83,6 @@
 <script>
 
 	let options = @json($options);
-	let editmode = false;
-
 	$(function(){
 
 		let $option_choices = $('#option-choices')
@@ -100,77 +99,93 @@
 				$choices_lists.append(choicesTemp(choice));
 			})
 		})
-
-		$(document).on('click', '.edit-choice', function(e){
-			e.preventDefault()
-			let $this = $(this);
-			let data_id = $this.attr('data-id');
-			let edit_fields = [`#choice-value-${data_id}`, `#choice-display-name-${data_id}`]
-
-			editChoice($this, edit_fields);
-			
-		})
-	})
-
-	function editChoice(fn, editable_fields)
-	{
-		if(fn.attr('editing') != '1'){
-			let buttons = $(`
-					<button type="submit" class="btn btn-sm btn-primary">
-						<i class="fa fa-check"></i>
-					</button>
-				`)
-
-			fn.attr('editing', 1);
-			fn.replaceWith(buttons)
-			if(Array.isArray(editable_fields)){
-				editable_fields.forEach((dom, index) => {
-					edit(dom)
-				})
-			}else{
-
-				editable(editable_fields)
-			}
-		}else{
-
-			fn.removeAttr('editing');
-		}
-	}
-
-	function savedChanges()
-	{
-		let saved = $('<span class="pr-3 editable" />').text($())
-	}
-
-	function edit(dom)
-	{
-		let input = $('<input type="text" class="editing" />').val($(this).text());
-		editable(dom, input);
-	}
-
-	function editable(dom, editable)
-	{
-		$(document).find(dom).each(function(){
-			$(this).replaceWith(editable)
-		});
-	}
+	});
 
 	function choicesTemp(choice)
 	{
 		return `
-			
-			<div class="d-sm-flex align-items-center justify-content-between mt-4 border-bottom" id="choice-field-${choice.id}">
-    			<div>
-    				<span class="pr-3 editable" id="choice-value-${choice.id}">${choice.value}</span>
-    				<span class="editable" id="choice-display-name-${choice.id}">${choice.display_name}</span>
-    			</div>
-    			<div>
-    				<a href="#"><i class="fa fa-edit edit-choice" data-id="${choice.id}"></i></a>
-    				<a href="#"><i class="fa fa-trash"></i></a>
-    			</div>
-    		</div>
+			<div class="form-check">
+			  <input class="form-check-input" type="checkbox" value="${choice.value}" id="${choice.id}" disabled checked>
+			  <label class="form-check-label" for="${choice.id}">
+			    ${choice.display_name}
+			  </label>
+			</div>
 		`;
 	}
+
+	const custom_ajax = new Ajax();
+
+	//Questionnaires module
+	const questionnaire = {
+
+		initialize(){
+			this.render();
+			this.dom();
+			this.events();
+		},
+		render()
+		{
+			this.getQuestionnaire()
+		},
+		events(){
+			let this_global = this;
+			// questionnaire by category
+			this.$btn_category.on('click', function(e){
+				e.preventDefault();
+				let $this = $(this);
+				let category = $this.attr('data-id');
+				let config = {
+					url: '/set-up/assessment/questionnaires',
+					method: 'GET',
+					async: false,
+					data: {
+						category,
+					} 
+				}
+				this_global.iterateQuestions(config);
+			});
+
+		},
+		getQuestionnaire(){
+
+			let config = {
+				url: '/set-up/assessment/questionnaires',
+				method: 'GET'
+			}
+			this.iterateQuestions(config)
+		},
+		iterateQuestions(config)
+		{
+			return custom_ajax.request(config).done(questionnaires => {
+				this.$table_questionnaires.empty();
+				questionnaires.forEach((question, index) => {
+					this.$table_questionnaires.append(this.questionnaireTemp(question))
+				})
+			});
+		},
+
+
+		questionnaireTemp(question){
+
+			return `
+				<tr>
+					<td>${question.question}</td>
+					<td>${question.option.name}</td>
+					<td></td>
+				</tr>
+
+			`;
+
+		},
+		parent: $('#parent'),
+		dom() {
+
+			this.$table_questionnaires = this.parent.find('#table-questionnaires')
+			this.$btn_category = this.parent.find('.category-button')
+		}
+	}
+
+	questionnaire.initialize();
 </script>
 
 @endsection

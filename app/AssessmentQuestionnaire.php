@@ -11,11 +11,11 @@ class AssessmentQuestionnaire extends Model
 
     public function category()
     {
-    	return $this->belongsTo('App\AssessmentCategory');
+    	return $this->belongsTo('App\AssessmentCategory', 'category');
     }
 
     public function option()
     {
-    	return $this->belongsTo('App\AssessmentOption')
+    	return $this->belongsTo('App\AssessmentOption', 'option');
     }
 }

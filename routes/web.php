@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/', 'GuestsController@index')->name('guests.home');
+// Route::get('/', 'GuestsController@index')->name('guests.home');
+Route::get('/', function(){
+	return view('auth.login');
+});
 
 Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
 
@@ -56,6 +59,9 @@ Route::middleware('auth')->group(function(){
 
 			// Categories
 			Route::resource('categories', 'AssessmentCategoryController');
+
+			// Questionnaires
+			Route::resource('questionnaires', 'QuestionnaireController');
 
 			// Options
 			Route::resource('options', 'AssessmentOptionController');

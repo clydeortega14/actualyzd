@@ -1,6 +1,5 @@
 @extends('layouts.sb-admin.master')
 
-
 @section('css_links')
 
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/fullcalendar/css/main.css') }}">
@@ -424,23 +423,5 @@
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/date.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
-	<script>
-
-		const custom_calendar = new CustomCalendar;
-
-		//Initialize calendar
-		window.addEventListener('load', (event) => {
-
-			let calendarOptions = {
-				editable: true,
-		      	navLinks:  true,
-		      	selectable:  true,
-		      	dayMaxEvents: true, // allow "more" link when too many events
-		      	events: [],
-			}
-
-			custom_calendar.render(calendarOptions);
-		})
-
-	</script>
+	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/bookings.js') }}"></script>
 @endsection
