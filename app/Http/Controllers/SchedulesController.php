@@ -20,10 +20,14 @@ class SchedulesController extends Controller
     }
     public function getSchedules()
     {
-        $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)->get();
+        $schedules = PsychologistSchedule::where(function($q){
+            if($this->user()->hasRole('psychologist')){
+                $schedules->where('psychologist', $this->user()->id);
+            }
+        })->get();
+
         $collections = collect($schedules);
         $unique = $collections->unique('start');
-
         return response()->json($unique->values()->all());
     }
     public function storeSchedule(Request $request)
@@ -81,5 +85,9 @@ class SchedulesController extends Controller
         PsychologistSchedule::where('id', $request->sched_id)->delete();
 
         return redirect()->back();
+    }
+    public function user()
+    {
+        return auth()->user();
     }
 }

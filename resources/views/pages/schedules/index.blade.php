@@ -68,6 +68,7 @@
 				method: 'GET',
 				async: false
 			}).done( res => {
+				console.log(res)
 				schedules = res.map(object => {
 		          return {
 		            id: object.id,

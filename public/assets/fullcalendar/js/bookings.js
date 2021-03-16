@@ -1,27 +1,26 @@
 	const custom_calendar = new CustomCalendar;
-	const custom_ajax = new Ajax;
+	const schedule = new Schedule;
 	const bookings = {
 		initialize(){
 
 			this.events();
+			this.construct();
 		},
-		getSchedules(){
-
+		construct(){
 			
-
 		},
 		events(){
 
 			$(window).on('load', (e) => {
 
-				let schedules = this.getSchedules();
+				console.log(schedule)
 
 				let calendarOptions = {
 					editable: true,
 			      	navLinks:  true,
 			      	selectable:  true,
 			      	dayMaxEvents: true, // allow "more" link when too many events
-			      	events: schedules
+			      	events: schedule.get()
 				}
 
 				custom_calendar.render(calendarOptions);

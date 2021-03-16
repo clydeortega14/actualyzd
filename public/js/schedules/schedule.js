@@ -9,6 +9,7 @@ class Schedule {
 				method: 'GET',
 				async: false
 			}).done( res => {
+				let schedules = [];
 				schedules = res.map(object => {
 		          return {
 		            id: object.id,
@@ -16,7 +17,7 @@ class Schedule {
 		            end: object.end,
 		            display: 'background',
 		            color: 'green'
-		          }
+		        }
 			})
 			return schedules;
 			});
