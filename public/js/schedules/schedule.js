@@ -4,12 +4,16 @@ class Schedule {
 
 	get(){
 
+		// Define array schedules
+		let schedules = [];
+
+		// request schedules from server
 		custom_ajax.asyncAwait({
 				url: '/psychologist/schedules',
 				method: 'GET',
 				async: false
 			}).done( res => {
-				let schedules = [];
+				// assign map arrays in schedules array
 				schedules = res.map(object => {
 		          return {
 		            id: object.id,
@@ -19,8 +23,23 @@ class Schedule {
 		            color: 'green'
 		        }
 			})
-			return schedules;
+			
 			});
 
+			// return schedule
+			return schedules;
+
+	}
+	getPsychologists(date, time){
+		custom_ajax.request({
+			url: '/psychologist/available',
+			method: 'GET',
+			data: {
+				start: date,
+				time: time
+			}
+		}).done(data => {
+			$('#psychologist-row').html(data)
+		});
 	}
 }

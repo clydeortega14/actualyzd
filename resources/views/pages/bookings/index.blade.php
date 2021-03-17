@@ -43,36 +43,8 @@
 						Psychologists
 					</div>
 					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-								<div class="card mb-3 text-center">	
-									<img src="{{ asset ('sb-admin/img/undraw_profile.svg') }}" alt="Psychologist Image" width="80" height="80" class="mx-auto d-block pt-3">
-									<div class="card-body">
-										<h5 class="card-title">Psychologist One</h5>
-										<a href="#" class="btn btn-primary">Select</a>
-									</div>
-								</div>
-							</div>	
-
-							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-								<div class="card mb-3 text-center">	
-									<img src="{{ asset ('sb-admin/img/undraw_profile.svg') }}" alt="Psychologist Image" width="80" height="80" class="mx-auto d-block pt-3">
-									<div class="card-body">
-										<h5 class="card-title">Psychologist One</h5>
-										<a href="#" class="btn btn-primary">Select</a>
-									</div>
-								</div>
-							</div>	
-
-							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-								<div class="card mb-3 text-center">	
-									<img src="{{ asset ('sb-admin/img/undraw_profile.svg') }}" alt="Psychologist Image" width="80" height="80" class="mx-auto d-block pt-3">
-									<div class="card-body">
-										<h5 class="card-title">Psychologist One</h5>
-										<a href="#" class="btn btn-primary">Select</a>
-									</div>
-								</div>
-							</div>	
+						<div class="row" id="psychologist-row">
+							<p class="text-center text-gray">Please select date and time</p>
 						</div>	
 					</div>
 				</div>

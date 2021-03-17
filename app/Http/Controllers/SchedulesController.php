@@ -22,7 +22,7 @@ class SchedulesController extends Controller
     {
         $schedules = PsychologistSchedule::where(function($q){
             if($this->user()->hasRole('psychologist')){
-                $schedules->where('psychologist', $this->user()->id);
+                $q->where('psychologist', $this->user()->id);
             }
         })->get();
 
