@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 use DB;
 use App\PsychologistSchedule;
 use App\TimeList;
+use App\AssessmentCategory;
 
 class BookingController extends Controller
 {
     public function index()
     {
         $time_lists = TimeList::with(['schedules'])->get();
+        $categories = AssessmentCategory::get(['id', 'name']);
 
-        return view('pages.bookings.index', compact('time_lists'));
+        return view('pages.bookings.index', compact('time_lists', 'categories'));
     }
     public function bookNow(Request $request)
     {

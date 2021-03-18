@@ -9,4 +9,9 @@ class AssessmentCategory extends Model
     protected $table = 'assessment_categories';
     protected $fillable = ['name'];
     public $timestamps = false;
+
+    public function questionnaires()
+    {
+    	return $this->hasMany('App\AssessmentQuestionnaire', 'category');
+    }
 }

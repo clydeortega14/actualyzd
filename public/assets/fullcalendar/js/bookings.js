@@ -44,10 +44,27 @@
 				}
 
 			});
+
+			// Show Questionnaires by category
+			this.$category.change(function(e){
+
+				let id = $(this).find('option:selected').val();
+				let ajax_request = new Ajax;
+				ajax_request.request({
+					url: `/set-up/assessment/categories/${id}`,
+					method: 'GET'
+				}).done(data => {
+
+					_this.$category_questionnaire.html(data)
+				})
+			});
+
 		},
 		dom(){
 			this.$time_list = $('input[name="time"]');
-			this.$psychologist_row = $('#psychologist-row')
+			this.$psychologist_row = $('#psychologist-row');
+			this.$category = $('select[name="category"]');
+			this.$category_questionnaire = $('#category-questionnaire')
 		}
 
 	}

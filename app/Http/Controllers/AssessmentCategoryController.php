@@ -50,7 +50,8 @@ class AssessmentCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('pages.bookings.components.questionnaire', compact('category'));
     }
 
     /**

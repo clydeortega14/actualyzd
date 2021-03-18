@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AssessmentCategories::class);
         $this->call(AssessmentOptions::class);
         $this->call(OptionChoices::class);
+        $this->call(BookingStatusSeeder::class);
     }
 }

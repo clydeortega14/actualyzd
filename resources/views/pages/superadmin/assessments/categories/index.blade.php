@@ -157,6 +157,7 @@
 		iterateQuestions(config)
 		{
 			return custom_ajax.request(config).done(questionnaires => {
+				
 				this.$table_questionnaires.empty();
 				questionnaires.forEach((question, index) => {
 					this.$table_questionnaires.append(this.questionnaireTemp(question))
@@ -170,7 +171,7 @@
 			return `
 				<tr>
 					<td>${question.question}</td>
-					<td>${question.option.name}</td>
+					<td>${question.to_option.name}</td>
 					<td></td>
 				</tr>
 

@@ -21,7 +21,7 @@ class QuestionnaireController extends Controller
             $question->where('category', request()->category);
         }
 
-        $questionnaires = $question->with(['category', 'option'])->get();
+        $questionnaires = $question->with(['category', 'toOption'])->get();
 
         return $questionnaires;
     }

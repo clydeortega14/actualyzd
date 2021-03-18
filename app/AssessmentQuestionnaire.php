@@ -14,7 +14,7 @@ class AssessmentQuestionnaire extends Model
     	return $this->belongsTo('App\AssessmentCategory', 'category');
     }
 
-    public function option()
+    public function toOption()
     {
     	return $this->belongsTo('App\AssessmentOption', 'option');
     }
