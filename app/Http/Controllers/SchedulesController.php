@@ -33,7 +33,7 @@ class SchedulesController extends Controller
     public function storeSchedule(Request $request)
     {
         // Delete all schedules related to current psychologist and the date in the calendar selected
-        PsychologistSchedule::where('psychologist', auth()->user()->id)->where('start', $request->start_date)->delete();
+        PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->delete();
 
         // Check if there are selected time
         if($request->has('time_lists')){
@@ -57,12 +57,12 @@ class SchedulesController extends Controller
     public function timeSchedule(Request $request)
     {
         // GET User schedule according to date selected
-        $schedules = PsychologistSchedule::where('psychologist', auth()->user()->id)
+        $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
             ->where('start', $request->start)
             ->with(['time', 'status', 'bookWith'])
             ->get();
 
-        $time_lists = TimeList::all();
+        $time_lists = TimeList::get();
 
         return response()->json(['schedules' => $schedules, 'time_lists' => $time_lists ]);
 

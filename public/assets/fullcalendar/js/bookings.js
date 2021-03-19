@@ -13,6 +13,7 @@
 		},
 		events(){
 			let booking_date = "";
+			const _this = this;
 
 			$(window).on('load', (e) => {
 
@@ -24,12 +25,12 @@
 			      	events: schedule.get(),
 			      	select(arg){
 			      		booking_date = arg.startStr;
+			      		_this.$start_date.val(booking_date)
 			      	}
 				}
 
 				custom_calendar.render(calendarOptions);
 			})
-			const _this = this;
 			// Pick a Time
 			this.$time_list.change(function(e){
 				e.preventDefault();
@@ -64,7 +65,8 @@
 			this.$time_list = $('input[name="time"]');
 			this.$psychologist_row = $('#psychologist-row');
 			this.$category = $('select[name="category"]');
-			this.$category_questionnaire = $('#category-questionnaire')
+			this.$category_questionnaire = $('#category-questionnaire');
+			this.$start_date = $('input[name="start_date"]')
 		}
 
 	}

@@ -7,7 +7,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $psych->psych->name }}</h5>
                     <div class="form-check">
-                        <input type="radio" name="psychologist" id="psych{{ $psych->id }}" value="{{ $psych->id }}">
+                        <input type="radio" name="psychologist" id="psych{{ $psych->id }}" value="{{ $psych->psych->id }}">
+                        
                     </div>
                 </div>
             </div>

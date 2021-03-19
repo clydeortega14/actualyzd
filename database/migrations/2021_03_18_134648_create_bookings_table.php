@@ -17,9 +17,22 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('schedule');
             $table->unsignedBigInteger('booked_by');
-            $table->unsignedBigInteger('actioned_by');
+            $table->unsignedBigInteger('actioned_by')->nullable();
             $table->unsignedSmallInteger('status');
             $table->timestamps();
+
+            //foreign keys
+            $table->foreign('schedule')->references('id')->on('psychologist_schedules')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('booked_by')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('actioned_by')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('status')->references('id')->on('booking_statuses')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

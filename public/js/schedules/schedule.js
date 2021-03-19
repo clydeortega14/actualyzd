@@ -13,16 +13,16 @@ class Schedule {
 				method: 'GET',
 				async: false
 			}).done( res => {
-				// assign map arrays in schedules array
-				schedules = res.map(object => {
-		          return {
-		            id: object.id,
-		            start: object.start,
-		            end: object.end,
-		            display: 'background',
-		            color: 'green'
-		        }
-			})
+					// assign map arrays in schedules array
+					schedules = res.map(object => {
+			          return {
+			            id: object.id,
+			            start: object.start,
+			            end: object.end,
+			            display: 'background',
+			            color: 'green'
+			        }
+				})
 			
 			});
 

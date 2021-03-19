@@ -93,7 +93,11 @@ Route::middleware('auth')->group(function(){
 
 
 	Route::prefix('bookings')->group(function(){
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
+
+		Route::get('/create', 'BookingController@create')->name('bookings.create');
+		
 		Route::post('book', 'BookingController@bookNow')->name('book.now');
 
 	});
