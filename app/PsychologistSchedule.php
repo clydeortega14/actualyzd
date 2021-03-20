@@ -28,7 +28,7 @@ class PsychologistSchedule extends Model
     	return $this->belongsTo(PsychoSchedStatus::class, 'status');
     }
 
-    public function time()
+    public function toTime()
     {
         return $this->belongsTo(TimeList::class, 'time');
     }

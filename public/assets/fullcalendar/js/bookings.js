@@ -38,8 +38,8 @@
 				let time_id = $(this).val();
 				if(booking_date === ""){
 					Swal.fire("Warning", "Kindly select first a date!", "warning")
+					$(this).prop("checked", false);
 				}else{
-					
 					// request data from the server
 					schedule.getPsychologists(booking_date, time_id);
 				}

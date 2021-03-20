@@ -11,7 +11,7 @@
 	<div class="container">
 		<form action="{{ route('book.now') }}" method="POST">
 			@csrf
-
+			@include('alerts.message')
 			<div class="row justify-content-center">
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="card mb-3">
@@ -32,7 +32,7 @@
 								@foreach($time_lists as $time)
 								    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
 								    	<div class="form-group">
-								    		<input type="radio" name="time" value="{{ $time->id }}" />
+								    		<input type="radio" name="time" value="{{ $time->id }}" required />
 								    		<label>{{ $time->parseTimeFrom().' - '.$time->parseTimeTo() }}</label>
 								    	</div>
 								    </div>
@@ -65,7 +65,7 @@
 									<div class="form-group row mb-3">
 										<div class="col-sm-7 offset-sm-3">
 											<label for="category">Often the last two weeks, how often have you been bothered by the following problems?</label>
-											<select type="combobox" name="category" id="category" class="form-control">
+											<select type="combobox" name="category" id="category" class="form-control" required>
 												<option value="">Choose Category</option>
 												@foreach($categories as $category)
 													<option value="{{ $category->id }}">{{ $category->name }}</option>

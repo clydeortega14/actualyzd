@@ -7,6 +7,7 @@ use DB;
 use App\PsychologistSchedule;
 use App\TimeList;
 use App\AssessmentCategory;
+use App\AssessmentAnswer;
 use App\Http\Requests\BookingRequest;
 use App\Booking;
 
@@ -15,7 +16,6 @@ class BookingController extends Controller
     public function index()
     {
         $bookings = Booking::get();
-        
 
         return view('pages.bookings.index', compact('bookings'));
     }
@@ -47,11 +47,16 @@ class BookingController extends Controller
 
                     'schedule' => $schedule->id,
                     'booked_by' => auth()->user()->id,
-                    'status' => 1
+                    'status' => 1,
+                    'category_id' => $request->category
                 ]);
 
                 // update psychologist schedule to not available
                 $schedule->update(['status' => 2]);
+
+                // for assessment answered questions
+                // store assessment answers to DB
+                $this->submitAnswers($booking->id, $request);
             }else{
 
                 return redirect()->back()->with('error', 'Cannot Find Schedule');
@@ -67,6 +72,19 @@ class BookingController extends Controller
 
     	DB::commit();
 
-    	return redirect()->back();
+    	return redirect()->route('bookings.index')->with('success', 'You have successfully booked a session');
+    }
+
+    public function submitAnswers($booking_id, $request)
+    {
+        foreach($request->choice as $index => $value){
+
+                AssessmentAnswer::create([
+                        'booking_id' => $booking_id,
+                        'questionnaire_id' => $index,
+                        'answer' => $value
+                ]);
+
+        }
     }
 }

@@ -68,7 +68,6 @@
 				method: 'GET',
 				async: false
 			}).done( res => {
-				console.log(res)
 				schedules = res.map(object => {
 		          return {
 		            id: object.id,
@@ -109,7 +108,7 @@
 			$schedules_time_lists.empty();
 			data.time_lists.forEach((time, index) => {
 				let checked;
-              	let sched = data.schedules.find(schedule => schedule.time.id === time.id);
+              	let sched = data.schedules.find(schedule => schedule.time === time.id);
 	            if(sched !== undefined) checked = 'checked';
 	            $schedules_time_lists.append(schedulesTimeListTemp(time, checked));
 			})
@@ -137,6 +136,7 @@
 		}
 		function counselingTimeListTemp(time)
 		{
+			console.log(time)
 		    return `
 		      <div class="form-group">
 		        <input type="radio" id="counseling${time.id}" name="time" value="${time.id}" class="with-gap" />
@@ -149,7 +149,7 @@
 		    return `
 		      <tr>
 		          <td>
-		            ${ date_parser.convertTime(schedule.time.from) } - ${ date_parser.convertTime(schedule.time.to) }
+		            ${ date_parser.convertTime(schedule.to_time.from) } - ${ date_parser.convertTime(schedule.to_time.to) }
 		          </td>
 		          <td>${schedule.book_with === null ? 'N/A' : schedule.book_with.name}</td>
 		          <td>

@@ -9,7 +9,7 @@
 			<div class="form-group mb-4">
 				@foreach($option->choices as $choice)
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}">
+						<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" required>
 						<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
 					</div>
 				@endforeach

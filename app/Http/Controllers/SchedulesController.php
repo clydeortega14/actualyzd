@@ -24,7 +24,7 @@ class SchedulesController extends Controller
             if($this->user()->hasRole('psychologist')){
                 $q->where('psychologist', $this->user()->id);
             }
-        })->get();
+        })->whereDate('start', '>=', now()->toDateString())->get();
 
         $collections = collect($schedules);
         $unique = $collections->unique('start');
@@ -59,7 +59,7 @@ class SchedulesController extends Controller
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
             ->where('start', $request->start)
-            ->with(['time', 'status', 'bookWith'])
+            ->with(['toTime', 'status', 'bookWith'])
             ->get();
 
         $time_lists = TimeList::get();
@@ -74,7 +74,7 @@ class SchedulesController extends Controller
         $psychologists = PsychologistSchedule::where('start', $request->start)
             ->where('time', $request->time)
             ->where('status', 1)
-            ->with(['time', 'status', 'psych'])
+            ->with(['toTime', 'status', 'psych'])
             ->get();
 
         return view('pages.schedules.components.psychologist', compact('psychologists'));
