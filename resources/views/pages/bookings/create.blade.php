@@ -65,14 +65,17 @@
 									<div class="form-group row mb-3">
 										<div class="col-sm-7 offset-sm-3">
 											<label for="category">Often the last two weeks, how often have you been bothered by the following problems?</label>
-											<select type="combobox" name="category" id="category" class="form-control" required>
-												<option value="">Choose Category</option>
-												@foreach($categories as $category)
-													<option value="{{ $category->id }}">{{ $category->name }}</option>
-												@endforeach
-											</select>
-
-											<div id="category-questionnaire" class="mt-4"></div>
+												<ul>
+													@foreach($categories as $category)
+														<input type="text" name="categories[]" value="{{ $category->id }}">
+														@if(count($category->questionnaires) > 0)
+		                                                    <li>
+		                                                    	<h4 class="text-gray text-info"><strong>{{ $category->name }}</strong></h4>
+		                                                    	@include('pages.bookings.components.questionnaire')
+		                                                    </li>
+														@endif
+													@endforeach
+												</ul>
 										</div>
 									</div>
 								</div>

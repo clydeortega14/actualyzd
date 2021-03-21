@@ -47,8 +47,7 @@ class BookingController extends Controller
 
                     'schedule' => $schedule->id,
                     'booked_by' => auth()->user()->id,
-                    'status' => 1,
-                    'category_id' => $request->category
+                    'status' => 1
                 ]);
 
                 // update psychologist schedule to not available

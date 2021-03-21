@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AssessmentAnswer extends Model
 {
     protected $table = 'assessment_answers';
-    protected $fillable = ['booking_id', 'questionnaire_id', 'answer'];
+    protected $fillable = ['booking_id', 'category_id', 'questionnaire_id', 'answer'];
 
     public function booking()
     {

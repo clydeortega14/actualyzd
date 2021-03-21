@@ -26,8 +26,7 @@ class BookingRequest extends FormRequest
         return [
             'time' => 'required',
             'start_date' => ['required', 'date'],
-            'psychologist' => ['required'],
-            'category' => ['required']
+            'psychologist' => ['required']
         ];
     }
 }
