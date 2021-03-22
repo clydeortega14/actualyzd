@@ -80,10 +80,15 @@ class BookingController extends Controller
 
                 AssessmentAnswer::create([
                         'booking_id' => $booking_id,
+                        'category_id' => 1,
                         'questionnaire_id' => $index,
                         'answer' => $value
                 ]);
 
         }
+    }
+    public function getAssessment(Booking $booking)
+    {
+        return view('pages.bookings.answered-questions', compact('booking'));
     }
 }

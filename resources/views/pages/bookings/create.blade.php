@@ -67,7 +67,6 @@
 											<label for="category">Often the last two weeks, how often have you been bothered by the following problems?</label>
 												<ul>
 													@foreach($categories as $category)
-														<input type="text" name="categories[]" value="{{ $category->id }}">
 														@if(count($category->questionnaires) > 0)
 		                                                    <li>
 		                                                    	<h4 class="text-gray text-info"><strong>{{ $category->name }}</strong></h4>

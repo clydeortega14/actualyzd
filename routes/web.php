@@ -100,6 +100,8 @@ Route::middleware('auth')->group(function(){
 		
 		Route::post('book', 'BookingController@bookNow')->name('book.now');
 
+		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
+		
 	});
 
 });

@@ -22,30 +22,32 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th>Booking With</th>
-										<th>Schedule</th>
+										<th>Date</th>
+										<th>Time</th>
+										<th>Description</th>
+										<th>Assessment</th>
 										<th>Status</th>
-										<th>Action</th>
+										<th>Link</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									@foreach($bookings as $booking)
 										<tr>
 											<td>
-												<img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" class="rounded-circle text-center" alt="{{ $booking->toSchedule->psych->name }}" width="60" height="60" data-toggle="tooltip" title="{{ $booking->toSchedule->psych->name }}">
+												{{ date('F j, Y', strtotime($booking->toSchedule->start )) }}
 											</td>
 											<td>
-												<a href="#">{{ $booking->toCategory->name }}</a> <br />
-												{{ date('F j, Y', strtotime($booking->toSchedule->start )) }} <br />
-												<span class="{{ $booking->toStatus->class }}">
-													{{ $booking->toSchedule->toTime->parseTimeFrom().' - '. $booking->toSchedule->toTime->parseTimeTo() }}
-												</span>
+												{{ $booking->toSchedule->toTime->parseTimeFrom().' - '. $booking->toSchedule->toTime->parseTimeTo() }}
 											</td>
+											<td>{{ $booking->bookedBy->name }} has session with {{ $booking->toSchedule->psych->name }}</td>
+											<td><a href="{{ route('booking.answered.questions', $booking->id) }}">see assessment</a></td>
 											<td>
 												<span class="{{ $booking->toStatus->class }}">
 													{{ $booking->toStatus->name}}
-												</span>
+												</span>	
 											</td>
+											<td><a href="#">see link</a></td>
 											<td>
 												<div class="btn-group">
 													<button type="button" class="btn btn-info btn-sm ">Action</button>
