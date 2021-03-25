@@ -1,4 +1,197 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
+
+@section('content')
+
+   <div class="container-fluid">
+       <h3>Service Utilization Dashboard</h3>
+
+       <div class="card">
+           <div class="card-body">
+               <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="utilization-tab" data-toggle="tab" href="#utilization" role="tab" aria-controls="utilization" aria-selected="false">Utilization</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="concerns-tab" data-toggle="tab" href="#concerns" role="tab" aria-controls="concerns" aria-selected="false">Concerns</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <!-- Session date -->
+                                <div class="form-group row mt-4">
+                                    <label class="col-form-label col-sm-2">Select Date</label>
+                                    <div class="col-sm-4">
+                                        <select type="combobox" name="select_date" class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                 <!-- end session date -->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center text-info">
+                                                <h5 class="text-info">Consultation</h5>
+                                                <div class="mt-4">
+                                                    <span>100%</span>
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>50</div>
+                                                        <div class="border-right"></div>
+                                                        <div>24</div>
+                                                    </div>
+
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>Limit</div>
+                                                        <div></div>
+                                                        <div>Usage</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center text-info">
+                                                <h5 class="text-info">Webinar</h5>
+                                                <div class="mt-4">
+                                                    <span>100%</span>
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>50</div>
+                                                        <div class="border-right"></div>
+                                                        <div>24</div>
+                                                    </div>
+
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>Limit</div>
+                                                        <div></div>
+                                                        <div>Usage</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center text-info">
+                                                <h5 class="text-info">Group Session</h5>
+                                                <div class="mt-4">
+                                                    <span>100%</span>
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>50</div>
+                                                        <div class="border-right"></div>
+                                                        <div>24</div>
+                                                    </div>
+
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>Limit</div>
+                                                        <div></div>
+                                                        <div>Usage</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card mb-3">
+                                            <div class="card-body text-center text-info">
+                                                <h5 class="text-info">Hotline</h5>
+                                                <div class="mt-4">
+                                                    <span>100%</span>
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>50</div>
+                                                        <div class="border-right"></div>
+                                                        <div>24</div>
+                                                    </div>
+
+                                                    <div class="d-sm-flex justify-content-around mt-3">
+                                                        <div>Limit</div>
+                                                        <div></div>
+                                                        <div>Usage</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Types of sessions -->
+                                
+                                <!-- end types of sessions -->
+
+                            </div>
+                            <div class="col-md-6">
+                                
+                                <canvas id="myChart" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    <div class="tab-pane fade" id="utilization" role="tabpanel" aria-labelledby="utilization-tab">...</div>
+                    <div class="tab-pane fade" id="concerns" role="tabpanel" aria-labelledby="concerns-tab">...</div>
+                </div>
+           </div>
+       </div>
+   </div>
+
+@stop
+
+@section('js_scripts')
+    
+    <script>
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        
+        var myChart = new Chart(ctx, {
+
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+@endsection
+
+
+{{-- @extends('layouts.sb-admin.master')
 
 
 @section('content')
@@ -92,4 +285,4 @@
     </div>
 </div>
 
-@stop
+@stop --}}

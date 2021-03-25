@@ -10,14 +10,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Chart js css -->
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/chart-js/css/Chart.min.css') }}"> --}}
 </head>
 <body>
     <div id="app">
@@ -89,5 +92,22 @@
             @yield('content')
         </main>
     </div>
+
+    
+
+    <!-- Jquery -->
+    <script type="text/javascript" src="{{ asset('sb-admin/vendor/jquery/jquery.js') }}"></script>
+
+    <!-- -->
+    <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!-- Moment Js -->
+    <script type="text/javascript" src="{{ asset('assets/momentjs/js/moment.js') }}"></script>
+
+    <!-- Chart Js -->
+    <script type="text/javascript" src="{{ asset('assets/chart-js/js/Chart.js') }}"></script>
+
+    <!-- Js scripts -->
+    @yield('js_scripts')
 </body>
 </html>
