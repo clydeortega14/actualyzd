@@ -31,7 +31,7 @@ Auth::routes();
 /* For Authenticated Users Only*/
 Route::middleware('auth')->group(function(){
 
-	Route::get('/home', 'HomeController@index')->middleware('role')->name('home');
+	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
