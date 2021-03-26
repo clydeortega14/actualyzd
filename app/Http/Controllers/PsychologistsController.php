@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class PsychologistsController extends Controller
 {
+    public function home()
+    {
+        return view('pages.psychologists.index');
+    }
     /**
      * Display a listing of the resource.
      *

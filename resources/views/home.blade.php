@@ -40,16 +40,6 @@
                             <div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                                 <div class="row mt-4 align-items-center">
                                     <div class="col-md-6">
-                                        <!-- Session date -->
-                                        {{-- <div class="form-group row mt-4">
-                                            <label class="col-form-label col-sm-2">Select Date</label>
-                                            <div class="col-sm-4">
-                                                <select type="combobox" name="select_date" class="form-control">
-                                                    <option></option>
-                                                </select>
-                                            </div>
-                                        </div> --}}
-                                         <!-- end session date -->
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="card mb-3">

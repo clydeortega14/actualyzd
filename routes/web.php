@@ -31,7 +31,7 @@ Auth::routes();
 /* For Authenticated Users Only*/
 Route::middleware('auth')->group(function(){
 
-	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/home', 'HomeController@index')->middleware('role')->name('home');
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
@@ -76,8 +76,10 @@ Route::middleware('auth')->group(function(){
 	// Show Schedule
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
 
-	// create my schedule
+	/* Pyschologist Prefix */
 	Route::prefix('psychologist')->group(function(){
+
+		Route::get('/', 'PsychologistsController@home')->name('psychologist.home');
 
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 
@@ -89,6 +91,13 @@ Route::middleware('auth')->group(function(){
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
 		Route::get('available', 'SchedulesController@psychologists')->name('psychologist.available');
+	});
+
+
+	/* Member Prefix */
+	Route::prefix('member')->group(function(){
+
+		Route::get('/', 'MemberController@home')->name('member.home');
 	});
 
 
