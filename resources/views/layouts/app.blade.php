@@ -19,14 +19,19 @@
     <!-- Styles -->
     <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
+    <!-- Sweet Alert 2 css -->
+    <link rel="stylesheet" href="{{ asset('assets/sweetalert2/dist/sweetalert2.min.css') }}">
+
     <!-- Chart js css -->
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/chart-js/css/Chart.min.css') }}"> --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/chart-js/css/Chart.min.css') }}">
+
+    @yield('css_links')
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             {{-- <div class="container"> --}}
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ auth()->user() ? url('/home') : url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -43,14 +48,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Sign In') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign Up') }}</a>
-                                </li>
-                            @endif --}}
+
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -101,11 +99,20 @@
     <!-- -->
     <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    <!-- Sweet Alert 2 -->
+    <script src="{{ asset('assets/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+
+    <!-- Sweet Alert 2 Custom js -->
+    <script src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
+
     <!-- Moment Js -->
     <script type="text/javascript" src="{{ asset('assets/momentjs/js/moment.js') }}"></script>
 
     <!-- Chart Js -->
     <script type="text/javascript" src="{{ asset('assets/chart-js/js/Chart.js') }}"></script>
+
+    <!-- Custom Ajax -->
+    <script src="{{ asset('js/ajax.js') }}"></script>
 
     <!-- Js scripts -->
     @yield('js_scripts')
