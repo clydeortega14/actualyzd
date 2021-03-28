@@ -1,4 +1,4 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 @section('css_links')
 
@@ -68,6 +68,7 @@
 												<ul>
 													@foreach($categories as $category)
 														@if(count($category->questionnaires) > 0)
+														
 		                                                    <li>
 		                                                    	<h4 class="text-gray text-info"><strong>{{ $category->name }}</strong></h4>
 		                                                    	@include('pages.bookings.components.questionnaire')

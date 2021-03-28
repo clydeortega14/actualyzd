@@ -1,17 +1,10 @@
-@extends('layouts.app')
-
-@section('css_links')
-
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/fullcalendar/css/main.css') }}">
-
-@endsection
-
+@extends('layouts.sb-admin.master')
 
 @section('content')
 	
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
@@ -61,9 +54,29 @@
 	 
 	            		<div class="card mt-3">
 	            			<div class="card-body">
+	            				<div class="card-header">
+	            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
+	            				</div>
 	            				<div class="card-body">
-									<div id="calendar"></div>
-									<input type="hidden" name="start_date" value="">
+
+	            					<div class="table-responsive">
+	            						<table class="table">
+	            							<thead>
+	            								<tr>
+	            									<th>Date</th>
+	            									<th>Time</th>
+	            									<th>Client Details</th>
+	            									<th>Topic</th>
+	            									<th>Link of sessions</th>
+	            									<th>Status</th>
+	            								</tr>
+	            							</thead>
+
+	            							<tbody>
+	            								
+	            							</tbody>
+	            						</table>
+	            					</div>
 								</div>
 	            			</div>
 	            		</div>
@@ -73,12 +86,4 @@
 		</div>
 	</div>
 
-@endsection
-
-@section('js_scripts')
-	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/date.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/schedules/schedule.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/custom.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/fullcalendar/js/bookings.js') }}"></script>
 @endsection

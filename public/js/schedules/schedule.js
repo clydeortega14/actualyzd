@@ -11,7 +11,7 @@ class Schedule {
 		custom_ajax.asyncAwait({
 				url: '/psychologist/schedules',
 				method: 'GET',
-				async: true
+				async: false
 			}).done( res => {
 					// assign map arrays in schedules array
 					schedules = res.map(object => {

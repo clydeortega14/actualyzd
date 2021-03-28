@@ -29,6 +29,7 @@ class BookingController extends Controller
     }
     public function bookNow(BookingRequest $request)
     {
+        dd($request->all());
         $validated = $request->validated();
 
         $schedule = PsychologistSchedule::where('start', $request->start_date)
@@ -67,11 +68,10 @@ class BookingController extends Controller
 
     		return redirect()->back()->with('error', $e->getMessage());
     	}
-
-
+        
     	DB::commit();
 
-    	return redirect()->route('bookings.index')->with('success', 'You have successfully booked a session');
+    	return redirect()->route('member.home')->with('success', 'You have successfully booked a session');
     }
 
     public function submitAnswers($booking_id, $request)

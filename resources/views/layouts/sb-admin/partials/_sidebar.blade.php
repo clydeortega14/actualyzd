@@ -18,6 +18,7 @@
         <span>Dashboard</span></a>
 </li>
 
+@if(auth()->user()->hasRole('superadmin'))
 <!-- Divider -->
 <hr class="sidebar-divider">
 
@@ -63,8 +64,9 @@
         <span>Time Lists</span>
     </a>
 </li>
+@endif
 
-<!-- Divider -->
+{{-- <!-- Divider -->
 <hr class="sidebar-divider">
 
 <!-- Heading -->
@@ -91,7 +93,7 @@
 </li>
 
 <!-- Divider -->
-<hr class="sidebar-divider d-none d-md-block">
+<hr class="sidebar-divider d-none d-md-block"> --}}
 
 <!-- Sidebar Toggler (Sidebar) -->
 <div class="text-center d-none d-md-inline">
