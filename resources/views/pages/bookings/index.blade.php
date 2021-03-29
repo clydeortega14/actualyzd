@@ -1,3 +1,69 @@
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Time</th>
+			<th>Client Details</th>
+			<th>Topic</th>
+			<th>Link of session</th>
+			<th>Status</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody id="bookings-table">
+		@foreach($bookings as $booking)
+			<tr>
+				<td>{{ $booking->toSchedule->start }}</td>
+				<td>
+					{{ $booking->toSchedule->toTime->parseTimeFrom().' - '. $booking->toSchedule->toTime->parseTimeTo()}}
+				</td>
+				<td>{{ 
+					auth()->user()->hasRole('psychologist') ?
+					$booking->bookedBy->name :
+					$booking->toSchedule->psych->name
+				 }}</td>
+				 <td><a href="#">link to onboarding questions</a></td>
+				 <td>
+				 	<a href="#">idq032132kjdwq-23</a>
+				 </td>
+				 <td>
+				 	<span class="{{ $booking->toStatus->class }}">{{ $booking->toStatus->name }}</span>
+				 </td>
+				 <td>
+				 	<div class="btn-group">
+						<button type="button" class="btn btn-info btn-sm ">Action</button>
+						<button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="sr-only"></span>
+						</button>
+
+						<div class="dropdown-menu">
+							<a href="#" class="dropdown-item">
+							    <i class="fa fa-edit"></i>
+							    <span>Edit</span>
+							</a>
+							<a href="#" class="dropdown-item">
+							    <i class="fa fa-times"></i>
+							    <span>Cancel</span>
+							</a>
+							<a href="#" class="dropdown-item">
+							    <i class="fa fa-clock"></i>
+							    <span>Reschedule</span>
+							</a>
+							<a href="#" class="dropdown-item">
+							    <i class="fa fa-clock"></i>
+							    <span>Review</span>
+							</a>
+						</div>
+					</div>
+				 </td>
+			</tr>
+		@endforeach
+	</tbody>
+</table>
+
+
+{{-- 
+
 @extends('layouts.sb-admin.master')
 
 @section('content')
@@ -86,4 +152,4 @@
 		</div>
 	</div>
 
-@stop
+@stop --}}

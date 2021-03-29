@@ -5,6 +5,11 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-md-12">
+
+				<!-- Render Bookings Breadcrumbs -->
+				{{ Breadcrumbs::render() }}
+				<!-- end render bookings breadcrumb -->
+
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
@@ -60,21 +65,20 @@
 	            				<div class="card-body">
 
 	            					<div class="table-responsive">
-	            						<table class="table">
+	            						<table class="table table-bordered table-striped table-hover">
 	            							<thead>
 	            								<tr>
 	            									<th>Date</th>
 	            									<th>Time</th>
-	            									<th>Client Details</th>
+	            									<th>Details</th>
 	            									<th>Topic</th>
 	            									<th>Link of sessions</th>
 	            									<th>Status</th>
+	            									<th></th>
 	            								</tr>
 	            							</thead>
 
-	            							<tbody>
-	            								
-	            							</tbody>
+	            							<tbody id="bookings-table"></tbody>
 	            						</table>
 	            					</div>
 								</div>
@@ -86,4 +90,8 @@
 		</div>
 	</div>
 
+@endsection
+
+@section('js_scripts')
+	<script src="{{ asset('assets/fullcalendar/js/bookings.js') }}"></script>
 @endsection

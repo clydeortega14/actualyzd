@@ -15,8 +15,8 @@ class BookingController extends Controller
 {
     public function index()
     {
-        $bookings = Booking::get();
 
+        $bookings = $this->bookingsQuery();
         return view('pages.bookings.index', compact('bookings'));
     }
 
@@ -72,6 +72,21 @@ class BookingController extends Controller
     	DB::commit();
 
     	return redirect()->route('member.home')->with('success', 'You have successfully booked a session');
+    }
+
+    public function bookingsQuery()
+    {
+        $bookings = Booking::where(function($query){
+
+            $user = auth()->user();
+
+            if($user->hasRole('member')){
+                $query->where('booked_by', $user->id);
+            }
+
+        })->get();
+
+        return $bookings;
     }
 
     public function submitAnswers($booking_id, $request)

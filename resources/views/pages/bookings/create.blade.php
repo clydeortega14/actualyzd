@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.sb-admin.master')
 
 @section('css_links')
 
@@ -9,6 +9,9 @@
 @section('content')
 
 	<div class="container">
+		
+		{{ Breadcrumbs::render() }}
+
 		<form action="{{ route('book.now') }}" method="POST">
 			@csrf
 			@include('alerts.message')

@@ -1,5 +1,6 @@
 	const custom_calendar = new CustomCalendar;
 	const schedule = new Schedule;
+	const ajax = new Ajax;
 	const bookings = {
 		initialize(){
 
@@ -30,6 +31,17 @@
 				}
 
 				custom_calendar.render(calendarOptions);
+
+
+				// bookings schedule
+				ajax.request({
+
+					url: '/bookings',
+					method: 'GET',
+				}).done(data => {
+					this.$bookings_table.html(data)
+					// console.log(data)
+				});
 			})
 			// Pick a Time
 			this.$time_list.change(function(e){
@@ -50,8 +62,7 @@
 			this.$category.change(function(e){
 
 				let id = $(this).find('option:selected').val();
-				let ajax_request = new Ajax;
-				ajax_request.request({
+				ajax.request({
 					url: `/set-up/assessment/categories/${id}`,
 					method: 'GET'
 				}).done(data => {
@@ -59,14 +70,14 @@
 					_this.$category_questionnaire.html(data)
 				})
 			});
-
 		},
 		dom(){
 			this.$time_list = $('input[name="time"]');
 			this.$psychologist_row = $('#psychologist-row');
 			this.$category = $('select[name="category"]');
 			this.$category_questionnaire = $('#category-questionnaire');
-			this.$start_date = $('input[name="start_date"]')
+			this.$start_date = $('input[name="start_date"]');
+			this.$bookings_table = $('#bookings-table');
 		}
 
 	}

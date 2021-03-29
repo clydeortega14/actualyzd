@@ -24,3 +24,14 @@ Breadcrumbs::for('options.show', function($trail, $option){
 	$trail->parent('options.index');
 	$trail->push($option->name, route('options.show', $option->id));
 });
+
+// Bookings
+Breadcrumbs::for('bookings.create', function($trail){
+	$trail->parent('member.home');
+	$trail->push('Book a session', route('bookings.create'));
+});
+
+// Member
+Breadcrumbs::for('member.home', function ($trail) {
+    $trail->push('Home', route('member.home'));
+});
