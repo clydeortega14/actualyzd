@@ -15,7 +15,7 @@
 		<form action="{{ route('book.now') }}" method="POST">
 			@csrf
 			@include('alerts.message')
-			<div class="row justify-content-center">
+			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="card mb-3">
 						<div class="card-body">
@@ -66,7 +66,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="form-group row mb-3">
-										<div class="col-sm-7 offset-sm-3">
+										<div class="col-sm-7">
 											<label for="category">Often the last two weeks, how often have you been bothered by the following problems?</label>
 												<ul>
 													@foreach($categories as $category)
