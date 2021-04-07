@@ -9,10 +9,17 @@ use App\TimeList;
 use App\AssessmentCategory;
 use App\AssessmentAnswer;
 use App\Http\Requests\BookingRequest;
+use App\Http\Traits\BookingTrait;
 use App\Booking;
 
 class BookingController extends Controller
 {
+    use BookingTrait;
+    
+    public function __construct()
+    {
+        $this->categories = AssessmentCategory::get(['id', 'name']);
+    }
     public function index()
     {
 
@@ -23,13 +30,12 @@ class BookingController extends Controller
     public function create()
     {
         $time_lists = TimeList::with(['schedules'])->get();
-        $categories = AssessmentCategory::get(['id', 'name']);
+        $categories = $this->categories;
 
         return view('pages.bookings.create', compact('time_lists', 'categories'));
     }
     public function bookNow(BookingRequest $request)
     {
-        dd($request->all());
         $validated = $request->validated();
 
         $schedule = PsychologistSchedule::where('start', $request->start_date)
@@ -74,36 +80,23 @@ class BookingController extends Controller
     	return redirect()->route('member.home')->with('success', 'You have successfully booked a session');
     }
 
-    public function bookingsQuery()
-    {
-        $bookings = Booking::where(function($query){
-
-            $user = auth()->user();
-
-            if($user->hasRole('member')){
-                $query->where('booked_by', $user->id);
-            }
-
-        })->get();
-
-        return $bookings;
-    }
-
     public function submitAnswers($booking_id, $request)
     {
         foreach($request->choice as $index => $value){
 
-                AssessmentAnswer::create([
-                        'booking_id' => $booking_id,
-                        'category_id' => 1,
-                        'questionnaire_id' => $index,
-                        'answer' => $value
-                ]);
+            AssessmentAnswer::create([
+                'booking_id' => $booking_id,
+                'category_id' => 1,
+                'questionnaire_id' => $index,
+                'answer' => $value
+            ]);
 
         }
     }
     public function getAssessment(Booking $booking)
     {
-        return view('pages.bookings.answered-questions', compact('booking'));
+        $categories = $this->categories;
+
+        return view('pages.bookings.answered-questions', compact('booking', 'categories'));
     }
 }

@@ -10,7 +10,7 @@
 			<th>Action</th>
 		</tr>
 	</thead>
-	<tbody id="bookings-table">
+	<tbody>
 		@foreach($bookings as $booking)
 			<tr>
 				<td>{{ $booking->toSchedule->start }}</td>
@@ -22,7 +22,7 @@
 					$booking->bookedBy->name :
 					$booking->toSchedule->psych->name
 				 }}</td>
-				 <td><a href="#">link to onboarding questions</a></td>
+				 <td><a href="{{ route('booking.answered.questions', $booking->id) }}">link to onboarding questions</a></td>
 				 <td>
 				 	<a href="#">idq032132kjdwq-23</a>
 				 </td>

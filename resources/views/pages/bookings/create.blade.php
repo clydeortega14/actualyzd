@@ -68,17 +68,16 @@
 									<div class="form-group row mb-3">
 										<div class="col-sm-7">
 											<label for="category">Often the last two weeks, how often have you been bothered by the following problems?</label>
-												<ul>
-													@foreach($categories as $category)
-														@if(count($category->questionnaires) > 0)
-														
-		                                                    <li>
-		                                                    	<h4 class="text-gray text-info"><strong>{{ $category->name }}</strong></h4>
-		                                                    	@include('pages.bookings.components.questionnaire')
-		                                                    </li>
-														@endif
-													@endforeach
-												</ul>
+											<ul>
+												@foreach($categories as $category)
+													@if(count($category->questionnaires) > 0)
+	                                                    <li>
+	                                                    	<h4 class="text-gray text-info"><strong>{{ $category->name }}</strong></h4>
+	                                                    	@include('pages.bookings.components.questionnaire')
+	                                                    </li>
+													@endif
+												@endforeach
+											</ul>
 										</div>
 									</div>
 								</div>

@@ -32,4 +32,8 @@ class Booking extends Model
     {
         return $this->belongsTo('App\AssessmentCategory', 'category_id');
     }
+    public function assessmentAnswers()
+    {
+        return $this->hasMany(AssessmentAnswer::class);
+    }
 }

@@ -33,8 +33,6 @@
 
     <div id="app">
         
-
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 

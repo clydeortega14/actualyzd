@@ -96,6 +96,7 @@
         			start: arg.startStr
         		}
         	}).done(data => {
+        		console.log(data)
             	handleTimeList(data);
             	handleSchedulesTable(data);
         	})
@@ -146,6 +147,7 @@
 		}
 	 	function scheduleDetailsTemp(schedule)
 	  	{
+
 		    return `
 		      <tr>
 		          <td>

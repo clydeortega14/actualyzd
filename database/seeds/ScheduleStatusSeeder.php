@@ -10,10 +10,10 @@ class ScheduleStatusSeeder extends Seeder
 	{
 		$this->statuses = [
 
-			['status' => 'available', 'class' => 'label label-primary'],
-			['status' => 'booked', 'class' => 'label label-success'],
-			['status' => 'rescheduled', 'class' => 'label label-info'],
-			['status' => 'cancelled', 'class' => 'label label-danger']
+			['status' => 'available', 'class' => 'badge badge-primary'],
+			['status' => 'booked', 'class' => 'badge badge-info'],
+			['status' => 'rescheduled', 'class' => 'badge badge-warning'],
+			['status' => 'cancelled', 'class' => 'badge badge-danger']
 
 		];
 	}

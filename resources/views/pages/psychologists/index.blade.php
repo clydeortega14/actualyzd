@@ -39,7 +39,9 @@
           		<div class="mt-4">
           			<div class="row justify-content-center">
           				<div class="col-md-12">
-                    <div id="bookings-table"></div>
+                    <div class="table-responsive">
+                        @include('pages.bookings.index')
+                    </div>
           				</div>
           			</div>
           		</div>
@@ -161,9 +163,18 @@
                   $schedules_time_lists.empty();
                   data.time_lists.forEach((time, index) => {
                         let checked;
+                        let disabled;
                   let sched = data.schedules.find(schedule => schedule.time === time.id);
-                  if(sched !== undefined) checked = 'checked';
-                  $schedules_time_lists.append(schedulesTimeListTemp(time, checked));
+                  
+                  if(sched !== undefined) {
+
+                    checked = 'checked';
+                    if(sched.status.status === 'booked'){
+                      disabled = 'disabled';
+                    } 
+                  }
+
+                    $schedules_time_lists.append(schedulesTimeListTemp(time, checked, disabled));
                   })
             }
 
@@ -176,12 +187,12 @@
                   })
             }
 
-            function schedulesTimeListTemp(time, checked)
+            function schedulesTimeListTemp(time, checked, disabled)
             {
                 return `
                 <div class="col-sm-3">
                   <div class="form-group">
-                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} />
+                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} />
                     <label for="time${time.id}">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</label>
                   </div>
                 </div>

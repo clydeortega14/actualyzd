@@ -4,13 +4,6 @@
             <div class="modal-header">
                 <h4 class="modal-title" id="create-schedule-modal-label">Create / Update Schedule</h4>
                 <hr>
-                <div style="display: none;" id="div-delete">
-                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="event.preventDefault(); document.getElementById('delete-form').submit();">Delete</a>
-                    <form id="delete-form" action="{{ route('psychologist.delete.schedule') }}" method="POST" style="display: none;">
-                        @csrf
-                        <input type="text" name="sched_id" value="" class="sched-id">
-                    </form>
-                </div>
             </div>
             <form action="{{ route('psychologist.store.schedule') }}" method="POST">
                 @csrf
@@ -49,34 +42,6 @@
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
                 </div>
             </form>
-
-{{-- 
-            <form action="{{ route('book.now') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <h4 class="text-center">Book Now</h4>
-                    <hr>
-
-                    <input type="hidden" name="start_date" class="form-control start-date" readonly>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
-                            <label>Time Lists</label>
-                            <div id="counseling-time-lists"></div>
-                        </div>
-
-                        <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-                            <label>Psychologists</label>
-                            <div class="row clearfix" id="psychologist-available"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary waves-effect">Book Now</button>
-                    <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Cancel</button>
-                </div>
-            </form> --}}
         </div>
     </div>
 </div>

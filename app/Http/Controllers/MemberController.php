@@ -4,21 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Booking;
+use App\Http\Traits\BookingTrait;
 
 class MemberController extends Controller
 {
+    use BookingTrait;
+
     public function home()
     {
-    	$bookings = Booking::where(function($query){
-
-    		$user = auth()->user();
-
-    		if($user->hasRole('member')){
-    			$query->where('booked_by', $user->id);
-    		}
-
-    	})->get();
-
+        $bookings = $this->bookingsQuery();
     	
     	return view('pages.members.index', compact('bookings'));
     }

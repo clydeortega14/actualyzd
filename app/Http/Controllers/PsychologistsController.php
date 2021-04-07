@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Psychologist;
-use App\User;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Traits\BookingTrait;
 
 class PsychologistsController extends Controller
 {
+    use BookingTrait;
+
     public function home()
     {
-        return view('pages.psychologists.index');
+        $bookings = $this->bookingsQuery();
+
+        return view('pages.psychologists.index', compact('bookings'));
     }
     /**
      * Display a listing of the resource.

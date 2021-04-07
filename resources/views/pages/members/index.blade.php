@@ -63,23 +63,8 @@
 	            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
 	            				</div>
 	            				<div class="card-body">
-
 	            					<div class="table-responsive">
-	            						<table class="table table-bordered table-striped table-hover">
-	            							<thead>
-	            								<tr>
-	            									<th>Date</th>
-	            									<th>Time</th>
-	            									<th>Details</th>
-	            									<th>Topic</th>
-	            									<th>Link of sessions</th>
-	            									<th>Status</th>
-	            									<th></th>
-	            								</tr>
-	            							</thead>
-
-	            							<tbody id="bookings-table"></tbody>
-	            						</table>
+	            						@include('pages.bookings.index')
 	            					</div>
 								</div>
 	            			</div>
@@ -90,8 +75,4 @@
 		</div>
 	</div>
 
-@endsection
-
-@section('js_scripts')
-	<script src="{{ asset('assets/fullcalendar/js/bookings.js') }}"></script>
 @endsection
