@@ -41,17 +41,13 @@
 							    <i class="fa fa-edit"></i>
 							    <span>Edit</span>
 							</a>
-							<a href="#" class="dropdown-item">
+							<a href="{{ route('booking.cancel', $booking->id) }}" class="dropdown-item">
 							    <i class="fa fa-times"></i>
 							    <span>Cancel</span>
 							</a>
-							<a href="#" class="dropdown-item">
+							<a href="{{ route('booking.reschedule', $booking->id) }}" class="dropdown-item">
 							    <i class="fa fa-clock"></i>
 							    <span>Reschedule</span>
-							</a>
-							<a href="#" class="dropdown-item">
-							    <i class="fa fa-clock"></i>
-							    <span>Review</span>
 							</a>
 						</div>
 					</div>

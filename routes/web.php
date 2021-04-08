@@ -109,6 +109,10 @@ Route::middleware('auth')->group(function(){
 		
 		Route::post('book', 'BookingController@bookNow')->name('book.now');
 
+		Route::get('cancel/{booking}', 'BookingController@cancel')->name('booking.cancel');
+
+		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
+
 		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
 		
 	});

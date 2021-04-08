@@ -19,17 +19,17 @@ class BookingController extends Controller
     public function __construct()
     {
         $this->categories = AssessmentCategory::get(['id', 'name']);
+        $this->time_lists = TimeList::with(['schedules'])->get();
     }
     public function index()
     {
-
         $bookings = $this->bookingsQuery();
         return view('pages.bookings.index', compact('bookings'));
     }
 
     public function create()
     {
-        $time_lists = TimeList::with(['schedules'])->get();
+        $time_lists = $this->time_lists;
         $categories = $this->categories;
 
         return view('pages.bookings.create', compact('time_lists', 'categories'));
@@ -98,5 +98,18 @@ class BookingController extends Controller
         $categories = $this->categories;
 
         return view('pages.bookings.answered-questions', compact('booking', 'categories'));
+    }
+
+    public function cancel(Booking $booking)
+    {
+        return view('pages.bookings.cancel', compact('booking'));
+    }
+
+    public function reschedule(Booking $booking)
+    {
+        $time_lists = $this->time_lists;
+        $categories = $this->categories;
+
+        return view('pages.bookings.reschedule', compact('booking', 'time_lists', 'categories'));
     }
 }

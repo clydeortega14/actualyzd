@@ -3,6 +3,12 @@
 @section('css_links')
 
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/fullcalendar/css/main.css') }}">
+	<style type="text/css">
+		#calendar {
+		    max-width: 1100px;
+		    margin: 0 auto;
+		  }	
+	</style>
 
 @endsection
 
@@ -19,6 +25,7 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="card mb-3">
 						<div class="card-body">
+							
 							<div id="calendar"></div>
 							<input type="hidden" name="start_date" value="">
 						</div>
