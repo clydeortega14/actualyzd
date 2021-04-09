@@ -13,7 +13,7 @@
 			this.booking_date = '';
 		},
 		events(){
-			let booking_date = "";
+			let booking_date = this.$start_date.val();
 			const _this = this;
 
 			$(window).on('load', (e) => {

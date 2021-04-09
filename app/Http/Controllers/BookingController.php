@@ -38,10 +38,8 @@ class BookingController extends Controller
     {
         $validated = $request->validated();
 
-        $schedule = PsychologistSchedule::where('start', $request->start_date)
-                    ->where('time', $request->time)
-                    ->where('psychologist', $request->psychologist)
-                    ->first();
+        // find schedule
+        $schedule = $this->findSchedule($request);
 
     	DB::beginTransaction();
 
@@ -111,5 +109,40 @@ class BookingController extends Controller
         $categories = $this->categories;
 
         return view('pages.bookings.reschedule', compact('booking', 'time_lists', 'categories'));
+    }
+    public function reschedBooking(Booking $booking, Request $request)
+    {
+        // Find Schedule first based on newly selected schedule
+        $schedule = $this->findSchedule($request);
+
+        if(!is_null($schedule)){
+
+            // on the psychologist schedule side, update status to available
+            $booking->toSchedule->update(['status' => 1]);
+
+            // update booking id based on new schedule id
+            // also update status to rescheduled, 
+            $booking->update(['schedule' => $schedule->id, 'status' => 6]);
+
+
+            // after updating booking schedule, the newly selected schedule status
+            // must be changed to not available or 2
+            $schedule->update(['status' => 2]);
+
+
+            return redirect()->back()->with('success', 'Booking rescheduled');
+
+        }
+
+        // return error message if schedule was not found
+        return redirect()->back()->with('error', 'Schedule that has been selected was not found!');
+    }
+
+    protected function findSchedule($request)
+    {
+        return PsychologistSchedule::where('start', $request->start_date)
+                    ->where('time', $request->time)
+                    ->where('psychologist', $request->psychologist)
+                    ->first();
     }
 }

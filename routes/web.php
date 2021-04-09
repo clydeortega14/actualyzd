@@ -113,6 +113,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
+		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
+
 		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
 		
 	});
