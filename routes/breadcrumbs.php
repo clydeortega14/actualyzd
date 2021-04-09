@@ -27,11 +27,10 @@ Breadcrumbs::for('options.show', function($trail, $option){
 
 // Bookings
 Breadcrumbs::for('bookings.create', function($trail){
-	$trail->parent('member.home');
+	$trail->parent('home');
 	$trail->push('Book a session', route('bookings.create'));
 });
 
-// Member
 Breadcrumbs::for('home', function ($trail) {
     $trail->push('Home', route('home'));
 });

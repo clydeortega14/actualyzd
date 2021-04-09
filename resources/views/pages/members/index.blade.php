@@ -7,7 +7,7 @@
 			<div class="col-md-12">
 
 				<!-- Render Bookings Breadcrumbs -->
-				{{ Breadcrumbs::render() }}
+				{{-- {{ Breadcrumbs::render() }} --}}
 				<!-- end render bookings breadcrumb -->
 
 				@include('alerts.message')
