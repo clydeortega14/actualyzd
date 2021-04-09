@@ -12,19 +12,22 @@
 					</div>
 
 					<div class="card-body">
-						<div class="form-group row">
-							<label class="col-form-label col-sm-4 text-md-right">Reason:</label>
-							<div class="col-sm-6">
-								<textarea class="form-control" placeholder="Please specify your reason here" rows="5" cols="50"></textarea>
+						<form action="{{ route('cancel.booking', $booking->id) }}" method="POST">
+							@csrf
+							<div class="form-group row">
+								<label class="col-form-label col-sm-4 text-md-right">Reason:</label>
+								<div class="col-sm-6">
+									<textarea name="reason" class="form-control" placeholder="Please specify your reason here" rows="5" cols="50" required>{{ !is_null($booking->reschedule) ? $booking->reschedule->reason : '' }}</textarea>
+								</div>
 							</div>
-						</div>
 
-						<div class="form-group row">
-							<div class="col-sm-6 offset-md-4">
-								<button class="btn btn-primary">Submit</button>
-								<a href="{{ route('member.home') }}" class="btn btn-danger">Cancel</a>
+							<div class="form-group row">
+								<div class="col-sm-6 offset-md-4">
+									<button type="submit" class="btn btn-primary">Submit</button>
+									<a href="{{ route('home') }}" class="btn btn-danger">Cancel</a>
+								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>

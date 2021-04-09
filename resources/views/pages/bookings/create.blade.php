@@ -52,7 +52,7 @@
 				<div class="col-sm-12">
 					<div class="form-group">
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
-						<a href="#" class="btn btn-danger btn-block">Cancel</a>
+						<a href="{{ route('home') }}" class="btn btn-danger btn-block">Cancel</a>
 					</div>
 				</div>
 			</div>

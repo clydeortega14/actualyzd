@@ -32,13 +32,13 @@ Breadcrumbs::for('bookings.create', function($trail){
 });
 
 // Member
-Breadcrumbs::for('member.home', function ($trail) {
-    $trail->push('Home', route('member.home'));
+Breadcrumbs::for('home', function ($trail) {
+    $trail->push('Home', route('home'));
 });
 
 // Link to onboarding questions
 Breadcrumbs::for('booking.answered.questions', function($trail, $booking){
-	$trail->parent('member.home');
+	$trail->parent('home');
 	$trail->push('On Boarding Questions', route('booking.answered.questions', $booking));
 
 });

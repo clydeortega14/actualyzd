@@ -16,11 +16,15 @@ class CreateRescheduledBookingsTable extends Migration
         Schema::create('rescheduled_bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('booking_id');
+            $table->unsignedBigInteger('updated_by');
             $table->text('reason');
             $table->timestamps();
 
 
             $table->foreign('booking_id')->references('id')->on('bookings')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('updated_by')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }

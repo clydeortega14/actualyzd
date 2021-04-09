@@ -11,6 +11,7 @@ use App\AssessmentAnswer;
 use App\Http\Requests\BookingRequest;
 use App\Http\Traits\BookingTrait;
 use App\Booking;
+use App\RescheduledBooking;
 
 class BookingController extends Controller
 {
@@ -103,6 +104,21 @@ class BookingController extends Controller
         return view('pages.bookings.cancel', compact('booking'));
     }
 
+    public function updateToCancel(Booking $booking, Request $request)
+    {
+        //Update booking status to cancelled
+        $booking->update(['status' => 5]);
+
+        // store reason for cancelling in the database
+        $reason = $this->storeReason($booking, $request);
+
+        // update the schedule to available again
+        $booking->toSchedule->update(['status' => 1 ]);
+
+        return redirect()->route('member.home')->with('success', 'Session has been cancelled');
+
+    }
+
     public function reschedule(Booking $booking)
     {
         $time_lists = $this->time_lists;
@@ -124,6 +140,9 @@ class BookingController extends Controller
             // also update status to rescheduled, 
             $booking->update(['schedule' => $schedule->id, 'status' => 6]);
 
+            // store the reason for rescheduling the session in the reschedule bookings
+            $resched_reason = $this->storeReason($booking, $request);
+
 
             // after updating booking schedule, the newly selected schedule status
             // must be changed to not available or 2
@@ -144,5 +163,14 @@ class BookingController extends Controller
                     ->where('time', $request->time)
                     ->where('psychologist', $request->psychologist)
                     ->first();
+    }
+
+    protected function storeReason($booking, $request)
+    {
+        return RescheduledBooking::create([
+            'booking_id' => $booking->id, 
+            'updated_by' => auth()->user()->id, 
+            'reason' => $request->reason 
+        ]);
     }
 }

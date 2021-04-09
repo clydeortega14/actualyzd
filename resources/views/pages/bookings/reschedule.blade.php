@@ -23,7 +23,7 @@
 							<div class="form-group row">
 								<label class="col-form-label text-md-right col-sm-4">Reason for rescheduling</label>
 								<div class="col-sm-6">
-									<textarea rows="5" class="form-control"></textarea>
+									<textarea name="reason" rows="5" class="form-control">{{ !is_null($booking->reschedule) ? $booking->reschedule->reason : ''}}</textarea>
 								</div>
 							</div>
 						</div>

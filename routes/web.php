@@ -103,19 +103,25 @@ Route::middleware('auth')->group(function(){
 
 	Route::prefix('bookings')->group(function(){
 
+		// Pages
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
-		
-		Route::post('book', 'BookingController@bookNow')->name('book.now');
 
 		Route::get('cancel/{booking}', 'BookingController@cancel')->name('booking.cancel');
 
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
+		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
+
+		// Actions
+		Route::post('book', 'BookingController@bookNow')->name('book.now');
+
+		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
+
 		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
 
-		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
+		
 		
 	});
 
