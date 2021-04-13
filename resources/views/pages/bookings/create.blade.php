@@ -14,13 +14,43 @@
 			@include('alerts.message')
 			<div class="row">
 
+				<!-- Calendar For booking a session -->
+				<div class="col-md-12">
+
+					<!-- Select type of session -->
+					<div class="card mb-3">
+						<div class="card-body">
+							<div class="form-group row">
+								<label class="col-form-label col-sm-4 text-md-right">Session Type</label>
+								<div class="col-sm-6">
+									<select name="session_type" class="form-control">
+										<option>Individual</option>
+										<option>Webinar</option>
+										<option>Group</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- end select type of session -->
+
+
+					<div class="card mb-3">
+						<div class="card-body">
+							<div id="calendar"></div>
+						</div>
+					</div>
+				</div>
+				<!-- end calendar for booking a session -->
+
 				<!-- Booking Selection -->
 				@include('pages.bookings.components.booking-selection')
 				<!-- End Booking Selection -->
 
 				<!-- Onboarding Questions --> 
 				<div class="col-sm-12">
-					<div class="card mb-3">
+					<div class="card mb-3" id="onboarding-questions-component">
 						<div class="card-header">
 							Tell us a bit about yourself
 						</div>

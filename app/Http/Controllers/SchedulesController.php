@@ -90,4 +90,11 @@ class SchedulesController extends Controller
     {
         return auth()->user();
     }
+
+    public function timeDate(Request $request)
+    {
+        $time_lists = PsychologistSchedule::where('start', $request->start)->with(['toTime'])->get();
+
+        return view('pages.schedules.components.time-date', compact('time_lists'));
+    }
 }

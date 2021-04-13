@@ -5,13 +5,8 @@
 @endphp
 
 <div class="col-md-12 col-sm-12 col-xs-12">
-	<div class="card mb-3">
-		<div class="card-body">
-			<div id="calendar"></div>
-		</div>
-	</div>
 
-	<div class="card mb-3">
+	<div class="card mb-3" id="pick-a-time-component">
 		<div class="card-header">
 			
 			<div class="d-flex justify-content-between">
@@ -22,21 +17,15 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="card-body">
-			<div class="row">
-				@foreach($time_lists as $time)
-				    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-				    	<div class="form-group">
-				    		<input type="radio" name="time" value="{{ $time->id }}" required {{ $booked_time == $time->id ? 'checked' : ''  }}/>
-				    		<label>{{ $time->parseTimeFrom().' - '.$time->parseTimeTo() }}</label>
-				    	</div>
-				    </div>
-				@endforeach
+			<div class="row" id="time-by-date">
+				
 			</div>	
 		</div>	
 	</div>
 
-	<div class="card mb-3">
+	<div class="card mb-3" id="psychologist-component">
 		<div class="card-header">
 			Psychologists
 		</div>

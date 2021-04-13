@@ -76,6 +76,9 @@ Route::middleware('auth')->group(function(){
 	// Show Schedule
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
 
+	// Get time by date selected in calendar
+	Route::get('time-date', 'SchedulesController@timeDate');
+
 	/* Pyschologist Prefix */
 	Route::prefix('psychologist')->group(function(){
 
@@ -120,9 +123,6 @@ Route::middleware('auth')->group(function(){
 		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
 
 		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
-
-		
-		
 	});
 
 });
