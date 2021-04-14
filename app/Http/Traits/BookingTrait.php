@@ -10,13 +10,7 @@ trait BookingTrait {
 	public function bookingsQuery()
 	{
 		return Booking::where(function($query){
-
-            $user = auth()->user();
-
-            $this->bookingsFoMember($user, $query);
-
-            $this->bookingsForPsychologist($user, $query);
-
+            $this->queryByRole($query);
         })->get();
 	}
 
@@ -27,6 +21,9 @@ trait BookingTrait {
     public function bookingByStatus()
     {
         return Booking::select(DB::raw('count(*) as booking_count, status', 'schedule', 'booked_by'))
+            ->where(function($query){
+                $this->queryByRole($query);
+            })
             ->groupBy('status')
             ->with(['toStatus'])
             ->get();
@@ -48,5 +45,13 @@ trait BookingTrait {
 
             $query->whereIn('schedule', $sched_id);
         }
+    }
+    public function queryByRole($query)
+    {
+        $user = auth()->user();
+
+        $this->bookingsFoMember($user, $query);
+
+        $this->bookingsForPsychologist($user, $query);
     }
 }

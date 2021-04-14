@@ -17,6 +17,7 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('schedule');
             $table->unsignedBigInteger('booked_by');
+            $table->unsignedSmallInteger('session_type_id');
             $table->unsignedSmallInteger('status');
             $table->timestamps();
 
@@ -25,6 +26,9 @@ class CreateBookingsTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('booked_by')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('session_type_id')->references('id')->on('session_types')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('status')->references('id')->on('booking_statuses')

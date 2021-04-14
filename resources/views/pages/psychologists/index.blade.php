@@ -25,16 +25,18 @@
           </ul>
 
           <div class="tab-content">
-                <div class="tab-pane fade show active" id="schedules" role="tabpanel" aria-labelledby="schedules-tab">
-                      <div class="mt-4">
-                            <div class="row">
-                                  <div class="col-md-12">
-                                        <div id="calendar"></div>
-                                        @include('pages.schedules.modals.create-schedule')
-                                  </div>
-                            </div>
-                      </div>
-                </div>
+
+            <div class="tab-pane fade show active" id="schedules" role="tabpanel" aria-labelledby="schedules-tab">
+                  <div class="mt-4">
+                        <div class="row">
+                              <div class="col-md-12">
+                                    <div id="calendar"></div>
+                                    @include('pages.schedules.modals.create-schedule')
+                              </div>
+                        </div>
+                  </div>
+            </div>
+
           	<div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
           		<div class="mt-4">
           			<div class="row justify-content-center">
@@ -109,7 +111,7 @@
                         dayMaxEvents: true, // allow "more" link when too many events
                         events: schedules,
                         select(arg){
-                              handleSelect(arg)
+                            handleSelect(arg)
                         }
                   }
 
@@ -162,8 +164,8 @@
 
                   $schedules_time_lists.empty();
                   data.time_lists.forEach((time, index) => {
-                        let checked;
-                        let disabled;
+                  let checked;
+                  let disabled;
                   let sched = data.schedules.find(schedule => schedule.time === time.id);
                   
                   if(sched !== undefined) {

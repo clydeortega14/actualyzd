@@ -37,6 +37,7 @@ class SchedulesController extends Controller
 
         // Check if there are selected time
         if($request->has('time_lists')){
+            
             // loop time lists array
             foreach($request->time_lists as $time)
             {
@@ -65,8 +66,6 @@ class SchedulesController extends Controller
         $time_lists = TimeList::get();
 
         return response()->json(['schedules' => $schedules, 'time_lists' => $time_lists ]);
-
-
     }
 
     public function psychologists(Request $request)
@@ -93,7 +92,11 @@ class SchedulesController extends Controller
 
     public function timeDate(Request $request)
     {
-        $time_lists = PsychologistSchedule::where('start', $request->start)->with(['toTime'])->get();
+        $time_lists = PsychologistSchedule::where('start', $request->start)
+            ->where('status', 1)
+            ->with(['toTime'])
+            ->orderBy('start', 'ASC')
+            ->get();
 
         return view('pages.schedules.components.time-date', compact('time_lists'));
     }

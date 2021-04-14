@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     protected $table = 'bookings';
-    protected $fillable = ['schedule', 'booked_by', 'actioned_by', 'status'];
+    protected $fillable = ['schedule', 'booked_by', 'session_type_id', 'status'];
 
     public function toSchedule()
     {

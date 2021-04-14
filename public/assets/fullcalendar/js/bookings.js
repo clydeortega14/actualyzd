@@ -1,6 +1,7 @@
 	const custom_calendar = new CustomCalendar;
 	const schedule = new Schedule;
 	const ajax = new Ajax;
+
 	const bookings = {
 		initialize(){
 
@@ -10,6 +11,7 @@
 			this.events();
 		},
 		construct(){
+
 			// for global variables
 			this.booking_date = '';
 		},
@@ -27,8 +29,10 @@
 			let booking_date = this.$start_date.val();
 			const _this = this;
 
+			// Calendar
 			$(window).on('load', (e) => {
 
+				// get schedules
 				let schedules = schedule.get();
 
 				let calendarOptions = {
@@ -38,7 +42,6 @@
 			      	dayMaxEvents: true, // allow "more" link when too many events
 			      	events: schedules,
 			      	select(arg){
-
 			      		let foundSched = schedules.findIndex(sched => sched.start == arg.startStr);
 
 			      		if(foundSched !== -1){
@@ -48,9 +51,15 @@
 			      			booking_date = arg.startStr;
 			      			_this.$start_date.val(booking_date);
 
+			      			// get time by date
+			      			_this.getTimeByDate(arg.startStr);
+
 			      		}else{
 
 			      			_this.$pick_a_time_component.hide();
+			      			_this.$psychologist_component.hide();
+			      			_this.$onboarding_questions_component.hide();
+			      			_this.$booking_buttons.hide();
 			      		}
 			      	}
 				}
@@ -67,33 +76,53 @@
 					this.$bookings_table.html(data)
 				});
 			})
+
 			// Pick a Time
-			this.$time_list.change(function(e){
+			$(document).on('change', 'input[name="time"]', function(e){
+
 				e.preventDefault();
 
+				// get value of the time selected
 				let time_id = $(this).val();
+
+				// check if booking date is empty
 				if(booking_date === ""){
+
 					Swal.fire("Warning", "Kindly select first a date!", "warning")
 					$(this).prop("checked", false);
+
 				}else{
+
+					// Show psychologist component
+					$('#psychologist-component').show();
+
 					// request data from the server
-					schedule.getPsychologists(booking_date, time_id);
+					schedule.getPsychologists(booking_date, time_id)
 				}
 
 			});
 
-			// Show Questionnaires by category
-			this.$category.change(function(e){
 
-				let id = $(this).find('option:selected').val();
-				ajax.request({
-					url: `/set-up/assessment/categories/${id}`,
-					method: 'GET'
-				}).done(data => {
+			// Select psychologist
+			$(document).on('change', 'input[name="psychologist"]', function(e){
 
-					_this.$category_questionnaire.html(data)
-				})
+				_this.$booking_buttons.show();
+				_this.$onboarding_questions_component.show();
+
 			});
+		},
+		getTimeByDate(start){
+
+			ajax.asyncAwait({
+				url: '/time-date',
+				method: 'get',
+				data: {
+					start: start
+				}
+			}).done(function(response){
+				// console.log(this.$time_by_date)
+				$('#time-by-date').html(response);
+			})
 		},
 		dom(){
 
@@ -103,10 +132,13 @@
 			this.$category_questionnaire = $('#category-questionnaire');
 			this.$start_date = $('input[name="start_date"]');
 			this.$bookings_table = $('#bookings-table');
+			this.$time_by_date = $('#time-by-date');
 			this.$pick_a_time_component = $('#pick-a-time-component');
 			this.$psychologist_component = $('#psychologist-component');
 			this.$onboarding_questions_component = $('#onboarding-questions-component');
+			this.$booking_buttons = $('#booking-form-buttons');
 		}
 
 	}
+
 	bookings.initialize();

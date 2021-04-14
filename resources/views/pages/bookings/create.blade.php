@@ -24,15 +24,15 @@
 								<label class="col-form-label col-sm-4 text-md-right">Session Type</label>
 								<div class="col-sm-6">
 									<select name="session_type" class="form-control">
-										<option>Individual</option>
-										<option>Webinar</option>
-										<option>Group</option>
+										<option> Choose Session Type </option>
+										@foreach($session_types as $type)
+											<option value="{{ $type->id }}">{{ $type->name }}</option>
+										@endforeach
 									</select>
 								</div>
 							</div>
 						</div>
 					</div>
-
 					<!-- end select type of session -->
 
 
@@ -50,7 +50,7 @@
 
 				<!-- Onboarding Questions --> 
 				<div class="col-sm-12">
-					<div class="card mb-3" id="onboarding-questions-component">
+					<div class="card mb-3" id="onboarding-questions-component" style="display: none;">
 						<div class="card-header">
 							Tell us a bit about yourself
 						</div>
@@ -80,7 +80,7 @@
 				<!-- end onboarding questions -->
 
 				<div class="col-sm-12">
-					<div class="form-group">
+					<div class="form-group" id="booking-form-buttons" style="display: none;">
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
 						<a href="{{ route('home') }}" class="btn btn-danger btn-block">Cancel</a>
 					</div>

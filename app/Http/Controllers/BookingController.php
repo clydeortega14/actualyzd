@@ -12,6 +12,7 @@ use App\Http\Requests\BookingRequest;
 use App\Http\Traits\BookingTrait;
 use App\Booking;
 use App\RescheduledBooking;
+use App\SessionType;
 
 class BookingController extends Controller
 {
@@ -21,6 +22,7 @@ class BookingController extends Controller
     {
         $this->categories = AssessmentCategory::get(['id', 'name']);
         $this->time_lists = TimeList::with(['schedules'])->get();
+        $this->session_types = SessionType::get(['id', 'name']);
     }
     public function index()
     {
@@ -30,10 +32,10 @@ class BookingController extends Controller
 
     public function create()
     {
-        $time_lists = $this->time_lists;
         $categories = $this->categories;
+        $session_types = $this->session_types;
 
-        return view('pages.bookings.create', compact('time_lists', 'categories'));
+        return view('pages.bookings.create', compact('categories', 'session_types'));
     }
     public function bookNow(BookingRequest $request)
     {
@@ -61,7 +63,10 @@ class BookingController extends Controller
 
                 // for assessment answered questions
                 // store assessment answers to DB
-                $this->submitAnswers($booking->id, $request);
+                if($request->has('choice')){
+                    $this->submitAnswers($booking->id, $request);
+                }
+
             }else{
 
                 return redirect()->back()->with('error', 'Cannot Find Schedule');
@@ -76,7 +81,7 @@ class BookingController extends Controller
         
     	DB::commit();
 
-    	return redirect()->route('member.home')->with('success', 'You have successfully booked a session');
+    	return redirect()->route('home')->with('success', 'You have successfully booked a session');
     }
 
     public function submitAnswers($booking_id, $request)

@@ -31,14 +31,16 @@ class Schedule {
 
 	}
 	getPsychologists(date, time){
-		custom_ajax.request({
+		custom_ajax.asyncAwait({
 			url: '/psychologist/available',
 			method: 'GET',
 			data: {
 				start: date,
 				time: time
-			}
+			},
+			async: false
 		}).done(data => {
+
 			$('#psychologist-row').html(data)
 		});
 	}

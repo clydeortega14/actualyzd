@@ -6,9 +6,8 @@
 
 <div class="col-md-12 col-sm-12 col-xs-12">
 
-	<div class="card mb-3" id="pick-a-time-component">
+	<div class="card mb-3" id="pick-a-time-component" style="display: none;">
 		<div class="card-header">
-			
 			<div class="d-flex justify-content-between">
 				<div>Pick a Time</div>
 				<div>
@@ -19,13 +18,11 @@
 		</div>
 
 		<div class="card-body">
-			<div class="row" id="time-by-date">
-				
-			</div>	
+			<div class="row" id="time-by-date"></div>	
 		</div>	
 	</div>
 
-	<div class="card mb-3" id="psychologist-component">
+	<div class="card mb-3" id="psychologist-component" style="display: none;">
 		<div class="card-header">
 			Psychologists
 		</div>

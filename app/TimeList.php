@@ -23,4 +23,9 @@ class TimeList extends Model
     {
     	return date("g:i a", strtotime($this->to));
     }
+
+    public function parseTime($date)
+    {
+        return date("g:i a", strtotime($date));
+    }
 }

@@ -54,6 +54,8 @@
 		      	dayMaxEvents: true, // allow "more" link when too many events
 		      	events: schedules,
 		      	select(arg){
+		      		alert('test')
+		      		console.log(arg)
 		      		handleSelect(arg)
 		      	}
 			}

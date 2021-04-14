@@ -1,7 +1,5 @@
 <ol>
 	@foreach($category->questionnaires as $questionnaire)
-		
-
 		<li>
 			<input type="hidden" name="category_id[]" value="{{ $category->id }}">
 
@@ -36,7 +34,7 @@
 					@endif
 
 					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" required {{ $checked }} {{ $disabled }}>
+						<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
 						<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
 					</div>
 				@endforeach
