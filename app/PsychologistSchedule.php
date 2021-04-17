@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PsychologistSchedule extends Model
 {
     protected $fillable = [
-
-    	'psychologist', 'start', 'end', 'time', 'status', 'book_with'
+    	'psychologist', 'start', 'end'
     ];
 
     public $timestamps = false;
@@ -17,23 +16,7 @@ class PsychologistSchedule extends Model
     {
     	return	$this->belongsTo(User::class, 'psychologist');
     }
-
-    public function book_with()
-    {
-        return $this->belongsTo(User::class, 'book_with');
-    }
-
-    public function status()
-    {
-    	return $this->belongsTo(PsychoSchedStatus::class, 'status');
-    }
-
-    public function toTime()
-    {
-        return $this->belongsTo(TimeList::class, 'time');
-    }
-    public function bookWith()
-    {
-        return $this->belongsTo(User::class, 'book_with');
+    public function timeSchedules(){
+    	return $this->hasMany(TimeSchedule::class, 'schedule');
     }
 }

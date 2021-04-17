@@ -49,7 +49,7 @@
 				<!-- End Booking Selection -->
 
 				<!-- Onboarding Questions --> 
-				<div class="col-sm-12">
+				<div class="col-sm-12" style="display: none;">
 					<div class="card mb-3" id="onboarding-questions-component">
 						<div class="card-header">
 							Tell us a bit about yourself
@@ -80,7 +80,7 @@
 				<!-- end onboarding questions -->
 
 				<div class="col-sm-12">
-					<div class="form-group">
+					<div class="form-group" style="display:none;" id="btn-submit-booking">
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
 						<a href="{{ route('home') }}" class="btn btn-danger btn-block">Cancel</a>
 					</div>
