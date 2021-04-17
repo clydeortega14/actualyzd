@@ -7,15 +7,16 @@ use DateTime;
 use App\PsychologistSchedule;
 use App\TimeList;
 use App\TimeSchedule;
-use Carbon\CarbonPeriod;
+use App\Http\Traits\CarbonTrait;
 
 class SchedulesController extends Controller
 {
+    use CarbonTrait;
+
     public function index()
     {   
     	return view('pages.schedules.index');
     }
-
     public function show()
     {
         return view('pages.schedules.show');
@@ -36,15 +37,7 @@ class SchedulesController extends Controller
     }
     public function storeSchedule(Request $request)
     {
-        $period = CarbonPeriod::create($request->start_date, $request->end_date);
-        $dates = [];
-        // Iterate over the period
-        foreach ($period as $date) {
-            // assign formatted date on dates array
-            $dates[] = $date->format('Y-m-d');
-        }
-        // remove the last element in order to get the correct date range
-        array_pop($dates);
+        $dates = $this->betweenDates($request->start_date, $request->end_date);
 
         // Delete all schedules related to current psychologist and the date in the calendar selected
         PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->delete();
@@ -68,8 +61,6 @@ class SchedulesController extends Controller
                     ]);
                 }
             }
-
-            
         }
         
         return redirect()->back();
@@ -85,13 +76,9 @@ class SchedulesController extends Controller
 
         $time_lists = TimeList::get();
 
-        $time_schedules = TimeSchedule::where('schedule', $request->schedule)
-            ->with(['toTime', 'toSchedule'])->get();
-
         return response()->json([
             'schedules' => $schedules, 
             'time_lists' => $time_lists,
-            'time_schedules' => $time_schedules 
         ]);
     }
 
