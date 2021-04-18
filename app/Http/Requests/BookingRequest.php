@@ -24,7 +24,6 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
-            'time' => 'required',
             'start_date' => ['required', 'date'],
             'psychologist' => ['required']
         ];

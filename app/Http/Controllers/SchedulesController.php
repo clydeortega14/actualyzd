@@ -29,11 +29,10 @@ class SchedulesController extends Controller
             }
         })->whereDate('start', '>=', now()->toDateString())->get();
 
-        return response()->json($schedules);
-
-        // $collections = collect($schedules);
-        // $unique = $collections->unique('start');
-        // return response()->json($unique->values()->all());
+        $collections = collect($schedules);
+        $unique = $collections->unique('start');
+        
+        return response()->json($unique->values()->all());
     }
     public function storeSchedule(Request $request)
     {

@@ -90,11 +90,11 @@
 	            		<div class="card mt-3">
 	            			<div class="card-body">
 	            				<div class="card-header">
-	            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
+	            					<a href="{{ route('book.session') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
 	            				</div>
 	            				<div class="card-body">
 	            					<div class="table-responsive">
-	            						@include('pages.bookings.index')
+	            						{{-- @include('pages.bookings.index') --}}
 	            					</div>
 								</div>
 	            			</div>

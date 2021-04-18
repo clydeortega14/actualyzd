@@ -107,6 +107,10 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('bookings')->group(function(){
 
 		// Pages
+
+		Route::get('book-session', 'BookingController@bookSession')->name('book.session');
+
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');

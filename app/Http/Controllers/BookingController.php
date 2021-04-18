@@ -21,7 +21,7 @@ class BookingController extends Controller
     public function __construct()
     {
         $this->categories = AssessmentCategory::get(['id', 'name']);
-        $this->time_lists = TimeList::with(['schedules'])->get();
+        $this->time_lists = TimeList::get(['id', 'from', 'to']);
         $this->session_types = SessionType::get(['id', 'name']);
     }
     public function index()
