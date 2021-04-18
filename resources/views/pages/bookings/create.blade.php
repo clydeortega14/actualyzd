@@ -80,7 +80,7 @@
 				<!-- end onboarding questions -->
 
 				<div class="col-sm-12">
-					<div class="form-group" id="booking-form-buttons" style="display: none;">
+					<div class="form-group" style="display:none;" id="btn-submit-booking">
 						<button type="submit" class="btn btn-primary btn-block">Submit</button>
 						<a href="{{ route('home') }}" class="btn btn-danger btn-block">Cancel</a>
 					</div>

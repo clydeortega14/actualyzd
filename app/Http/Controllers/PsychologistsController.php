@@ -12,9 +12,7 @@ class PsychologistsController extends Controller
 
     public function home()
     {
-        $bookings = $this->bookingsQuery();
-
-        return view('pages.psychologists.index', compact('bookings'));
+        return view('pages.psychologists.index');
     }
     /**
      * Display a listing of the resource.

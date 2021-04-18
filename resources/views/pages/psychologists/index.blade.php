@@ -92,11 +92,9 @@
       <script>
 
             const date_parser = new DateParser;
-            let schedules = [];
+            const new_schedule = new Schedule;
 
             window.addEventListener('load', (event) => {
-
-                  getSchedules();
 
                   let calendarOptions = {
 
@@ -109,7 +107,7 @@
                         navLinks:  true,
                         selectable:  true,
                         dayMaxEvents: true, // allow "more" link when too many events
-                        events: schedules,
+                        events: new_schedule.get(),
                         select(arg){
                             handleSelect(arg)
                         }
@@ -118,63 +116,56 @@
                   custom_calendar.render(calendarOptions);
             })
 
-            function getSchedules()
-            {
-                  custom_ajax.asyncAwait({
-                        url: '/psychologist/schedules',
-                        method: 'GET',
-                        async: false
-                  }).done( res => {
-                        schedules = res.map(object => {
-                      return {
-                        id: object.id,
-                        start: object.start,
-                        end: object.end,
-                        display: 'background',
-                        color: 'green'
-                      }
-                  })
-                  return schedules;
-                  });
-            }
-
             function handleSelect(arg)
             {
-                  $('#create-schedule').modal('show');
-                  $('.start-date').val(arg.startStr);
-                  $('#create-schedule-modal-label').text(arg.startStr)
-                  $('#psychologist-available').empty();
+                $('#create-schedule').modal('show');
+                $('.start-date').val(arg.startStr);
+                $('input[name="end_date"]').val(arg.endStr);
+                $('#create-schedule-modal-label').text(arg.startStr)
+                $('#psychologist-available').empty();
+                let dom_list = $('.time-lists');
 
-                  custom_ajax.asyncAwait({
-                        url: '/psychologist/time-schedules',
-                        method: 'GET',
-                        async: false,
-                        data: {
-                              start: arg.startStr
-                        }
-                  }).done(data => {
-                        handleTimeList(data);
-                        handleSchedulesTable(data);
-                  })
+                custom_ajax.asyncAwait({
+                      url: '/psychologist/time-schedules',
+                      method: 'GET',
+                      async: false,
+                      data: {
+                            start: arg.startStr
+                      }
+                }).done(data => {
+                      handleTimeList(data);
+                      // handleSchedulesTable(data);
+                })
             }
 
             function handleTimeList(data)
             {
+                  let time_schedules = data.schedules !== null ? data.schedules.time_schedules : [];
                   let $schedules_time_lists = $('#schedules-time-lists');
 
                   $schedules_time_lists.empty();
-                  data.time_lists.forEach((time, index) => {
-                  let checked;
-                  let disabled;
-                  let sched = data.schedules.find(schedule => schedule.time === time.id);
-                  
-                  if(sched !== undefined) {
 
-                    checked = 'checked';
-                    if(sched.status.status === 'booked'){
-                      disabled = 'disabled';
-                    } 
-                  }
+                  // iterate time_list to be displayed
+                  data.time_lists.forEach((time, index) => {
+
+                    // declared local variables for checked and disabled
+                    let checked;
+                    let disabled;
+
+                    // find time schedules time that equals to time lists id
+                    let sched = time_schedules.find(time_sched => time_sched.time == time.id);
+                    
+                    // if found schedule is not equal to undefined
+                    if(sched !== undefined) {
+                      // assinged to checked
+                      checked = 'checked';
+
+                      // check if shed has already a booking
+                      if(sched.is_booked){
+                        // assign to disabled
+                        disabled = 'disabled';
+                      }
+                    }
 
                     $schedules_time_lists.append(schedulesTimeListTemp(time, checked, disabled));
                   })
@@ -202,7 +193,6 @@
             }
             function counselingTimeListTemp(time)
             {
-                  console.log(time)
                 return `
                   <div class="form-group">
                     <input type="radio" id="counseling${time.id}" name="time" value="${time.id}" class="with-gap" />

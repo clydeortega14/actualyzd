@@ -7,23 +7,12 @@
 
 			this.construct();
 			this.dom();
-			this.render();
 			this.events();
 		},
 		construct(){
 
 			// for global variables
 			this.booking_date = '';
-		},
-		render(){
-
-			// by default pick a time component, psychologist component
-			// and onboarding questions component must be hide
-			this.$pick_a_time_component.hide();
-			this.$psychologist_component.hide();
-			this.$onboarding_questions_component.hide();
-
-
 		},
 		events(){
 			let booking_date = this.$start_date.val();
@@ -55,11 +44,10 @@
 			      			_this.getTimeByDate(arg.startStr);
 
 			      		}else{
-
-			      			_this.$pick_a_time_component.hide();
 			      			_this.$psychologist_component.hide();
+			      			_this.$pick_a_time_component.hide();
 			      			_this.$onboarding_questions_component.hide();
-			      			_this.$booking_buttons.hide();
+			      			_this.$btn_submit_booking.hide();
 			      		}
 			      	}
 				}
@@ -67,14 +55,14 @@
 				custom_calendar.render(calendarOptions);
 
 
-				// bookings schedule
-				ajax.request({
+				// // bookings schedule
+				// ajax.request({
 
-					url: '/bookings',
-					method: 'GET',
-				}).done(data => {
-					this.$bookings_table.html(data)
-				});
+				// 	url: '/bookings',
+				// 	method: 'GET',
+				// }).done(data => {
+				// 	this.$bookings_table.html(data)
+				// });
 			})
 
 			// Pick a Time
@@ -136,7 +124,7 @@
 			this.$pick_a_time_component = $('#pick-a-time-component');
 			this.$psychologist_component = $('#psychologist-component');
 			this.$onboarding_questions_component = $('#onboarding-questions-component');
-			this.$booking_buttons = $('#booking-form-buttons');
+			this.$btn_submit_booking = $('#btn-submit-booking');
 		}
 
 	}

@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 use DateTime;
 use App\PsychologistSchedule;
 use App\TimeList;
+use App\TimeSchedule;
+use App\Http\Traits\CarbonTrait;
 
 class SchedulesController extends Controller
 {
+    use CarbonTrait;
+
     public function index()
     {   
     	return view('pages.schedules.index');
     }
-
     public function show()
     {
         return view('pages.schedules.show');
@@ -26,29 +29,38 @@ class SchedulesController extends Controller
             }
         })->whereDate('start', '>=', now()->toDateString())->get();
 
-        $collections = collect($schedules);
-        $unique = $collections->unique('start');
-        return response()->json($unique->values()->all());
+        return response()->json($schedules);
+
+        // $collections = collect($schedules);
+        // $unique = $collections->unique('start');
+        // return response()->json($unique->values()->all());
     }
     public function storeSchedule(Request $request)
     {
+        $dates = $this->betweenDates($request->start_date, $request->end_date);
+
         // Delete all schedules related to current psychologist and the date in the calendar selected
         PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->delete();
 
         // Check if there are selected time
         if($request->has('time_lists')){
-            
             // loop time lists array
-            foreach($request->time_lists as $time)
-            {
+            foreach($dates as $d){
                 // Create schedule
-                PsychologistSchedule::firstOrCreate([
+                $schedule = PsychologistSchedule::firstOrCreate([
                     'psychologist' => auth()->user()->id,
-                    'start' => $request->start_date,
-                    'end' => $request->start_date,
-                    'time' => $time,
-                    'status' => 1
+                    'start' => $d,
+                    'end' => $d
                 ]);
+                // loop time lists array
+                foreach($request->time_lists as $key => $time)
+                {
+                    // store time schedules
+                    TimeSchedule::firstOrCreate([
+                        'schedule' => $schedule->id,
+                        'time' => $time
+                    ]);
+                }
             }
         }
         
@@ -60,12 +72,15 @@ class SchedulesController extends Controller
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
             ->where('start', $request->start)
-            ->with(['toTime', 'status', 'bookWith'])
-            ->get();
+            ->with(['timeSchedules', 'psych'])
+            ->first();
 
         $time_lists = TimeList::get();
 
-        return response()->json(['schedules' => $schedules, 'time_lists' => $time_lists ]);
+        return response()->json([
+            'schedules' => $schedules, 
+            'time_lists' => $time_lists,
+        ]);
     }
 
     public function psychologists(Request $request)
