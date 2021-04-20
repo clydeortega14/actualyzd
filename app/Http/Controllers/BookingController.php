@@ -35,7 +35,7 @@ class BookingController extends Controller
         $categories = $this->categories;
         $session_types = $this->session_types;
 
-        return view('pages.bookings.create', compact('categories', 'session_types'));
+        return view('pages.bookings.create2', compact('categories', 'session_types'));
     }
     public function bookNow(BookingRequest $request)
     {

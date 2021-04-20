@@ -23,16 +23,29 @@ class SchedulesController extends Controller
     }
     public function getSchedules()
     {
+        // chedules query
         $schedules = PsychologistSchedule::where(function($q){
+
             if($this->user()->hasRole('psychologist')){
                 $q->where('psychologist', $this->user()->id);
             }
         })->whereDate('start', '>=', now()->toDateString())->get();
 
-        $collections = collect($schedules);
-        $unique = $collections->unique('start');
+        // map collections with unique start date
+        $unique = collect($schedules)->unique('start')->map(function($item, $key){
+
+            return [
+
+                'id' => $item->id,
+                'start' => $item->start,
+                'end' => $item->end,
+                'display' => 'background',
+                'color' => 'green'
+
+            ];
+        });
         
-        return response()->json($unique->values()->all());
+        return response()->json($unique);
     }
     public function storeSchedule(Request $request)
     {
