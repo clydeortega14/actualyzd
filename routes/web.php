@@ -77,7 +77,10 @@ Route::middleware('auth')->group(function(){
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
 
 	// Get time by date selected in calendar
-	Route::get('time-date', 'SchedulesController@timeDate');
+	Route::get('time-by-schedule/{schedule}', 'SchedulesController@getTimeBySchedule');
+
+	// Get onboarding questionnaires in ajax request
+	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
 	/* Pyschologist Prefix */
 	Route::prefix('psychologist')->group(function(){
@@ -93,7 +96,7 @@ Route::middleware('auth')->group(function(){
 		// Ajax
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
-		Route::get('available', 'SchedulesController@psychologists')->name('psychologist.available');
+		Route::get('available/{time}', 'SchedulesController@psychologists')->name('psychologist.available');
 	});
 
 
