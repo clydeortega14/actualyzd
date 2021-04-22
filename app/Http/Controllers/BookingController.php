@@ -37,64 +37,86 @@ class BookingController extends Controller
 
         return view('pages.bookings.create2', compact('categories', 'session_types'));
     }
-    public function bookNow(BookingRequest $request)
+    public function bookNow(Request $request)
     {
-        $validated = $request->validated();
+        // check if validation fails
+        if($this->validateBooking($request->all())->fails()){
 
-        // find schedule
+            return response()->json([
+                'success' => false, 
+                'data' => $this->validateBooking($request->all())->errors()->all()
+            ]);
+        }
+
+        // find schedule by scheduled_date and psychologist
         $schedule = $this->findSchedule($request);
 
+        // Begin Database Transaction
     	DB::beginTransaction();
 
     	try {
 
-            if(!is_null($schedule)){
 
-                 // store bookings
+            if(!is_null($schedule))
+            {
+                // Store Booking
                 $booking = Booking::create([
 
                     'schedule' => $schedule->id,
+                    'time_id' => $request->time_id,
+                    'counselee' => is_null($request->counselee) ? auth()->user()->id : $request->counselee,
                     'booked_by' => auth()->user()->id,
-                    'status' => 1
+                    'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
+                    'status' => 1 // booked
                 ]);
 
-                // update psychologist schedule to not available
-                $schedule->update(['status' => 2]);
+                // if booked
+                if($booking){
 
-                // for assessment answered questions
-                // store assessment answers to DB
-                if($request->has('choice')){
-                    $this->submitAnswers($booking->id, $request);
+                    // store onboarding answers
+                    if($request->has('choice')){
+
+                        $this->submitAnswers($booking->id, $request);
+
+                    }
+
+                    // store booking to progress reports if only
+                    // when the session type selected is individual / consultation
+
                 }
 
             }else{
 
-                return redirect()->back()->with('error', 'Cannot Find Schedule');
+                return response()->json(['success' => false, 'message' => 'Oops! No Schedule Found!']);
             }
-    		
     	} catch (Exception $e) {
     		
     		DB::rollback();
 
-    		return redirect()->back()->with('error', $e->getMessage());
+    		return response()->json(['success' => false, 'message' => $e->getMessage() ], 500);
     	}
         
     	DB::commit();
 
-    	return redirect()->route('home')->with('success', 'You have successfully booked a session');
+        return response()->json(['success' => true, 'message' => 'Successfully Booked a session'], 200);
+
+    	// return redirect()->route('home')->with('success', 'You have successfully booked a session');
     }
 
     public function submitAnswers($booking_id, $request)
     {
         foreach($request->choice as $index => $value){
 
-            AssessmentAnswer::create([
-                'booking_id' => $booking_id,
-                'category_id' => 1,
-                'questionnaire_id' => $index,
-                'answer' => $value
-            ]);
+            if($value != null){
 
+                AssessmentAnswer::create([
+                    'booking_id' => $booking_id,
+                    'category_id' => 1,
+                    'questionnaire_id' => $index,
+                    'answer' => $value
+                ]);
+            }
+            
         }
     }
     public function getAssessment(Booking $booking)
@@ -164,10 +186,7 @@ class BookingController extends Controller
 
     protected function findSchedule($request)
     {
-        return PsychologistSchedule::where('start', $request->start_date)
-                    ->where('time', $request->time)
-                    ->where('psychologist', $request->psychologist)
-                    ->first();
+        return PsychologistSchedule::where('start', $request->scheduled_date)->where('psychologist', $request->psychologist)->first();
     }
 
     protected function storeReason($booking, $request)

@@ -17350,6 +17350,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -17364,9 +17372,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
         initialView: 'dayGridMonth',
         dateClick: this.handleDateClick,
+        eventClick: this.handleEventClick,
         events: {
           url: '/psychologist/schedules'
         }
+      },
+      form: {
+        scheduled_date: null,
+        time: null,
+        psychologist: null,
+        counselee: null,
+        session_type_id: null,
+        choice: []
       },
       time: {
         show: false
@@ -17377,7 +17394,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       onboarding: {
         show: false
       },
-      selected_date: ''
+      show_actions: false
     };
   },
   created: function created() {
@@ -17390,28 +17407,66 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     PsychologistComponent: _PsychologistComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
     OnboardingQuestion: _OnboardingQuestion__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["getAllSchedules", "timeLists", "availablePsychologist"])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["getAllSchedules", "timeLists", "availablePsychologist", "storeBooking"])), {}, {
+    handleEventClick: function handleEventClick(arg) {
+      this.form.scheduled_date = arg.event.startStr;
+      var schedule_id = arg.event.id;
+      this.time.show = true;
+      this.timeLists(schedule_id);
+    },
     handleDateClick: function handleDateClick(argument) {
-      this.selected_date = argument.dateStr;
-      var foundSched = this.getSchedules.find(function (schedule) {
-        return schedule.start === argument.dateStr;
-      });
-
-      if (foundSched !== undefined) {
-        this.time.show = true;
-        this.timeLists(foundSched.id);
-      } else {
-        this.time.show = false;
-        this.psychologist.show = false;
-      }
+      this.time.show = false;
+      this.psychologist.show = false;
+      this.onboarding.show = false;
+      this.show_actions = false;
     },
     selectTime: function selectTime(data) {
+      this.form.time = data;
       this.psychologist.show = true;
       this.availablePsychologist(data);
     },
     selectPyschologist: function selectPyschologist(id) {
-      console.log(id);
+      this.form.psychologist = id;
       this.onboarding.show = true;
+    },
+    onboardingAnswers: function onboardingAnswers(answers) {
+      this.show_actions = true;
+      this.form.choice = answers;
+    },
+    submitBooking: function submitBooking() {
+      var _this = this;
+
+      var payload = {
+        scheduled_date: this.form.scheduled_date,
+        time_id: this.form.time,
+        psychologist: this.form.psychologist,
+        counselee: this.form.counselee,
+        session_type_id: this.form.session_type_id,
+        choice: this.form.choice
+      };
+      axios.post('/bookings/book', payload).then(function (response) {
+        var result = response.data;
+
+        if (result.success) {
+          // clear form
+          _this.form.scheduled_date = null;
+          _this.form.time = null;
+          _this.form.psychologist = null;
+          _this.form.counselee = null;
+          _this.form.session_type_id = null;
+          _this.form.choice = []; // hide some components
+
+          _this.time.show = false;
+          _this.psychologist.show = false;
+          _this.onboarding.show = false;
+          _this.show_actions = false;
+          alert(result.message);
+        } else {
+          alert(result.message);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   })
 });
@@ -17465,7 +17520,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -17478,7 +17532,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.getQuestions();
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getQuestions"])), {}, {
-    selectChoice: function selectChoice() {// console.log(this.chosen_choice)
+    selectChoice: function selectChoice() {
+      this.$emit('onboarding-answers', this.chosen_choice);
     }
   })
 });
@@ -54643,24 +54698,61 @@ var render = function() {
     [
       _c("FullCalendar", { attrs: { options: _vm.calendarOptions } }),
       _vm._v(" "),
-      _vm.time.show
-        ? _c("TimeComponent", {
-            attrs: {
-              time_lists: _vm.getTimeLists,
-              selected_date: _vm.selected_date
-            },
-            on: { "select-time": _vm.selectTime }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.psychologist.show
-        ? _c("PsychologistComponent", {
-            attrs: { psychologist_available: _vm.getAvailable },
-            on: { "selected-psychologist": _vm.selectPyschologist }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.onboarding.show ? _c("OnboardingQuestion") : _vm._e()
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.submitBooking($event)
+            }
+          }
+        },
+        [
+          _vm.time.show
+            ? _c("TimeComponent", {
+                attrs: {
+                  time_lists: _vm.getTimeLists,
+                  selected_date: _vm.form.scheduled_date
+                },
+                on: { "select-time": _vm.selectTime }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.psychologist.show
+            ? _c("PsychologistComponent", {
+                attrs: { psychologist_available: _vm.getAvailable },
+                on: { "selected-psychologist": _vm.selectPyschologist }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.onboarding.show
+            ? _c("OnboardingQuestion", {
+                on: { "onboarding-answers": _vm.onboardingAnswers }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.show_actions
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary btn-block mt-3 mb-3" },
+                  [_vm._v("Submit")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-danger btn-block",
+                    attrs: { href: "#" }
+                  },
+                  [_vm._v("Cancel")]
+                )
+              ])
+            : _vm._e()
+        ],
+        1
+      )
     ],
     1
   )
@@ -54702,9 +54794,9 @@ var render = function() {
             _vm._v(" "),
             _c(
               "ol",
-              _vm._l(category.questionnaires, function(questionnaire) {
-                return _c("li", { key: questionnaire.id }, [
-                  _vm._v(_vm._s(questionnaire.question) + "\n\n\t\t\t\t\t\t"),
+              _vm._l(category.questionnaires, function(questionnaire, key) {
+                return _c("li", { key: key }, [
+                  _vm._v(_vm._s(questionnaire.question) + "\n\t\t\t\t\t\t"),
                   _c(
                     "div",
                     { staticClass: "form-group mb-4" },
@@ -68754,6 +68846,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_schedule_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/schedule.js */ "./resources/js/store/modules/schedule.js");
 /* harmony import */ var _modules_psychologist_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/psychologist.js */ "./resources/js/store/modules/psychologist.js");
 /* harmony import */ var _modules_onboarding_question_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/onboarding-question.js */ "./resources/js/store/modules/onboarding-question.js");
+/* harmony import */ var _modules_booking_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/booking.js */ "./resources/js/store/modules/booking.js");
+
 
 
 
@@ -68764,9 +68858,57 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   modules: {
     schedule: _modules_schedule_js__WEBPACK_IMPORTED_MODULE_2__["default"],
     psychologist: _modules_psychologist_js__WEBPACK_IMPORTED_MODULE_3__["default"],
-    onboarding_questions: _modules_onboarding_question_js__WEBPACK_IMPORTED_MODULE_4__["default"]
+    onboarding_questions: _modules_onboarding_question_js__WEBPACK_IMPORTED_MODULE_4__["default"],
+    booking: _modules_booking_js__WEBPACK_IMPORTED_MODULE_5__["default"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/booking.js":
+/*!***********************************************!*\
+  !*** ./resources/js/store/modules/booking.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = function state() {
+  return {
+    booking: {}
+  };
+};
+
+var getters = {
+  getBooking: function getBooking(state) {
+    return state.booking;
+  }
+};
+var actions = {
+  storeBooking: function storeBooking(payload) {
+    return new Promise(function (resolve, reject) {
+      axios.post('/bookings/book', payload).then(function (response) {
+        console.log(response);
+        resolve(response);
+      })["catch"](function (error) {
+        console.log(error);
+        reject(error);
+      });
+    }); // const book_now = await axios.post('/bookings/book', payload);
+  }
+};
+var mutations = {
+  setBooking: function setBooking(state, booking) {
+    return state.booking = booking;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
 
 /***/ }),
 

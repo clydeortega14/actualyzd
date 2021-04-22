@@ -7,11 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     protected $table = 'bookings';
-    protected $fillable = ['schedule', 'booked_by', 'session_type_id', 'status'];
+    protected $fillable = 
+        [
+            'schedule', 
+            'time_id',
+            'counselee',
+            'booked_by', 
+            'session_type_id', 
+            'status'
+        ];
 
     public function toSchedule()
     {
-    	return $this->belongsTo('App\PsychologistSchedule', 'schedule');
+        return $this->belongsTo(PsychologistSchedule::class, 'schedule');
+    }
+    public function time()
+    {
+        return $this->belongsTo('App\TimeList', 'time_id');
+    }
+
+    public function toCounselee()
+    {
+        return $this->belongsTo(User::class, 'counselee');
     }
 
     public function bookedBy()
@@ -19,10 +36,6 @@ class Booking extends Model
     	return $this->belongsTo('App\User', 'booked_by');
     }
 
-    public function actionedBy()
-    {
-    	return $this->belongsTo('App\User', 'actioned_by');
-    }
     public function toStatus()
     {
     	return $this->belongsTo('App\BookingStatus', 'status');

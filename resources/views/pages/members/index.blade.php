@@ -44,7 +44,7 @@
 
 	                        @foreach($booking_by_statuses as $bookedByStatus)
 
-	                        	@if($bookedByStatus->toStatus->name == "New")
+	                        	@if($bookedByStatus->toStatus->name == "Booked")
 
 	                        		@php
 	                        			$badge = 'primary'

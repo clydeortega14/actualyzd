@@ -32,16 +32,14 @@ class SchedulesController extends Controller
         })->whereDate('start', '>=', now()->toDateString())->get();
 
         // map collections with unique start date
-        $unique = collect($schedules)->unique('start')->map(function($item, $key){
+        $unique = collect($schedules)->map(function($item, $key){
 
             return [
-
                 'id' => $item->id,
+                'title' => 'Book Here',
                 'start' => $item->start,
                 'end' => $item->end,
-                'display' => 'background',
-                'color' => 'green'
-
+                'allDay' => true
             ];
         });
         

@@ -9,12 +9,11 @@
 				<li v-for="category in allQuestions" :key="category.id">
 					<b>{{ category.name }}</b>
 					<ol>
-						<li v-for="questionnaire in category.questionnaires" :key="questionnaire.id">{{ questionnaire.question }}
-
+						<li v-for="(questionnaire, key) in category.questionnaires" :key="key">{{ questionnaire.question }}
 							<div class="form-group mb-4">
 
 								<div class="form-check form-check-inline" v-for="(choice, index) in questionnaire.to_option.choices" :key="index">
-
+									
 									<input class="form-check-input" type="radio" :id="choice.id" :value="choice.value" v-model="chosen_choice[questionnaire.id]" @change="selectChoice">
 
 									<label class="form-check-label" for="mc-one-never">{{ choice.display_name }}</label>
@@ -57,7 +56,7 @@
 			...mapActions(["getQuestions"]),
 			selectChoice()
 			{
-				// console.log(this.chosen_choice)
+				this.$emit('onboarding-answers', this.chosen_choice)
 			}
 		}
 	}

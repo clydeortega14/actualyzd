@@ -16,13 +16,22 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('schedule');
+            $table->unsignedInteger('time_id');
+            $table->unsignedBigInteger('counselee')->nullable();
             $table->unsignedBigInteger('booked_by');
             $table->unsignedSmallInteger('session_type_id');
             $table->unsignedSmallInteger('status');
             $table->timestamps();
 
-            //foreign keys
+
+            // foreign keys
             $table->foreign('schedule')->references('id')->on('psychologist_schedules')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('time_id')->references('id')->on('time_lists')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('counselee')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('booked_by')->references('id')->on('users')
