@@ -17409,6 +17409,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["getAllSchedules", "timeLists", "availablePsychologist", "storeBooking"])), {}, {
     handleEventClick: function handleEventClick(arg) {
+      console.log(arg);
       this.form.scheduled_date = arg.event.startStr;
       var schedule_id = arg.event.id;
       this.time.show = true;
