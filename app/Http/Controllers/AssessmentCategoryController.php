@@ -90,7 +90,7 @@ class AssessmentCategoryController extends Controller
 
     public function questionnaires()
     {
-        $categories = Category::with(['questionnaires.toOption.choices'])->get();
+        $categories = Category::has('questionnaires')->with(['questionnaires.toOption.choices'])->get();
 
         return response()->json($categories);
     }

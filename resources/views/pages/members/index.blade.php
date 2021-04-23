@@ -1,8 +1,8 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 @section('content')
 	
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 
@@ -44,7 +44,7 @@
 
 	                        @foreach($booking_by_statuses as $bookedByStatus)
 
-	                        	@if($bookedByStatus->toStatus->name == "Booked")
+	                        	{{-- @if($bookedByStatus->toStatus->name == "Booked")
 
 	                        		@php
 	                        			$badge = 'primary'
@@ -62,14 +62,14 @@
 	                        			$badge = 'warning'
 	                        		@endphp
 
-	                        	@endif
+	                        	@endif --}}
 
 	                        	<div class="col-xl-3 col-md-6 mb-4">
-		                            <div class="card border-left-{{ $badge }} shadow h-100 py-2">
+		                            <div class="card border-left-info shadow h-100 py-2">
 		                                <div class="card-body">
 		                                    <div class="row no-gutters align-items-center">
 		                                        <div class="col mr-2">
-		                                            <div class="text-xs font-weight-bold text-{{ $badge }} text-uppercase mb-1">
+		                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 		                                                {{ $bookedByStatus->toStatus->name == "New" ? 'Upcoming Scheduled Booking' : $bookedByStatus->toStatus->name }}</div>
 		                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $bookedByStatus->booking_count }}</div>
 		                                        </div>
@@ -94,7 +94,7 @@
 	            				</div>
 	            				<div class="card-body">
 	            					<div class="table-responsive">
-	            						{{-- @include('pages.bookings.index') --}}
+	            						@include('pages.bookings.index')
 	            					</div>
 								</div>
 	            			</div>

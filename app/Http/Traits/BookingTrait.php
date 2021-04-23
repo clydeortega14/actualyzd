@@ -11,9 +11,8 @@ trait BookingTrait {
     {
         return Validator::make($data, [
 
-            'scheduled_date' => ['required', 'date'],
+            'schedule' => ['required'],
             'time_id' => ['required'],
-            'psychologist' => ['required'],
         ]);
     }
 

@@ -13,6 +13,8 @@ use App\Http\Traits\BookingTrait;
 use App\Booking;
 use App\RescheduledBooking;
 use App\SessionType;
+use App\ProgressReport;
+use App\TimeSchedule;
 
 class BookingController extends Controller
 {
@@ -48,16 +50,21 @@ class BookingController extends Controller
             ]);
         }
 
-        // find schedule by scheduled_date and psychologist
-        $schedule = $this->findSchedule($request);
+        // find schedule by schedule_id
+        $schedule = PsychologistSchedule::findOrFail($request->schedule);
+
+        // find time schedules by request schedule and time_id
+        $time_schedule = TimeSchedule::where('schedule', $request->schedule)
+            ->where('time', $request->time_id)->first();
 
         // Begin Database Transaction
     	DB::beginTransaction();
 
     	try {
 
-
-            if(!is_null($schedule))
+            // Check if psychologist schedule and time schedule was found
+            // and did not return null
+            if(!is_null($schedule) && !is_null($time_schedule))
             {
                 // Store Booking
                 $booking = Booking::create([
@@ -73,15 +80,23 @@ class BookingController extends Controller
                 // if booked
                 if($booking){
 
+                    // update time schedule is_booked to true
+                    $time_schedule->update(['is_booked' => true]);
+
                     // store onboarding answers
                     if($request->has('choice')){
 
+                        // submit on boarding question answers
                         $this->submitAnswers($booking->id, $request);
-
                     }
 
-                    // store booking to progress reports if only
-                    // when the session type selected is individual / consultation
+                    // if session type is individual / consultation
+                    if($booking->session_type_id == 1){
+
+                        // create a progress report to be fill up
+                        // by the psychologist after counseling
+                        ProgressReport::firstOrCreate(['booking_id' => $booking->id]);
+                    }
 
                 }
 
@@ -99,8 +114,6 @@ class BookingController extends Controller
     	DB::commit();
 
         return response()->json(['success' => true, 'message' => 'Successfully Booked a session'], 200);
-
-    	// return redirect()->route('home')->with('success', 'You have successfully booked a session');
     }
 
     public function submitAnswers($booking_id, $request)
@@ -134,7 +147,7 @@ class BookingController extends Controller
     public function updateToCancel(Booking $booking, Request $request)
     {
         //Update booking status to cancelled
-        $booking->update(['status' => 5]);
+        $booking->update(['status' => 4]);
 
         // store reason for cancelling in the database
         $reason = $this->storeReason($booking, $request);
@@ -148,10 +161,12 @@ class BookingController extends Controller
 
     public function reschedule(Booking $booking)
     {
-        $time_lists = $this->time_lists;
-        $categories = $this->categories;
+        // $time_lists = $this->time_lists;
+        // $categories = $this->categories;
 
-        return view('pages.bookings.reschedule', compact('booking', 'time_lists', 'categories'));
+       $booking = $booking->with(['toSchedule'])->first();
+
+        return view('pages.bookings.create2', compact('booking'));
     }
     public function reschedBooking(Booking $booking, Request $request)
     {

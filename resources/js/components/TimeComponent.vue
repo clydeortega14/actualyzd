@@ -1,5 +1,5 @@
 <template>
-	<div class="card mt-3">
+	<div class="card mt-3 mb-3">
 		<div class="card-header">
 			<div class="d-flex justify-content-between">
 				<span>Pick a time</span>

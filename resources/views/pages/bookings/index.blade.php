@@ -11,11 +11,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{{-- @foreach($bookings as $booking)
+		@foreach($bookings as $booking)
 			<tr>
 				<td>{{ $booking->toSchedule->start }}</td>
 				<td>
-					{{ $booking->toSchedule->toTime->parseTimeFrom().' - '. $booking->toSchedule->toTime->parseTimeTo()}}
+					{{ $booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo()}}
 				</td>
 				<td>{{ 
 					auth()->user()->hasRole('psychologist') ?
@@ -69,6 +69,6 @@
 					</div>
 				 </td>
 			</tr>
-		@endforeach --}}
+		@endforeach
 	</tbody>
 </table>
