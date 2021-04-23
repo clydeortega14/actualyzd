@@ -29,14 +29,16 @@ class SchedulesController extends Controller
             if($this->user()->hasRole('psychologist')){
                 $q->where('psychologist', $this->user()->id);
             }
-        })->whereDate('start', '>=', now()->toDateString())->get();
+        })->whereDate('start', '>=', now()->toDateString())
+        ->with(["psych"])->get();
 
         // map collections with unique start date
         $unique = collect($schedules)->map(function($item, $key){
 
             return [
                 'id' => $item->id,
-                'title' => 'Book Here',
+                'title' => $item->psych->name,
+                'psychologist' => $item->psych,
                 'start' => $item->start,
                 'end' => $item->end,
                 'allDay' => true

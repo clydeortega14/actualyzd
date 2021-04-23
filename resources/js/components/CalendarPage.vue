@@ -113,6 +113,7 @@
 
 			handleEventClick(arg){
 
+				console.log(arg)
 				this.form.scheduled_date = arg.event.startStr;
 				let schedule_id = arg.event.id;
 				this.time.show = true;
