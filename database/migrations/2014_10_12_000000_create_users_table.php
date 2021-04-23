@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->boolean('is_active')->default(true);
-            $table->integer('no_of_bookings')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

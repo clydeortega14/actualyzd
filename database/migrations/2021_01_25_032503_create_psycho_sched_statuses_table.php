@@ -17,7 +17,6 @@ class CreatePsychoSchedStatusesTable extends Migration
             $table->smallIncrements('id');
             $table->string('status');
             $table->string('class')->nullable();
-            // $table->timestamps();
         });
     }
 
