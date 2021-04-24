@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table">
 	<thead>
 		<tr>
 			<th>Date</th>
@@ -7,7 +7,7 @@
 			<th>Topic</th>
 			<th>Link of session</th>
 			<th>Status</th>
-			<th>Action</th>
+			{{-- <th>Action</th> --}}
 		</tr>
 	</thead>
 	<tbody>
@@ -34,7 +34,8 @@
 				 		<a href="{{ route('booking.cancel', $booking->id) }}">see reason</a>
 				 	@endif
 				 </td>
-				 <td>
+				 {{-- <td>
+
 				 	<div class="btn-group">
 						<button type="button" class="btn btn-info btn-sm ">Action</button>
 						<button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,7 +68,7 @@
 							</a>
 						</div>
 					</div>
-				 </td>
+				 </td> --}}
 			</tr>
 		@endforeach
 	</tbody>
