@@ -62,7 +62,7 @@
 				},
 				form: {
 
-					scheduled_date: null,
+					schedule: null,
 					time: null,
 					psychologist: null,
 					counselee: null,
@@ -84,7 +84,13 @@
 				show_actions: false
 			}
 		},
+		props: {
+
+			booking: Object
+		},
 		created(){
+
+			console.log(this.booking)
 
 			this.getAllSchedules()
 		},
@@ -113,9 +119,10 @@
 
 			handleEventClick(arg){
 
-				console.log(arg)
-				this.form.scheduled_date = arg.event.startStr;
 				let schedule_id = arg.event.id;
+
+				this.form.schedule = schedule_id;
+				this.form.scheduled_date = arg.event.startStr;
 				this.time.show = true;
 				this.timeLists(schedule_id)
 			},
@@ -123,14 +130,15 @@
 			handleDateClick(argument){
 
 				this.time.show = false;
-				this.psychologist.show = false;
+				// this.psychologist.show = false;
 				this.onboarding.show = false;
 				this.show_actions = false;
 			},
 			selectTime(data)
 			{
 				this.form.time = data;
-				this.psychologist.show = true;
+				// this.psychologist.show = true;
+				this.onboarding.show = true;
 				this.availablePsychologist(data);
 			},
 			selectPyschologist(id)
@@ -147,9 +155,8 @@
 			{
 				let payload = {
 
-					scheduled_date: this.form.scheduled_date,
+					schedule: this.form.schedule,
 					time_id: this.form.time,
-					psychologist: this.form.psychologist,
 					counselee: this.form.counselee,
 					session_type_id: this.form.session_type_id,
 					choice: this.form.choice
@@ -163,6 +170,7 @@
 						if(result.success){
 
 							// clear form
+							this.form.schedule = null;
 							this.form.scheduled_date = null;
 							this.form.time = null;
 							this.form.psychologist = null;

@@ -17378,7 +17378,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       },
       form: {
-        scheduled_date: null,
+        schedule: null,
         time: null,
         psychologist: null,
         counselee: null,
@@ -17397,7 +17397,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       show_actions: false
     };
   },
+  props: {
+    booking: Object
+  },
   created: function created() {
+    console.log(this.booking);
     this.getAllSchedules();
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapGetters"])(["getSchedules", "getTimeLists", "getAvailable"])),
@@ -17409,21 +17413,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["getAllSchedules", "timeLists", "availablePsychologist", "storeBooking"])), {}, {
     handleEventClick: function handleEventClick(arg) {
-      console.log(arg);
-      this.form.scheduled_date = arg.event.startStr;
       var schedule_id = arg.event.id;
+      this.form.schedule = schedule_id;
+      this.form.scheduled_date = arg.event.startStr;
       this.time.show = true;
       this.timeLists(schedule_id);
     },
     handleDateClick: function handleDateClick(argument) {
-      this.time.show = false;
-      this.psychologist.show = false;
+      this.time.show = false; // this.psychologist.show = false;
+
       this.onboarding.show = false;
       this.show_actions = false;
     },
     selectTime: function selectTime(data) {
-      this.form.time = data;
-      this.psychologist.show = true;
+      this.form.time = data; // this.psychologist.show = true;
+
+      this.onboarding.show = true;
       this.availablePsychologist(data);
     },
     selectPyschologist: function selectPyschologist(id) {
@@ -17438,9 +17443,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       var payload = {
-        scheduled_date: this.form.scheduled_date,
+        schedule: this.form.schedule,
         time_id: this.form.time,
-        psychologist: this.form.psychologist,
         counselee: this.form.counselee,
         session_type_id: this.form.session_type_id,
         choice: this.form.choice
@@ -17450,6 +17454,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (result.success) {
           // clear form
+          _this.form.schedule = null;
           _this.form.scheduled_date = null;
           _this.form.time = null;
           _this.form.psychologist = null;
@@ -54962,7 +54967,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card mt-3" }, [
+  return _c("div", { staticClass: "card mt-3 mb-3" }, [
     _c("div", { staticClass: "card-header" }, [
       _c("div", { staticClass: "d-flex justify-content-between" }, [
         _c("span", [_vm._v("Pick a time")]),

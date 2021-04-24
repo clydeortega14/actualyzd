@@ -38,7 +38,6 @@ class SchedulesController extends Controller
             return [
                 'id' => $item->id,
                 'title' => $item->psych->name,
-                'psychologist' => $item->psych,
                 'start' => $item->start,
                 'end' => $item->end,
                 'allDay' => true
@@ -125,7 +124,10 @@ class SchedulesController extends Controller
 
     public function getTimeBySchedule(PsychologistSchedule $schedule)
     {
-        $time_schedules = $schedule->timeSchedules()->with(['toTime', 'toSchedule'])->get();
+        $time_schedules = $schedule->timeSchedules()
+            ->where('is_booked', false)
+            ->with(['toTime', 'toSchedule'])
+            ->get();
 
         $mapped_time_format = $time_schedules->map(function($time_schedule){
 

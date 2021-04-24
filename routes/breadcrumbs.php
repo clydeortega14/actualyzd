@@ -41,3 +41,8 @@ Breadcrumbs::for('booking.answered.questions', function($trail, $booking){
 	$trail->push('On Boarding Questions', route('booking.answered.questions', $booking));
 
 });
+
+Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
+	$trail->parent('home');
+    $trail->push('Reschedule Booking', route('booking.reschedule', $booking));
+});
