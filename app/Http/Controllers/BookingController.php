@@ -139,11 +139,6 @@ class BookingController extends Controller
         return view('pages.bookings.answered-questions', compact('booking', 'categories'));
     }
 
-    public function cancel(Booking $booking)
-    {
-        return view('pages.bookings.cancel', compact('booking'));
-    }
-
     public function updateToCancel(Booking $booking, Request $request)
     {
         //Update booking status to cancelled
@@ -155,8 +150,31 @@ class BookingController extends Controller
         // update the schedule to available again
         $booking->toSchedule->update(['status' => 1 ]);
 
-        return redirect()->route('member.home')->with('success', 'Session has been cancelled');
+        return redirect()->back()->with('success', 'Session has been cancelled');
+    }
 
+    public function complete(Booking $booking)
+    {
+        // update booking status to complete
+        $booking->update(['status' => 2 ]);
+
+        if(!$booking){
+            return redirect()->back()->with('error', 'There was an error during completing this session');
+        }
+
+        return redirect()->back()->with('success', 'Session has been completed');
+    }
+
+    public function noShow(Booking $booking)
+    {
+        // update status to no show
+        $booking->update(['status' => 3 ]);
+
+        if(!$booking){
+            return redirect()->back()->with('error', 'Oops! There was an error');
+        }
+
+        return redirect()->back()->with('success', 'No Show!');
     }
 
     public function reschedule(Booking $booking)

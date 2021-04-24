@@ -113,8 +113,6 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
 
-		Route::get('cancel/{booking}', 'BookingController@cancel')->name('booking.cancel');
-
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
 		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
@@ -125,6 +123,10 @@ Route::middleware('auth')->group(function(){
 		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
 
 		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
+
+		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
+
+		Route::put('no-show/{booking}', 'BookingController@noShow')->name('booking.no.show');
 	});
 
 });
