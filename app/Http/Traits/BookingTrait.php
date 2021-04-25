@@ -21,7 +21,9 @@ trait BookingTrait {
 	{
 		return Booking::where(function($query){
             $this->queryByRole($query);
-        })->get();
+        })
+        ->with(['progressReport'])
+        ->get();
 	}
 
     public function totalBookings()

@@ -53,7 +53,7 @@
           			<div class="row">
           				<div class="col-md-12">
           					<div class="table-responsive">
-          						<table class="table table-bordered">
+          						<table class="table">
           							<thead>
           								<tr>
           									<th>Timestamp</th>
@@ -65,8 +65,30 @@
           									<th>Initial Assessment / Impression</th>
           									<th>Recommended for follow up session</th>
           									<th>Intervention Plan / Treatment Goal:</th>
+                            <th></th>
           								</tr>
           							</thead>
+                        <tbody>
+                          
+                            @foreach($bookings as $booking)
+
+                              <tr>
+                                <td>{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}</td>
+                                <td>{{ $booking->toSchedule->formattedStart() }}</td>
+                                <td>N/A</td>
+                                <td>{{ $booking->toCounselee->name }}</td>
+                                <td>{{ $booking->progressReport->main_concern }}</td>
+                                <td>{{ $booking->progressReport->has_prescription }}</td>
+                                <td>{{ $booking->progressReport->initial_assessment }}</td>
+                                <td>{{ $booking->progressReport->followup_session }}</td>
+                                <td>{{ $booking->progressReport->treatment_goal }}</td>
+                                <td>
+                                  <a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">Action</a>
+                                </td>
+                              </tr>
+                            @endforeach
+
+                        </tbody>
           						</table>
           					</div>
           				</div>

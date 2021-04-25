@@ -58,4 +58,8 @@ class Booking extends Model
     {
         return $this->hasOne(RescheduledBooking::class);
     }
+    public function progressReport()
+    {
+        return $this->hasOne(ProgressReport::class);
+    }
 }
