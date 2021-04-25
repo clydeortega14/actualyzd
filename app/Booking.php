@@ -36,6 +36,11 @@ class Booking extends Model
     	return $this->belongsTo('App\User', 'booked_by');
     }
 
+    public function sessionType()
+    {
+        return $this->belongsTo('App\SessionType', 'session_type_id');
+    }
+
     public function toStatus()
     {
     	return $this->belongsTo('App\BookingStatus', 'status');

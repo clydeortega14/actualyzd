@@ -7,17 +7,18 @@
             </div>
             <form action="{{ route('cancel.booking', $booking->id) }}" method="POST">
             	@csrf
-
 	            <div class="modal-body">
 	            	<div class="form-group row">
 						<label class="col-form-label col-sm-4 text-md-right">Reason:</label>
 						<div class="col-sm-6">
-							<textarea name="reason" class="form-control" placeholder="Please specify your reason here" rows="5" cols="50" required></textarea>
+							<textarea name="reason" class="form-control" placeholder="Please specify your reason here" rows="5" cols="50" required {{ !is_null($booking->reschedule) ? 'disabled' : ''}}>{{ is_null($booking->reschedule) ? '' : $booking->reschedule->reason }}</textarea>
 						</div>
 					</div>
 	            </div>
 	            <div class="modal-footer">
-	            	<button type="submit" class="btn btn-primary waves-effect">Submit</button>
+	            	@if(is_null($booking->reschedule))
+	            		<button type="submit" class="btn btn-primary waves-effect">Submit</button>
+	            	@endif
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
 	            </div>
             </form>

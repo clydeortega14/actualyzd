@@ -2,8 +2,7 @@
 	@foreach($category->questionnaires as $questionnaire)
 		<li>
 			<input type="hidden" name="category_id[]" value="{{ $category->id }}">
-
-			<h6><b>{{ $questionnaire->question}}</b></h6>
+			<p>{{ $questionnaire->question}}</p>
 
 			@php
 				$option = $questionnaire->toOption;
