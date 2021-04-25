@@ -12,7 +12,9 @@ class PsychologistsController extends Controller
 
     public function home()
     {
-        return view('pages.psychologists.index');
+        $bookings = $this->bookingsQuery();
+
+        return view('pages.psychologists.index', compact('bookings'));
     }
     /**
      * Display a listing of the resource.
@@ -21,6 +23,7 @@ class PsychologistsController extends Controller
      */
     public function index()
     {
+
         $psychologists = Psychologist::with('user')->get();
 
         return view('pages.superadmin.psychologists.index', compact('psychologists'));

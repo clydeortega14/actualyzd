@@ -87,4 +87,11 @@ class AssessmentCategoryController extends Controller
     {
         //
     }
+
+    public function questionnaires()
+    {
+        $categories = Category::has('questionnaires')->with(['questionnaires.toOption.choices'])->get();
+
+        return response()->json($categories);
+    }
 }

@@ -15,8 +15,9 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 
-    <!-- Styles -->
+{{--     <!-- Styles -->
     <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Sweet Alert 2 css -->
@@ -25,7 +26,7 @@
     <!-- Chart js css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/chart-js/css/Chart.min.css') }}">
 
-    @yield('css_links')
+    @yield('css_links') --}}
 </head>
 <body>
     <div id="app">
@@ -93,6 +94,9 @@
         </main>
     </div>
 
+    <!-- js compiled assets -->
+    <script defer src="{{ asset('js/app.js') }}"></script>
+{{-- 
     
 
     <!-- Jquery -->
@@ -117,6 +121,6 @@
     <script src="{{ asset('js/ajax.js') }}"></script>
 
     <!-- Js scripts -->
-    @yield('js_scripts')
+    @yield('js_scripts') --}}
 </body>
 </html>

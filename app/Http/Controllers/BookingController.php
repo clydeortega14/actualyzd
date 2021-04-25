@@ -13,6 +13,8 @@ use App\Http\Traits\BookingTrait;
 use App\Booking;
 use App\RescheduledBooking;
 use App\SessionType;
+use App\ProgressReport;
+use App\TimeSchedule;
 
 class BookingController extends Controller
 {
@@ -35,66 +37,99 @@ class BookingController extends Controller
         $categories = $this->categories;
         $session_types = $this->session_types;
 
-        return view('pages.bookings.create', compact('categories', 'session_types'));
+        return view('pages.bookings.create2', compact('categories', 'session_types'));
     }
-    public function bookNow(BookingRequest $request)
+    public function bookNow(Request $request)
     {
-        $validated = $request->validated();
+        // check if validation fails
+        if($this->validateBooking($request->all())->fails()){
 
-        // find schedule
-        $schedule = $this->findSchedule($request);
+            return response()->json([
+                'success' => false, 
+                'data' => $this->validateBooking($request->all())->errors()->all()
+            ]);
+        }
 
+        // find schedule by schedule_id
+        $schedule = PsychologistSchedule::findOrFail($request->schedule);
+
+        // find time schedules by request schedule and time_id
+        $time_schedule = TimeSchedule::where('schedule', $request->schedule)
+            ->where('time', $request->time_id)->first();
+
+        // Begin Database Transaction
     	DB::beginTransaction();
 
     	try {
 
-            if(!is_null($schedule)){
-
-                 // store bookings
+            // Check if psychologist schedule and time schedule was found
+            // and did not return null
+            if(!is_null($schedule) && !is_null($time_schedule))
+            {
+                // Store Booking
                 $booking = Booking::create([
 
                     'schedule' => $schedule->id,
+                    'time_id' => $request->time_id,
+                    'counselee' => is_null($request->counselee) ? auth()->user()->id : $request->counselee,
                     'booked_by' => auth()->user()->id,
-                    'status' => 1
+                    'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
+                    'status' => 1 // booked
                 ]);
 
-                // update psychologist schedule to not available
-                $schedule->update(['status' => 2]);
+                // if booked
+                if($booking){
 
-                // for assessment answered questions
-                // store assessment answers to DB
-                if($request->has('choice')){
-                    $this->submitAnswers($booking->id, $request);
+                    // update time schedule is_booked to true
+                    $time_schedule->update(['is_booked' => true]);
+
+                    // store onboarding answers
+                    if($request->has('choice')){
+
+                        // submit on boarding question answers
+                        $this->submitAnswers($booking->id, $request);
+                    }
+
+                    // if session type is individual / consultation
+                    if($booking->session_type_id == 1){
+
+                        // create a progress report to be fill up
+                        // by the psychologist after counseling
+                        ProgressReport::firstOrCreate(['booking_id' => $booking->id]);
+                    }
+
                 }
 
             }else{
 
-                return redirect()->back()->with('error', 'Cannot Find Schedule');
+                return response()->json(['success' => false, 'message' => 'Oops! No Schedule Found!']);
             }
-    		
     	} catch (Exception $e) {
     		
     		DB::rollback();
 
-    		return redirect()->back()->with('error', $e->getMessage());
+    		return response()->json(['success' => false, 'message' => $e->getMessage() ], 500);
     	}
         
     	DB::commit();
 
-    	return redirect()->route('home')->with('success', 'You have successfully booked a session');
+        return response()->json(['success' => true, 'message' => 'Successfully Booked a session'], 200);
     }
 
     public function submitAnswers($booking_id, $request)
     {
         foreach($request->choice as $index => $value){
 
-            AssessmentAnswer::create([
-                'booking_id' => $booking_id,
-                'category_id' => 1,
-                'questionnaire_id' => $index,
-                'answer' => $value
-            ]);
+            if($value != null){
 
+                AssessmentAnswer::create([
+                    'booking_id' => $booking_id,
+                    'category_id' => 1,
+                    'questionnaire_id' => $index,
+                    'answer' => $value
+                ]);
+            }
+            
         }
     }
     public function getAssessment(Booking $booking)
@@ -104,15 +139,10 @@ class BookingController extends Controller
         return view('pages.bookings.answered-questions', compact('booking', 'categories'));
     }
 
-    public function cancel(Booking $booking)
-    {
-        return view('pages.bookings.cancel', compact('booking'));
-    }
-
     public function updateToCancel(Booking $booking, Request $request)
     {
         //Update booking status to cancelled
-        $booking->update(['status' => 5]);
+        $booking->update(['status' => 4]);
 
         // store reason for cancelling in the database
         $reason = $this->storeReason($booking, $request);
@@ -120,16 +150,41 @@ class BookingController extends Controller
         // update the schedule to available again
         $booking->toSchedule->update(['status' => 1 ]);
 
-        return redirect()->route('member.home')->with('success', 'Session has been cancelled');
+        return redirect()->back()->with('success', 'Session has been cancelled');
+    }
 
+    public function complete(Booking $booking)
+    {
+        // update booking status to complete
+        $booking->update(['status' => 2 ]);
+
+        if(!$booking){
+            return redirect()->back()->with('error', 'There was an error during completing this session');
+        }
+
+        return redirect()->back()->with('success', 'Session has been completed');
+    }
+
+    public function noShow(Booking $booking)
+    {
+        // update status to no show
+        $booking->update(['status' => 3 ]);
+
+        if(!$booking){
+            return redirect()->back()->with('error', 'Oops! There was an error');
+        }
+
+        return redirect()->back()->with('success', 'No Show!');
     }
 
     public function reschedule(Booking $booking)
     {
-        $time_lists = $this->time_lists;
-        $categories = $this->categories;
+        // $time_lists = $this->time_lists;
+        // $categories = $this->categories;
 
-        return view('pages.bookings.reschedule', compact('booking', 'time_lists', 'categories'));
+       $booking = $booking->with(['toSchedule'])->first();
+
+        return view('pages.bookings.create2', compact('booking'));
     }
     public function reschedBooking(Booking $booking, Request $request)
     {
@@ -164,10 +219,7 @@ class BookingController extends Controller
 
     protected function findSchedule($request)
     {
-        return PsychologistSchedule::where('start', $request->start_date)
-                    ->where('time', $request->time)
-                    ->where('psychologist', $request->psychologist)
-                    ->first();
+        return PsychologistSchedule::where('start', $request->scheduled_date)->where('psychologist', $request->psychologist)->first();
     }
 
     protected function storeReason($booking, $request)

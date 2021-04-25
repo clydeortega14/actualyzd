@@ -3,8 +3,18 @@
 namespace App\Http\Traits;
 use App\Booking;
 use DB;
+use Illuminate\Support\Facades\Validator;
 
 trait BookingTrait {
+
+    public function validateBooking(array $data)
+    {
+        return Validator::make($data, [
+
+            'schedule' => ['required'],
+            'time_id' => ['required'],
+        ]);
+    }
 
 
 	public function bookingsQuery()

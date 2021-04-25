@@ -7,9 +7,8 @@ class BookingStatusSeeder extends Seeder
 	public function __construct()
 	{
 		$this->statuses = [
-			['name' => 'New', 'class' => 'badge badge-primary'],
-			['name' => 'Booked', 'class' => 'badge badge-success'],
-			['name' => 'Completed', 'class' => 'badge badge-info'],
+			['name' => 'Booked', 'class' => 'badge badge-primary'],
+			['name' => 'Completed', 'class' => 'badge badge-success'],
 			['name' => 'No Show', 'class' => 'badge badge-secondary'],
 			['name' => 'Cancelled', 'class' => 'badge badge-danger'],
 			['name' => 'Rescheduled', 'class' => 'badge badge-warning'],

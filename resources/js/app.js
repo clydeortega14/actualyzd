@@ -8,6 +8,12 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import store from './store'
+
+// import modal from 'vue-js-modal';
+
+// Vue.use(modal, { dialog: true, dynamic: true });
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -19,7 +25,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-// Vue.component('schedules-component', require('./components/SchedulesComponent.vue').default);
+Vue.component('calendar-page', require('./components/CalendarPage.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +35,5 @@ window.Vue = require('vue');
 
 const app = new Vue({
     el: '#app',
+    store
 });

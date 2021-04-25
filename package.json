@@ -33,6 +33,8 @@
         "@fullcalendar/timegrid": "^5.5.1",
         "@fullcalendar/vue": "^5.5.0",
         "@popperjs/core": "^2.8.6",
-        "sweetalert2": "^10.14.0"
+        "sweetalert2": "^10.14.0",
+        "vue-js-modal": "^2.0.0-rc.6",
+        "vuex": "^3.6.2"
     }
 }

@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table">
 	<thead>
 		<tr>
 			<th>Date</th>
@@ -7,15 +7,14 @@
 			<th>Topic</th>
 			<th>Link of session</th>
 			<th>Status</th>
-			<th>Action</th>
 		</tr>
 	</thead>
 	<tbody>
-		{{-- @foreach($bookings as $booking)
+		@foreach($bookings as $booking)
 			<tr>
 				<td>{{ $booking->toSchedule->start }}</td>
 				<td>
-					{{ $booking->toSchedule->toTime->parseTimeFrom().' - '. $booking->toSchedule->toTime->parseTimeTo()}}
+					{{ $booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo()}}
 				</td>
 				<td>{{ 
 					auth()->user()->hasRole('psychologist') ?
@@ -31,44 +30,11 @@
 				 		{{ $booking->toStatus->name }} 
 				 	</span><br />
 				 	@if(!is_null($booking->reschedule))
-				 		<a href="{{ route('booking.cancel', $booking->id) }}">see reason</a>
+				 		<a href="#" data-toggle="modal" data-target="#cancel-form">see reason</a>
+				 		@include('pages.bookings.modals.cancel-form')
 				 	@endif
 				 </td>
-				 <td>
-				 	<div class="btn-group">
-						<button type="button" class="btn btn-info btn-sm ">Action</button>
-						<button type="button" class="btn btn-info btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="sr-only"></span>
-						</button>
-
-						<div class="dropdown-menu">
-							<a href="#" class="dropdown-item">
-							    <i class="fa fa-edit"></i>
-							    <span>Edit</span>
-							</a>
-
-							<a href="#" class="dropdown-item">
-							    <i class="fa fa-check"></i>
-							    <span>Complete</span>
-							</a>
-
-							<a href="#" class="dropdown-item">
-							    <i class="fa fa-eye"></i>
-							    <span>No Show</span>
-							</a>
-
-							<a href="{{ route('booking.cancel', $booking->id) }}" class="dropdown-item">
-							    <i class="fa fa-times"></i>
-							    <span>Cancel</span>
-							</a>
-							<a href="{{ route('booking.reschedule', $booking->id) }}" class="dropdown-item">
-							    <i class="fa fa-clock"></i>
-							    <span>Reschedule</span>
-							</a>
-						</div>
-					</div>
-				 </td>
 			</tr>
-		@endforeach --}}
+		@endforeach
 	</tbody>
 </table>

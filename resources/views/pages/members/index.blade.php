@@ -1,4 +1,4 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 @section('content')
 	
@@ -26,25 +26,21 @@
 
                 		<div class="row mt-3">
                 			<div class="col-xl-3 col-md-6 mb-4">
-	                            <div class="card border-left-info shadow h-100 py-2">
+	                            <div class="card">
+	                            	<div class="card-header">
+	                            		<div class="text-xs text-uppercase mb-1">	
+	                            		TOTAL BOOKINGS
+	                            		</div>
+	                            	</div>
 	                                <div class="card-body">
-	                                    <div class="row no-gutters align-items-center">
-	                                        <div class="col mr-2">
-	                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-	                                                Total Bookings</div>
-	                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_bookings }}</div>
-	                                        </div>
-	                                        <div class="col-auto">
-	                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-	                                        </div>
-	                                    </div>
+	                                	<div class="h1 mb-0 text-gray-800 text-center">{{ $total_bookings }}</div>
 	                                </div>
 	                            </div>
 	                        </div>
 
 	                        @foreach($booking_by_statuses as $bookedByStatus)
 
-	                        	@if($bookedByStatus->toStatus->name == "New")
+	                        	{{-- @if($bookedByStatus->toStatus->name == "Booked")
 
 	                        		@php
 	                        			$badge = 'primary'
@@ -54,7 +50,7 @@
 
 	                        		@php
 	                        			$badge = 'danger'
-	                        		@endphp
+	                        		@endphpT
 
 	                        	@elseif($bookedByStatus->toStatus->name == "Rescheduled")
 
@@ -62,16 +58,19 @@
 	                        			$badge = 'warning'
 	                        		@endphp
 
-	                        	@endif
+	                        	@endif --}}
 
 	                        	<div class="col-xl-3 col-md-6 mb-4">
-		                            <div class="card border-left-{{ $badge }} shadow h-100 py-2">
+		                            <div class="card h-100">
+		                            	<div class="card-header">
+		                            		<div class="text-xs text-uppercase mb-1">
+		                                        {{ $bookedByStatus->toStatus->name == "Booked" ? 'Upcoming Session' : $bookedByStatus->toStatus->name }}
+		                                    </div>
+		                            	</div>
 		                                <div class="card-body">
 		                                    <div class="row no-gutters align-items-center">
 		                                        <div class="col mr-2">
-		                                            <div class="text-xs font-weight-bold text-{{ $badge }} text-uppercase mb-1">
-		                                                {{ $bookedByStatus->toStatus->name == "New" ? 'Upcoming Scheduled Booking' : $bookedByStatus->toStatus->name }}</div>
-		                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $bookedByStatus->booking_count }}</div>
+		                                            <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
 		                                        </div>
 		                                        <div class="col-auto">
 		                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -87,17 +86,15 @@
 
 	            	<div class="tab-pane fade" id="scheduler" role="tabpanel" aria-labelledby="scheduler-tab">
 	 
-	            		<div class="card mt-3">
-	            			<div class="card-body">
-	            				<div class="card-header">
-	            					<a href="{{ route('book.session') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
-	            				</div>
-	            				<div class="card-body">
-	            					<div class="table-responsive">
-	            						{{-- @include('pages.bookings.index') --}}
-	            					</div>
-								</div>
-	            			</div>
+	            		<div class="card mt-3 mb-3">
+            				<div class="card-header">
+            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
+            				</div>
+            				<div class="card-body">
+            					<div class="table-responsive">
+            						@include('pages.bookings.index')
+            					</div>
+							</div>
 	            		</div>
 	            	</div>
                 </div>

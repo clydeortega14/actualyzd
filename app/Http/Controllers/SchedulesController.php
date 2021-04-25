@@ -23,16 +23,28 @@ class SchedulesController extends Controller
     }
     public function getSchedules()
     {
+        // chedules query
         $schedules = PsychologistSchedule::where(function($q){
+
             if($this->user()->hasRole('psychologist')){
                 $q->where('psychologist', $this->user()->id);
             }
-        })->whereDate('start', '>=', now()->toDateString())->get();
+        })->whereDate('start', '>=', now()->toDateString())
+        ->with(["psych"])->get();
 
-        $collections = collect($schedules);
-        $unique = $collections->unique('start');
+        // map collections with unique start date
+        $unique = collect($schedules)->map(function($item, $key){
+
+            return [
+                'id' => $item->id,
+                'title' => $item->psych->name,
+                'start' => $item->start,
+                'end' => $item->end,
+                'allDay' => true
+            ];
+        });
         
-        return response()->json($unique->values()->all());
+        return response()->json($unique);
     }
     public function storeSchedule(Request $request)
     {
@@ -82,15 +94,21 @@ class SchedulesController extends Controller
         ]);
     }
 
-    public function psychologists(Request $request)
+    public function psychologists($time)
     {
-        $psychologists = PsychologistSchedule::where('start', $request->start)
-            ->where('time', $request->time)
-            ->where('status', 1)
-            ->with(['toTime', 'status', 'psych'])
-            ->get();
+        $time_schedules = TimeSchedule::where('time', $time)->with(['toSchedule.psych'])->get();
 
-        return view('pages.schedules.components.psychologist', compact('psychologists'));
+        $mapped_psychologists = $time_schedules->map(function($time_schedule){
+
+            return [
+
+                'id' => $time_schedule->toSchedule->psych->id,
+                'name' => $time_schedule->toSchedule->psych->name
+            ];
+
+        })->unique('id')->values();
+
+        return response()->json($mapped_psychologists);
     }
 
     public function delete(Request $request)
@@ -104,14 +122,23 @@ class SchedulesController extends Controller
         return auth()->user();
     }
 
-    public function timeDate(Request $request)
+    public function getTimeBySchedule(PsychologistSchedule $schedule)
     {
-        $time_lists = PsychologistSchedule::where('start', $request->start)
-            ->where('status', 1)
-            ->with(['toTime'])
-            ->orderBy('start', 'ASC')
+        $time_schedules = $schedule->timeSchedules()
+            ->where('is_booked', false)
+            ->with(['toTime', 'toSchedule'])
             ->get();
 
-        return view('pages.schedules.components.time-date', compact('time_lists'));
+        $mapped_time_format = $time_schedules->map(function($time_schedule){
+
+            return [
+
+                'id' => $time_schedule->time,
+                'from' => $time_schedule->toTime->parseTimeFrom(),
+                'to' => $time_schedule->toTime->parseTimeTo()
+            ];
+        });
+
+        return response()->json($mapped_time_format);
     }
 }

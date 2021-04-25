@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePsychoSchedStatusesTable extends Migration
+class CreateFollowupSessionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePsychoSchedStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('psycho_sched_statuses', function (Blueprint $table) {
+        Schema::create('followup_sessions', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->string('status');
-            $table->string('class')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
         });
     }
 
@@ -27,6 +27,6 @@ class CreatePsychoSchedStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('psycho_sched_statuses');
+        Schema::dropIfExists('followup_sessions');
     }
 }

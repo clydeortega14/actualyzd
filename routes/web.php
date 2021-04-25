@@ -77,7 +77,10 @@ Route::middleware('auth')->group(function(){
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
 
 	// Get time by date selected in calendar
-	Route::get('time-date', 'SchedulesController@timeDate');
+	Route::get('time-by-schedule/{schedule}', 'SchedulesController@getTimeBySchedule');
+
+	// Get onboarding questionnaires in ajax request
+	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
 	/* Pyschologist Prefix */
 	Route::prefix('psychologist')->group(function(){
@@ -93,7 +96,7 @@ Route::middleware('auth')->group(function(){
 		// Ajax
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
-		Route::get('available', 'SchedulesController@psychologists')->name('psychologist.available');
+		Route::get('available/{time}', 'SchedulesController@psychologists')->name('psychologist.available');
 	});
 
 
@@ -106,16 +109,9 @@ Route::middleware('auth')->group(function(){
 
 	Route::prefix('bookings')->group(function(){
 
-		// Pages
-
-		Route::get('book-session', 'BookingController@bookSession')->name('book.session');
-
-
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
-
-		Route::get('cancel/{booking}', 'BookingController@cancel')->name('booking.cancel');
 
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
@@ -127,6 +123,10 @@ Route::middleware('auth')->group(function(){
 		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
 
 		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
+
+		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
+
+		Route::put('no-show/{booking}', 'BookingController@noShow')->name('booking.no.show');
 	});
 
 });
