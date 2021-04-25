@@ -12,7 +12,7 @@
 	<tbody>
 		@foreach($bookings as $booking)
 			<tr>
-				<td>{{ $booking->toSchedule->start }}</td>
+				<td>{{ date('m/d/Y', strtotime($booking->toSchedule->start)) }}</td>
 				<td>
 					{{ $booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo()}}
 				</td>
