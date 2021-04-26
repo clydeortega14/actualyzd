@@ -3,6 +3,7 @@
 namespace App\Http\Traits\Roles;
 use App\Role;
 use App\Http\Traits\RandomClass;
+use App\User;
 
 trait RoleTrait {
 
@@ -47,5 +48,16 @@ trait RoleTrait {
             }
 
         })->with(['permissions'])->get();
+    }
+
+    public function attachRole(User $user, Role $role)
+    {
+        if($role && $user) $user->attachRole($role);
+    }
+
+    public function attachRoles(User $user, $column, array $values)
+    {
+        foreach($values as $value)
+        $this->attachRole($user, Role::where($column, $value)->first());
     }
 }
