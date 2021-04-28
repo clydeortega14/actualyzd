@@ -106,6 +106,12 @@ Route::middleware('auth')->group(function(){
 		Route::get('/', 'MemberController@home')->name('member.home');
 	});
 
+	/* Client Prefix */
+	Route::prefix('client')->group(function() {
+
+		Route::resource('users', 'ClientUserController');
+	});
+
 	/*-- Bookings --*/
 	Route::prefix('bookings')->group(function(){
 

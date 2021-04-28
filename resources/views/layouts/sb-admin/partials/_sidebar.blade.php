@@ -23,6 +23,13 @@
         <i class="fas fa-fw fa-calendar"></i>
         <span>Book A Session</span></a>
 </li>
+@if(auth()->user()->hasRole('admin'))
+<li class="nav-item">
+    <a class="nav-link" href="{{ url('client/users') }}">
+        <i class="fas fa-fw fa-users"></i>
+        <span>Members</span></a>
+</li>
+@endif
 
 @if(auth()->user()->hasRole('superadmin'))
     <!-- Divider -->

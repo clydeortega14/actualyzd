@@ -24,6 +24,9 @@
     <!-- Sweet Alert 2 css -->
     <link rel="stylesheet" href="{{ asset('assets/sweetalert2/dist/sweetalert2.min.css') }}">
 
+    <!-- Checkbox Toggle -->
+    <link rel="stylesheet" href="{{ asset('assets/checkbox-toggle/checkbox-toggle.css') }}">
+
     <!-- css links -->
     @yield('css_links')
 
