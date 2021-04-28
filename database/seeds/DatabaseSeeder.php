@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(OptionChoices::class);
         $this->call(SessionTypeSeeder::class);
         $this->call(BookingStatusSeeder::class);
+        $this->call(FollowupSessionsSeeder::class);
     }
 }

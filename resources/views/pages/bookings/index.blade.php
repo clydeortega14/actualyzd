@@ -4,9 +4,9 @@
 			<th>Date</th>
 			<th>Time</th>
 			<th>Client Details</th>
-			<th>Topic</th>
-			<th>Link of session</th>
+			<th>Company</th>
 			<th>Status</th>
+			<th>Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,14 +16,9 @@
 				<td>
 					{{ $booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo()}}
 				</td>
-				<td>{{ 
-					auth()->user()->hasRole('psychologist') ?
-					$booking->bookedBy->name :
-					$booking->toSchedule->psych->name
-				 }}</td>
-				 <td><a href="{{ route('booking.answered.questions', $booking->id) }}">link to onboarding questions</a></td>
+				<td>{{ $booking->toCounselee->name}}</td>
 				 <td>
-				 	<a href="#">idq032132kjdwq-23</a>
+				 	<a href="#">Company A</a>
 				 </td>
 				 <td>
 				 	<span class="{{ $booking->toStatus->class }}">
@@ -33,6 +28,17 @@
 				 		<a href="#" data-toggle="modal" data-target="#cancel-form">see reason</a>
 				 		@include('pages.bookings.modals.cancel-form')
 				 	@endif
+				 </td>
+				 <td>
+				 	<a href="#">
+				 		<i class="fa fa-address-book"></i>
+				 	</a> | 
+				 	<a href="#">
+				 		<i class="fa fa-clipboard-list"></i>
+				 	</a> |
+				 	<a href="#">
+				 		<i class="fa fa-archive"></i>
+				 	</a> |
 				 </td>
 			</tr>
 		@endforeach

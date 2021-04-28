@@ -141,6 +141,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('show/{report}', 'ProgressReportController@show')->name('progress-reports.show');
 
+		Route::put('update-progress-report/{report}', 'ProgressReportController@update')->name('update-progress-report');
+
 	});
 
 });

@@ -60,11 +60,6 @@
           									<th>Date Of Session</th>
           									<th>Company Name</th>
           									<th>Employee Name</th>
-          									<th>Main Concern</th>
-          									<th>Current prescriptions and over the counter</th>
-          									<th>Initial Assessment / Impression</th>
-          									<th>Recommended for follow up session</th>
-          									<th>Intervention Plan / Treatment Goal:</th>
                             <th></th>
           								</tr>
           							</thead>
@@ -77,11 +72,6 @@
                                 <td>{{ $booking->toSchedule->formattedStart() }}</td>
                                 <td>N/A</td>
                                 <td>{{ $booking->toCounselee->name }}</td>
-                                <td>{{ $booking->progressReport->main_concern }}</td>
-                                <td>{{ $booking->progressReport->has_prescription }}</td>
-                                <td>{{ $booking->progressReport->initial_assessment }}</td>
-                                <td>{{ $booking->progressReport->followup_session }}</td>
-                                <td>{{ $booking->progressReport->treatment_goal }}</td>
                                 <td>
                                   <a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">Action</a>
                                 </td>
