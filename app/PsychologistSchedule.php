@@ -19,4 +19,9 @@ class PsychologistSchedule extends Model
     public function timeSchedules(){
     	return $this->hasMany(TimeSchedule::class, 'schedule');
     }
+
+    public function formattedStart()
+    {
+        return date('m/d/Y', strtotime($this->start));
+    }
 }

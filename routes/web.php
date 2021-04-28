@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function(){
 		Route::resource('users', 'ClientUserController');
 	});
 
+	/*-- Bookings --*/
 	Route::prefix('bookings')->group(function(){
 
 		Route::get('/', 'BookingController@index')->name('bookings.index');
@@ -132,6 +133,14 @@ Route::middleware('auth')->group(function(){
 		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
 
 		Route::put('no-show/{booking}', 'BookingController@noShow')->name('booking.no.show');
+	});
+
+
+	/*-- Progress Reports --*/
+	Route::prefix('progress-reports')->group(function(){
+
+		Route::get('show/{report}', 'ProgressReportController@show')->name('progress-reports.show');
+
 	});
 
 });
