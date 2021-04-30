@@ -19,7 +19,7 @@ class ProgressReportController extends Controller
     {
     	// validate $request
     	$validated = $request->validated();
-    	// store progress report data in db
+    	// update progress report data in db
     	$report->update($request->all());
     	// check if report prescription is true
     	if ($report->has_prescription) {

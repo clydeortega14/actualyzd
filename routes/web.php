@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('psychologist')->group(function(){
 
 		Route::get('/', 'PsychologistsController@home')->name('psychologist.home');
+		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 

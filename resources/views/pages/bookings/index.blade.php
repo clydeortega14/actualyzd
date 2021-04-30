@@ -6,7 +6,7 @@
 			<th>Client Details</th>
 			<th>Company</th>
 			<th>Status</th>
-			<th>Actions</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,16 +30,10 @@
 				 	@endif
 				 </td>
 				 <td>
-				 	<a href="#">
-				 		<i class="fa fa-address-book"></i>
-				 	</a> | 
-				 	<a href="#">
-				 		<i class="fa fa-clipboard-list"></i>
-				 	</a> |
-				 	<a href="#">
-				 		<i class="fa fa-archive"></i>
-				 	</a> |
-				 </td>
+				 	<a href="#" class="btn btn-info btn-sm">
+				 		{{-- <i class="fa fa-address-book"></i> --}}
+				 		<span>actions</span>
+				 	</a>
 			</tr>
 		@endforeach
 	</tbody>
