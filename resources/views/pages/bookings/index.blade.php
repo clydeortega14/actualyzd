@@ -30,10 +30,10 @@
 				 	@endif
 				 </td>
 				 <td>
-				 	<a href="#" class="btn btn-info btn-sm">
-				 		{{-- <i class="fa fa-address-book"></i> --}}
-				 		<span>actions</span>
+				 	<a href="{{ route('booking.answered.questions', $booking->id) }}" class="btn btn-info btn-sm">
+				 		actions
 				 	</a>
+				 </td>
 			</tr>
 		@endforeach
 	</tbody>

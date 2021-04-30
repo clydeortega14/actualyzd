@@ -8,7 +8,7 @@
 				{{ Breadcrumbs::render('booking.answered.questions', $booking) }}
 			</div>
 
-			<div class="col-sm-2">
+			<div class="col-md-2">
 				<div class="card mb-3">
 					<div class="card-header">Actions</div>
 					<div class="card-body">
@@ -16,6 +16,7 @@
 							<div class="col-sm-12">
 
 								@if($booking->status == 1) <!-- If booking status is booked -->
+									@if(auth()->user()->hasRole('psychologist'))
 									<div class="mb-3">
 										<a href="#" data-toggle="modal" data-target="#complete-session">Complete</a>
 										<!-- complete the sesion modal confirmation -->
@@ -31,12 +32,14 @@
 									<div class="mb-3">
 										<a href="#">Reschedule</a>
 									</div>
+									@elseif(auth()->user()->hasRole('member'))
 									<div class="mb-3">
 										<a href="#" data-toggle="modal" data-target="#cancel-form">Cancel</a>
 										<!-- Reason for canceling modal -->
 										@include('pages.bookings.modals.cancel-form')
 										<!-- end reason for canceling modal -->
 									</div>
+									@endif
 								@else
 									@if($booking->status == 4) <!-- if booking status is Cancelled -->
 										<div class="text-center mt-2 mb-2">
@@ -67,68 +70,151 @@
 			<div class="col-md-6">
 				<div class="card mb-3">
 					<div class="card-header">
-						Onboarding Questions & Answers
-					</div>
-					<div class="card-body">
-						<ol type="I">
-							@foreach($categories as $category)
-								@if(count($category->questionnaires) > 0)
-                                    <li>
-                                    	<div class="mb-3">
-                                    		<h5><b>{{ $category->name }}</b></h5>
-                                    	</div>
-                                    	@include('pages.bookings.components.questionnaire')
-                                    </li>
-								@endif
-							@endforeach
-						</ol>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card mb-3">
-					<div class="card-header">
 						Session Details
 					</div>
 					<div class="card-body">
-						<div class="ml-2">
-							<div class="mb-3">
-								<strong>Company:</strong>
-								<span> N/A</span> 
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
+							<div class="col-sm-6">
+								<input type="text" value="N/A" readonly class="form-control">
 							</div>
-							<div class="mb-3">
-								<strong>Counselee:</strong>
-								<span><a href="#"> {{ $booking->toCounselee->name }}</a></span> 
+						</div>
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ $booking->toCounselee->name}}" readonly class="form-control">
 							</div>
-							<div class="mb-3">
-								<strong>Psychologist:</strong> <a href="#"> {{ $booking->toSchedule->psych->name}}</a>
-							</div>
-							<div class="mb-3">
-								<strong>Type of session: </strong> </span>{{ $booking->sessionType->name }} </span>
-							</div>
-							<div class="mb-3">
-								<strong>Date: </strong> {{ date('F j, Y', strtotime($booking->toSchedule->start)) }} </strong></strong>
-							</div>
+						</div>
 
-							<div class="mb-3">
-								<strong>Time: </strong> 
-								<span>{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo()}} </span>
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Psychologist</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ $booking->toSchedule->psych->name }}" readonly class="form-control">
 							</div>
+						</div>
 
-							<div class="mb-3">
-								<strong>Link To Session: </strong> 
-								<span><a href="#">http://meet.actualyzd.com/139213819321......</a></span>
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Type Of Session</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ $booking->sessionType->name }}" readonly class="form-control">
 							</div>
+						</div>
 
-							<div class="mb-3">
-								<strong>Status: </strong>
-								<span class="{{ $booking->toStatus->class }}"> {{ $booking->toStatus->name }} </span>
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Date</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ date('F j, Y', strtotime($booking->toSchedule->start)) }}" readonly class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Time</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}" readonly class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Link to session</label>
+							<div class="col-sm-6">
+								<a href="">http://meet.actualyzd.com/139213819321......9sa0d1/dw19du1dsad-2132-021/123192dj0d9193213u14123132r323lr3204235i25234//05705-7464-5435=3534053289e1-221fdsnajcw00-
+								</a>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Session Status</label>
+							<div class="col-sm-6">
+								<input type="text" value="{{ $booking->toStatus->name }}" class="form-control" readonly>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-				
+			<!-- for users that has role of psychologist and for booking with the session type of individual / consultation -->
+			@if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1)
+				<div class="col-md-4">
+					<!-- Onboarding Questions card-->
+					<div class="card mb-3">
+						<div class="card-header">
+							Onboarding questions and answers
+						</div>
+						<div class="card-body">
+							<ol type="I">
+								@foreach($categories as $category)
+									@if(count($category->questionnaires) > 0)
+	                                    <li>
+	                                    	<div class="mb-3">
+	                                    		<h5>{{ $category->name }}</h5>
+	                                    	</div>
+	                                    	@include('pages.bookings.components.questionnaire')
+	                                    </li>
+									@endif
+								@endforeach
+							</ol>
+						</div>
+					</div>
+					<!-- end Onboarding Questions card-->
+
+					<!-- Progress Reports Card -->
+					<div class="card mb-3">
+						@php
+							$report = $booking->progressReport;
+						@endphp
+						<div class="card-header">Progress Reports</div>
+						<div class="card-body">
+							<form action="{{ route('update-progress-report', $report->id) }}" method="POST">
+								@csrf
+								@method('PUT')
+								{{-- @include('alerts.message') --}}
+								<div class="form-group">
+									<label>Main Concern</label>
+									<textarea type="text" name="main_concern" class="form-control" rows="4">{{ !is_null($report->main_concern) ? $report->main_concern : '' }}</textarea>
+								</div>
+								<div class="form-group"> 
+									<label>Are there any medications that the client is taking?</label>
+									<div class="form-check">
+		  								<input class="form-check-input" type="radio" name="has_prescription" id="yes" value="1" {{ $report->has_prescription ? 'checked' : '' }}>
+										<label class="form-check-label" for="yes">Yes</label>
+										
+									</div>
+									<div class="form-check">
+		  								<input class="form-check-input" type="radio" name="has_prescription" id="no" value="0" {{ !$report->has_prescription ? 'checked' : '' }}>
+										<label class="form-check-label" for="no">No</label>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label>What are your initial assessments of the client and what are her / his core concerns?</label>
+									<textarea type="text" name="initial_assessment" class="form-control" rows="4">{{ !is_null($report->initial_assessment) ? $report->initial_assessment : '' }}</textarea>
+								</div>
+
+								<div class="form-group">
+									<label>Recommended for follow up session</label>
+									<select type="combobox" name="followup_session" class="form-control">
+										<option> -- Select --</option>
+										@foreach($followup_sessions as $followup)
+											<option value="{{ $followup->id }}" {{ !is_null($report->followup_session) && $report->followup_session == $followup->id ? 'selected' : '' }}>{{ $followup->name }}</option>
+										@endforeach
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label>What therapy or intervention does your client need?</label>
+									<textarea type="text" name="treatment_goal" class="form-control" rows="4">{{ !is_null($report->treatment_goal)  ? $report->treatment_goal : '' }}</textarea>
+								</div>
+								
+								<div class="form-group">
+									<button class="btn btn-primary btn-block" type="submit">Submit</button>
+									<a href="#" class="btn btn-danger btn-block">Cancel</a>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- Progress Reports Card -->
+				</div>
+			@endif
+			<!-- end for users that has role of psychologist and for booking with the session type of individual / consultation -->
 		</div>
 	</div>
 @endsection

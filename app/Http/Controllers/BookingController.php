@@ -15,6 +15,7 @@ use App\RescheduledBooking;
 use App\SessionType;
 use App\ProgressReport;
 use App\TimeSchedule;
+use App\FollowupSession;
 
 class BookingController extends Controller
 {
@@ -135,8 +136,8 @@ class BookingController extends Controller
     public function getAssessment(Booking $booking)
     {
         $categories = $this->categories;
-
-        return view('pages.bookings.answered-questions', compact('booking', 'categories'));
+        $followup_sessions = FollowupSession::get(['id', 'name']);
+        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions'));
     }
 
     public function updateToCancel(Booking $booking, Request $request)
