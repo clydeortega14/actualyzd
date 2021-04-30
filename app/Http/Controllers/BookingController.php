@@ -16,6 +16,7 @@ use App\SessionType;
 use App\ProgressReport;
 use App\TimeSchedule;
 use App\FollowupSession;
+use App\User;
 
 class BookingController extends Controller
 {

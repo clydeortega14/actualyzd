@@ -1,34 +1,42 @@
 <template>
-	<div>
-		<FullCalendar :options="calendarOptions" />
+	<div class="row">
+		<div class="col-md-8">
+			<FullCalendar :options="calendarOptions" />
+		</div>
 
-		<form @submit.prevent="submitBooking">
-			<!-- Time Component -->
-			<TimeComponent 
-				v-if="time.show"
-				:time_lists="getTimeLists"
-				:selected_date="form.scheduled_date" 
-				@select-time="selectTime" />
+		<div class="col-md-4">
+			<form @submit.prevent="submitBooking">
+				<!--  Session Types Component -->
+				<SessionType v-if="showSessionType" />
+				<!-- end session types component -->
 
-			<!-- Psychologist -->
-			<PsychologistComponent 
-				v-if="psychologist.show"
-				:psychologist_available="getAvailable"
-				@selected-psychologist="selectPyschologist"
-			/>
+				<!-- Time Component -->
+				<TimeComponent 
+					v-if="time.show"
+					:time_lists="getTimeLists"
+					:selected_date="form.scheduled_date" 
+					@select-time="selectTime" />
+
+				<!-- Psychologist -->
+				<PsychologistComponent 
+					v-if="psychologist.show"
+					:psychologist_available="getAvailable"
+					@selected-psychologist="selectPyschologist"
+				/>
 
 
-			<!-- Onboarding Questions -->
-			<OnboardingQuestion 
-				v-if="onboarding.show"
-				@onboarding-answers="onboardingAnswers"
-			/>
+				<!-- Onboarding Questions -->
+				<OnboardingQuestion 
+					v-if="onboarding.show"
+					@onboarding-answers="onboardingAnswers"
+				/>
 
-			<div class="form-group" v-if="show_actions">
-				<button class="btn btn-primary btn-block mt-3 mb-3">Submit</button>
-				<a href="#" class="btn btn-danger btn-block">Cancel</a>
-			</div>
-		</form>
+				<div class="form-group" v-if="show_actions">
+					<button class="btn btn-primary btn-block mt-3 mb-3">Submit</button>
+					<a href="#" class="btn btn-danger btn-block">Cancel</a>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
 
@@ -41,6 +49,7 @@
 	import TimeComponent from './TimeComponent';
 	import PsychologistComponent from './PsychologistComponent';
 	import OnboardingQuestion from './OnboardingQuestion';
+	import SessionType from './SessionType';
 
 	import { mapGetters, mapActions } from 'vuex';
 
@@ -70,6 +79,7 @@
 					choice: []
 
 				},
+				showSessionType: false,
 				time: {
 
 					show: false,
@@ -86,11 +96,10 @@
 		},
 		props: {
 
-			booking: Object
+			booking: Object,
+			user_role: String
 		},
 		created(){
-
-			console.log(this.booking)
 
 			this.getAllSchedules()
 		},
@@ -106,7 +115,8 @@
 			FullCalendar,
 			TimeComponent,
 			PsychologistComponent,
-			OnboardingQuestion
+			OnboardingQuestion,
+			SessionType
 		},
 		methods: {
 
@@ -124,13 +134,14 @@
 				this.form.schedule = schedule_id;
 				this.form.scheduled_date = arg.event.startStr;
 				this.time.show = true;
+				this.showSessionType = this.user_role === 'superadmin' ? true : false;
 				this.timeLists(schedule_id)
 			},
 
 			handleDateClick(argument){
 
 				this.time.show = false;
-				// this.psychologist.show = false;
+				this.showSessionType = false;
 				this.onboarding.show = false;
 				this.show_actions = false;
 			},
