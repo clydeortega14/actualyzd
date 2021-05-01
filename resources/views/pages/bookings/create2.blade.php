@@ -33,7 +33,8 @@
 		@endif
 
 		<calendar-page 
-			@if(isset($booking)) :booking="{{ $booking }}" @endif user_role="{{ $user_role }}">	
+			@if(isset($booking)) :booking="{{ $booking }}" @endif 
+			user_role="{{ $user_role }}">	
 		</calendar-page>
 	</div>
 	

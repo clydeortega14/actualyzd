@@ -105,10 +105,9 @@
 		props: {
 
 			booking: Object,
-			user_role: String
+			user_role: String,
 		},
 		created(){
-
 			this.getAllSchedules()
 		},
 		computed: {
