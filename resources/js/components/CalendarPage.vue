@@ -1,13 +1,15 @@
 <template>
 	<div class="row">
-		<div class="col-md-8">
+		<div :class="checkSelectedDate">
 			<FullCalendar :options="calendarOptions" />
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-4" v-if="hasSelectedDate">
 			<form @submit.prevent="submitBooking">
 				<!--  Session Types Component -->
-				<SessionType v-if="showSessionType" />
+				<SessionType 
+					v-if="showSessionType" 
+					v-bind="form.selected" />
 				<!-- end session types component -->
 
 				<!-- Time Component -->
@@ -75,11 +77,17 @@
 					time: null,
 					psychologist: null,
 					counselee: null,
-					session_type_id: null,
-					choice: []
+					choice: [],
+					selected: {
+						session: null,
+						client: null,
+						counselee: null
+					}
 
 				},
 				showSessionType: false,
+				hasSelectedDate: false,
+				column_size: '',
 				time: {
 
 					show: false,
@@ -109,7 +117,10 @@
 				"getSchedules", 
 				"getTimeLists", 
 				"getAvailable"
-			])
+			]),
+			checkSelectedDate(){
+				return this.column_size = this.hasSelectedDate ? 'col-md-8' : 'col-md-12';
+			}
 		},
 		components: {
 			FullCalendar,
@@ -130,7 +141,7 @@
 			handleEventClick(arg){
 
 				let schedule_id = arg.event.id;
-
+				this.hasSelectedDate = true;
 				this.form.schedule = schedule_id;
 				this.form.scheduled_date = arg.event.startStr;
 				this.time.show = true;
@@ -144,6 +155,7 @@
 				this.showSessionType = false;
 				this.onboarding.show = false;
 				this.show_actions = false;
+				this.hasSelectedDate = false;
 			},
 			selectTime(data)
 			{
@@ -194,6 +206,7 @@
 							this.psychologist.show = false;
 							this.onboarding.show = false;
 							this.show_actions = false;
+							this.hasSelectedDate = false;
 
 							alert(result.message);
 

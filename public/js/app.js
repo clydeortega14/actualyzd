@@ -17367,6 +17367,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -17392,10 +17394,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         time: null,
         psychologist: null,
         counselee: null,
-        session_type_id: null,
-        choice: []
+        choice: [],
+        selected: {
+          session: null,
+          client: null,
+          counselee: null
+        }
       },
       showSessionType: false,
+      hasSelectedDate: false,
+      column_size: '',
       time: {
         show: false
       },
@@ -17415,7 +17423,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.getAllSchedules();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapGetters"])(["getSchedules", "getTimeLists", "getAvailable"])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapGetters"])(["getSchedules", "getTimeLists", "getAvailable"])), {}, {
+    checkSelectedDate: function checkSelectedDate() {
+      return this.column_size = this.hasSelectedDate ? 'col-md-8' : 'col-md-12';
+    }
+  }),
   components: {
     FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -17426,6 +17438,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_7__["mapActions"])(["getAllSchedules", "timeLists", "availablePsychologist", "storeBooking"])), {}, {
     handleEventClick: function handleEventClick(arg) {
       var schedule_id = arg.event.id;
+      this.hasSelectedDate = true;
       this.form.schedule = schedule_id;
       this.form.scheduled_date = arg.event.startStr;
       this.time.show = true;
@@ -17434,10 +17447,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     handleDateClick: function handleDateClick(argument) {
       this.time.show = false;
-      this.showSessionType = false; // this.psychologist.show = false;
-
+      this.showSessionType = false;
       this.onboarding.show = false;
       this.show_actions = false;
+      this.hasSelectedDate = false;
     },
     selectTime: function selectTime(data) {
       this.form.time = data; // this.psychologist.show = true;
@@ -17480,6 +17493,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.psychologist.show = false;
           _this.onboarding.show = false;
           _this.show_actions = false;
+          _this.hasSelectedDate = false;
           alert(result.message);
         } else {
           alert(result.message);
@@ -17635,9 +17649,66 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('session type');
+  data: function data() {
+    return {
+      session_selected: this.session,
+      client_selected: this.client,
+      counselee_selected: this.counselee,
+      show: {
+        client: false,
+        counselee: false
+      },
+      session_types: []
+    };
+  },
+  props: ["session", "client", "counselee"],
+  created: function created() {
+    this.session_types = [{
+      id: 1,
+      name: 'Individual'
+    }, {
+      id: 2,
+      name: 'Group Session'
+    }, {
+      id: 3,
+      name: 'Webinar'
+    }];
+  },
+  watch: {
+    session_selected: function session_selected(id) {
+      if (id === 1) {
+        this.show.client = true;
+        this.show.counselee = true;
+      } else if (id === 2 || id === 3) {
+        this.show.counselee = false;
+        this.show.client = true;
+      } else {
+        this.show.counselee = false;
+        this.show.client = false;
+      }
+    }
   }
 });
 
@@ -54798,70 +54869,77 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c(
       "div",
-      { staticClass: "col-md-8" },
+      { class: _vm.checkSelectedDate },
       [_c("FullCalendar", { attrs: { options: _vm.calendarOptions } })],
       1
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-4" }, [
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.submitBooking($event)
-            }
-          }
-        },
-        [
-          _vm.showSessionType ? _c("SessionType") : _vm._e(),
-          _vm._v(" "),
-          _vm.time.show
-            ? _c("TimeComponent", {
-                attrs: {
-                  time_lists: _vm.getTimeLists,
-                  selected_date: _vm.form.scheduled_date
-                },
-                on: { "select-time": _vm.selectTime }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.psychologist.show
-            ? _c("PsychologistComponent", {
-                attrs: { psychologist_available: _vm.getAvailable },
-                on: { "selected-psychologist": _vm.selectPyschologist }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.onboarding.show
-            ? _c("OnboardingQuestion", {
-                on: { "onboarding-answers": _vm.onboardingAnswers }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.show_actions
-            ? _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary btn-block mt-3 mb-3" },
-                  [_vm._v("Submit")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-danger btn-block",
-                    attrs: { href: "#" }
-                  },
-                  [_vm._v("Cancel")]
-                )
-              ])
-            : _vm._e()
-        ],
-        1
-      )
-    ])
+    _vm.hasSelectedDate
+      ? _c("div", { staticClass: "col-md-4" }, [
+          _c(
+            "form",
+            {
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.submitBooking($event)
+                }
+              }
+            },
+            [
+              _vm.showSessionType
+                ? _c(
+                    "SessionType",
+                    _vm._b({}, "SessionType", _vm.form.selected, false)
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.time.show
+                ? _c("TimeComponent", {
+                    attrs: {
+                      time_lists: _vm.getTimeLists,
+                      selected_date: _vm.form.scheduled_date
+                    },
+                    on: { "select-time": _vm.selectTime }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.psychologist.show
+                ? _c("PsychologistComponent", {
+                    attrs: { psychologist_available: _vm.getAvailable },
+                    on: { "selected-psychologist": _vm.selectPyschologist }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.onboarding.show
+                ? _c("OnboardingQuestion", {
+                    on: { "onboarding-answers": _vm.onboardingAnswers }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.show_actions
+                ? _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "button",
+                      { staticClass: "btn btn-primary btn-block mt-3 mb-3" },
+                      [_vm._v("Submit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-danger btn-block",
+                        attrs: { href: "#" }
+                      },
+                      [_vm._v("Cancel")]
+                    )
+                  ])
+                : _vm._e()
+            ],
+            1
+          )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -54886,7 +54964,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card mb-3" }, [
+  return _c("div", { staticClass: "card mb-3 mt-3" }, [
     _c("div", { staticClass: "card-header" }, [
       _vm._v("\n\t\tOnboarding Questions\n\t")
     ]),
@@ -55068,37 +55146,113 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "card mb-3" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _vm._v("\n\t\tSession Types\n\t")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "session_type_id" } }, [
+          _vm._v("Session Type")
+        ]),
+        _vm._v(" "),
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.session_selected,
+                expression: "session_selected"
+              }
+            ],
+            staticClass: "form-control",
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.session_selected = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          [
+            _c("option", { attrs: { value: "" } }, [
+              _vm._v("Choose type of session")
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.session_types, function(session_type) {
+              return _c(
+                "option",
+                { key: session_type.id, domProps: { value: session_type.id } },
+                [
+                  _vm._v(
+                    "\n\t\t\t\t\t" + _vm._s(session_type.name) + "\n\t\t\t\t"
+                  )
+                ]
+              )
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _vm.show.client
+        ? _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Client")]),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.show.counselee
+        ? _c("div", { staticClass: "form-group" }, [
+            _c("label", [_vm._v("Counselee")]),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
+        : _vm._e()
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("\n\t\tSession Types\n\t")
+    return _c("select", { staticClass: "form-control" }, [
+      _c("option", { attrs: { value: "" } }, [_vm._v("- Choose a client -")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "1" } }, [_vm._v("company a")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "2" } }, [_vm._v("company b")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "3" } }, [_vm._v("company c")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("select", { staticClass: "form-control" }, [
+      _c("option", { attrs: { value: "" } }, [
+        _vm._v("- Choose a counselee -")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "session_type_id" } }, [
-            _vm._v("Session Type")
-          ]),
-          _vm._v(" "),
-          _c("select", { staticClass: "form-control" }, [
-            _c("option", { attrs: { value: "individual" } }, [
-              _vm._v("Individual")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "group-session" } }, [
-              _vm._v("Group Session")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "webinar" } }, [_vm._v("Webinar")])
-          ])
-        ])
-      ])
+      _c("option", { attrs: { value: "1" } }, [_vm._v("juan dela cruz")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "2" } }, [_vm._v("nonito del grande")]),
+      _vm._v(" "),
+      _c("option", { attrs: { value: "3" } }, [_vm._v("julio cesar")])
     ])
   }
 ]

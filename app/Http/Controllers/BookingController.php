@@ -88,6 +88,8 @@ class BookingController extends Controller
                     // store onboarding answers
                     if($request->has('choice')){
 
+                        // validate must required all fields
+
                         // submit on boarding question answers
                         $this->submitAnswers($booking->id, $request);
                     }

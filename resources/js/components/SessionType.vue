@@ -7,10 +7,31 @@
 		<div class="card-body">
 			<div class="form-group">
 				<label for="session_type_id">Session Type</label>
+				<select class="form-control" v-model="session_selected">
+					<option value="">Choose type of session</option>
+					<option :value="session_type.id" v-for="session_type in session_types" :key="session_type.id">
+						{{ session_type.name}}
+					</option>
+				</select>
+			</div>
+
+			<div class="form-group" v-if="show.client">
+				<label>Client</label>
 				<select class="form-control">
-					<option value="individual">Individual</option>
-					<option value="group-session">Group Session</option>
-					<option value="webinar">Webinar</option>
+					<option value="">- Choose a client -</option>
+					<option value="1">company a</option>
+					<option value="2">company b</option>
+					<option value="3">company c</option>
+				</select>
+			</div>
+
+			<div class="form-group" v-if="show.counselee">
+				<label>Counselee</label>
+				<select class="form-control">
+					<option value="">- Choose a counselee -</option>
+					<option value="1">juan dela cruz</option>
+					<option value="2">nonito del grande</option>
+					<option value="3">julio cesar</option>
 				</select>
 			</div>
 		</div>
@@ -19,8 +40,43 @@
 
 <script>
 	export default {
-		mounted(){
-			console.log('session type')
+		data(){
+
+			return {
+				session_selected: this.session,
+				client_selected: this.client,
+				counselee_selected: this.counselee,
+				show: {
+					client: false,
+					counselee: false
+				},
+				session_types: [],
+
+			}
+		},
+		props:["session", "client", "counselee"],
+		created(){
+			this.session_types = [
+				{ id: 1, name: 'Individual'},
+				{ id: 2, name: 'Group Session'},
+				{ id: 3, name: 'Webinar'}
+			];
+		},
+		watch: {
+			session_selected(id){
+				if(id === 1){
+					this.show.client = true;
+					this.show.counselee = true;
+				}else if(id === 2 || id === 3){
+
+					this.show.counselee = false;
+					this.show.client = true;
+				}else{
+
+					this.show.counselee = false;
+					this.show.client = false;
+				}
+			}
 		}
 	}
 </script>
