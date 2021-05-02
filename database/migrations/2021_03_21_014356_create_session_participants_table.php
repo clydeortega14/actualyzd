@@ -14,16 +14,16 @@ class CreateSessionParticipantsTable extends Migration
     public function up()
     {
         Schema::create('session_participants', function (Blueprint $table) {
-            $table->bigIncrements('id');
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('participant');
-            $table->timestamps();
 
             $table->foreign('booking_id')->references('id')->on('bookings')
                 ->onDelete('cascade')->onUpdate('cascade');
 
             $table->foreign('participant')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->primary(['booking_id', 'participant']);
         });
     }
 

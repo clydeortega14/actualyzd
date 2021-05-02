@@ -17473,7 +17473,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     counseleeSelected: function counseleeSelected(counselee_id) {
       this.form.selected.counselee = counselee_id;
-      console.log(this.form.selected.counselee);
     },
     onboardingAnswers: function onboardingAnswers(answers) {
       this.show_actions = true;
@@ -55267,6 +55266,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                attrs: { required: "" },
                 on: {
                   change: function($event) {
                     var $$selectedVal = Array.prototype.filter
@@ -55302,7 +55302,7 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm.show.counselee
-        ? _c("div", { staticClass: "form-group" }, [
+        ? _c("div", { staticClass: "form-group", attrs: { required: "" } }, [
             _c("label", [_vm._v("Counselee")]),
             _vm._v(" "),
             _c(

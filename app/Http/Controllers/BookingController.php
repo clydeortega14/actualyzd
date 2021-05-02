@@ -68,11 +68,11 @@ class BookingController extends Controller
             if(!is_null($schedule) && !is_null($time_schedule))
             {
                 // Store Booking
-                $booking = Booking::create([
+                $booking = Booking::firstOrCreate([
 
                     'schedule' => $schedule->id,
                     'time_id' => $request->time_id,
-                    'client_id' => is_null($request->client) ? auth()->user()->client_id : $request->client,
+                    'client_id' => $request->client,
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'status' => 1 // booked
@@ -138,12 +138,20 @@ class BookingController extends Controller
         if(is_null($request->counselee))
         {
             // when the're is no counselee / counselee is null
-            // it means session type is webinar / groupsession
-            // the first participant to be included in the session must be clients users with the role of admin
-            foreach($this->clientAdmins($request->client) as $participant)
-            {
-                // store participants
-                $this->storeParticipant($booking, $participant->id);
+            // determine if the user who book the session has role member
+            if(auth()->user()->hasRole('member')){
+
+                // session participant must be member
+                $this->storeParticipant($booking, auth()->user()->id);
+
+            }else{ // if the user who booked the session is superadmin / admin
+
+                // the first participant to be included in the session must be clients users with the role of admin
+                foreach($this->clientAdmins($request->client) as $participant)
+                {
+                    // store participants
+                    $this->storeParticipant($booking, $participant->id);
+                }
             }
         }else{
             // if counselee is not null
@@ -153,10 +161,7 @@ class BookingController extends Controller
 
     public function storeParticipant($booking, $participant)
     {
-        return SessionParticipant::create([
-            'booking_id' => $booking->id,
-            'participant' => $participant
-        ]);  
+        return DB::table('session_participants')->insert(['booking_id' => $booking->id, 'participant' => $participant ]);
     }
 
     /*  End For Participants Methods */

@@ -68,4 +68,8 @@ class Booking extends Model
     {
         return $this->hasOne(ProgressReport::class);
     }
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'session_participants', 'booking_id', 'participant');
+    }
 }
