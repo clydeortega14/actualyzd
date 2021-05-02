@@ -11,6 +11,7 @@ class Booking extends Model
         [
             'schedule', 
             'time_id',
+            'client_id',
             'counselee',
             'booked_by', 
             'session_type_id', 
@@ -20,6 +21,11 @@ class Booking extends Model
     public function toSchedule()
     {
         return $this->belongsTo(PsychologistSchedule::class, 'schedule');
+    }
+
+    public function toClient()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
     }
     public function time()
     {

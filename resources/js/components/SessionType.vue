@@ -1,7 +1,7 @@
 <template>
 	<div class="card mb-3">
 		<div class="card-header">
-			Session Types
+			Session Fields
 		</div>
 
 		<div class="card-body">
@@ -17,17 +17,15 @@
 
 			<div class="form-group" v-if="show.client">
 				<label>Client</label>
-				<select class="form-control">
+				<select class="form-control" v-model="client_selected">
 					<option value="">- Choose a client -</option>
-					<option value="1">company a</option>
-					<option value="2">company b</option>
-					<option value="3">company c</option>
+					<option :value="client.id" v-for="client in clients" :key="client.id">{{ client.name}}</option>
 				</select>
 			</div>
 
 			<div class="form-group" v-if="show.counselee">
 				<label>Counselee</label>
-				<select class="form-control">
+				<select class="form-control" v-model="counselee_selected">
 					<option value="">- Choose a counselee -</option>
 					<option value="1">juan dela cruz</option>
 					<option value="2">nonito del grande</option>
@@ -51,6 +49,7 @@
 					counselee: false
 				},
 				session_types: [],
+				clients: []
 
 			}
 		},
@@ -61,9 +60,18 @@
 				{ id: 2, name: 'Group Session'},
 				{ id: 3, name: 'Webinar'}
 			];
+
+			this.clients = [
+				{ id: 1, name: 'San Miguel Corp'},
+				{ id: 2, name: 'Lalamove'},
+				{ id: 3, name: 'Concentrix'},
+			];
 		},
 		watch: {
 			session_selected(id){
+
+				this.$emit('session-selected', id);
+
 				if(id === 1){
 					this.show.client = true;
 					this.show.counselee = true;
@@ -76,6 +84,13 @@
 					this.show.counselee = false;
 					this.show.client = false;
 				}
+			},
+			client_selected(client_id){
+				this.$emit('client-selected', client_id);
+			},
+			counselee_selected(counselee_id)
+			{
+				this.$emit('counselee-selected', counselee_id);
 			}
 		}
 	}

@@ -17,6 +17,8 @@ use App\ProgressReport;
 use App\TimeSchedule;
 use App\FollowupSession;
 use App\User;
+use App\SessionParticipant;
+use App\Client;
 
 class BookingController extends Controller
 {
@@ -70,7 +72,7 @@ class BookingController extends Controller
 
                     'schedule' => $schedule->id,
                     'time_id' => $request->time_id,
-                    'counselee' => is_null($request->counselee) ? auth()->user()->id : $request->counselee,
+                    'client_id' => is_null($request->client) ? auth()->user()->client_id : $request->client,
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'status' => 1 // booked
@@ -90,6 +92,9 @@ class BookingController extends Controller
                         // submit on boarding question answers
                         $this->submitAnswers($booking->id, $request);
                     }
+
+                    // store session participants
+                    $this->manageParticipant($booking, $request);
 
                     // if session type is individual / consultation
                     if($booking->session_type_id == 1){
@@ -116,6 +121,45 @@ class BookingController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Successfully Booked a session'], 200);
     }
+
+    /* For Participants Methods*/
+
+    protected function clientAdmins($client)
+    {
+        $client = Client::findOrFail($client);
+
+        return $client->users()->whereHas('roles', function($q){
+            $q->where('name', 'admin');
+        })->get();
+    }
+
+    public function manageParticipant($booking, $request)
+    {
+        if(is_null($request->counselee))
+        {
+            // when the're is no counselee / counselee is null
+            // it means session type is webinar / groupsession
+            // the first participant to be included in the session must be clients users with the role of admin
+            foreach($this->clientAdmins($request->client) as $participant)
+            {
+                // store participants
+                $this->storeParticipant($booking, $participant->id);
+            }
+        }else{
+            // if counselee is not null
+            $this->storeParticipant($booking, $request->counselee);
+        }
+    }
+
+    public function storeParticipant($booking, $participant)
+    {
+        return SessionParticipant::create([
+            'booking_id' => $booking->id,
+            'participant' => $participant
+        ]);  
+    }
+
+    /*  End For Participants Methods */
 
     public function submitAnswers($booking_id, $request)
     {

@@ -9,7 +9,10 @@
 				<!--  Session Types Component -->
 				<SessionType 
 					v-if="showSessionType" 
-					v-bind="form.selected" />
+					v-bind="form.selected" 
+					@session-selected="sessionSelected" 
+					@client-selected="clientSelected"
+					@counselee-selected="counseleeSelected" />
 				<!-- end session types component -->
 
 				<!-- Time Component -->
@@ -168,6 +171,17 @@
 				this.form.psychologist = id;
 				this.onboarding.show = true;
 			},
+			sessionSelected(session_id)
+			{
+				this.form.selected.session = session_id;
+			},
+			clientSelected(client_id)
+			{
+				this.form.selected.client = client_id;
+			},
+			counseleeSelected(counselee_id){
+				this.form.selected.counselee = counselee_id;
+			},
 			onboardingAnswers(answers)
 			{
 				this.show_actions = true;
@@ -179,10 +193,13 @@
 
 					schedule: this.form.schedule,
 					time_id: this.form.time,
-					counselee: this.form.counselee,
-					session_type_id: this.form.session_type_id,
+					client: this.form.selected.client,
+					counselee: this.form.selected.counselee,
+					session_type_id: this.form.selected.session,
 					choice: this.form.choice
 				}
+
+				console.log(payload)
 
 				axios.post('/bookings/book', payload)
 					.then(response => {
@@ -195,14 +212,16 @@
 							this.form.schedule = null;
 							this.form.scheduled_date = null;
 							this.form.time = null;
+							this.form.selected.client = null;
+							this.form.selected.counselee = null;
+							this.form.selected.session = null;
 							this.form.psychologist = null;
-							this.form.counselee = null;
-							this.form.session_type_id = null;
 							this.form.choice = [];
 
 							// hide some components
 							this.time.show = false;
 							this.psychologist.show = false;
+							this.showSessionType = false;
 							this.onboarding.show = false;
 							this.show_actions = false;
 							this.hasSelectedDate = false;

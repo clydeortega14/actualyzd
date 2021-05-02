@@ -17369,6 +17369,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -17462,6 +17465,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.form.psychologist = id;
       this.onboarding.show = true;
     },
+    sessionSelected: function sessionSelected(session_id) {
+      this.form.selected.session = session_id;
+    },
+    clientSelected: function clientSelected(client_id) {
+      this.form.selected.client = client_id;
+    },
+    counseleeSelected: function counseleeSelected(counselee_id) {
+      this.form.selected.counselee = counselee_id;
+      console.log(this.form.selected.counselee);
+    },
     onboardingAnswers: function onboardingAnswers(answers) {
       this.show_actions = true;
       this.form.choice = answers;
@@ -17472,10 +17485,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var payload = {
         schedule: this.form.schedule,
         time_id: this.form.time,
-        counselee: this.form.counselee,
-        session_type_id: this.form.session_type_id,
+        client: this.form.selected.client,
+        counselee: this.form.selected.counselee,
+        session_type_id: this.form.selected.session,
         choice: this.form.choice
       };
+      console.log(payload);
       axios.post('/bookings/book', payload).then(function (response) {
         var result = response.data;
 
@@ -17484,13 +17499,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.form.schedule = null;
           _this.form.scheduled_date = null;
           _this.form.time = null;
+          _this.form.selected.client = null;
+          _this.form.selected.counselee = null;
+          _this.form.selected.session = null;
           _this.form.psychologist = null;
-          _this.form.counselee = null;
-          _this.form.session_type_id = null;
           _this.form.choice = []; // hide some components
 
           _this.time.show = false;
           _this.psychologist.show = false;
+          _this.showSessionType = false;
           _this.onboarding.show = false;
           _this.show_actions = false;
           _this.hasSelectedDate = false;
@@ -17668,8 +17685,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -17680,7 +17695,8 @@ __webpack_require__.r(__webpack_exports__);
         client: false,
         counselee: false
       },
-      session_types: []
+      session_types: [],
+      clients: []
     };
   },
   props: ["session", "client", "counselee"],
@@ -17695,9 +17711,21 @@ __webpack_require__.r(__webpack_exports__);
       id: 3,
       name: 'Webinar'
     }];
+    this.clients = [{
+      id: 1,
+      name: 'San Miguel Corp'
+    }, {
+      id: 2,
+      name: 'Lalamove'
+    }, {
+      id: 3,
+      name: 'Concentrix'
+    }];
   },
   watch: {
     session_selected: function session_selected(id) {
+      this.$emit('session-selected', id);
+
       if (id === 1) {
         this.show.client = true;
         this.show.counselee = true;
@@ -17708,6 +17736,12 @@ __webpack_require__.r(__webpack_exports__);
         this.show.counselee = false;
         this.show.client = false;
       }
+    },
+    client_selected: function client_selected(client_id) {
+      this.$emit('client-selected', client_id);
+    },
+    counselee_selected: function counselee_selected(counselee_id) {
+      this.$emit('counselee-selected', counselee_id);
     }
   }
 });
@@ -54890,7 +54924,18 @@ var render = function() {
               _vm.showSessionType
                 ? _c(
                     "SessionType",
-                    _vm._b({}, "SessionType", _vm.form.selected, false)
+                    _vm._b(
+                      {
+                        on: {
+                          "session-selected": _vm.sessionSelected,
+                          "client-selected": _vm.clientSelected,
+                          "counselee-selected": _vm.counseleeSelected
+                        }
+                      },
+                      "SessionType",
+                      _vm.form.selected,
+                      false
+                    )
                   )
                 : _vm._e(),
               _vm._v(" "),
@@ -55148,7 +55193,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card mb-3" }, [
     _c("div", { staticClass: "card-header" }, [
-      _vm._v("\n\t\tSession Types\n\t")
+      _vm._v("\n\t\tSession Fields\n\t")
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
@@ -55210,7 +55255,49 @@ var render = function() {
         ? _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v("Client")]),
             _vm._v(" "),
-            _vm._m(0)
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.client_selected,
+                    expression: "client_selected"
+                  }
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.client_selected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("- Choose a client -")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.clients, function(client) {
+                  return _c(
+                    "option",
+                    { key: client.id, domProps: { value: client.id } },
+                    [_vm._v(_vm._s(client.name))]
+                  )
+                })
+              ],
+              2
+            )
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -55218,44 +55305,56 @@ var render = function() {
         ? _c("div", { staticClass: "form-group" }, [
             _c("label", [_vm._v("Counselee")]),
             _vm._v(" "),
-            _vm._m(1)
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.counselee_selected,
+                    expression: "counselee_selected"
+                  }
+                ],
+                staticClass: "form-control",
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.counselee_selected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "" } }, [
+                  _vm._v("- Choose a counselee -")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "1" } }, [
+                  _vm._v("juan dela cruz")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [
+                  _vm._v("nonito del grande")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("julio cesar")])
+              ]
+            )
           ])
         : _vm._e()
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("select", { staticClass: "form-control" }, [
-      _c("option", { attrs: { value: "" } }, [_vm._v("- Choose a client -")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "1" } }, [_vm._v("company a")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "2" } }, [_vm._v("company b")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "3" } }, [_vm._v("company c")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("select", { staticClass: "form-control" }, [
-      _c("option", { attrs: { value: "" } }, [
-        _vm._v("- Choose a counselee -")
-      ]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "1" } }, [_vm._v("juan dela cruz")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "2" } }, [_vm._v("nonito del grande")]),
-      _vm._v(" "),
-      _c("option", { attrs: { value: "3" } }, [_vm._v("julio cesar")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
