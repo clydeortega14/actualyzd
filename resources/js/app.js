@@ -27,6 +27,10 @@ import store from './store'
 
 Vue.component('calendar-page', require('./components/CalendarPage.vue').default);
 
+Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+
+Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

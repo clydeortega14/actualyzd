@@ -17,4 +17,9 @@ class Client extends Model
     	'is_active', 
     	'logo'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'client_id');
+    }
 }

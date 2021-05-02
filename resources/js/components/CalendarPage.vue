@@ -1,34 +1,47 @@
 <template>
-	<div>
-		<FullCalendar :options="calendarOptions" />
+	<div class="row">
+		<div :class="checkSelectedDate">
+			<FullCalendar :options="calendarOptions" />
+		</div>
 
-		<form @submit.prevent="submitBooking">
-			<!-- Time Component -->
-			<TimeComponent 
-				v-if="time.show"
-				:time_lists="getTimeLists"
-				:selected_date="form.scheduled_date" 
-				@select-time="selectTime" />
+		<div class="col-md-4" v-if="hasSelectedDate">
+			<form @submit.prevent="submitBooking">
+				<!--  Session Types Component -->
+				<SessionType 
+					v-if="showSessionType" 
+					v-bind="form.selected" 
+					@session-selected="sessionSelected" 
+					@client-selected="clientSelected"
+					@counselee-selected="counseleeSelected" />
+				<!-- end session types component -->
 
-			<!-- Psychologist -->
-			<PsychologistComponent 
-				v-if="psychologist.show"
-				:psychologist_available="getAvailable"
-				@selected-psychologist="selectPyschologist"
-			/>
+				<!-- Time Component -->
+				<TimeComponent 
+					v-if="time.show"
+					:time_lists="getTimeLists"
+					:selected_date="form.scheduled_date" 
+					@select-time="selectTime" />
+
+				<!-- Psychologist -->
+				<PsychologistComponent 
+					v-if="psychologist.show"
+					:psychologist_available="getAvailable"
+					@selected-psychologist="selectPyschologist"
+				/>
 
 
-			<!-- Onboarding Questions -->
-			<OnboardingQuestion 
-				v-if="onboarding.show"
-				@onboarding-answers="onboardingAnswers"
-			/>
+				<!-- Onboarding Questions -->
+				<OnboardingQuestion 
+					v-if="onboarding.show"
+					@onboarding-answers="onboardingAnswers"
+				/>
 
-			<div class="form-group" v-if="show_actions">
-				<button class="btn btn-primary btn-block mt-3 mb-3">Submit</button>
-				<a href="#" class="btn btn-danger btn-block">Cancel</a>
-			</div>
-		</form>
+				<div class="form-group" v-if="show_actions">
+					<button class="btn btn-primary btn-block mt-3 mb-3">Submit</button>
+					<a href="#" class="btn btn-danger btn-block">Cancel</a>
+				</div>
+			</form>
+		</div>
 	</div>
 </template>
 
@@ -41,6 +54,7 @@
 	import TimeComponent from './TimeComponent';
 	import PsychologistComponent from './PsychologistComponent';
 	import OnboardingQuestion from './OnboardingQuestion';
+	import SessionType from './SessionType';
 
 	import { mapGetters, mapActions } from 'vuex';
 
@@ -66,10 +80,17 @@
 					time: null,
 					psychologist: null,
 					counselee: null,
-					session_type_id: null,
-					choice: []
+					choice: [],
+					selected: {
+						session: null,
+						client: null,
+						counselee: null
+					}
 
 				},
+				showSessionType: false,
+				hasSelectedDate: false,
+				column_size: '',
 				time: {
 
 					show: false,
@@ -86,12 +107,10 @@
 		},
 		props: {
 
-			booking: Object
+			booking: Object,
+			user_role: String,
 		},
 		created(){
-
-			console.log(this.booking)
-
 			this.getAllSchedules()
 		},
 		computed: {
@@ -100,13 +119,17 @@
 				"getSchedules", 
 				"getTimeLists", 
 				"getAvailable"
-			])
+			]),
+			checkSelectedDate(){
+				return this.column_size = this.hasSelectedDate ? 'col-md-8' : 'col-md-12';
+			}
 		},
 		components: {
 			FullCalendar,
 			TimeComponent,
 			PsychologistComponent,
-			OnboardingQuestion
+			OnboardingQuestion,
+			SessionType
 		},
 		methods: {
 
@@ -120,19 +143,21 @@
 			handleEventClick(arg){
 
 				let schedule_id = arg.event.id;
-
+				this.hasSelectedDate = true;
 				this.form.schedule = schedule_id;
 				this.form.scheduled_date = arg.event.startStr;
 				this.time.show = true;
+				this.showSessionType = this.user_role === 'superadmin' ? true : false;
 				this.timeLists(schedule_id)
 			},
 
 			handleDateClick(argument){
 
 				this.time.show = false;
-				// this.psychologist.show = false;
+				this.showSessionType = false;
 				this.onboarding.show = false;
 				this.show_actions = false;
+				this.hasSelectedDate = false;
 			},
 			selectTime(data)
 			{
@@ -146,6 +171,17 @@
 				this.form.psychologist = id;
 				this.onboarding.show = true;
 			},
+			sessionSelected(session_id)
+			{
+				this.form.selected.session = session_id;
+			},
+			clientSelected(client_id)
+			{
+				this.form.selected.client = client_id;
+			},
+			counseleeSelected(counselee_id){
+				this.form.selected.counselee = counselee_id;
+			},
 			onboardingAnswers(answers)
 			{
 				this.show_actions = true;
@@ -157,10 +193,13 @@
 
 					schedule: this.form.schedule,
 					time_id: this.form.time,
-					counselee: this.form.counselee,
-					session_type_id: this.form.session_type_id,
+					client: this.form.selected.client,
+					counselee: this.form.selected.counselee,
+					session_type_id: this.form.selected.session,
 					choice: this.form.choice
 				}
+
+				console.log(payload)
 
 				axios.post('/bookings/book', payload)
 					.then(response => {
@@ -173,16 +212,19 @@
 							this.form.schedule = null;
 							this.form.scheduled_date = null;
 							this.form.time = null;
+							this.form.selected.client = null;
+							this.form.selected.counselee = null;
+							this.form.selected.session = null;
 							this.form.psychologist = null;
-							this.form.counselee = null;
-							this.form.session_type_id = null;
 							this.form.choice = [];
 
 							// hide some components
 							this.time.show = false;
 							this.psychologist.show = false;
+							this.showSessionType = false;
 							this.onboarding.show = false;
 							this.show_actions = false;
+							this.hasSelectedDate = false;
 
 							alert(result.message);
 
