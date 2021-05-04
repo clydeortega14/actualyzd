@@ -75,11 +75,8 @@ class ClientUserController extends Controller
 
             $user = User::create($this->userData($request->toArray()) + ['password' => Hash::make($request->password) ] + ['client_id' => auth()->user()->hasRole('admin') ? auth()->user()->client_id : null]);
 
-            if($request->has('roles')) $this->attachRoles($user, 'id', $request->roles);
+            if($request->has('roles')) $this->attachRoles($user, 'id', $request->roles); // User instance, Role column name, Role column value
 
-            if(auth()->user()->hasRole('admin')) $this->attachRoles($user, 'name', ['member']); // User instance, Role column name, Role column value
-
-            
         } catch (Exception $e) {
 
             DB::rollback();
@@ -87,7 +84,7 @@ class ClientUserController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('users.index')->with('success', 'New users has been added');
+        return redirect()->route('client.users.index')->with('success', 'New users has been added');
     }
 
     /**
@@ -110,13 +107,24 @@ class ClientUserController extends Controller
     public function edit($id)
     {
         try {
-            $user = User::findOrFail($id);
+            if(!auth()->user()->can('can.edit.user')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+
+            $user = User::where('id', $id)->where(function($query) {
+                    $query->where('id', '<>', auth()->user()->id);
+                    if(auth()->user()->hasRole('admin')) {
+                        $query->where('client_id', auth()->user()->client_id);
+                    }
+                })->first();
+            
+            if(is_null($user)) return redirect()->back()->with('error', 'User not found');
             $roles = $this->rolesQuery();
             
             return view('pages.clients.users.edit', compact('user', 'roles'));
         } catch (\Exception $e) {
+
             return redirect()->back()->with('error', 'User not found');
         }
+
     }
 
     /**
@@ -128,7 +136,42 @@ class ClientUserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         try {
+
+            if(!auth()->user()->can('can.edit.user')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+
+            $user = User::where('id', $id)->where(function($query) {
+                $query->where('id', '<>', auth()->user()->id);
+                (auth()->user()->hasRole('admin')) ? $query->where('client_id', auth()->user()->client_id) : null;
+            })->first();
+
+            if(!$user) return redirect()->back()->with('error', 'User not found!');
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            $user->detachRoles($user->roles);
+            if($request->has('roles')) $this->attachRoles($user, 'id', $request->roles); // User instance, Role column name, Role column value
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+            return redirect()->back()->with('error', 'Something went wrong!');
+        }
+
+        DB::commit();
+        return redirect()->route('client.users.index')->with('error', 'User successfully updated!');
+    }
+
+    public function update_status(Request $request, $id)
+    {
+        try {
+
+            if(!auth()->user()->can('can.update.user.status')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+
             $user = User::where('id', $id)->where(function($query) {
                 (auth()->user()->hasRole('admin')) ? $query->where('client_id', auth()->user()->client_id) : null;
             })->first();
@@ -159,6 +202,7 @@ class ClientUserController extends Controller
         ], 200);
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -167,7 +211,32 @@ class ClientUserController extends Controller
      */
     public function destroy($id)
     {
-        dd('destroy');
+        DB::beginTransaction();
+       try {
+
+            if(!auth()->user()->can('can.delete.user')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+
+            $user = User::where('id', $id)->where(function($query) {
+                $query->where('id', '<>', auth()->user()->id);
+                if(auth()->user()->hasRole('admin')) {
+                    $query->where('id', '<>', auth()->user()->id)->where('client_id', auth()->user()->client_id);
+                } 
+            })
+            ->first();
+
+            if(!$user) return response()->json([ 'error' => true, 'message' => 'User not found!'], 404);
+
+            $user->delete();
+
+       } catch (\Exception $e) {
+
+           DB::rollback();
+           return response()->json([ 'error' => true, 'message' => 'Something went wrong!', $e->getMessage() ], 500);
+       }
+
+       DB::commit();
+       return response()->json([ 'error' => true, 'message' => 'User successfully deleted!' ], 200);
+       
     }
 
     public function userData(array $data)

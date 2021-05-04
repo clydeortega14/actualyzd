@@ -8,12 +8,15 @@
 
 
 		<div class="row">
+			<div class="col-md-12">
+				@include('alerts.message')
+			</div>
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-body">
-						<form action="{{ url('client/users') }}" method="PUT">
+						<form action="{{ route('client.user.update',$user->id) }}" method="POST">
 							@csrf
-							
+							@method('POST')
 							<div class="row justify-content-between">
 								<div class="col-sm-5">
 									
