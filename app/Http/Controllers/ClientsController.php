@@ -14,7 +14,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::with('user')->get();
+        $clients = Client::get();
 
         return view('pages.superadmin.clients.index', compact('clients'));
     }
