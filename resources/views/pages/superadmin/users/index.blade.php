@@ -9,7 +9,13 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
-					<div class="card-header py-4">
+					<div class="card-header py-2">
+						<select name="" id="select-client">
+							<option value="0" selected>All</option>
+							@foreach($clients as $client)
+								<option value="{{ $client->id }}">{{ $client->name }}</option>
+							@endforeach
+						</select>
 						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm float-right">
 							<i class="fa fa-plus"></i>
 							<span>Create User</span>
@@ -35,7 +41,7 @@
 										@php
 											$active = $user->is_active;
 										@endphp
-										<tr>
+										<tr data-client-id="{{ $user->client_id }}" class="user">
 											<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
 											<td>{{ $user->name }}</td>
 											<td>{{ $user->email }}</td>
@@ -73,4 +79,24 @@
 		</div>
 	</div>
 
+@stop
+
+@section('js_scripts')
+	<script>
+	$(function() {
+
+		$('#select-client').on('change', function() {
+			let client = $('#select-client').val();
+			let user = $('.user');
+			if(client == 0) return user.show();
+			
+			user.hide();
+			if(user.attr(`[data-client-id="${client}"]`) === undefined) {
+				$('.user').attr(`[data-client-id="${client}"]`).show();
+			}
+		});
+
+	});
+	
+	</script>
 @stop

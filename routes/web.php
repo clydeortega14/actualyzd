@@ -110,7 +110,13 @@ Route::middleware('auth')->group(function(){
 	/* Client Prefix */
 	Route::prefix('client')->group(function() {
 
-		Route::resource('users', 'ClientUserController');
+		Route::get('users', 'ClientUserController@index')->name('client.users.index');
+		Route::get('user/create', 'ClientUserController@create')->name('client.user.create');
+		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
+		Route::put('user/update_status/{id}', 'ClientUserController@update_status');
+		Route::get('user/edit/{id}', 'ClientUserController@edit');
+		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');
+		Route::delete('user/delete/{id}', 'ClientUserController@destroy');
 	});
 
 	/*-- Bookings --*/

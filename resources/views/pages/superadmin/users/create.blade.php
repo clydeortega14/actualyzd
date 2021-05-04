@@ -55,7 +55,7 @@
 									@endif
 
 									<div class="form-group d-flex justify-content-end">
-										<a href="{{ route('users.index') }}" class="btn btn-danger mr-2">Cancel</a>
+										<a href="{{ url('users') }}" class="btn btn-danger mr-2">Cancel</a>
 										<button type="submit" class="btn btn-primary">Submit</button>
 									</div>
 
