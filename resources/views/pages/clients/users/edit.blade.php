@@ -40,12 +40,12 @@
 									<div class="form-group">
 										<label>Password<small class="text-danger">*</small></label>
                                         <input type="checkbox" name="user_status" class="cm-toggle blue" id="update-password"> 
-										<input type="password" name="password" class="form-control" value="" placeholder="********" required readonly>
+										<input type="password" name="password" class="form-control" value="" placeholder="********" disabled>
 									</div>
 
 									<div class="form-group">
 										<label>Confirm Password<small class="text-danger">*</small></label>
-										<input type="password" name="password_confirmation" class="form-control" placeholder="********" required readonly>
+										<input type="password" name="password_confirmation" class="form-control" placeholder="********" disabled>
 									</div>
 
 									<div class="form-group d-flex justify-content-end">
@@ -109,10 +109,10 @@
             $('#update-password').on('change', function() {
                 
                 if($(this).is(':checked')) {
-                    return $('[type="password"]').attr('readonly', false);
+                    return $('[type="password"]').attr('disabled', false);
                 }
 
-                return $('[type="password"]').attr('readonly', true);
+                return $('[type="password"]').attr('disabled', true);
             });
         });
     </script>
