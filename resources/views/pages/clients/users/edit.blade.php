@@ -11,7 +11,7 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-body">
-						<form action="{{ url('client/users') }}" method="POST">
+						<form action="{{ url('client/users') }}" method="PUT">
 							@csrf
 							
 							<div class="row justify-content-between">
@@ -19,27 +19,30 @@
 									
 									<div class="form-group">
 										<label>Name <small class="text-danger">*</small></label>
-										<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ old('name') }}" required>
+										<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $user->name }}" required>
 									</div>
 
 									<div class="form-group">
 										<label>Email<small class="text-danger">*</small></label>
-										<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ old('email') }}" required>
+										<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ $user->email }}" required>
 									</div>
 
 									<div class="form-group">
 										<label>Username<small class="text-danger">*</small></label>
-										<input type="text" name="username" class="form-control" placeholder="UserName" value="{{ old('username') }}" required>
+										<input type="text" name="username" class="form-control" placeholder="UserName" value="{{ $user->username }}" required>
 									</div>
+
+                                    <hr>
 
 									<div class="form-group">
 										<label>Password<small class="text-danger">*</small></label>
-										<input type="password" name="password" class="form-control" value="" placeholder="********" required>
+                                        <input type="checkbox" name="user_status" class="cm-toggle blue" id="update-password"> 
+										<input type="password" name="password" class="form-control" value="" placeholder="********" required readonly>
 									</div>
 
 									<div class="form-group">
 										<label>Confirm Password<small class="text-danger">*</small></label>
-										<input type="password" name="password_confirmation" class="form-control" placeholder="********" required>
+										<input type="password" name="password_confirmation" class="form-control" placeholder="********" required readonly>
 									</div>
 
 									<div class="form-group d-flex justify-content-end">
@@ -68,29 +71,7 @@
 												@foreach($roles as $role)
 												<tr>
 													<td>
-														<!-- for default checked  -->
-														@if(isset($isUser))
-															@php
-																$checked = '';
-															@endphp
-															@if(count($user->roles) > 0)
-																@foreach($user->roles as $user_role)
-																	@if($user_role->id == $role->id)
-																		@php
-																			$checked = 'checked';
-																		@endphp
-																	@endif
-																@endforeach
-
-																<input type="radio" name="roles[]" value="{{ $role->id }}" {{ $checked }}>
-															@else
-																<input type="radio" name="roles[]" value="{{ $role->id }}">
-															@endif
-														@endif
-														<!-- end for default checked -->
-
-														<input type="radio" name="roles[]" value="{{ $role->id }}">
-														
+														<input type="radio" name="roles[]" value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'checked': '' }} >
 													</td>
 													<td>{{ $role->display_name }}</td>
 													<td>
@@ -116,4 +97,20 @@
 		</div>
 	</div>
 
+@stop
+
+@section('js_scripts')
+
+    <script>
+        $(function() {
+            $('#update-password').on('change', function() {
+                
+                if($(this).is(':checked')) {
+                    return $('[type="password"]').attr('readonly', false);
+                }
+
+                return $('[type="password"]').attr('readonly', true);
+            });
+        });
+    </script>
 @stop

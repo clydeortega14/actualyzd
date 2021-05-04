@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Client;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
@@ -37,7 +38,9 @@ class UsersController extends Controller
 
         })->with(['roles'])->get();
 
-        return view('pages.superadmin.users.index', compact('users'));
+        $clients = Client::all();
+
+        return view('pages.superadmin.users.index', compact('users', 'clients'));
     }
 
     /**

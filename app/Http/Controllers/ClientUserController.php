@@ -47,7 +47,9 @@ class ClientUserController extends Controller
      */
     public function create()
     {
-        return view('pages.clients.users.create');
+        $roles = $this->rolesQuery();
+
+        return view('pages.clients.users.create', compact('roles'));
     }
 
     /**
@@ -73,7 +75,7 @@ class ClientUserController extends Controller
 
             $user = User::create($this->userData($request->toArray()) + ['password' => Hash::make($request->password) ] + ['client_id' => auth()->user()->hasRole('admin') ? auth()->user()->client_id : null]);
 
-            if($request->has('roles')) $this->hasRoles($request->roles, $user->id);
+            if($request->has('roles')) $this->attachRoles($user, 'id', $request->roles);
 
             if(auth()->user()->hasRole('admin')) $this->attachRoles($user, 'name', ['member']); // User instance, Role column name, Role column value
 
@@ -107,7 +109,14 @@ class ClientUserController extends Controller
      */
     public function edit($id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+            $roles = $this->rolesQuery();
+            
+            return view('pages.clients.users.edit', compact('user', 'roles'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'User not found');
+        }
     }
 
     /**
