@@ -6,10 +6,13 @@
 		<h1 class="h3 mb-3 text-gray-800">Members</h1>
 
 		<div class="row">
+			<div class="col-md-12">
+				@include('alerts.message')
+			</div>
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-4">
-						<a href="{{ url('client/users/create') }}" class="btn btn-info btn-sm float-right">
+						<a href="{{ url('client/user/create') }}" class="btn btn-info btn-sm float-right">
 							<i class="fa fa-plus"></i>
 							<span>Add New Member</span>
 						</a>
@@ -32,12 +35,25 @@
 										@php
 											$active = $user->is_active;
 										@endphp
-										<tr>
-											<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
-											<td>{{ $user->name }}</td>
-											<td>{{ $user->email }}</td>
-											<td><input type="checkbox" name="user_status" class="cm-toggle blue" data-user="{{ $user->id }}" {{ $active ? 'checked' : '' }}></td>
-										</tr>
+										
+											<tr>
+												<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
+												<td>{{ $user->name }}</td>
+												<td>{{ $user->email }}</td>
+												<td>
+													@if(auth()->user()->can('can.update.user.status'))
+														<input type="checkbox" name="user_status" class="cm-toggle blue" data-user="{{ $user->id }}" {{ $active ? 'checked' : '' }}></td>
+													@endif
+												<td>
+														
+													<a href="{{ url('client/user/edit/'.+$user->id) }}" >
+														<i class="fa fa-edit"></i>
+													</a> | 
+													<a type="submit" href="#" class="delete-user" data-user-id="{{ $user->id }}">
+														<i class="fa fa-trash"></i>
+													</a>
+												</td>
+											</tr>
 
 									@endforeach
 								</tbody>
@@ -77,7 +93,7 @@
 						// Perform ajax request
 						ajax.request({
 
-							url: `/client/users/${element.data().user}`,
+							url: `/client/user/update_status/${element.data().user}`,
 							method: 'PUT',
 							data: { data: JSON.stringify({status: is_checked}) }
 
@@ -87,7 +103,37 @@
 						}).fail(error => {
 							_this.sweet_alert.error(error.message);
 						});
-					})
+					});
+
+					$('.delete-user').on('click', function() {
+
+						let element = $(this);
+
+						console.log(element.data().userId);
+
+						_this.sweet_alert.confirmDialog()
+							.then((result) => {
+
+								if(result.isConfirmed) {
+
+									// Perform ajax request
+									ajax.request({
+
+										url: `/client/user/delete/${element.data().userId}`,
+										method: 'DELETE',
+										data: { data: 1 }
+
+									}).done(data => {
+										_this.sweet_alert.success(data.message);
+										element.closest('tr').remove();
+
+									}).fail(error => {
+										_this.sweet_alert.error(error.message);
+									});
+								}
+
+						});
+					});
 				},
 				globalVars(){
 
