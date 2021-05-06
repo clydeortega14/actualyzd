@@ -68,6 +68,13 @@ Route::middleware('auth')->group(function(){
 
 		});
 
+		// Packages
+		Route::resource('packages', 'PackageController');
+
+		// Package services
+		Route::get('package/services/{package}', 'PackageController@services')->name('package.services');
+
+		Route::post('package/service', 'PackageController@storeService')->name('package.service');
 	});
 
 	// Schedules
@@ -82,10 +89,11 @@ Route::middleware('auth')->group(function(){
 	// Get onboarding questionnaires in ajax request
 	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
-	/* Pyschologist Prefix */
+	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
 		Route::get('/', 'PsychologistsController@home')->name('psychologist.home');
+
 		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
@@ -101,7 +109,7 @@ Route::middleware('auth')->group(function(){
 	});
 
 
-	/* Member Prefix */
+	// Member Page
 	Route::prefix('member')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');

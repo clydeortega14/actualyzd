@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Client;
 use App\Package;
-
-class ClientsController extends Controller
+use App\PackageService;
+use App\SessionType;
+use App\Http\Requests\PackageRequest;
+class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::get();
-
-        return view('pages.superadmin.clients.index', compact('clients'));
+        $packages = Package::get();
+        
+        return view('pages.superadmin.packages.index', compact('packages'));
     }
 
     /**
@@ -27,7 +28,7 @@ class ClientsController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.superadmin.packages.create');
     }
 
     /**
@@ -36,9 +37,11 @@ class ClientsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PackageRequest $request)
     {
-        //
+        $package = Package::create($request->all());
+
+        return redirect()->route('packages.index')->with('success', 'Package successfully created');
     }
 
     /**
@@ -60,10 +63,7 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-        $client = Client::findOrFail($id);
-        $packages = Package::with(['services'])->get();
-
-        return view('pages.superadmin.clients.edit', compact('client', 'packages'));
+        //
     }
 
     /**
@@ -75,11 +75,7 @@ class ClientsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Client::findOrFail($id);
-
-        $client->update(['is_active' => !$client->is_active ]);
-
-        return redirect()->route('clients.index')->with('success', 'Successfully Updated');
+        //
     }
 
     /**
@@ -91,5 +87,24 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function services(Package $package)
+    {
+        $session_types = SessionType::get(['id', 'name']);
+
+        return view('pages.superadmin.packages.services', compact('package', 'session_types'));
+    }
+
+    public function storeService(Request $request)
+    {
+        $request->validate([
+            'session_type_id' => ['required'],
+            'limit' => ['required']
+        ]);
+
+        PackageService::create($request->all());
+
+        return redirect()->back()->with('success', 'Service successfully created');
     }
 }

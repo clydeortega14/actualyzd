@@ -40,11 +40,19 @@
                                                 <span class="label {{ $active ? 'badge badge-success' : 'badge badge-danger' }}">{{ $active ? 'Active' : 'Inactive' }}</span>
                                             </td>
                                             <td>
-                                                <a href="{{ route('client.users.index') }}" class="btn btn-primary btn-sm">
+                                                <a href="{{ route('client.users.index') }}" class="btn btn-info btn-sm">
                                                     <i class="fa fa-users"></i>
+                                                </a> |
+                                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-edit"></i>
+                                                </a> |
+                                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-{{ $client->is_active ? 'danger' : 'success' }} btn-sm"
+                                                    data-toggle="modal" data-target="#update-status-{{ $client->id }}">
+                                                    <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
                                         </tr>
+                                        @include('pages.superadmin.clients.modals.update-status')
                                     @endforeach
                                 </tbody>
                             </table>

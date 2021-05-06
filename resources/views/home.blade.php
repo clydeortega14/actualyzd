@@ -1,7 +1,6 @@
 @extends('layouts.sb-admin.master')
 
-@section('content')
-
+@section('content')    
    <div class="container-fluid">
        <h3>Service Utilization Dashboard</h3>
 
