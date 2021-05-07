@@ -33,8 +33,15 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
+
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
+
+	// Client Subscription
+	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+
+	// Service Utilization
+	Route::get('service/utilizations', 'ServiceUtilizationController@dashboard');
 
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');

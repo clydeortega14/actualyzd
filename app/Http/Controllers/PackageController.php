@@ -39,7 +39,7 @@ class PackageController extends Controller
      */
     public function store(PackageRequest $request)
     {
-        $package = Package::create($request->all());
+        $package = Package::firstOrCreate($request->all());
 
         return redirect()->route('packages.index')->with('success', 'Package successfully created');
     }

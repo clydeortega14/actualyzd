@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use App\Package;
+use App\ClientSubscription;
 
 class ClientsController extends Controller
 {
@@ -61,7 +62,7 @@ class ClientsController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
-        $packages = Package::with(['services'])->get();
+        $packages = Package::has('services')->with(['services'])->get();
 
         return view('pages.superadmin.clients.edit', compact('client', 'packages'));
     }
@@ -91,5 +92,29 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addSubscription(Request $request)
+    {
+        $client = Client::findOrFail($request->client_id);
+
+        if(!$client->is_active){
+
+            return redirect()->back()->with('error', 'Client must be ACTIVATED first before adding subscription');
+        }
+
+
+        $package = Package::findOrFail($request->package_id);
+        $completion_date = now()->addMonths($package->no_of_months)->toDateString();
+
+        $client = ClientSubscription::firstOrCreate([
+
+            'client_id' => $request->client_id,
+            'package_id' => $package->id,
+            'completion_date' => $completion_date,
+            'subscription_status_id' => 1
+        ]);
+
+        return redirect()->back()->with('success', 'Subscribed successfully');
     }
 }

@@ -14,4 +14,14 @@ class Package extends Model
     {
     	return $this->hasMany(PackageService::class, 'package_id');
     }
+
+    public function formattedPrice()
+    {
+    	return number_format($this->price, 2);
+    }
+
+    public function clientSubscriptions()
+    {
+    	return $this->hasMany(ClientSubscription::class, 'package_id');
+    }
 }

@@ -11,4 +11,14 @@ class SessionType extends Model
     protected $fillable = ['name'];
 
     public $timestamps = false;
+
+    public function services()
+    {
+    	return $this->hasMany(PackageService::class, 'session_type_id');
+    }
+
+    public function bookings()
+    {
+    	return $this->hasMany(Booking::class, 'session_type_id');
+    }
 }

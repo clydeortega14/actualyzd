@@ -22,4 +22,9 @@ class Client extends Model
     {
         return $this->hasMany(User::class, 'client_id');
     }
+
+    public function subscription()
+    {
+        return $this->hasOne(ClientSubscription::class, 'client_id');
+    }
 }
