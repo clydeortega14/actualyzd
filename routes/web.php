@@ -40,8 +40,13 @@ Route::middleware('auth')->group(function(){
 	// Client Subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
 
-	// Service Utilization
+	/**
+	 * Ajax Requests for Service Utilization Dashboard
+	 * For superadmin all service utilizations
+	 * and for each client
+	 */
 	Route::get('service/utilizations', 'ServiceUtilizationController@dashboard');
+	Route::get('service/utilization/{id}', 'ServiceUtilizationController@clientServices');
 
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');
