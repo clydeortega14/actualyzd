@@ -72,7 +72,7 @@ class BookingController extends Controller
 
                     'schedule' => $schedule->id,
                     'time_id' => $request->time_id,
-                    'client_id' => $request->client,
+                    'client_id' => is_null($request->client) ? auth()->user()->client->id : $request->client,
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'status' => 1 // booked

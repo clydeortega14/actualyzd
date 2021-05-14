@@ -33,7 +33,7 @@
 	export default {
 		name: "Summary",
 		created(){
-			this.getServices()
+			this.serviceUtilization()
 		},
 		computed: {
 
@@ -41,7 +41,7 @@
 		},
 		methods: {
 
-			...mapActions(['getServices']),
+			...mapActions(['serviceUtilization']),
 			getPercentage(increase, original){
 				return (increase/original) * 100;
 			}

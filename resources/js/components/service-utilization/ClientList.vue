@@ -25,7 +25,7 @@
 		},
 		created(){
 
-			this.getClients();
+			this.serviceUtilization();
 		},
 		computed: {
 			...mapGetters(['allClients', 'allServices'])
@@ -33,20 +33,22 @@
 		methods: {
 
 			...mapActions([
-				'getClients',
-				'clientServices',
-				'getServices'
+				'serviceUtilization'
 			]),
 			toggleClient(id){
 				this.activeId = id;
 				this.overallActive = false;
-				this.clientServices(id);
+				this.serviceUtilization({
+					params: {
+						client: id
+					}
+				});
 			},
 			overAll(){
 
 				this.activeId = null;
 				this.overallActive = true;
-				this.getServices();
+				this.serviceUtilization();
 			}
 		}
 	}

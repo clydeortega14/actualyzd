@@ -1,13 +1,13 @@
 <template>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 
 			<!-- Client Lists -->
 			<ClientList />
 			
 		</div>
 
-		<div class="col-md-8">
+		<div class="col-md-9">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>

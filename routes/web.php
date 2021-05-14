@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function(){
 	 * and for each client
 	 */
 	Route::get('service/utilizations', 'ServiceUtilizationController@dashboard');
-	Route::get('service/utilization/{id}', 'ServiceUtilizationController@clientServices');
 
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');

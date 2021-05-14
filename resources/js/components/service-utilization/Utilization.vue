@@ -2,7 +2,7 @@
 	<div class="row mt-4 mb-4">
 
 		<!-- counting of first timers and repeaters -->
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -20,7 +20,9 @@
                     </div>
                 </div>
 			</div>
+		</div>
 
+		<div class="col-md-6">
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -42,85 +44,23 @@
 		<!-- counting of first timers and repeaters -->
 
 		<!-- Session Statuses -->
-		<div class="col-md-8">
-			<div class="row">
-				<div class="col-md-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<div class="text-xs text-uppercase mb-1">
-								Cancelled
-							</div>
-						</div>
-						<div class="card-body">
-		                    <div class="row no-gutters align-items-center">
-		                        <div class="col mr-2">
-		                            <div class="h1 mb-0 text-gray-800 text-center">3</div>
-		                        </div>
-		                        <div class="col-auto">
-		                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-		                        </div>
-		                    </div>
-		                </div>
+		<div class="col-md-4" v-for="(booking_status, index) in getBookingByStatus" :key="index">
+			<div class="card mb-3">
+				<div class="card-header">
+					<div class="text-xs text-uppercase mb-1">
+						{{ booking_status.to_status.name }}
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<div class="text-xs text-uppercase mb-1">
-								No Show
-							</div>
-						</div>
-						<div class="card-body">
-		                    <div class="row no-gutters align-items-center">
-		                        <div class="col mr-2">
-		                            <div class="h1 mb-0 text-gray-800 text-center">1</div>
-		                        </div>
-		                        <div class="col-auto">
-		                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-		                        </div>
-		                    </div>
-		                </div>
-					</div>
-				</div>
-
-				<div class="col-md-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<div class="text-xs text-uppercase mb-1">
-								Completed
-							</div>
-						</div>
-						<div class="card-body">
-		                    <div class="row no-gutters align-items-center">
-		                        <div class="col mr-2">
-		                            <div class="h1 mb-0 text-gray-800 text-center">1</div>
-		                        </div>
-		                        <div class="col-auto">
-		                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-		                        </div>
-		                    </div>
-		                </div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<div class="text-xs text-uppercase mb-1">
-								Rescheduled
-							</div>
-						</div>
-						<div class="card-body">
-		                    <div class="row no-gutters align-items-center">
-		                        <div class="col mr-2">
-		                            <div class="h1 mb-0 text-gray-800 text-center">4</div>
-		                        </div>
-		                        <div class="col-auto">
-		                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-		                        </div>
-		                    </div>
-		                </div>
-					</div>
-				</div>
+				<div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="h1 mb-0 text-gray-800 text-center">{{ booking_status.booking_count }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</div>
 		<!-- End Session Statuses -->
@@ -281,7 +221,17 @@
 
 <script>
 	
+	import { mapGetters, mapActions } from 'vuex';
 	export default {
-		name: "Utilization"
+		name: "Utilization",
+		created(){
+			this.serviceUtilization()
+		},
+		computed: {
+			...mapGetters(["getBookingByStatus"])
+		},
+		methods: {
+			...mapActions(["serviceUtilization"])
+		}
 	}
 </script>

@@ -17878,19 +17878,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   created: function created() {
-    this.getClients();
+    this.serviceUtilization();
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allClients', 'allServices'])),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getClients', 'clientServices', 'getServices'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['serviceUtilization'])), {}, {
     toggleClient: function toggleClient(id) {
       this.activeId = id;
       this.overallActive = false;
-      this.clientServices(id);
+      this.serviceUtilization({
+        params: {
+          client: id
+        }
+      });
     },
     overAll: function overAll() {
       this.activeId = null;
       this.overallActive = true;
-      this.getServices();
+      this.serviceUtilization();
     }
   })
 });
@@ -18144,10 +18148,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Summary",
   created: function created() {
-    this.getServices();
+    this.serviceUtilization();
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allServices'])),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getServices'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['serviceUtilization'])), {}, {
     getPercentage: function getPercentage(increase, original) {
       return increase / original * 100;
     }
@@ -18165,6 +18169,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -18386,68 +18397,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Utilization"
+  name: "Utilization",
+  created: function created() {
+    this.serviceUtilization();
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"]))
 });
 
 /***/ }),
@@ -56345,9 +56302,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-4" }, [_c("ClientList")], 1),
+    _c("div", { staticClass: "col-md-3" }, [_c("ClientList")], 1),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-8" }, [
+    _c("div", { staticClass: "col-md-9" }, [
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticClass: "tab-content", attrs: { id: "myTabContent" } }, [
@@ -56559,411 +56516,330 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    { staticClass: "row mt-4 mb-4" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._l(_vm.getBookingByStatus, function(booking_status, index) {
+        return _c("div", { key: index, staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "card mb-3" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+                _vm._v(
+                  "\n\t\t\t\t\t\t" +
+                    _vm._s(booking_status.to_status.name) +
+                    "\n\t\t\t\t\t"
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "row no-gutters align-items-center" }, [
+                _c("div", { staticClass: "col mr-2" }, [
+                  _c(
+                    "div",
+                    { staticClass: "h1 mb-0 text-gray-800 text-center" },
+                    [_vm._v(_vm._s(booking_status.booking_count))]
+                  )
+                ]),
+                _vm._v(" "),
+                _vm._m(2, true)
+              ])
+            ])
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _vm._m(3)
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-4 mb-4" }, [
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-              _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "row no-gutters align-items-center" }, [
-              _c("div", { staticClass: "col mr-2" }, [
-                _c(
-                  "div",
-                  { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                  [_vm._v("0")]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-auto" }, [
-                _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
-              ])
-            ])
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+            _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-              _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row no-gutters align-items-center" }, [
+            _c("div", { staticClass: "col mr-2" }, [
+              _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
+                _vm._v("0")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "row no-gutters align-items-center" }, [
-              _c("div", { staticClass: "col mr-2" }, [
-                _c(
-                  "div",
-                  { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                  [_vm._v("0")]
-                )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+            _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row no-gutters align-items-center" }, [
+            _c("div", { staticClass: "col mr-2" }, [
+              _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
+                _vm._v("0")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12" }, [
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v("Consultation Service")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover text-center" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Month")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("First Timers")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Repeaters")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Cancelled")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("No Show")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Completed")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Pending Rescheduling")])
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-auto" }, [
-                _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("3/2/2021")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("4")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("3/3/2021")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("2")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("2")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("4")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("0")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("3/3/2021")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("4")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")])
+                ])
               ])
             ])
           ])
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card mb-3" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-                  _vm._v("\n\t\t\t\t\t\t\t\tCancelled\n\t\t\t\t\t\t\t")
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [_vm._v("Utilization Rate")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover text-center" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Services")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Limit")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Usage")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Percentage")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Completion Date")])
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "row no-gutters align-items-center" },
-                  [
-                    _c("div", { staticClass: "col mr-2" }, [
-                      _c(
-                        "div",
-                        { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                        [_vm._v("3")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-auto" }, [
-                      _c("i", {
-                        staticClass: "fas fa-calendar fa-2x text-gray-300"
-                      })
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card mb-3" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-                  _vm._v("\n\t\t\t\t\t\t\t\tNo Show\n\t\t\t\t\t\t\t")
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Consultation")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("60")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("65")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("80%")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3/15/2020")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Group Session")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100%")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3/28/2020")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Webinar")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("100%")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3/27/2020")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Hotline")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("60")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("20")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("33%")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("3/30/2020")])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "row no-gutters align-items-center" },
-                  [
-                    _c("div", { staticClass: "col mr-2" }, [
-                      _c(
-                        "div",
-                        { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                        [_vm._v("1")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-auto" }, [
-                      _c("i", {
-                        staticClass: "fas fa-calendar fa-2x text-gray-300"
-                      })
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card mb-3" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-                  _vm._v("\n\t\t\t\t\t\t\t\tCompleted\n\t\t\t\t\t\t\t")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "row no-gutters align-items-center" },
-                  [
-                    _c("div", { staticClass: "col mr-2" }, [
-                      _c(
-                        "div",
-                        { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                        [_vm._v("1")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-auto" }, [
-                      _c("i", {
-                        staticClass: "fas fa-calendar fa-2x text-gray-300"
-                      })
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-6" }, [
-            _c("div", { staticClass: "card mb-3" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-                  _vm._v("\n\t\t\t\t\t\t\t\tRescheduled\n\t\t\t\t\t\t\t")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "row no-gutters align-items-center" },
-                  [
-                    _c("div", { staticClass: "col mr-2" }, [
-                      _c(
-                        "div",
-                        { staticClass: "h1 mb-0 text-gray-800 text-center" },
-                        [_vm._v("4")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-auto" }, [
-                      _c("i", {
-                        staticClass: "fas fa-calendar fa-2x text-gray-300"
-                      })
-                    ])
-                  ]
-                )
               ])
             ])
           ])
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Consultation Service")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover text-center" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Month")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("First Timers")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Repeaters")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Cancelled")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("No Show")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Completed")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Pending Rescheduling")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("3/2/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("3")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("4")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("3/3/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("3/3/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ]),
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
         _vm._v(" "),
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Utilization Rate")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover text-center" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Services")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Limit")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Usage")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Percentage")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Completion Date")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("Consultation")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("60")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("65")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("80%")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("3/15/2020")])
-                  ]),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover text-center" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Services")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Group Session")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("100%")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("3/28/2020")])
-                  ]),
+                  _c("th", [_vm._v("MTD")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Webinar")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("100%")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("3/27/2020")])
-                  ]),
+                  _c("th", [_vm._v("QTD")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Hotline")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("60")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("20")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("33%")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("3/30/2020")])
-                  ])
+                  _c("th", [_vm._v("YTD")])
                 ])
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover text-center" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Services")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("MTD")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("QTD")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("YTD")])
-                  ])
+              ]),
+              _vm._v(" "),
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", [_vm._v("Consultation")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("66")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("195")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("780")])
                 ]),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("Consultation")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("66")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("195")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("780")])
-                  ]),
+                _c("tr", [
+                  _c("td", [_vm._v("Group Session")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Group Session")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("12")])
-                  ]),
+                  _c("td", [_vm._v("1")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Webinar")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("12")])
-                  ]),
+                  _c("td", [_vm._v("1")]),
                   _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Hotline")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("60")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("20")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("720")])
-                  ])
+                  _c("td", [_vm._v("12")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Webinar")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("1")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("12")])
+                ]),
+                _vm._v(" "),
+                _c("tr", [
+                  _c("td", [_vm._v("Hotline")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("60")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("20")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("720")])
                 ])
               ])
             ])
@@ -71690,7 +71566,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = function state() {
   return {
     clients: [],
-    services: []
+    services: [],
+    booking_by_statuses: []
   };
 };
 
@@ -71700,10 +71577,13 @@ var getters = {
   },
   allServices: function allServices(state) {
     return state.services;
+  },
+  getBookingByStatus: function getBookingByStatus(state) {
+    return state.booking_by_statuses;
   }
 };
 var actions = {
-  getClients: function getClients(_ref) {
+  serviceUtilization: function serviceUtilization(_ref, params) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var commit, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -71712,64 +71592,20 @@ var actions = {
             case 0:
               commit = _ref.commit;
               _context.next = 3;
-              return axios.get('/service/utilizations');
+              return axios.get('/service/utilizations', params);
 
             case 3:
               response = _context.sent;
               commit('setClient', response.data.clients);
+              commit('setService', response.data.services);
+              commit('setBookingByStatus', response.data.bookings);
 
-            case 5:
+            case 7:
             case "end":
               return _context.stop();
           }
         }
       }, _callee);
-    }))();
-  },
-  getServices: function getServices(_ref2) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-      var commit, response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              commit = _ref2.commit;
-              _context2.next = 3;
-              return axios.get('/service/utilizations');
-
-            case 3:
-              response = _context2.sent;
-              commit('setService', response.data.services);
-
-            case 5:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    }))();
-  },
-  clientServices: function clientServices(_ref3, id) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-      var commit, response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              commit = _ref3.commit;
-              _context3.next = 3;
-              return axios.get("/service/utilization/".concat(id));
-
-            case 3:
-              response = _context3.sent;
-              commit('setService', response.data);
-
-            case 5:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
     }))();
   }
 };
@@ -71779,6 +71615,9 @@ var mutations = {
   },
   setService: function setService(state, services) {
     return state.services = services;
+  },
+  setBookingByStatus: function setBookingByStatus(state, booking_by_statuses) {
+    return state.booking_by_statuses = booking_by_statuses;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
