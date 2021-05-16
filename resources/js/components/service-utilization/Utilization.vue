@@ -72,7 +72,7 @@
 				<div class="card-header">Consultation Service</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-hover text-center">
+						<table class="table table-hover">
 							<thead>
 								<tr>
 	                                <th>Month</th>
@@ -124,7 +124,7 @@
 				<div class="card-header">Utilization Rate</div>
 				<div class="card-body">
 					<div class="table-responsive">
-                        <table class="table table-hover text-center">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Services</th>
@@ -135,33 +135,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Consultation</td>
-                                    <td>60</td>
-                                    <td>65</td>
-                                    <td>80%</td>
-                                    <td>3/15/2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Group Session</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>100%</td>
-                                    <td>3/28/2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Webinar</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>100%</td>
-                                    <td>3/27/2020</td>
-                                </tr>
-                                <tr>
-                                    <td>Hotline</td>
-                                    <td>60</td>
-                                    <td>20</td>
-                                    <td>33%</td>
-                                    <td>3/30/2020</td>
+                                <tr v-for="(service, index) in allServices" :key="index">
+                                    <td>{{ service.name }}</td>
+                                    <td>{{ service.limit }}</td>
+                                    <td>{{ service.bookings.length }}</td>
+                                    <td>{{ getPercentage(service.bookings.length, service.limit) }}%</td>
+                                    <td>{{ service.completion_date }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -174,7 +153,7 @@
                 <div class="card-header">Services</div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover text-center">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Services</th>
@@ -222,13 +201,16 @@
 <script>
 	
 	import { mapGetters, mapActions } from 'vuex';
+    import ServiceUtilization from '../../mixins/service-utilization.js';
+
 	export default {
 		name: "Utilization",
+        mixins: [ ServiceUtilization ],
 		created(){
 			this.serviceUtilization()
 		},
 		computed: {
-			...mapGetters(["getBookingByStatus"])
+			...mapGetters(["getBookingByStatus", "allServices"])
 		},
 		methods: {
 			...mapActions(["serviceUtilization"])

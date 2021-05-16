@@ -44,13 +44,14 @@ class ServiceUtilizationController extends Controller
             ->with(['package.services'])
             ->first();
 
-        return $client_subscription->package->services->map(function($service) use ($client_id){
+        return $client_subscription->package->services->map(function($service) use ($client_id, $client_subscription){
 
             return [
                 'id' => $service->session_type_id,
                 'name' => $service->sessionType->name,
                 'limit' => $service->limit,
-                'bookings' => $service->sessionType->bookings()->where('client_id', $client_id)->get()
+                'bookings' => $service->sessionType->bookings()->where('client_id', $client_id)->get(),
+                'completion_date' => $client_subscription->completion_date
             ];
 
         });
@@ -65,7 +66,8 @@ class ServiceUtilizationController extends Controller
                 'id' => $session_type->id,
                 'name' => $session_type->name,
                 'limit' => $session_type->services->sum('limit'),
-                'bookings' => $session_type->bookings
+                'bookings' => $session_type->bookings,
+                'completion_date' => 'N/A'
             ];
         });
     }

@@ -4,9 +4,10 @@
 @section('content')
 
 	<div class="container-fluid">
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col-md-12">
-				<h3>Service Utilization Dashboard</h3>
+				<h4>Service Utilization Dashboard</h4>
+				<hr>
 			</div>
 		</div>
 

@@ -19,7 +19,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
             
-                <a class="navbar-brand" href="{{ auth()->user() ? url('/home') : url('/') }}">
+                <a class="navbar-brand pr-4 pl-4" href="{{ auth()->user() ? url('/home') : url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -28,22 +28,60 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto ml-3">
-                        {{-- @if(auth()->user()->hasRole('superadmin'))
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Menu <span class="caret"></span>
+                    <ul class="navbar-nav mr-auto">
+                        @auth
+                            <li class="nav-item active p-3">
+                                <a class="nav-link" href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item p-3">
+                                <a class="nav-link" href="{{ route('bookings.create') }}">
+                                <i class="fas fa-fw fa-calendar"></i>
+                                <span>Book A Session</span></a>
+                            </li>
+                            <li class="nav-item p-3">
+                                <a class="nav-link" href="{{ route('clients.index') }}">
+                                    <i class="fas fa-fw fa-clock"></i>
+                                    <span>Clients</span>
                                 </a>
+                            </li>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Schedules</a>
-                                    <a class="dropdown-item" href="#">Sessions</a>
-                                    <a class="dropdown-item" href="#">Users</a>
-                                    <a class="dropdown-item" href="#">Roles</a>
-                                    <a class="dropdown-item" href="#">Permissions</a>
+                            <li class="nav-item p-3">
+                                <a class="nav-link" href="{{ route('packages.index') }}">
+                                    <i class="fas fa-fw fa-clock"></i>
+                                    <span>Packages</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item p-3 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="access-rights" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-fw fa-cog"></i>
+                                    <span>Access Rights</span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="access-rights">
+                                    <a class="dropdown-item" href="{{ url('users') }}">Users</a>
+                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
+                                    <a class="dropdown-item" href="{{ route('permissions.index') }}">Permissions</a>
                                 </div>
                             </li>
-                        @endif --}}
+                            <li class="nav-item p-3 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" id="assessments" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-fw fa-cog"></i>
+                                    <span>Assessments</span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="assessments">
+                                    <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                    <a class="dropdown-item" href="{{ route('options.index') }}">Options</a>
+                                </div>
+                            </li>
+
+                            <!-- Nav Item - Utilities Collapse Menu -->
+                            <li class="nav-item p-3">
+                                <a class="nav-link" href="{{ route('time-lists.index') }}">
+                                    <i class="fas fa-fw fa-clock"></i>
+                                    <span>Time Lists</span>
+                                </a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
