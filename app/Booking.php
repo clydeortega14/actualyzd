@@ -72,4 +72,11 @@ class Booking extends Model
     {
         return $this->belongsToMany(User::class, 'session_participants', 'booking_id', 'participant');
     }
+
+    public function scopeWithClient($query)
+    {
+        if(request()->has('client')){
+            $query->where('client_id', request('client'));
+        }
+    }
 }

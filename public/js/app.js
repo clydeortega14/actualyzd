@@ -18719,28 +18719,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -18749,7 +18727,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.serviceUtilization();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries"])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"]))
 });
 
@@ -95118,7 +95096,40 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-12" }, [
-        _vm._m(3),
+        _c("div", { staticClass: "card mb-3" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Consultation Service")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.consultationSummaries, function(
+                    consultation,
+                    index
+                  ) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(_vm._s(consultation.date))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.cancelled))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.no_show))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.completed))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.rescheduled))])
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "card mb-3" }, [
           _c("div", { staticClass: "card-header" }, [
@@ -95236,83 +95247,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v("Consultation Service")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-hover" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("Month")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("First Timers")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Repeaters")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Cancelled")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("No Show")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Completed")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Pending Rescheduling")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("3/2/2021")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("3")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("4")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("3/3/2021")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("4")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("0")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("3/3/2021")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("4")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")])
-              ])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Month")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Cancelled")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("No Show")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Completed")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Pending Rescheduling")])
       ])
     ])
   },
@@ -110191,7 +110136,8 @@ var state = function state() {
   return {
     clients: [],
     services: [],
-    booking_by_statuses: []
+    booking_by_statuses: [],
+    consultation_summaries: []
   };
 };
 
@@ -110204,6 +110150,9 @@ var getters = {
   },
   getBookingByStatus: function getBookingByStatus(state) {
     return state.booking_by_statuses;
+  },
+  consultationSummaries: function consultationSummaries(state) {
+    return state.consultation_summaries;
   }
 };
 var actions = {
@@ -110223,8 +110172,9 @@ var actions = {
               commit('setClient', response.data.clients);
               commit('setService', response.data.services);
               commit('setBookingByStatus', response.data.bookings);
+              commit('setConsultationSummaries', response.data.consultation_summaries);
 
-            case 7:
+            case 8:
             case "end":
               return _context.stop();
           }
@@ -110242,6 +110192,9 @@ var mutations = {
   },
   setBookingByStatus: function setBookingByStatus(state, booking_by_statuses) {
     return state.booking_by_statuses = booking_by_statuses;
+  },
+  setConsultationSummaries: function setConsultationSummaries(state, consultation_summaries) {
+    return state.consultation_summaries = consultation_summaries;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

@@ -76,8 +76,6 @@
 							<thead>
 								<tr>
 	                                <th>Month</th>
-	                                <th>First Timers</th>
-	                                <th>Repeaters</th>
 	                                <th>Cancelled</th>
 	                                <th>No Show</th>
 	                                <th>Completed</th>
@@ -85,32 +83,12 @@
 	                            </tr>
 							</thead>
 							<tbody>
-								<tr>
-                                    <td>3/2/2021</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>3/3/2021</td>
-                                    <td>2</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>4</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>3/3/2021</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>4</td>
-                                    <td>1</td>
+								<tr v-for="(consultation, index) in consultationSummaries" :key="index">
+                                    <td>{{ consultation.date }}</td>
+                                    <td>{{ consultation.cancelled }}</td>
+                                    <td>{{ consultation.no_show }}</td>
+                                    <td>{{ consultation.completed }}</td>
+                                    <td>{{ consultation.rescheduled }}</td>
                                 </tr>
 							</tbody>
 						</table>
@@ -210,7 +188,11 @@
 			this.serviceUtilization()
 		},
 		computed: {
-			...mapGetters(["getBookingByStatus", "allServices"])
+			...mapGetters([
+                "getBookingByStatus", 
+                "allServices", 
+                "consultationSummaries"
+            ])
 		},
 		methods: {
 			...mapActions(["serviceUtilization"])

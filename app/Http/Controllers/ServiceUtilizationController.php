@@ -27,13 +27,43 @@ class ServiceUtilizationController extends Controller
             $services = $this->allServices();
         }
 
-        $bookings = $this->countBookings();
+        $bookings_count = $this->countBookings();
+
 
     	return [
             'clients' => $clients,
             'services' => $services,
-            'bookings' => $bookings
+            'bookings' => $bookings_count,
+            'consultation_summaries' => $this->manageBookings()
         ];
+    }
+
+    public function manageBookings()
+    {
+        $bookings = Booking::withClient()->orderBy('created_at')->get()->groupBy(function($item){
+            return $item->created_at->format('Y-m-d');
+        });
+
+        $consulation_summaries = [];
+
+        foreach($bookings as $key => $summary){
+
+            $consulation_summaries[] = [
+
+                'date' => $key,
+                'cancelled' => $this->countByStatus($summary, 4),
+                'completed' => $this->countByStatus($summary, 2),
+                'no_show' => $this->countByStatus($summary, 3),
+                'rescheduled' => $this->countByStatus($summary, 5)
+            ];
+        }
+
+        return $consulation_summaries;
+    }
+
+    public function countByStatus($booking, $status)
+    {
+        return $booking->where('status', $status)->count();
     }
 
     public function serviceWithClient($client_id)
@@ -74,14 +104,7 @@ class ServiceUtilizationController extends Controller
 
     public function countBookings()
     {
-        $bookings = Booking::where(function($query){
-
-            if(request()->has('client')){
-
-                $query->where('client_id', request()->get('client'));
-            }
-
-        })->select(DB::raw('count(*) as booking_count, status'))
+        $bookings = Booking::withClient()->select(DB::raw('count(*) as booking_count, status'))
         ->groupBy('status')
         ->with(['toStatus'])
         ->get();
