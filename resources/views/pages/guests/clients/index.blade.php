@@ -1,120 +1,101 @@
-@extends('guest-layouts.master')
-
-
-@section('title', 'Client App Form')
+@extends('layouts.app')
 
 
 @section('content')
-	<div class="login-box">
-		<div class="logo">
-            <a href="javascript:void(0);">Client Application Form </a>
-            <small></small>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-header">Client Application Form</div>
+                    <div class="card-body">
+
+                        @if(session('success'))
+
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> {{ session('success') }}.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        @endif
+
+                        <form action="{{ route('guest.clients.store') }}" method="POST">
+                            @csrf
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4 text-md-right">{{ __('Company Name') }}</label>
+                                <div class="col-sm-6">
+                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Enter Company Name">
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4 text-md-right">{{ __('Company Email') }}</label>
+                                <div class="col-sm-6">
+                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Enter Company Email">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4 text-md-right">{{ __('Contact No.') }}</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="contact_number" class="form-control @error('contact_number') is-invalid @enderror" value="{{ old('contact_number') }}" placeholder="Enter Contact Number">
+                                    @error('contact_number')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4 text-md-right">{{ __('No. of Employees') }}</label>
+                                <div class="col-sm-6">
+                                    <input type="number" name="no_of_employees" class="form-control @error('no_of_employees') is-invalid @enderror" value="{{ old('no_of_employees') }}" placeholder="Enter No of employees">
+                                    @error('no_of_employees')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-form-label col-sm-4 text-md-right">{{ __('Address') }}</label>
+                                <div class="col-sm-6">
+                                    <textarea type="text" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}" placeholder="Enter Address"></textarea>
+                                    @error('address')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">Submit Now</button>
+                                    <a href="{{ route('login') }}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
         </div>
-
-        <div class="card">
-        	<div class="body">
-        		<div class="msg">Please Fill out this form</div>
-
-                @include('alerts.message')
-
-                <form class="form-horizontal" action="{{ route('guest.clients.store') }}" method="POST">
-
-                    @csrf
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                            <label for="company-name">Company Name</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                            <div class="form-group">
-
-                                <div class="form-line @error('name') error @enderror ">
-                                    <input type="text" name="name" id="company-name" class="form-control @error('name') error @enderror " value="{{ old('name') }}" placeholder="Enter your company name">
-                                </div>
-
-                                @error('name')
-                                    <label class="error">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                            <label for="company-email">Company Email</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                            <div class="form-group">
-                                <div class="form-line @error('email') error @enderror">
-                                    <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror" value="{{ old('email') }}" placeholder="Enter your company email">
-                                </div>
-                                @error('email')
-                                    <label class="error">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                            <label for="contact-number">Contact Number</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                            <div class="form-group">
-                                <div class="form-line @error('contact_number') error @enderror">
-                                    <input type="text" name="contact_number" id="contact-number" class="form-control @error('contact_number') error @enderror" value="{{ old('contact_number') }}" placeholder="Enter your contact number">
-                                </div>
-                                @error('contact_number')
-                                    <label class="error">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                            <label for="no-of-employees">No. of employees</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                            <div class="form-group">
-                                <div class="form-line @error('no_of_employees') error @enderror">
-                                    <input type="number" name="no_of_employees" id="no-of-employees" class="form-control @error('no_of_employees') error @enderror" value="{{ old('no_of_employees') }}" placeholder="How many employees you have ? ">
-                                </div>
-                                @error('no_of_employees')
-                                    <label class="error">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
-                            <label for="company-address">Company Address</label>
-                        </div>
-                        <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                            <div class="form-group">
-                                <div class="form-line @error('address') error @enderror">
-                                    <textarea class="form-control no-resize  @error('address') error @enderror" rows="4" name="address" id="company-address" placeholder="Enter your company address">{{ old('address') }}</textarea>
-                                </div>
-                                @error('address')
-                                    <label class="error">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-danger waves-effect btn-lg">Cancel</a>
-                                <button class="btn btn-primary btn-lg waves-effect">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-        	</div>
-        </div>
-	</div>
+    </div>
 
 @endsection

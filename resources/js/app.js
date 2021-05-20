@@ -38,6 +38,7 @@ Vue.component('schedules-component', require('./components/schedules/Main.vue').
  */
 Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
 
+Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

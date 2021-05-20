@@ -20,20 +20,18 @@ class UsersController extends Controller
      */
     public function index()
     {
+
         $users = User::where(function($query){
 
-            if(auth()->user()){
-                $query->whereNotIn('id', [auth()->user()->id]);
+            $auth = auth()->user();
+            if($auth){
+
+                $query->whereNotIn('id', [$auth->id]);
             }
 
-            if(!auth()->user()->hasRole('superadmin')){
+            if($auth->hasRole('admin')){
 
-                $query->whereNotIn('id', [1]);
-            }
-
-            if(auth()->user()->hasRole('admin')){
-                // get all users that belongs to this client only
-                // $query->whereIn('')
+                $query->where('client_id', $auth->client_id);
             }
 
         })->with(['roles'])->get();
@@ -80,7 +78,7 @@ class UsersController extends Controller
 
             if($request->has('roles')){
 
-                $this->hasRoles($request->roles, $user->id);
+                $this->attachRole($user->roles);
             }
 
             

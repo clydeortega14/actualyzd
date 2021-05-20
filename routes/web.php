@@ -16,7 +16,13 @@ Route::get('/', function(){
 	return view('auth.login');
 });
 
-Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
+Route::prefix('guests')->group(function(){
+
+	Route::get('applying-clients', 'GuestsController@clients')->name('guests.clients');
+
+});
+
+// Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
 
 Route::post('/guest-clients', 'GuestsController@store')->name('guest.clients.store');
 
@@ -129,10 +135,11 @@ Route::middleware('auth')->group(function(){
 	/* Client Prefix */
 	Route::prefix('client')->group(function() {
 
-		Route::get('users', 'ClientUserController@index')->name('client.users.index');
+		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
 		Route::get('user/create', 'ClientUserController@create')->name('client.user.create');
+
+		Route::get('users', 'ClientUserController@index')->name('client.users.index');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
-		Route::put('user/update_status/{id}', 'ClientUserController@update_status');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');
 		Route::delete('user/delete/{id}', 'ClientUserController@destroy');

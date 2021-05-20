@@ -15,25 +15,32 @@ class ServiceUtilizationController extends Controller
     {
     	$clients = Client::where('is_active', true)->has('subscription')->get(['id', 'name']);
 
-        // if there is client id provided
-        if($request->has('client')){
+        // check if user has role of admin
+        if(auth()->user()->hasRole('admin')){
 
-            // services of the client
-            $services = $this->serviceWithClient($request->client);
+            // get services with user client id
+            $services = $this->serviceWithClient(auth()->user()->client_id);
 
-        }else{
+        }elseif(auth()->user()->hasRole('superadmin')){ // if user has role of superadmin
 
-            // all services
-            $services = $this->allServices();
+            // when user has role of client
+            if($request->has('client')){
+
+                // get services for that requested client
+                $services = $this->serviceWithClient($request->client);
+
+            }else{
+
+                // get all services for all clients
+                $services = $this->allServices();
+            }
         }
 
-        $bookings_count = $this->countBookings();
-
-
     	return [
+
             'clients' => $clients,
             'services' => $services,
-            'bookings' => $bookings_count,
+            'bookings' => $this->countBookings(),
             'consultation_summaries' => $this->manageBookings()
         ];
     }
@@ -54,12 +61,16 @@ class ServiceUtilizationController extends Controller
                 'cancelled' => $this->countByStatus($summary, 4),
                 'completed' => $this->countByStatus($summary, 2),
                 'no_show' => $this->countByStatus($summary, 3),
-                'rescheduled' => $this->countByStatus($summary, 5)
+                'rescheduled' => $this->countByStatus($summary, 5),
+                'firstimers' => $summary->whereNotNull('is_firstimer')->where('is_firstimer', true)->count(),
+                'repeaters' => $summary->whereNotNull('is_firstimer')->where('is_firstimer', false)->count(),
             ];
         }
 
         return $consulation_summaries;
     }
+
+
 
     public function countByStatus($booking, $status)
     {
@@ -68,9 +79,7 @@ class ServiceUtilizationController extends Controller
 
     public function serviceWithClient($client_id)
     {
-        $client = Client::findOrFail($client_id);
-
-        $client_subscription = ClientSubscription::where('client_id', $client->id)
+        $client_subscription = ClientSubscription::where('client_id', $client_id)
             ->with(['package.services'])
             ->first();
 
@@ -105,9 +114,9 @@ class ServiceUtilizationController extends Controller
     public function countBookings()
     {
         $bookings = Booking::withClient()->select(DB::raw('count(*) as booking_count, status'))
-        ->groupBy('status')
-        ->with(['toStatus'])
-        ->get();
+            ->groupBy('status')
+            ->with(['toStatus'])
+            ->get();
 
 
         return $bookings;

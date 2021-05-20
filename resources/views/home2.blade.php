@@ -9,8 +9,32 @@
 				<h4>Service Utilization Dashboard</h4>
 				<hr>
 			</div>
+			
+			@if(auth()->user()->hasRole('superadmin'))
+
+				<div class="col-md-3">
+					<div class="card mb-3">
+						<div class="card-header">
+							Client Lists
+						</div>
+
+						<div class="card-body">
+							<!-- Client List Component -->
+							<client-lists></client-lists>
+						</div>
+					</div>
+					
+
+				</div>
+			@endif
+
+			<div class="{{ auth()->user()->hasRole('admin') ? 'col-md-12' : 'col-md-9' }}">
+				<service-utilization></service-utilization>
+			</div>
 		</div>
 
-		<service-utilization></service-utilization>
+		
+
+		
 	</div>
 @endsection

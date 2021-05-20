@@ -50,7 +50,9 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        //
+        $client = Client::findOrFail($id);
+
+        return view('pages.superadmin.clients.users.index', compact('client'));
     }
 
     /**

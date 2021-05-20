@@ -49,7 +49,7 @@ class ClientUserController extends Controller
     {
         $roles = $this->rolesQuery();
 
-        return view('pages.clients.users.create', compact('roles'));
+        return view('pages.superadmin.clients.users.create', compact('roles'));
     }
 
     /**
@@ -73,9 +73,17 @@ class ClientUserController extends Controller
 
         try {
 
-            $user = User::create($this->userData($request->toArray()) + ['password' => Hash::make($request->password) ] + ['client_id' => auth()->user()->hasRole('admin') ? auth()->user()->client_id : null]);
+            $user = User::create($this->userData($request->toArray()) + [
+                'password' => Hash::make($request->password),
+                'client_id' => $request->client_id
+            ]);
 
-            if($request->has('roles')) $this->attachRoles($user, 'id', $request->roles); // User instance, Role column name, Role column value
+            // check if has roles
+            if($request->has('roles')){
+
+                // attach role
+                $this->attachRole($user, $roles);
+            }
 
         } catch (Exception $e) {
 
@@ -84,7 +92,7 @@ class ClientUserController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('client.users.index')->with('success', 'New users has been added');
+        return redirect()->route('pages.superadmin.client.users.index')->with('success', 'New users has been added');
     }
 
     /**
@@ -166,40 +174,22 @@ class ClientUserController extends Controller
         return redirect()->route('client.users.index')->with('error', 'User successfully updated!');
     }
 
-    public function update_status(Request $request, $id)
+    public function updateStatus(Request $request, User $user)
     {
         try {
 
-            if(!auth()->user()->can('can.update.user.status')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+            $user->update(['is_active' => !$user->is_active ]);
 
-            $user = User::where('id', $id)->where(function($query) {
-                (auth()->user()->hasRole('admin')) ? $query->where('client_id', auth()->user()->client_id) : null;
-            })->first();
-
-            $data = json_decode($request->data);
-
-            if(!$user) {               
-                return response()->json([
-                    'error' => true,
-                    'message' => 'User not found!'
-                ], 401);
-            }
-
-            $user->is_active = $data->status;
-            $user->save();
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => true,
-                'message' => $e->getMessage()
-            ], 500);
+            
+            DB::rollback();
+
+            return redirect()->back()->with('error', 'Internal Server Error!');
         }
 
         DB::commit();
 
-        return response()->json([
-            'error' => false,
-            'message' => 'User updated successfully!'
-        ], 200);
+        return redirect()->back()->with('success', 'Successfully Updated!');
     }
 
 

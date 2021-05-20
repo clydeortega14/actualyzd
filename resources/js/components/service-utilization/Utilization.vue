@@ -14,9 +14,6 @@
                         <div class="col mr-2">
                             <div class="h1 mb-0 text-gray-800 text-center">0</div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
                     </div>
                 </div>
 			</div>
@@ -33,9 +30,6 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="h1 mb-0 text-gray-800 text-center">0</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
@@ -56,9 +50,6 @@
                         <div class="col mr-2">
                             <div class="h1 mb-0 text-gray-800 text-center">{{ booking_status.booking_count }}</div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
                     </div>
                 </div>
 			</div>
@@ -76,6 +67,8 @@
 							<thead>
 								<tr>
 	                                <th>Month</th>
+                                    <th>Firstimer</th>
+                                    <th>Repeater</th>
 	                                <th>Cancelled</th>
 	                                <th>No Show</th>
 	                                <th>Completed</th>
@@ -85,6 +78,8 @@
 							<tbody>
 								<tr v-for="(consultation, index) in consultationSummaries" :key="index">
                                     <td>{{ consultation.date }}</td>
+                                    <td>{{ consultation.firstimers }}</td>
+                                    <td>{{ consultation.repeaters }}</td>
                                     <td>{{ consultation.cancelled }}</td>
                                     <td>{{ consultation.no_show }}</td>
                                     <td>{{ consultation.completed }}</td>

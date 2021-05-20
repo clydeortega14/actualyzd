@@ -14,7 +14,8 @@ class Booking extends Model
             'client_id',
             'counselee',
             'booked_by', 
-            'session_type_id', 
+            'session_type_id',
+            'is_firstimer',
             'status'
         ];
 

@@ -49,7 +49,7 @@ class GuestsController extends Controller
         // Commit DB
         DB::commit();
 
-        return redirect()->route('guest.clients')->with('success', 'You successfully submitted your application form and will be verified within 24 hours');
+        return redirect()->back()->with('success', 'You successfully submitted your application form and will be verified within 24 hours');
 
     }
 }

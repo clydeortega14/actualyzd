@@ -85,7 +85,8 @@
 						session: null,
 						client: null,
 						counselee: null
-					}
+					},
+					is_firstimer: null,
 
 				},
 				showSessionType: false,
@@ -162,9 +163,15 @@
 			selectTime(data)
 			{
 				this.form.time = data;
-				// this.psychologist.show = true;
-				this.onboarding.show = true;
-				this.availablePsychologist(data);
+				
+				if(this.user_role === 'superadmin'){
+
+					this.show_actions = true;
+
+				}else if(this.user_role === 'member'){
+
+					this.onboarding.show = true;
+				}
 			},
 			selectPyschologist(id)
 			{
@@ -185,7 +192,8 @@
 			onboardingAnswers(answers)
 			{
 				this.show_actions = true;
-				this.form.choice = answers;
+				this.form.choice = answers[0];
+				this.form.is_firstimer = answers[1];
 			},
 			submitBooking()
 			{
@@ -196,10 +204,9 @@
 					client: this.form.selected.client,
 					counselee: this.form.selected.counselee,
 					session_type_id: this.form.selected.session,
-					choice: this.form.choice
+					choice: this.form.choice,
+					is_firstimer: this.form.is_firstimer
 				}
-
-				console.log(payload)
 
 				axios.post('/bookings/book', payload)
 					.then(response => {
@@ -217,6 +224,7 @@
 							this.form.selected.session = null;
 							this.form.psychologist = null;
 							this.form.choice = [];
+							this.form.is_firstimer = null;
 
 							// hide some components
 							this.time.show = false;

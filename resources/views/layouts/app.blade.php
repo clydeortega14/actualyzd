@@ -10,9 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 <body>
@@ -30,57 +28,81 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @auth
-                            <li class="nav-item active p-3">
-                                <a class="nav-link" href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item p-3">
-                                <a class="nav-link" href="{{ route('bookings.create') }}">
-                                <i class="fas fa-fw fa-calendar"></i>
-                                <span>Book A Session</span></a>
-                            </li>
-                            <li class="nav-item p-3">
-                                <a class="nav-link" href="{{ route('clients.index') }}">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span>Clients</span>
-                                </a>
-                            </li>
+                            @php
+                                $user = auth()->user();
+                            @endphp
+                            @if($user->hasRole(['admin', 'superadmin']))
+                                <li class="nav-item active p-3">
+                                    <a class="nav-link" href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ url('users') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                            @endif
 
-                            <li class="nav-item p-3">
-                                <a class="nav-link" href="{{ route('packages.index') }}">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span>Packages</span>
-                                </a>
-                            </li>
+                            @if($user->hasRole('superadmin'))
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('bookings.create') }}">
+                                    <i class="fas fa-fw fa-calendar"></i>
+                                    <span>Book A Session</span></a>
+                                </li>
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('clients.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Clients</span>
+                                    </a>
+                                </li>
 
-                            <li class="nav-item p-3 dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" id="access-rights" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-fw fa-cog"></i>
-                                    <span>Access Rights</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="access-rights">
-                                    <a class="dropdown-item" href="{{ url('users') }}">Users</a>
-                                    <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
-                                    <a class="dropdown-item" href="{{ route('permissions.index') }}">Permissions</a>
-                                </div>
-                            </li>
-                            <li class="nav-item p-3 dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" id="assessments" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-fw fa-cog"></i>
-                                    <span>Assessments</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="assessments">
-                                    <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
-                                    <a class="dropdown-item" href="{{ route('options.index') }}">Options</a>
-                                </div>
-                            </li>
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('packages.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Packages</span>
+                                    </a>
+                                </li>
 
-                            <!-- Nav Item - Utilities Collapse Menu -->
-                            <li class="nav-item p-3">
-                                <a class="nav-link" href="{{ route('time-lists.index') }}">
-                                    <i class="fas fa-fw fa-clock"></i>
-                                    <span>Time Lists</span>
-                                </a>
-                            </li>
+                                <li class="nav-item p-3 dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" id="access-rights" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-cog"></i>
+                                        <span>Access Rights</span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="access-rights">
+                                        <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
+                                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Permissions</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item p-3 dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" id="assessments" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-cog"></i>
+                                        <span>Assessments</span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="assessments">
+                                        <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                        <a class="dropdown-item" href="{{ route('options.index') }}">Options</a>
+                                    </div>
+                                </li>
+
+                                <!-- Nav Item - Utilities Collapse Menu -->
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('time-lists.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Time Lists</span>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($user->hasRole('admin'))
+                                
+
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Company</span>
+                                    </a>
+                                </li>
+                            @endif
                         @endauth
                     </ul>
 

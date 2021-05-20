@@ -42,7 +42,7 @@ trait RoleTrait {
     {
         return Role::where(function($query){
 
-            if(auth()->user()->hasRole('admin')){
+            if(auth()->user()->hasRole(['admin', 'superadmin'])){
 
                 $query->whereNotIn('name', ['superadmin', 'psychologist']);
             }
@@ -50,9 +50,12 @@ trait RoleTrait {
         })->with(['permissions'])->get();
     }
 
-    public function attachRole(User $user, Role $role)
+    public function attachRole($user, $roles)
     {
-        if($role && $user) $user->attachRole($role);
+        foreach($roles as $role){
+
+            $user->roles()->attach($role);
+        }
     }
 
     public function attachRoles(User $user, $column, array $values)

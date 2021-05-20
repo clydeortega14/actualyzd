@@ -5,6 +5,19 @@
 		</div>
 
 		<div class="card-body">
+
+			<div class="form-group mb-4 ml-4">
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" v-model="is_firstimer" :value="true" id="firstimer">
+					<label class="form-check-label" for="firstimer">First Timer</label>
+				</div>
+
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" v-model="is_firstimer" :value="false" id="repeater">
+					<label class="form-check-label" for="repeater">Repeater</label>
+				</div>
+			</div>
+
 			<ol class="roman">
 				<li v-for="category in allQuestions" :key="category.id">
 					<b>{{ category.name }}</b>
@@ -39,7 +52,8 @@
 
 			return {
 
-				chosen_choice: []
+				chosen_choice: [],
+				is_firstimer: null
 			}
 
 		},
@@ -56,7 +70,7 @@
 			...mapActions(["getQuestions"]),
 			selectChoice()
 			{
-				this.$emit('onboarding-answers', this.chosen_choice)
+				this.$emit('onboarding-answers', [this.chosen_choice, this.is_firstimer])
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 
 @section('content')
@@ -8,7 +8,7 @@
 
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="card shadow mb-4">
+				<div class="card mb-4">
 					<div class="card-header py-2">
 						<select name="" id="select-client">
 							<option value="0" selected>All</option>
@@ -16,7 +16,7 @@
 								<option value="{{ $client->id }}">{{ $client->name }}</option>
 							@endforeach
 						</select>
-						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm float-right">
+						<a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right">
 							<i class="fa fa-plus"></i>
 							<span>Create User</span>
 						</a>

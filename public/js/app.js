@@ -17709,7 +17709,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           session: null,
           client: null,
           counselee: null
-        }
+        },
+        is_firstimer: null
       },
       showSessionType: false,
       hasSelectedDate: false,
@@ -17763,10 +17764,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.hasSelectedDate = false;
     },
     selectTime: function selectTime(data) {
-      this.form.time = data; // this.psychologist.show = true;
+      this.form.time = data;
 
-      this.onboarding.show = true;
-      this.availablePsychologist(data);
+      if (this.user_role === 'superadmin') {
+        this.show_actions = true;
+      } else if (this.user_role === 'member') {
+        this.onboarding.show = true;
+      }
     },
     selectPyschologist: function selectPyschologist(id) {
       this.form.psychologist = id;
@@ -17783,7 +17787,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onboardingAnswers: function onboardingAnswers(answers) {
       this.show_actions = true;
-      this.form.choice = answers;
+      this.form.choice = answers[0];
+      this.form.is_firstimer = answers[1];
     },
     submitBooking: function submitBooking() {
       var _this = this;
@@ -17794,9 +17799,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         client: this.form.selected.client,
         counselee: this.form.selected.counselee,
         session_type_id: this.form.selected.session,
-        choice: this.form.choice
+        choice: this.form.choice,
+        is_firstimer: this.form.is_firstimer
       };
-      console.log(payload);
       axios.post('/bookings/book', payload).then(function (response) {
         var result = response.data;
 
@@ -17809,7 +17814,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.form.selected.counselee = null;
           _this.form.selected.session = null;
           _this.form.psychologist = null;
-          _this.form.choice = []; // hide some components
+          _this.form.choice = [];
+          _this.form.is_firstimer = null; // hide some components
 
           _this.time.show = false;
           _this.psychologist.show = false;
@@ -17877,11 +17883,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      chosen_choice: []
+      chosen_choice: [],
+      is_firstimer: null
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allQuestions"])),
@@ -17890,7 +17910,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getQuestions"])), {}, {
     selectChoice: function selectChoice() {
-      this.$emit('onboarding-answers', this.chosen_choice);
+      this.$emit('onboarding-answers', [this.chosen_choice, this.is_firstimer]);
     }
   })
 });
@@ -18378,22 +18398,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ClientList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ClientList */ "./resources/js/components/service-utilization/ClientList.vue");
-/* harmony import */ var _Summary__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Summary */ "./resources/js/components/service-utilization/Summary.vue");
-/* harmony import */ var _Utilization__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Utilization */ "./resources/js/components/service-utilization/Utilization.vue");
-/* harmony import */ var _Concern__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Concern */ "./resources/js/components/service-utilization/Concern.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _Summary__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Summary */ "./resources/js/components/service-utilization/Summary.vue");
+/* harmony import */ var _Utilization__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Utilization */ "./resources/js/components/service-utilization/Utilization.vue");
+/* harmony import */ var _Concern__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Concern */ "./resources/js/components/service-utilization/Concern.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -18433,17 +18441,15 @@ __webpack_require__.r(__webpack_exports__);
 // Components
 
 
-
  // Vuex
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ServiceUtilization",
   components: {
-    ClientList: _ClientList__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Summary: _Summary__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Utilization: _Utilization__WEBPACK_IMPORTED_MODULE_2__["default"],
-    Concern: _Concern__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Summary: _Summary__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Utilization: _Utilization__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Concern: _Concern__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -18467,8 +18473,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -18541,11 +18545,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
 //
 //
 //
@@ -94118,6 +94117,65 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [
+      _c("div", { staticClass: "form-group mb-4 ml-4" }, [
+        _c("div", { staticClass: "form-check form-check-inline" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.is_firstimer,
+                expression: "is_firstimer"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "radio", id: "firstimer" },
+            domProps: { value: true, checked: _vm._q(_vm.is_firstimer, true) },
+            on: {
+              change: function($event) {
+                _vm.is_firstimer = true
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "form-check-label", attrs: { for: "firstimer" } },
+            [_vm._v("First Timer")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-check form-check-inline" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.is_firstimer,
+                expression: "is_firstimer"
+              }
+            ],
+            staticClass: "form-check-input",
+            attrs: { type: "radio", id: "repeater" },
+            domProps: {
+              value: false,
+              checked: _vm._q(_vm.is_firstimer, false)
+            },
+            on: {
+              change: function($event) {
+                _vm.is_firstimer = false
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "label",
+            { staticClass: "form-check-label", attrs: { for: "repeater" } },
+            [_vm._v("Repeater")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
       _c(
         "ol",
         { staticClass: "roman" },
@@ -94836,55 +94894,51 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-3" }, [_c("ClientList")], 1),
+  return _c("div", [
+    _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "col-md-9" }, [
-      _vm._m(0),
+    _c("div", { staticClass: "tab-content", attrs: { id: "myTabContent" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade show active",
+          attrs: {
+            id: "summary",
+            role: "tabpanel",
+            "aria-labelledby": "summary-tab"
+          }
+        },
+        [_c("Summary")],
+        1
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "tab-content", attrs: { id: "myTabContent" } }, [
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade show active",
-            attrs: {
-              id: "summary",
-              role: "tabpanel",
-              "aria-labelledby": "summary-tab"
-            }
-          },
-          [_c("Summary")],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade",
-            attrs: {
-              id: "utilization",
-              role: "tabpanel",
-              "aria-labelledby": "utilization-tab"
-            }
-          },
-          [_c("Utilization")],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "tab-pane fade",
-            attrs: {
-              id: "concerns",
-              role: "tabpanel",
-              "aria-labelledby": "concerns-tab"
-            }
-          },
-          [_c("Concern")],
-          1
-        )
-      ])
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "utilization",
+            role: "tabpanel",
+            "aria-labelledby": "utilization-tab"
+          }
+        },
+        [_c("Utilization")],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "concerns",
+            role: "tabpanel",
+            "aria-labelledby": "concerns-tab"
+          }
+        },
+        [_c("Concern")],
+        1
+      )
     ])
   ])
 }
@@ -94982,8 +95036,8 @@ var render = function() {
       _vm._l(_vm.allServices, function(service) {
         return _c("div", { key: service.id, staticClass: "col-md-3" }, [
           _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-body text-center text-info" }, [
-              _c("h5", { staticClass: "text-info" }, [
+            _c("div", { staticClass: "card-body text-center text-primary" }, [
+              _c("h5", { staticClass: "text-primary" }, [
                 _vm._v(_vm._s(service.name))
               ]),
               _vm._v(" "),
@@ -95086,9 +95140,7 @@ var render = function() {
                     { staticClass: "h1 mb-0 text-gray-800 text-center" },
                     [_vm._v(_vm._s(booking_status.booking_count))]
                   )
-                ]),
-                _vm._v(" "),
-                _vm._m(2, true)
+                ])
               ])
             ])
           ])
@@ -95104,7 +95156,7 @@ var render = function() {
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "table-responsive" }, [
               _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -95114,6 +95166,10 @@ var render = function() {
                   ) {
                     return _c("tr", { key: index }, [
                       _c("td", [_vm._v(_vm._s(consultation.date))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.firstimers))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(consultation.repeaters))]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(consultation.cancelled))]),
                       _vm._v(" "),
@@ -95139,7 +95195,7 @@ var render = function() {
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "table-responsive" }, [
               _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(4),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -95172,7 +95228,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(5)
+        _vm._m(4)
       ])
     ],
     2
@@ -95197,10 +95253,6 @@ var staticRenderFns = [
               _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
                 _vm._v("0")
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-auto" }, [
-              _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
             ])
           ])
         ])
@@ -95225,10 +95277,6 @@ var staticRenderFns = [
               _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
                 _vm._v("0")
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-auto" }, [
-              _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
             ])
           ])
         ])
@@ -95239,17 +95287,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-auto" }, [
-      _c("i", { staticClass: "fas fa-calendar fa-2x text-gray-300" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("Month")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Firstimer")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Repeater")]),
         _vm._v(" "),
         _c("th", [_vm._v("Cancelled")]),
         _vm._v(" "),
@@ -108821,6 +108865,7 @@ Vue.component('schedules-component', __webpack_require__(/*! ./components/schedu
  */
 
 Vue.component('service-utilization', __webpack_require__(/*! ./components/service-utilization/ServiceUtilization.vue */ "./resources/js/components/service-utilization/ServiceUtilization.vue")["default"]);
+Vue.component('client-lists', __webpack_require__(/*! ./components/service-utilization/ClientList.vue */ "./resources/js/components/service-utilization/ClientList.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

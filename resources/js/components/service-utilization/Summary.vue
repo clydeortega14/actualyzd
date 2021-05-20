@@ -1,12 +1,10 @@
 <template>
 	<div>
-		
-	
 		<div class="row mt-3 mb-3">
 			<div class="col-md-3" v-for="service in allServices" :key="service.id">
 	            <div class="card">
-	                <div class="card-body text-center text-info">
-	                    <h5 class="text-info">{{ service.name }}</h5>
+	                <div class="card-body text-center text-primary">
+	                    <h5 class="text-primary">{{ service.name }}</h5>
 	                    <div class="mt-4">
 	                        <span>{{ getPercentage(service.bookings.length, service.limit) }} %</span>
 	                        <div class="d-sm-flex justify-content-around mt-3">
