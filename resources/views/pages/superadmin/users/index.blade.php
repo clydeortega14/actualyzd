@@ -16,7 +16,7 @@
 								<option value="{{ $client->id }}">{{ $client->name }}</option>
 							@endforeach
 						</select> --}}
-						<a href="{{ route('users.create') }}" class="btn btn-primary btn-sm float-right">
+						<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm float-right">
 							<i class="fa fa-plus"></i>
 							<span>Create User</span>
 						</a>

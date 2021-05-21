@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function(){
 			Route::resource('options', 'AssessmentOptionController');
 
 		});
-
+		
 		// Packages
 		Route::resource('packages', 'PackageController');
 

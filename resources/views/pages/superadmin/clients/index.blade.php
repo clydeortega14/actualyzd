@@ -49,7 +49,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('client.user.create', $client->id) }}" class="btn btn-info btn-sm">
+                                                <a href="{{ route('client.users.index', $client->id) }}" class="btn btn-info btn-sm">
                                                     <i class="fa fa-users"></i>
                                                 </a> 
                                                 @if(auth()->user()->hasRole('superadmin'))|

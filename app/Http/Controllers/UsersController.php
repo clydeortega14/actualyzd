@@ -79,7 +79,7 @@ class UsersController extends Controller
             // create new user            
             $user = User::create($this->userData($request->toArray()) + [
                 'password' => Hash::make($request->password), 
-                'client' => $request->has('client_id') ? $request->client_id : null 
+                'client_id' => $request->has('client_id') ? $request->client_id : null 
             ]);
 
             // check if request has roles provided

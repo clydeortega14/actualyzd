@@ -4,7 +4,7 @@
 @section('content')
 
 	<div class="container-fluid">
-		<h1 class="h3 mb-3 text-gray-800">{{ isset($user) ? 'Edit '.$user->name : 'Create User' }}</h1>
+		<h1 class="h3 mb-3 text-gray-800">{{ isset($user) ? 'Edit '.$user->name : 'Create User' }} @if(isset($client)) For {{ $client->name }} @endif</h1>
 
 
 		<div class="row">
@@ -25,20 +25,33 @@
 							<div class="row justify-content-between">
 								<div class="col-sm-5">
 
+									<!-- if current user is superadmin -->
 									@if(auth()->user()->hasRole('superadmin'))
 
-										<div class="form-group">
-											<label>Client / Company <small class="text-danger">*</small></label>
-											<select type="combobox" name="client_id" class="form-control">
-												<option disabled selected> - Choose Client / Company - </option>
-												@foreach($clients as $client)
-													<option value="{{ $client->id }}" {{ $isUser && $user->client_id == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
-												@endforeach
-											</select>
-										</div>
+										<!-- check if there is $client variable has provided -->
+										@if(isset($client))
 
+											<!-- make a hidden input with the value of client id -->
+											<input type="hidden" name="client_id" value="{{ $client->id }}">
+										@else
+
+											<!-- list of clients / company as options for tagging user to client -->
+											<div class="form-group">
+												<label>Client / Company <small class="text-danger">( required only for client users )</small></label>
+												<select type="combobox" name="client_id" class="form-control">
+													<option disabled selected> - Choose Client / Company - </option>
+													@foreach($clients as $client)
+														<option value="{{ $client->id }}" {{ $isUser && $user->client_id == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
+													@endforeach
+												</select>
+											</div>
+
+										@endif
+
+									<!-- if current user has the role of admin -->
 									@elseif(auth()->user()->hasRole('admin'))
 
+										<!-- make a hidden input with the value of current user client_id -->
 										<input type="hidden" name="client_id" value="{{ auth()->user()->client_id }}">
 
 									@endif

@@ -40,7 +40,9 @@ class ClientUserController extends Controller
 
         $users = $client->users()->with(['roles'])->get();
 
-        return view('pages.superadmin.users.index', compact('users'));
+        $clients = Client::get(['id', 'name']);
+
+        return view('pages.superadmin.users.index', compact('users', 'client'));
     }
 
     /**
@@ -54,7 +56,7 @@ class ClientUserController extends Controller
 
         $users = $client->users;
 
-        return view('pages.superadmin.users.index', compact('roles', 'users', 'client'));
+        return view('pages.superadmin.users.create', compact('roles', 'users', 'client'));
     }
 
     /**
@@ -97,7 +99,7 @@ class ClientUserController extends Controller
         }
 
         DB::commit();
-        return redirect()->route('pages.superadmin.client.users.index')->with('success', 'New users has been added');
+        return redirect()->back('pages.superadmin.client.users.index')->with('success', 'New users has been added');
     }
 
     /**
