@@ -24,6 +24,7 @@ class UsersController extends Controller
         $users = User::where(function($query){
 
             $auth = auth()->user();
+
             if($auth){
 
                 $query->whereNotIn('id', [$auth->id]);
@@ -49,8 +50,9 @@ class UsersController extends Controller
     public function create()
     {
         $roles = $this->rolesQuery();
+        $clients = Client::get(['id', 'name']);
 
-        return view('pages.superadmin.users.create', compact('roles'));
+        return view('pages.superadmin.users.create', compact('roles', 'clients'));
     }
 
     /**
@@ -65,6 +67,7 @@ class UsersController extends Controller
 
             'name' => ['required', 'max:255'],
             'email' => ['required', 'unique:users'],
+            'username' => ['required', 'unique:users', 'max:255'],
             'password' => ['required', 'confirmed']
         ]);
 
@@ -73,12 +76,17 @@ class UsersController extends Controller
 
         try {
 
-            
-            $user = User::create($this->userData($request->toArray()) + ['password' => Hash::make($request->password) ]);
+            // create new user            
+            $user = User::create($this->userData($request->toArray()) + [
+                'password' => Hash::make($request->password), 
+                'client' => $request->has('client_id') ? $request->client_id : null 
+            ]);
 
+            // check if request has roles provided
             if($request->has('roles')){
 
-                $this->attachRole($user->roles);
+                // attach roles
+                $this->attachRole($user, $request->roles);
             }
 
             
@@ -116,8 +124,9 @@ class UsersController extends Controller
 
         $user = User::findOrFail($id);
         $roles = $this->rolesQuery();
+        $clients = Client::get(['id', 'name']);
 
-        return view('pages.superadmin.users.create', compact('user', 'roles'));
+        return view('pages.superadmin.users.create', compact('user', 'roles', 'clients'));
         //
     }
 
@@ -132,23 +141,13 @@ class UsersController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if($request->has('status')){
-
-            $user->update(['is_active' => $request->status ]);
-
-        }else{
-            
-            $user->update($this->userData($request->toArray()));
-        }
-
-        
         // check if request has roles
         if($request->has('roles')){
             // delete all roles for this user
             $this->deleteRoleUser($user->id);
 
             // add the new role to user
-            $this->hasRoles($request->roles, $user->id);
+            $this->attachRole($user, $request->roles);
         }else{
 
             // check if user has existing roles
@@ -177,7 +176,8 @@ class UsersController extends Controller
         return [
 
             'name' => $data['name'],
-            'email' => $data['email']
+            'email' => $data['email'],
+            'username' => $data['username']
 
         ];
     }

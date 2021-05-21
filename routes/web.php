@@ -136,9 +136,9 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('client')->group(function() {
 
 		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
-		Route::get('user/create', 'ClientUserController@create')->name('client.user.create');
+		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
 
-		Route::get('users', 'ClientUserController@index')->name('client.users.index');
+		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');

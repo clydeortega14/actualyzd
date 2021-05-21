@@ -49,20 +49,22 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('clients.show', $client->id) }}" class="btn btn-info btn-sm">
+                                                <a href="{{ route('client.user.create', $client->id) }}" class="btn btn-info btn-sm">
                                                     <i class="fa fa-users"></i>
-                                                </a> @if(auth()->user()->hasRole('superadmin'))|
-                                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
-                                                    <i class="fa fa-edit"></i>
-                                                </a> |
-                                                <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-{{ $client->is_active ? 'danger' : 'success' }} btn-sm"
-                                                    data-toggle="modal" data-target="#update-status-{{ $client->id }}">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
+                                                </a> 
+                                                @if(auth()->user()->hasRole('superadmin'))|
+                                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a> |
+                                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-{{ $client->is_active ? 'danger' : 'success' }} btn-sm"
+                                                        data-toggle="modal" data-target="#update-status-{{ $client->id }}">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    @include('pages.superadmin.clients.modals.update-status')
                                                 @endif
                                             </td>
                                         </tr>
-                                        @include('pages.superadmin.clients.modals.update-status')
+                                        
                                     @endforeach
                                 </tbody>
                             </table>

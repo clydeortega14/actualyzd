@@ -51,8 +51,9 @@ class ClientsController extends Controller
     public function show($id)
     {
         $client = Client::findOrFail($id);
+        $users = $client->users;
 
-        return view('pages.superadmin.clients.users.index', compact('client'));
+        return view('pages.superadmin.users.index', compact('users', 'client'));
     }
 
     /**

@@ -1,10 +1,10 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 
 @section('content')
 
 	<div class="container-fluid">
-		<h1 class="h3 mb-3 text-gray-800">Create User</h1>
+		<h1 class="h3 mb-3 text-gray-800">{{ isset($user) ? 'Edit '.$user->name : 'Create User' }}</h1>
 
 
 		<div class="row">
@@ -20,18 +20,42 @@
 								@method('PUT')
 							@endif
 							
+							@include('alerts.message')
 
 							<div class="row justify-content-between">
 								<div class="col-sm-5">
+
+									@if(auth()->user()->hasRole('superadmin'))
+
+										<div class="form-group">
+											<label>Client / Company <small class="text-danger">*</small></label>
+											<select type="combobox" name="client_id" class="form-control">
+												<option disabled selected> - Choose Client / Company - </option>
+												@foreach($clients as $client)
+													<option value="{{ $client->id }}" {{ $isUser && $user->client_id == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
+												@endforeach
+											</select>
+										</div>
+
+									@elseif(auth()->user()->hasRole('admin'))
+
+										<input type="hidden" name="client_id" value="{{ auth()->user()->client_id }}">
+
+									@endif
 									
 									<div class="form-group">
 										<label>Name <small class="text-danger">*</small></label>
-										<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $isUser ? $user->name : old('name') }}" required {{ $isUser ? 'disabled' : '' }} >
+										<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $isUser ? $user->name : old('name') }}" required {{ $isUser ? 'readonly' : '' }} >
 									</div>
 
 									<div class="form-group">
 										<label>Email<small class="text-danger">*</small></label>
-										<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ $isUser ? $user->email : old('email') }}" required {{ $isUser ? 'disabled' : ''}}>
+										<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ $isUser ? $user->email : old('email') }}" required {{ $isUser ? 'readonly' : ''}}>
+									</div>
+
+									<div class="form-group">
+										<label>Username<small class="text-danger">*</small></label>
+										<input type="text" name="username" class="form-control" placeholder="Enter username" value="{{ $isUser? $user->username : old('username') }}" required {{ $isUser ? 'readonly' : ''}}>
 									</div>
 
 									@if(!$isUser)
@@ -44,19 +68,11 @@
 											<label>Confirm Password<small class="text-danger">*</small></label>
 											<input type="password" name="password_confirmation" class="form-control" placeholder="********" required>
 										</div>
-									@else
-										<div class="form-group">
-											<label for="status">Status</label>
-											<select name="status" id="status" class="form-control">
-												<option value="1" {{ $user->is_active == 1 ? 'selected' : '' }}>Active</option>
-												<option value="0" {{ $user->is_active == 0 ? 'selected' : '' }}>Inactive</option>
-											</select>
-										</div>
 									@endif
 
-									<div class="form-group d-flex justify-content-end">
-										<a href="{{ url('users') }}" class="btn btn-danger mr-2">Cancel</a>
+									<div class="form-group">
 										<button type="submit" class="btn btn-primary">Submit</button>
+										<a href="{{ url('users') }}" class="btn btn-danger">Cancel</a>
 									</div>
 
 
@@ -97,6 +113,8 @@
 															@else
 																<input type="checkbox" name="roles[]" value="{{ $role->id }}">
 															@endif
+														@else
+															<input type="checkbox" name="roles[]" value="{{ $role->id }}">
 														@endif
 														<!-- end for default checked -->
 														
@@ -108,7 +126,7 @@
 																<span class="{{ $permission->class }}">{{ $permission->name }}</span>
 															@endforeach
 														@else
-														<span class="badge badge-danger">no permissions available</span>
+															<span class="badge badge-danger">no permissions available</span>
 														@endif
 													</td>
 												</tr>

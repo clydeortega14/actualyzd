@@ -8,6 +8,7 @@ use App\Role;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
+use App\Client;
 
 class ClientUserController extends Controller
 {
@@ -22,22 +23,24 @@ class ClientUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Client $client)
     {
-        $users = User::where(function($query){
+        // $users = User::where(function($query){
 
-            if(auth()->user()){
-                $query->whereNotIn('id', [auth()->user()->id]);
-            }
+        //     if(auth()->user()){
+        //         $query->whereNotIn('id', [auth()->user()->id]);
+        //     }
 
-            if(auth()->user()->hasRole('admin')){
-                // get all users that belongs to this client only
-                return $query->where('client_id', auth()->user()->client_id);
-            }
+        //     if(auth()->user()->hasRole('admin')){
+        //         // get all users that belongs to this client only
+        //         return $query->where('client_id', auth()->user()->client_id);
+        //     }
 
-        })->with(['roles'])->get();
+        // })->with(['roles'])->get();
 
-        return view('pages.clients.users.index', compact('users'));
+        $users = $client->users()->with(['roles'])->get();
+
+        return view('pages.superadmin.users.index', compact('users'));
     }
 
     /**
@@ -45,11 +48,13 @@ class ClientUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Client $client)
     {
         $roles = $this->rolesQuery();
 
-        return view('pages.superadmin.clients.users.create', compact('roles'));
+        $users = $client->users;
+
+        return view('pages.superadmin.users.index', compact('roles', 'users', 'client'));
     }
 
     /**

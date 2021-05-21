@@ -11,7 +11,6 @@
 						<form id="update-status-form-{{ $client->id }}" action="{{ route('clients.update', $client->id) }}" method="POST" style="display: none;">
 							@csrf
 							@method('PUT')
-							{{-- <input type="text" name="" value="{{ $client->id }}"> --}}
 						</form>
 						<button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">NO</button>
 					</div>

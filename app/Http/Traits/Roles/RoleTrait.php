@@ -42,9 +42,14 @@ trait RoleTrait {
     {
         return Role::where(function($query){
 
-            if(auth()->user()->hasRole(['admin', 'superadmin'])){
+            if(auth()->user()->hasRole('admin')){
 
                 $query->whereNotIn('name', ['superadmin', 'psychologist']);
+            }
+
+            if(auth()->user()->hasRole('superadmin')){
+
+                $query->whereNotIn('name', ['superadmin']);
             }
 
         })->with(['permissions'])->get();
