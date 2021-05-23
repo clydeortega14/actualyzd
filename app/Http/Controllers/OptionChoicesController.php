@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\AssessmentOption as Option;
+use App\OptionChoice as Choice;
 
 use DB;
 
-class AssessmentOptionController extends Controller
+class OptionChoicesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,7 @@ class AssessmentOptionController extends Controller
      */
     public function index()
     {
-        $options = Option::with(['choices'])->get();
-
-        return view('pages.superadmin.assessments.options.index', compact('options'));
+        //
     }
 
     /**
@@ -30,15 +28,22 @@ class AssessmentOptionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'assessment_option' => ['required','max:255']
+
+            'choice_id' => ['required', 'integer'],
+            'choice_value' => ['required', 'max:255'],
+            'choice_display_name' => ['required', 'max:255']
         ]);
+
+        // dd($request);
 
         DB::beginTransaction();
 
-        try {
-
-            Option::create(['name' => $request->assessment_option]);
-
+        try{
+            Choice::create([
+                'option' => $request->choice_id,
+                'value' => $request->choice_value,
+                'display_name' => $request->choice_display_name
+            ]);
         } catch (Exception $e) {
 
             DB::rollback();
@@ -48,7 +53,7 @@ class AssessmentOptionController extends Controller
 
         DB::commit();
 
-        return redirect()->route('options.index')->with('success', 'New option has been added');
+        return redirect()->route('options.show', $request->choice_id)->with('success', 'New choices has been added.');
     }
 
     /**
@@ -59,9 +64,7 @@ class AssessmentOptionController extends Controller
      */
     public function show($id)
     {
-        $option = Option::findOrFail($id);
-
-        return view('pages.superadmin.assessments.options.choices.index', compact('option'));
+        //
     }
 
     /**
@@ -72,9 +75,7 @@ class AssessmentOptionController extends Controller
      */
     public function edit($id)
     {
-        $option = Option::findOrFail($id);
-
-        return response()->json($option);
+        //
     }
 
     /**
@@ -86,15 +87,7 @@ class AssessmentOptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
-        $request->validate([
-            'option_id' => ['required'],
-            'option_name' => ['required']
-        ]);
-
-        Option::where('id', $id)->update(['name' => $request->option_name]);
-
-        return redirect()->route('options.index')->with('success', 'Updated! Option successfully updated.');
+        //
     }
 
     /**
@@ -103,10 +96,10 @@ class AssessmentOptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Option::where('id', $id)->firstOrFail()->delete();
+        Choice::where('id', $id)->firstOrFail()->delete();
 
-        return redirect()->route('options.index')->with('success', 'Deleted! An Option has been deleted.');
+        return redirect()->route('options.show', $request->cId)->with('success', 'Deleted! Choices has been deleted.');
     }
 }

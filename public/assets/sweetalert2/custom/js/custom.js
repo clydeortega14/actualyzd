@@ -30,4 +30,25 @@ class SweetAlert {
 
 		})
 	}
+
+	confirmDialog2(title) {
+		return Swal.fire({
+			title: title,
+			text: "Confirm to delete",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Confirm'
+		});
+	}
+
+	cancel(text) {
+
+		return Swal.fire({
+	      icon: 'error',
+	      title: 'Cancelled',
+	      text: text,
+	    })
+	}
 }
