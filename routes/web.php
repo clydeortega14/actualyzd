@@ -83,6 +83,9 @@ Route::middleware('auth')->group(function(){
 			// Options
 			Route::resource('options', 'AssessmentOptionController');
 
+			// Choices
+			Route::resource('optionChoices', 'OptionChoicesController');
+
 		});
 		
 		// Packages
