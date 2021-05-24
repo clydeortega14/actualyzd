@@ -15,15 +15,17 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-sm-4 border-right">
-							<form>
+							<form action="{{ route('optionChoices.store') }}" method="POST">
+								@csrf
+								<input type="hidden" name="choice_id" value="{{ $option->id }}">
 								<div class="form-group">
 									<label>Value</label>
-									<input type="text" name="value" class="form-control" placeholder="Please Enter value">
+									<input type="text" name="choice_value" class="form-control" placeholder="Please Enter value" required>
 								</div>
 
 								<div class="form-group">
 									<label>Display Name</label>
-									<input type="text" name="display_name" class="form-control" placeholder="Please enter display name">
+									<input type="text" name="choice_display_name" class="form-control" placeholder="Please enter display name" required>
 								</div>
 
 								<div class="form-group">
@@ -33,6 +35,7 @@
 							</form>
 						</div>
 						<div class="col-sm-8">
+							@include('alerts.message')
 							@if(count($option->choices) > 0)
 								<div class="table-responsive">
 									<table class="table table-bordered">
@@ -45,17 +48,23 @@
 										</thead>
 										<tbody>
 											
-											@foreach($option->choices as $option)
+											@foreach($option->choices as $choice)
 												<tr>
-													<td>{{ $option->value }}</td>
-													<td>{{ $option->display_name }}</td>
+													<td>{{ $choice->value }}</td>
+													<td class="choice-name">{{ $choice->display_name }}</td>
 													<td>
 														<a href="#">
 															<i class="fa fa-edit"></i>
 														</a> |
-														<a href="#">
+														<a href="{{ route('options.show', $option->id) }}" class="delete-choice" choice-id="{{ $choice->id }}">
 															<i class="fa fa-trash"></i>
 														</a>
+
+														<form id="delete-choice-{{ $choice->id }}" action="{{ route('optionChoices.destroy', $choice->id) }}" method="POST">
+															@csrf @method('DELETE')
+															<input type="hidden" name="cId" value="{{ $option->id }}">
+														</form>
+
 													</td>
 												</tr>
 											@endforeach
@@ -78,3 +87,39 @@
 	</div>
 
 @stop
+
+@section('js_scripts')
+	
+	<script>
+		
+		$(function() {
+
+			const sweetAlert = new SweetAlert;
+
+			$('.delete-choice').on('click', function(e) {
+
+				// prevent <a href> tag to run default function
+				e.preventDefault();
+
+				// find row name and store it on a variable
+				let choiceName = $(this).closest('tr').find('td.choice-name').text();
+
+				// show dialog when <a href> tag was clicked
+				sweetAlert.confirmDialog2('Delete this choice?').then((result) => {
+
+					// if true - submit deletion
+					if(result.isConfirmed) {
+						// get closest row and find form to submit
+						$(this).closest('tr').find('form').submit();
+					} else { // show dialog - deletion cancelled
+						sweetAlert.cancel('Choices was not deleted!')
+					}
+
+				});
+			});
+
+		});
+
+	</script>
+
+@endsection
