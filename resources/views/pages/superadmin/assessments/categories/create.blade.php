@@ -15,8 +15,17 @@
 
 				<div class="card-body">
 					<div class="form-group">
-						<label for="name">Name</label>
-						<input type="text" name="name" class="form-control">
+						<label for="name">Category Name</label>
+						<input type="text" name="cat_name" class="form-control" required>
+					</div>
+					<div class="form-group">
+						<label for="name">Description</label>
+						<input type="text" name="cat_description" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-info">Submit</button>
+						<a href="{{ route('categories.index') }}" class="btn btn-danger">Cancel</a>
 					</div>
 				</div>
 			</div>

@@ -1,24 +1,26 @@
-<div class="modal fade" id="option-edit" tabindex="-1" role="dialog">
+<div class="modal fade" id="choice-edit" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-md" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-                <h4 class="modal-title" id="option-edit-modal-label">Edit Option</h4>
+                <h4 class="modal-title" id="option-edit-modal-label">Edit Choice</h4>
                 <hr>
             </div>
-            <form id="option-edit-form" action="" method="POST">
+            <form id="choice-edit-form" action="" method="POST">
             	@csrf
             	@method('PUT')
 	            <div class="modal-body">
+	            	<input type="hidden" name="optionchoice_id" id="optionchoice-id" class="form-control" required>
+
 	            	<div class="form-group row">
-						<label class="col-form-label col-sm-4 text-md-right">ID:</label>
+						<label class="col-form-label col-sm-4 text-md-right">Value:</label>
 						<div class="col-sm-6">
-							<input name="option_id" id="option-id-edit" class="form-control" readonly>
+							<input name="choice_value" id="choice-value-edit" class="form-control" required>
 						</div>
 					</div>
 	            	<div class="form-group row">
-						<label class="col-form-label col-sm-4 text-md-right">Name:</label>
+						<label class="col-form-label col-sm-4 text-md-right">Display Name:</label>
 						<div class="col-sm-6">
-							<input name="option_name" id="option-id-name" class="form-control" required>
+							<input name="choice_name" id="choice-name-edit" class="form-control" required>
 						</div>
 					</div>
 	            </div>

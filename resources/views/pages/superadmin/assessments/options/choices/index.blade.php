@@ -53,7 +53,7 @@
 													<td>{{ $choice->value }}</td>
 													<td class="choice-name">{{ $choice->display_name }}</td>
 													<td>
-														<a href="#">
+														<a href="" class="choice-modal" data-toggle="modal" data-target="#choice-edit" data-id="{{ $choice->id }}">
 															<i class="fa fa-edit"></i>
 														</a> |
 														<a href="{{ route('options.show', $option->id) }}" class="delete-choice" choice-id="{{ $choice->id }}">
@@ -71,6 +71,8 @@
 											
 										</tbody>
 									</table>
+
+									@include('pages.superadmin.assessments.modal.choice-modal-edit')
 								</div>
 							@else
 								<div class="text-center">
@@ -114,6 +116,29 @@
 					} else { // show dialog - deletion cancelled
 						sweetAlert.cancel('Choices was not deleted!')
 					}
+
+				});
+			});
+
+
+			$('body').on('click', '.choice-modal', function(e) {
+
+				e.preventDefault();
+
+				let editRoute = `{{ route('optionChoices.edit', ':id') }}`;
+				let updateRoute = `{{ route('optionChoices.update', ':id') }}`;
+				let choiceId = $(this).data('id');
+
+				editRoute = editRoute.replace(':id', choiceId);
+				updateRoute = updateRoute.replace(':id', choiceId);
+				
+				$.get(editRoute, function(data) {
+
+					$('#optionchoice-id').val(data.option);
+					$('#choice-id').val(data.id);
+					$('#choice-value-edit').val(data.value);
+					$('#choice-name-edit').val(data.display_name);
+					$('#choice-edit-form').attr('action', updateRoute);
 
 				});
 			});

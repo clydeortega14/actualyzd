@@ -48,7 +48,7 @@ class AssessmentOptionController extends Controller
 
         DB::commit();
 
-        return redirect()->route('options.index')->with('success', 'New option has been added');
+        return redirect()->route('options.index')->with('success', 'New option has been added.');
     }
 
     /**
@@ -89,7 +89,7 @@ class AssessmentOptionController extends Controller
         
         $request->validate([
             'option_id' => ['required'],
-            'option_name' => ['required']
+            'option_name' => ['required', 'max:255']
         ]);
 
         Option::where('id', $id)->update(['name' => $request->option_name]);
