@@ -46,7 +46,7 @@ class QuestionnaireController extends Controller
     {
         Question::create(['category' => $request->category, 'question' => $request->question, 'option' => $request->option ]);
 
-        return redirect()->back();
+        return redirect()->route('categories.index')->with('success', 'New Question has been added.');
     }
 
     /**
@@ -68,7 +68,11 @@ class QuestionnaireController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::findOrFail($id);
+
+        $quest = $question->where('id', $id)->with(['category', 'toOption'])->get();
+
+        return response()->json($quest[0]);
     }
 
     /**
@@ -80,7 +84,15 @@ class QuestionnaireController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'category' => ['required'],
+            'question' => ['required', 'max:255'],
+            'option' => ['required']
+        ]);
+
+        Question::where('id', $id)->update(['category' => $request->category, 'question' => $request->question, 'option' => $request->option]);
+
+        return redirect()->route('categories.index')->with('success', 'Updated! Question has been updated.');
     }
 
     /**
@@ -91,6 +103,8 @@ class QuestionnaireController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Question::where('id', $id)->firstOrFail()->delete();
+
+        return redirect()->route('categories.index')->with('success','Deleted! Question has been deleted.');
     }
 }

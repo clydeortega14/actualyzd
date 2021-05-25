@@ -2,18 +2,18 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Question</h5>
+        <h5 class="modal-title">Add New Question</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="{{ route('questionnaires.store') }}" method="POST">
+      <form id="question-form" action="{{ route('questionnaires.store') }}" method="POST">
       	@csrf
 	      <div class="modal-body">
 	      	<div class="form-group row">
 	        	<label for="category" class="col-form-label col-sm-4 text-md-right">Category</label>
 	        	<div class="col-sm-6">
-	        		<select type="combobox" name="category" class="form-control" required>
+	        		<select id="category" type="combobox" name="category" class="form-control" required>
 	        			<option value="" disabled selected>-- Select Category --</option>
 	        			@foreach($categories as $category)
 	        				<option value="{{ $category->id}}">{{ $category->name }}</option>
@@ -25,14 +25,14 @@
 	        <div class="form-group row">
 	        	<label for="question" class="col-form-label col-sm-4 text-md-right">Question</label>
 	        	<div class="col-sm-6">
-	        		<textarea type="text" name="question" class="form-control" required></textarea>
+	        		<textarea id="question" type="text" name="question" class="form-control" required></textarea>
 	        	</div>
 	        </div>
 
 	        <div class="form-group row">
 	        	<label for="option" class="col-form-label col-sm-4 text-md-right">Option</label>
 	        	<div class="col-sm-6">
-	        		<select type="combobox" name="option" class="form-control" required>
+	        		<select id="question-option" type="combobox" name="option" class="form-control" required>
 	        			<option value="" disabled selected>-- Choose Option--</option>
 	        			@foreach($options as $option)
 	        				<option value="{{ $option->id }}">{{ $option->name }}</option>

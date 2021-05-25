@@ -6,6 +6,8 @@
 
 	{{ Breadcrumbs::render('categories.index') }}
 
+	@include('alerts.message')
+
 	<div class="row" id="parent">
 		<div class="col-sm-4">
 			<div class="card mb-3">
@@ -27,7 +29,6 @@
 					</form>
 
 					<div class="clearfix"></div>
-					@include('alerts.message')
 					<div class="table-responsive">
 						<table class="table">
 							<thead>
@@ -68,7 +69,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<a href="#" class="btn btn-info btn-sm float-right mb-2" data-toggle="modal" data-target="#new-question">
+						<a href="#" class="btn btn-info btn-sm float-right mb-2 new-question-modal" data-toggle="modal" data-target="#new-question">
 							<i class="fa fa-plus"></i>
 							<span>New Question</span>
 						</a>
@@ -129,6 +130,61 @@
 	const custom_ajax = new Ajax();
 	const sweetAlert = new SweetAlert;
 
+	// Categories module
+	const categories = {
+		initialize(){
+			this.dom();
+			this.events();
+		},
+
+		events(){
+			let this_global = this;
+
+			// category delete
+			this.$btn_deleteButton.on('click', function(e) {
+
+				e.preventDefault();
+
+				let $this = $(this);
+
+				let categoryName = $this.attr('category-name');
+
+				sweetAlert.confirmDialog2('Delete ' + categoryName + '?').then((result) => {
+
+					if(result.isConfirmed) {
+						$this.closest('tr').find('form').submit();
+					} else {
+						sweetAlert.cancel('Category was not deleted!');
+					}
+				});
+			});
+
+			// category Edit
+			this.$btn_categoryEdit.on('click', function(e) {
+
+				e.preventDefault();
+
+				let editRoute = `{{ route('categories.edit', ':id') }}`;
+				let updateRoute = `{{ route('categories.update', ':id') }}`;
+				let categoryId = $(this).data('id');
+
+				editRoute = editRoute.replace(':id', categoryId);
+				updateRoute = updateRoute.replace(':id', categoryId);
+
+				$.get(editRoute, function(data) {
+					console.log(data);
+					$('#category-name-edit').val(data.name);
+					$('#category-edit-form').attr('action', updateRoute);
+				});
+			});
+		},
+		parent: $('#parent'),
+		dom() {
+			this.$btn_deleteButton = this.parent.find('.delete-category')
+			this.$btn_categoryEdit = this.parent.find('.category-modal')
+		}
+	};
+
 	//Questionnaires module
 	const questionnaire = {
 
@@ -159,40 +215,61 @@
 				this_global.iterateQuestions(config);
 			});
 
-			// category delete
-			this.$btn_deleteButton.on('click', function(e) {
-
+			// delete question
+			$('body').on('click', '.delete-question', function(e) {
+				
 				e.preventDefault();
 
 				let $this = $(this);
 
-				let categoryName = $this.attr('category-name');
-
-				sweetAlert.confirmDialog2('Delete ' + categoryName + '?').then((result) => {
+				sweetAlert.confirmDialog2('Do you want to delete this question?').then((result) => {
 
 					if(result.isConfirmed) {
 						$this.closest('tr').find('form').submit();
 					} else {
-						sweetAlert.cancel('Category was not deleted!');
+						sweetAlert.cancel('Question was not deleted!');
 					}
 				});
 			});
 
-			this.$btn_categoryEdit.on('click', function(e) {
+			// add new question - when clicked the form in modal will be reset
+			this.$btn_newQuestion.on('click', function() {
+				$('#question-form').trigger("reset");
+				$('.modal-title').html('Add New Question');
+				$('.choices-lists').empty();
+			});
+
+			// edit question
+			$('body').on('click', '.question-modal', function(e) {
 
 				e.preventDefault();
 
-				let editRoute = `{{ route('categories.edit', ':id') }}`;
-				let updateRoute = `{{ route('categories.update', ':id') }}`;
-				let categoryId = $(this).data('id');
+				let $choices_lists = $('#choices-lists')
+				let $option_choices = $('#option-choices')
+				let editRoute = `{{ route('questionnaires.edit', ':id') }}`;
+				let updateRoute = `{{ route('questionnaires.update', ':id') }}`;
+				let questionId = $(this).data('id');
 
-				editRoute = editRoute.replace(':id', categoryId);
-				updateRoute = updateRoute.replace(':id', categoryId);
+				editRoute = editRoute.replace(':id', questionId);
+				updateRoute = updateRoute.replace(':id', questionId);
 
 				$.get(editRoute, function(data) {
-					console.log(data);
-					$('#category-name-edit').val(data.name);
-					$('#category-edit-form').attr('action', updateRoute);
+
+					$('.modal-title').html('Edit Question');
+					$('#category').val(data.category.id);
+					$('#question').val(data.question);
+					$('#question-option').val(data.to_option.id);
+
+					const choices = options.find(option => option.id == data.to_option.id).choices;
+					$option_choices.show();
+					$choices_lists.empty();
+					choices.forEach((choice, index) => {
+						$choices_lists.append(choicesTemp(choice));
+					})
+
+					$('#question-form').attr('action', updateRoute);
+					$('#question-form').prepend('<input type="hidden" name="_method" value="PUT">');
+
 				});
 			});
 
@@ -216,20 +293,26 @@
 			});
 		},
 
-
 		questionnaireTemp(question){
+
+			let destroyRoute =  `{{ route('questionnaires.destroy', ':id') }}`;
+			destroyRoute = destroyRoute.replace(':id', question.id);
 
 			return `
 				<tr>
 					<td>${question.question}</td>
 					<td>${question.to_option.name}</td>
 					<td>
-						<a href="" class="" data-toggle="" data-target="" data-id="${question.id}">
+						<a href="" class="question-modal" data-toggle="modal" data-target="#new-question" data-id="${question.id}">
 							<i class="fa fa-edit"></i>
 						</a> | 
 						<a href="{{ route('categories.index') }}" class="delete-question" question-id="${question.id}">
 							<i class="fa fa-trash"></i>
 						</a>
+
+						<form id="delete-question-${question.id}" action="${destroyRoute}" method="POST">
+							@csrf @method('DELETE')
+						</form>
 					</td>
 				</tr>
 
@@ -240,11 +323,11 @@
 		dom() {
 			this.$table_questionnaires = this.parent.find('#table-questionnaires')
 			this.$btn_category = this.parent.find('.category-button')
-			this.$btn_deleteButton = this.parent.find('.delete-category')
-			this.$btn_categoryEdit = this.parent.find('.category-modal')
+			this.$btn_newQuestion = this.parent.find('.new-question-modal')
 		}
-	}
+	};
 
+	categories.initialize();
 	questionnaire.initialize();
 </script>
 
