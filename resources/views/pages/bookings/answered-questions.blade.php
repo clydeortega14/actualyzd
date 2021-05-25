@@ -76,13 +76,22 @@
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
 							<div class="col-sm-6">
-								<input type="text" value="N/A" readonly class="form-control">
+								<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
 							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->toCounselee->name}}" readonly class="form-control">
+								@if(count($booking->participants) > 0)
+									<ul class="mt-2">
+										@foreach($booking->participants as $participant)
+											<li>{{ $participant->name }}</li>
+										@endforeach
+									</ul>
+								@else
+									<span class="badge badge-secondary">Not Available</span>
+								@endif
+								{{-- <input type="text" value="{{ $booking->toCounselee->name}}" readonly class="form-control"> --}}
 							</div>
 						</div>
 
@@ -126,6 +135,25 @@
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Session Status</label>
 							<div class="col-sm-6">
 								<input type="text" value="{{ $booking->toStatus->name }}" class="form-control" readonly>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-form-label col-sm-4 text-md-right">Main Concern</label>
+							<div class="col-sm-6">
+								<div class="input-group mb-3">
+  									<select class="form-control" name="booking_main_concern" aria-describedby="button-addon2">
+  										<option> - Concerns -</option>
+  										<option>Mental Challenges</option>
+  										<option>Work Issues</option>
+  										<option>Personal Problems</option>
+  									</select>
+								  	<div class="input-group-append">
+								    	<button class="btn btn-primary" type="button" id="button-addon2">
+								    		<i class="fa fa-check"></i>
+								    	</button>
+								  	</div>
+								</div>
 							</div>
 						</div>
 					</div>

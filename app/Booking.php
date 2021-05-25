@@ -16,7 +16,9 @@ class Booking extends Model
             'booked_by', 
             'session_type_id',
             'is_firstimer',
-            'status'
+            'status',
+            'link_to_session',
+            'main_concern'
         ];
 
     public function toSchedule()
@@ -72,6 +74,10 @@ class Booking extends Model
     public function participants()
     {
         return $this->belongsToMany(User::class, 'session_participants', 'booking_id', 'participant');
+    }
+    public function mainConcern()
+    {
+        return $this->belongsTo(AssessmentCategory::class, 'main_concern');
     }
 
     public function scopeWithClient($query)

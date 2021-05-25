@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 use App\ProgressReport;
 use App\Http\Requests\ProgressReportRequest;
 use App\FollowupSession;
+use App\Http\Traits\ProgressReportTrait;
 
 class ProgressReportController extends Controller
 {
+    use ProgressReportTrait;
+
+    public function index()
+    {
+        $reports = $this->getReports();
+
+        return view('pages.psychologists.index', compact('reports'));
+    }
     public function show(ProgressReport $report)
     {
     	$followup_sessions = FollowupSession::get(['id', 'name']);
