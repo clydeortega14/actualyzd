@@ -26,7 +26,7 @@ class BookingController extends Controller
     
     public function __construct()
     {
-        $this->categories = AssessmentCategory::get(['id', 'name']);
+        $this->categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
         $this->time_lists = TimeList::get(['id', 'from', 'to']);
         $this->session_types = SessionType::get(['id', 'name']);
     }
@@ -266,6 +266,20 @@ class BookingController extends Controller
 
         // return error message if schedule was not found
         return redirect()->back()->with('error', 'Schedule that has been selected was not found!');
+    }
+
+    public function updateMainConcern(Booking $booking, Request $request)
+    {
+        $booking->update(['main_concern' => $request->booking_main_concern ]);
+
+        return redirect()->back()->with('success', 'Updated main concern');
+    }
+
+    public function addLinkToSession(Booking $booking, Request $request)
+    {
+        $booking->update(['link_to_session' => $request->link_to_session ]);
+
+        return redirect()->back()->with('success', 'Add Link to session');
     }
 
     protected function findSchedule($request)

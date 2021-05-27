@@ -18236,6 +18236,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ClientList",
@@ -94672,7 +94677,11 @@ var render = function() {
             }
           }
         },
-        [_vm._v("Overall")]
+        [
+          _c("i", { staticClass: "fa fa-users" }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Overall")])
+        ]
       ),
       _vm._v(" "),
       _vm._l(_vm.allClients, function(client) {
@@ -94690,7 +94699,11 @@ var render = function() {
               }
             }
           },
-          [_vm._v(_vm._s(client.name) + "\n        ")]
+          [
+            _c("i", { staticClass: "fa fa-user" }),
+            _vm._v(" "),
+            _c("span", [_vm._v(_vm._s(client.name))])
+          ]
         )
       })
     ],

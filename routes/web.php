@@ -171,6 +171,10 @@ Route::middleware('auth')->group(function(){
 		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
 
 		Route::put('no-show/{booking}', 'BookingController@noShow')->name('booking.no.show');
+
+		Route::put('update/main/concern/{booking}', 'BookingController@updateMainConcern')->name('booking.update.main.concern');
+
+		Route::put('add/link/to/session/{booking}', 'BookingController@addLinkToSession')->name('booking.link.to.session');
 	});
 
 
