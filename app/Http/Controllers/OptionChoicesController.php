@@ -28,17 +28,14 @@ class OptionChoicesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-
             'choice_id' => ['required', 'integer'],
             'choice_value' => ['required', 'max:255'],
             'choice_display_name' => ['required', 'max:255']
         ]);
 
-        // dd($request);
-
         DB::beginTransaction();
 
-        try{
+        try {
             Choice::create([
                 'option' => $request->choice_id,
                 'value' => $request->choice_value,
@@ -75,7 +72,9 @@ class OptionChoicesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $choice = Choice::findOrFail($id);
+
+        return response()->json($choice);
     }
 
     /**
@@ -87,7 +86,15 @@ class OptionChoicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'optionchoice_id' => ['required'],
+            'choice_value' => ['required', 'max:255'],
+            'choice_name' => ['required', 'max:255']
+        ]);
+
+        Choice::where([['id', $id], ['option', $request->optionchoice_id]])->update(['value' => $request->choice_value, 'display_name' => $request->choice_name]);
+
+        return redirect()->route('options.show', $request->optionchoice_id)->with('success', 'Updated! Choice has been updated.');
     }
 
     /**

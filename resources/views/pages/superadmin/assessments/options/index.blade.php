@@ -6,6 +6,8 @@
 		<h2>Assessment Option</h2>
 	</div>
 
+	{{ Breadcrumbs::render('options.index') }}
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card">
@@ -115,7 +117,6 @@
 
 				$.get(editRoute, function(data) {
 					
-					$('#option-edit').modal('show');
 					$('#option-id-edit').val(data.id);
 					$('#option-id-name').val(data.name);
 					$('#option-edit-form').attr('action', updateRoute);
