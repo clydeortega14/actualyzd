@@ -31,12 +31,16 @@
 
 								<div class="form-group">
 									<label>Company Name</label>
-									<input type="text" value="" readonly class="form-control">
+									<input type="text" value="{{ $report->booking->toClient->name }}" readonly class="form-control">
 								</div>
 
 								<div class="form-group">
 									<label>Employee Name</label>
-									<input type="text" value="" readonly class="form-control">
+									@if(count($report->booking->participants) > 0)
+										@foreach($report->booking->participants as $participant)
+											<input type="text" value="{{ $participant->name }}" readonly class="form-control mb-2">
+										@endforeach
+									@endif
 								</div>
 							</div>
 						</div>

@@ -1,4 +1,4 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 @section('content')
 	
@@ -32,8 +32,8 @@
 								<input type="number" name="limit" class="form-control">
 							</div>
 
-							<button type="submit" class="btn btn-info">Submit</button>
-							<a href="{{ route('packages.index') }}" class="btn btn-danger">Cancel</a>
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="{{ route('packages.index') }}" class="btn btn-secondary">Cancel</a>
 						</form>
 					</div>
 				</div>

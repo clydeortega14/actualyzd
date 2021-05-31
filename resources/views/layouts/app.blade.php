@@ -91,11 +91,16 @@
                                         <span>Time Lists</span>
                                     </a>
                                 </li>
+
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-book"></i>
+                                        <span>Progress Report</span>
+                                    </a>
+                                </li>
                             @endif
 
                             @if($user->hasRole('admin'))
-                                
-
                                 <li class="nav-item p-3">
                                     <a class="nav-link" href="#">
                                         <i class="fas fa-fw fa-clock"></i>

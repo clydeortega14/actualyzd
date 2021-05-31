@@ -18,23 +18,35 @@
 								@if($booking->status == 1) <!-- If booking status is booked -->
 									@if(auth()->user()->hasRole('psychologist'))
 									<div class="mb-3">
-										<a href="#" data-toggle="modal" data-target="#complete-session">Complete</a>
+										<a href="#" data-toggle="modal" data-target="#complete-session">
+											<i class="fa fa-check"></i>
+											<span class="ml-2">Complete</span>
+										</a>
 										<!-- complete the sesion modal confirmation -->
 										@include('pages.bookings.modals.complete-session')
 										<!-- end complete the session modal confirmation-->
 									</div>
 									<div class="mb-3">
-										<a href="#" data-toggle="modal" data-target="#no-show">No Show</a>
+										<a href="#" data-toggle="modal" data-target="#no-show">
+											<i class="fa fa-eye-slash"></i>
+											<span class="ml-2">No Show</span>
+										</a>
 										<!-- No Show Modal-->
 										@include('pages.bookings.modals.no-show-modal')
 										<!-- End No Show Modal -->
 									</div>
 									<div class="mb-3">
-										<a href="#">Reschedule</a>
+										<a href="#">
+											<i class="fa fa-calendar"></i>
+											<span class="ml-2">Reschedule</span>
+										</a>
 									</div>
 									@elseif(auth()->user()->hasRole('member'))
 									<div class="mb-3">
-										<a href="#" data-toggle="modal" data-target="#cancel-form">Cancel</a>
+										<a href="#" data-toggle="modal" data-target="#cancel-form">
+											<i class="fa fa-times"></i>
+											<span class="ml-2">Cancel</span>
+										</a>
 										<!-- Reason for canceling modal -->
 										@include('pages.bookings.modals.cancel-form')
 										<!-- end reason for canceling modal -->
@@ -69,15 +81,40 @@
 
 			<div class="col-md-6">
 				<div class="card mb-3">
-					<div class="card-body">
-						<div class="d-flex justify-content-between"></div>
-					</div>
-				</div>
-				<div class="card mb-3">
 					<div class="card-header">
 						Session Details
 					</div>
 					<div class="card-body">
+						<div class="form-group row">
+							<div class="col-md-6 offset-md-4">
+								@if(is_null($booking->link_to_session))
+									@if(auth()->user()->hasRole('psychologist'))
+										<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#link-to-session-{{ $booking->id }}">
+											<i class="fa fa-link"></i>
+											<span>add link to session</span>
+										</a>
+										@include('pages.bookings.modals.link-to-session-modal')
+									@else
+										<span class="badge badge-secondary">link to session will be added soon!</span>
+									@endif
+								@else
+									<a href="{{ $booking->link_to_session }}" target="_blank">
+										<i class="fa fa-video"></i>
+										<span class="ml-2">Start Video Call</span>
+									</a>
+								@endif
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<div class="col-md-6 offset-md-4">
+								<a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">
+									<i class="fa fa-book"></i>
+									<span class="ml-2">Progress Report</span>
+								</a>
+							</div>
+						</div>
+
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
 							<div class="col-sm-6">
@@ -163,11 +200,10 @@
 					</div>
 				</div>
 
-				<div class="card mb-3">
+				{{-- <div class="card mb-3">
 					<div class="card-header">Links</div>
 					<div class="card-body">
 						<div class="form-group row">
-							{{-- <label for="company" class="col-form-label col-sm-4 text-md-right">Link to session:</label> --}}
 							<div class="col-sm-6 offset-md-4">
 								<div class="d-sm-flex justify-content-between">
 									<div class="mt-2">
@@ -194,7 +230,6 @@
 
 						@if(!is_null($booking->progressReport))
 							<div class="form-group row">
-								{{-- <label class="col-form-label col-sm-4 text-md-right">link to progress reports</label> --}}
 								<div class="col-sm-6 offset-md-4">
 									<div class="mt-2">
 										<a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">
@@ -206,7 +241,7 @@
 							</div>
 						@endif
 					</div>
-				</div>
+				</div> --}}
 			</div>
 			<!-- for users that has role of psychologist and for booking with the session type of individual / consultation -->
 			@if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1)
