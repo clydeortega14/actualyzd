@@ -69,6 +69,11 @@
 
 			<div class="col-md-6">
 				<div class="card mb-3">
+					<div class="card-body">
+						<div class="d-flex justify-content-between"></div>
+					</div>
+				</div>
+				<div class="card mb-3">
 					<div class="card-header">
 						Session Details
 					</div>
@@ -91,7 +96,6 @@
 								@else
 									<span class="badge badge-secondary">Not Available</span>
 								@endif
-								{{-- <input type="text" value="{{ $booking->toCounselee->name}}" readonly class="form-control"> --}}
 							</div>
 						</div>
 
@@ -163,12 +167,20 @@
 					<div class="card-header">Links</div>
 					<div class="card-body">
 						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Link to session:</label>
-							<div class="col-sm-6">
+							{{-- <label for="company" class="col-form-label col-sm-4 text-md-right">Link to session:</label> --}}
+							<div class="col-sm-6 offset-md-4">
 								<div class="d-sm-flex justify-content-between">
 									<div class="mt-2">
 										@if(is_null($booking->link_to_session))
-											<span class="badge badge-secondary">No links!</span>
+											@if(auth()->user()->hasRole('psychologist'))
+												<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#link-to-session-{{ $booking->id }}">
+													<i class="fa fa-link"></i>
+													<span>add link to session</span>
+												</a>
+												@include('pages.bookings.modals.link-to-session-modal')
+											@else
+												<span class="badge badge-secondary">link to session will be added soon!</span>
+											@endif
 										@else
 											<a href="{{ $booking->link_to_session }}" target="_blank">
 												<i class="fa fa-video"></i>
@@ -176,18 +188,23 @@
 											</a>
 										@endif
 									</div>
-									@if(auth()->user()->hasRole('psychologist'))
-										<div class="mt-2">
-											<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#link-to-session-{{ $booking->id }}">
-												<i class="fa fa-plus-circle"></i>
-												<span>Add Link</span>
-											</a>
-											@include('pages.bookings.modals.link-to-session-modal')
-										</div>
-									@endif
 								</div>
 							</div>
 						</div>
+
+						@if(!is_null($booking->progressReport))
+							<div class="form-group row">
+								{{-- <label class="col-form-label col-sm-4 text-md-right">link to progress reports</label> --}}
+								<div class="col-sm-6 offset-md-4">
+									<div class="mt-2">
+										<a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">
+											<i class="fa fa-book"></i>
+											<span class="ml-2">Progress Reports</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						@endif
 					</div>
 				</div>
 			</div>

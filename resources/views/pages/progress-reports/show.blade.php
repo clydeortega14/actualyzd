@@ -36,7 +36,7 @@
 
 								<div class="form-group">
 									<label>Employee Name</label>
-									<input type="text" value="{{ $report->booking->toCounselee->name }}" readonly class="form-control">
+									<input type="text" value="" readonly class="form-control">
 								</div>
 							</div>
 						</div>
