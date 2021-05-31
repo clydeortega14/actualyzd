@@ -16,7 +16,13 @@ Route::get('/', function(){
 	return view('auth.login');
 });
 
-Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
+Route::prefix('guests')->group(function(){
+
+	Route::get('applying-clients', 'GuestsController@clients')->name('guests.clients');
+
+});
+
+// Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
 
 Route::post('/guest-clients', 'GuestsController@store')->name('guest.clients.store');
 
@@ -33,8 +39,19 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
+
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
+
+	// Client Subscription
+	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+
+	/**
+	 * Ajax Requests for Service Utilization Dashboard
+	 * For superadmin all service utilizations
+	 * and for each client
+	 */
+	Route::get('service/utilizations', 'ServiceUtilizationController@dashboard');
 
 	// Psychologists
 	Route::resource('psychologists', 'PsychologistsController');
@@ -70,7 +87,14 @@ Route::middleware('auth')->group(function(){
 			Route::resource('optionChoices', 'OptionChoicesController');
 
 		});
+		
+		// Packages
+		Route::resource('packages', 'PackageController');
 
+		// Package services
+		Route::get('package/services/{package}', 'PackageController@services')->name('package.services');
+
+		Route::post('package/service', 'PackageController@storeService')->name('package.service');
 	});
 
 	// Schedules
@@ -85,13 +109,16 @@ Route::middleware('auth')->group(function(){
 	// Get onboarding questionnaires in ajax request
 	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
-	/* Pyschologist Prefix */
+	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
 		Route::get('/', 'PsychologistsController@home')->name('psychologist.home');
+
 		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
+
+		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');
 
 		Route::post('schedule', 'SchedulesController@storeSchedule')->name('psychologist.store.schedule');
 
@@ -104,7 +131,7 @@ Route::middleware('auth')->group(function(){
 	});
 
 
-	/* Member Prefix */
+	// Member Page
 	Route::prefix('member')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');
@@ -113,10 +140,11 @@ Route::middleware('auth')->group(function(){
 	/* Client Prefix */
 	Route::prefix('client')->group(function() {
 
-		Route::get('users', 'ClientUserController@index')->name('client.users.index');
-		Route::get('user/create', 'ClientUserController@create')->name('client.user.create');
+		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
+		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
+
+		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
-		Route::put('user/update_status/{id}', 'ClientUserController@update_status');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');
 		Route::delete('user/delete/{id}', 'ClientUserController@destroy');
@@ -143,6 +171,10 @@ Route::middleware('auth')->group(function(){
 		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
 
 		Route::put('no-show/{booking}', 'BookingController@noShow')->name('booking.no.show');
+
+		Route::put('update/main/concern/{booking}', 'BookingController@updateMainConcern')->name('booking.update.main.concern');
+
+		Route::put('add/link/to/session/{booking}', 'BookingController@addLinkToSession')->name('booking.link.to.session');
 	});
 
 

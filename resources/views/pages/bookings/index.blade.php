@@ -16,9 +16,17 @@
 				<td>
 					{{ $booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo()}}
 				</td>
-				<td>{{ $booking->toCounselee->name}}</td>
+				<td>
+					@if(count($booking->participants) > 0)
+						@foreach($booking->participants as $participant)
+							<span>{{ $participant->name }}</span>
+						@endforeach
+					@else
+						<span>N/A</span>
+					@endif
+				</td>
 				 <td>
-				 	<a href="#">Company A</a>
+				 	<a href="#">{{ $booking->toClient->name }}</a>
 				 </td>
 				 <td>
 				 	<span class="{{ $booking->toStatus->class }}">

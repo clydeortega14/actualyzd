@@ -9,30 +9,15 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-{{--     <!-- Styles -->
-    <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Sweet Alert 2 css -->
-    <link rel="stylesheet" href="{{ asset('assets/sweetalert2/dist/sweetalert2.min.css') }}">
-
-    <!-- Chart js css -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/chart-js/css/Chart.min.css') }}">
-
-    @yield('css_links') --}}
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
-            {{-- <div class="container"> --}}
-                <a class="navbar-brand" href="{{ auth()->user() ? url('/home') : url('/') }}">
+            
+                <a class="navbar-brand pr-4 pl-4" href="{{ auth()->user() ? url('/home') : url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -42,7 +27,83 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        @auth
+                            @php
+                                $user = auth()->user();
+                            @endphp
+                            @if($user->hasRole(['admin', 'superadmin']))
+                                <li class="nav-item active p-3">
+                                    <a class="nav-link" href="{{ route('home') }}">Dashboard <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ url('users') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                            @endif
 
+                            @if($user->hasRole('superadmin'))
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('bookings.create') }}">
+                                    <i class="fas fa-fw fa-calendar"></i>
+                                    <span>Book A Session</span></a>
+                                </li>
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('clients.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Clients</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('packages.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Packages</span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item p-3 dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" id="access-rights" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-cog"></i>
+                                        <span>Access Rights</span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="access-rights">
+                                        <a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a>
+                                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Permissions</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item p-3 dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" id="assessments" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-cog"></i>
+                                        <span>Assessments</span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="assessments">
+                                        <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                                        <a class="dropdown-item" href="{{ route('options.index') }}">Options</a>
+                                    </div>
+                                </li>
+
+                                <!-- Nav Item - Utilities Collapse Menu -->
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('time-lists.index') }}">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Time Lists</span>
+                                    </a>
+                                </li>
+                            @endif
+
+                            @if($user->hasRole('admin'))
+                                
+
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-fw fa-clock"></i>
+                                        <span>Company</span>
+                                    </a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -51,21 +112,7 @@
                         @guest
 
                         @else
-                            @if(auth()->user()->hasRole('superadmin'))
-                                <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        Menu <span class="caret"></span>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#">Schedules</a>
-                                        <a class="dropdown-item" href="#">Sessions</a>
-                                        <a class="dropdown-item" href="#">Users</a>
-                                        <a class="dropdown-item" href="#">Roles</a>
-                                        <a class="dropdown-item" href="#">Permissions</a>
-                                    </div>
-                                </li>
-                            @endif
+                            
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -86,7 +133,7 @@
                         @endguest
                     </ul>
                 </div>
-            {{-- </div> --}}
+            
         </nav>
 
         <main class="py-4">
@@ -96,31 +143,5 @@
 
     <!-- js compiled assets -->
     <script defer src="{{ asset('js/app.js') }}"></script>
-{{-- 
-    
-
-    <!-- Jquery -->
-    <script type="text/javascript" src="{{ asset('sb-admin/vendor/jquery/jquery.js') }}"></script>
-
-    <!-- -->
-    <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
-
-    <!-- Sweet Alert 2 -->
-    <script src="{{ asset('assets/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
-
-    <!-- Sweet Alert 2 Custom js -->
-    <script src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
-
-    <!-- Moment Js -->
-    <script type="text/javascript" src="{{ asset('assets/momentjs/js/moment.js') }}"></script>
-
-    <!-- Chart Js -->
-    <script type="text/javascript" src="{{ asset('assets/chart-js/js/Chart.js') }}"></script>
-
-    <!-- Custom Ajax -->
-    <script src="{{ asset('js/ajax.js') }}"></script>
-
-    <!-- Js scripts -->
-    @yield('js_scripts') --}}
 </body>
 </html>

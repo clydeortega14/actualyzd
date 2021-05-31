@@ -8,6 +8,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+Vue.prototype.$bus = new Vue();
+
 import store from './store'
 
 // import modal from 'vue-js-modal';
@@ -30,6 +32,13 @@ Vue.component('calendar-page', require('./components/CalendarPage.vue').default)
 Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
 
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
+
+/**
+ * This components are for dashboard / service utilization
+ */
+Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
+
+Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

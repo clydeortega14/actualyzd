@@ -26,7 +26,7 @@ class BookingController extends Controller
     
     public function __construct()
     {
-        $this->categories = AssessmentCategory::get(['id', 'name']);
+        $this->categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
         $this->time_lists = TimeList::get(['id', 'from', 'to']);
         $this->session_types = SessionType::get(['id', 'name']);
     }
@@ -68,13 +68,14 @@ class BookingController extends Controller
             if(!is_null($schedule) && !is_null($time_schedule))
             {
                 // Store Booking
-                $booking = Booking::create([
+                $booking = Booking::firstOrCreate([
 
                     'schedule' => $schedule->id,
                     'time_id' => $request->time_id,
-                    'client_id' => is_null($request->client) ? auth()->user()->client_id : $request->client,
+                    'client_id' => is_null($request->client) ? auth()->user()->client->id : $request->client,
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
+                    'is_firstimer' => $request->is_firstimer,
                     'status' => 1 // booked
                 ]);
 
@@ -138,12 +139,20 @@ class BookingController extends Controller
         if(is_null($request->counselee))
         {
             // when the're is no counselee / counselee is null
-            // it means session type is webinar / groupsession
-            // the first participant to be included in the session must be clients users with the role of admin
-            foreach($this->clientAdmins($request->client) as $participant)
-            {
-                // store participants
-                $this->storeParticipant($booking, $participant->id);
+            // determine if the user who book the session has role member
+            if(auth()->user()->hasRole('member')){
+
+                // session participant must be member
+                $this->storeParticipant($booking, auth()->user()->id);
+
+            }else{ // if the user who booked the session is superadmin / admin
+
+                // the first participant to be included in the session must be clients users with the role of admin
+                foreach($this->clientAdmins($request->client) as $participant)
+                {
+                    // store participants
+                    $this->storeParticipant($booking, $participant->id);
+                }
             }
         }else{
             // if counselee is not null
@@ -153,10 +162,7 @@ class BookingController extends Controller
 
     public function storeParticipant($booking, $participant)
     {
-        return SessionParticipant::create([
-            'booking_id' => $booking->id,
-            'participant' => $participant
-        ]);  
+        return DB::table('session_participants')->insert(['booking_id' => $booking->id, 'participant' => $participant ]);
     }
 
     /*  End For Participants Methods */
@@ -260,6 +266,20 @@ class BookingController extends Controller
 
         // return error message if schedule was not found
         return redirect()->back()->with('error', 'Schedule that has been selected was not found!');
+    }
+
+    public function updateMainConcern(Booking $booking, Request $request)
+    {
+        $booking->update(['main_concern' => $request->booking_main_concern ]);
+
+        return redirect()->back()->with('success', 'Updated main concern');
+    }
+
+    public function addLinkToSession(Booking $booking, Request $request)
+    {
+        $booking->update(['link_to_session' => $request->link_to_session ]);
+
+        return redirect()->back()->with('success', 'Add Link to session');
     }
 
     protected function findSchedule($request)

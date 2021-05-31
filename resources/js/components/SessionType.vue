@@ -17,13 +17,13 @@
 
 			<div class="form-group" v-if="show.client">
 				<label>Client</label>
-				<select class="form-control" v-model="client_selected">
+				<select class="form-control" v-model="client_selected" required>
 					<option value="">- Choose a client -</option>
 					<option :value="client.id" v-for="client in clients" :key="client.id">{{ client.name}}</option>
 				</select>
 			</div>
 
-			<div class="form-group" v-if="show.counselee">
+			<div class="form-group" v-if="show.counselee" required>
 				<label>Counselee</label>
 				<select class="form-control" v-model="counselee_selected">
 					<option value="">- Choose a counselee -</option>

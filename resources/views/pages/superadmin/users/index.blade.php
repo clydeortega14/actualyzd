@@ -1,4 +1,4 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 
 @section('content')
@@ -8,15 +8,15 @@
 
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="card shadow mb-4">
+				<div class="card mb-4">
 					<div class="card-header py-2">
-						<select name="" id="select-client">
+						{{-- <select name="" id="select-client">
 							<option value="0" selected>All</option>
 							@foreach($clients as $client)
 								<option value="{{ $client->id }}">{{ $client->name }}</option>
 							@endforeach
-						</select>
-						<a href="{{ route('users.create') }}" class="btn btn-info btn-sm float-right">
+						</select> --}}
+						<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm float-right">
 							<i class="fa fa-plus"></i>
 							<span>Create User</span>
 						</a>
@@ -30,9 +30,10 @@
 										<th></th>
 										<th>Name</th>
 										<th>Email</th>
+										<th>Username</th>
 										<th>Status</th>
 										<th>Role</th>
-										<th></th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 
@@ -45,6 +46,7 @@
 											<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
 											<td>{{ $user->name }}</td>
 											<td>{{ $user->email }}</td>
+											<td>{{ $user->username }}</td>
 											<td>
 												<span class="{{ $active ? 'badge badge-success' : 'badge badge-danger' }}">
 													{{ $active ? 'Active' : 'Inactive' }}
@@ -60,12 +62,17 @@
 												@endif
 											</td>
 											<td>
-												<a href="{{ route('users.edit', $user->id) }}" >
+												<a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">
 													<i class="fa fa-edit"></i>
 												</a> | 
-												<a href="#">
+												<a href="#" class="btn btn-secondary btn-sm">
 													<i class="fa fa-trash"></i>
+												</a> |
+												<a href="#" class="btn btn-{{ $user->is_active ? 'secondary' : 'primary' }} btn-sm"
+													data-toggle="modal" data-target="#update-status-{{ $user->id}}">
+													<i class="fa fa-eye"></i>
 												</a>
+												@include('pages.superadmin.clients.users.modals.update-status')
 											</td>
 										</tr>
 

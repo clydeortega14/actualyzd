@@ -69,6 +69,11 @@
 
 			<div class="col-md-6">
 				<div class="card mb-3">
+					<div class="card-body">
+						<div class="d-flex justify-content-between"></div>
+					</div>
+				</div>
+				<div class="card mb-3">
 					<div class="card-header">
 						Session Details
 					</div>
@@ -76,13 +81,21 @@
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
 							<div class="col-sm-6">
-								<input type="text" value="N/A" readonly class="form-control">
+								<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
 							</div>
 						</div>
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
 							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->toCounselee->name}}" readonly class="form-control">
+								@if(count($booking->participants) > 0)
+									<ul class="mt-2">
+										@foreach($booking->participants as $participant)
+											<li>{{ $participant->name }}</li>
+										@endforeach
+									</ul>
+								@else
+									<span class="badge badge-secondary">Not Available</span>
+								@endif
 							</div>
 						</div>
 
@@ -114,13 +127,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Link to session</label>
-							<div class="col-sm-6">
-								<a href="">http://meet.actualyzd.com/139213819321......9sa0d1/dw19du1dsad-2132-021/123192dj0d9193213u14123132r323lr3204235i25234//05705-7464-5435=3534053289e1-221fdsnajcw00-
-								</a>
-							</div>
-						</div>
+						
 
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Session Status</label>
@@ -128,6 +135,76 @@
 								<input type="text" value="{{ $booking->toStatus->name }}" class="form-control" readonly>
 							</div>
 						</div>
+
+						@if(auth()->user()->hasRole('psychologist'))
+							<form action="{{ route('booking.update.main.concern', $booking->id) }}" method="POST">
+								@csrf
+								@method('PUT')
+								<div class="form-group row">
+									<label class="col-form-label col-sm-4 text-md-right">Main Concern</label>
+									<div class="col-sm-6">
+										<div class="input-group mb-3">
+		  									<select class="form-control" name="booking_main_concern" aria-describedby="button-addon2">
+		  										<option disabled selected> - Concerns -</option>
+		  										@foreach($categories as $category)
+		  											<option value="{{ $category->id }}" {{ $booking->main_concern == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+		  										@endforeach
+		  									</select>
+										  	<div class="input-group-append">
+										    	<button class="btn btn-primary" type="submit" id="button-addon2">
+										    		<i class="fa fa-check"></i>
+										    	</button>
+										  	</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						@endif
+					</div>
+				</div>
+
+				<div class="card mb-3">
+					<div class="card-header">Links</div>
+					<div class="card-body">
+						<div class="form-group row">
+							{{-- <label for="company" class="col-form-label col-sm-4 text-md-right">Link to session:</label> --}}
+							<div class="col-sm-6 offset-md-4">
+								<div class="d-sm-flex justify-content-between">
+									<div class="mt-2">
+										@if(is_null($booking->link_to_session))
+											@if(auth()->user()->hasRole('psychologist'))
+												<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#link-to-session-{{ $booking->id }}">
+													<i class="fa fa-link"></i>
+													<span>add link to session</span>
+												</a>
+												@include('pages.bookings.modals.link-to-session-modal')
+											@else
+												<span class="badge badge-secondary">link to session will be added soon!</span>
+											@endif
+										@else
+											<a href="{{ $booking->link_to_session }}" target="_blank">
+												<i class="fa fa-video"></i>
+												<span class="ml-2">Start Video Call</span>
+											</a>
+										@endif
+									</div>
+								</div>
+							</div>
+						</div>
+
+						@if(!is_null($booking->progressReport))
+							<div class="form-group row">
+								{{-- <label class="col-form-label col-sm-4 text-md-right">link to progress reports</label> --}}
+								<div class="col-sm-6 offset-md-4">
+									<div class="mt-2">
+										<a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">
+											<i class="fa fa-book"></i>
+											<span class="ml-2">Progress Reports</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -142,14 +219,12 @@
 						<div class="card-body">
 							<ol type="I">
 								@foreach($categories as $category)
-									@if(count($category->questionnaires) > 0)
-	                                    <li>
-	                                    	<div class="mb-3">
-	                                    		<h5>{{ $category->name }}</h5>
-	                                    	</div>
-	                                    	@include('pages.bookings.components.questionnaire')
-	                                    </li>
-									@endif
+                                    <li>
+                                    	<div class="mb-3">
+                                    		<h5>{{ $category->name }}</h5>
+                                    	</div>
+                                    	@include('pages.bookings.components.questionnaire')
+                                    </li>
 								@endforeach
 							</ol>
 						</div>

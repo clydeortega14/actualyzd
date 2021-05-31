@@ -15,8 +15,8 @@ class SessionParticipant extends Model
     	return $this->belongsTo(Booking::class, 'booking_id');
     }
 
-    public function participants()
+    public function user()
     {
-    	return $this->hasMany(User::class, 'participant');
+    	return $this->belongsTo(User::class, 'participant');
     }
 }

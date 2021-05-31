@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Client;
+use App\Package;
+use App\ClientSubscription;
 
 class ClientsController extends Controller
 {
@@ -14,7 +16,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::with('user')->get();
+        $clients = Client::get();
 
         return view('pages.superadmin.clients.index', compact('clients'));
     }
@@ -48,7 +50,10 @@ class ClientsController extends Controller
      */
     public function show($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        $users = $client->users;
+
+        return view('pages.superadmin.users.index', compact('users', 'client'));
     }
 
     /**
@@ -60,8 +65,9 @@ class ClientsController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
+        $packages = Package::has('services')->with(['services'])->get();
 
-        return view('pages.superadmin.clients.edit', compact('client'));
+        return view('pages.superadmin.clients.edit', compact('client', 'packages'));
     }
 
     /**
@@ -75,7 +81,7 @@ class ClientsController extends Controller
     {
         $client = Client::findOrFail($id);
 
-        $client->update(['is_active' => $request->status ]);
+        $client->update(['is_active' => !$client->is_active ]);
 
         return redirect()->route('clients.index')->with('success', 'Successfully Updated');
     }
@@ -89,5 +95,29 @@ class ClientsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addSubscription(Request $request)
+    {
+        $client = Client::findOrFail($request->client_id);
+
+        if(!$client->is_active){
+
+            return redirect()->back()->with('error', 'Client must be ACTIVATED first before adding subscription');
+        }
+
+
+        $package = Package::findOrFail($request->package_id);
+        $completion_date = now()->addMonths($package->no_of_months)->toDateString();
+
+        $client = ClientSubscription::firstOrCreate([
+
+            'client_id' => $request->client_id,
+            'package_id' => $package->id,
+            'completion_date' => $completion_date,
+            'subscription_status_id' => 1
+        ]);
+
+        return redirect()->back()->with('success', 'Subscribed successfully');
     }
 }

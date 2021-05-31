@@ -14,8 +14,11 @@ class Booking extends Model
             'client_id',
             'counselee',
             'booked_by', 
-            'session_type_id', 
-            'status'
+            'session_type_id',
+            'is_firstimer',
+            'status',
+            'link_to_session',
+            'main_concern'
         ];
 
     public function toSchedule()
@@ -67,5 +70,32 @@ class Booking extends Model
     public function progressReport()
     {
         return $this->hasOne(ProgressReport::class);
+    }
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'session_participants', 'booking_id', 'participant');
+    }
+    public function mainConcern()
+    {
+        return $this->belongsTo(AssessmentCategory::class, 'main_concern');
+    }
+
+    public function scopeWithClient($query)
+    {
+        $user = auth()->user();
+
+        // if authenticated user and auth user has role admin
+        if($user->hasRole('admin'))
+        {
+            // query where user client id
+            $query->where('client_id', $user->client_id);
+        }
+
+        // if $user and $user has role of superadmin
+        if($user->hasRole('superadmin') && request()->has('client')){
+
+            // query where client is request request client 
+            $query->where('client_id', request('client'));
+        }
     }
 }

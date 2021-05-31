@@ -24,11 +24,12 @@
         <span>Book A Session</span></a>
 </li>
 @if(auth()->user()->hasRole('admin'))
-<li class="nav-item">
-    <a class="nav-link" href="{{ url('client/users') }}">
-        <i class="fas fa-fw fa-users"></i>
-        <span>Members</span></a>
-</li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('client/users') }}">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Members</span>
+        </a>
+    </li>
 @endif
 
 @if(auth()->user()->hasRole('superadmin'))
@@ -41,6 +42,22 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('clients.index') }}">
+            <i class="fas fa-fw fa-clock"></i>
+            <span>Clients</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('packages.index') }}">
+            <i class="fas fa-fw fa-clock"></i>
+            <span>Packages</span>
+        </a>
+    </li>
+
+
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
