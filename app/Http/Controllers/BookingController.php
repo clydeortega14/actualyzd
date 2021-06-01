@@ -96,15 +96,6 @@ class BookingController extends Controller
 
                     // store session participants
                     $this->manageParticipant($booking, $request);
-
-                    // if session type is individual / consultation
-                    if($booking->session_type_id == 1){
-
-                        // create a progress report to be fill up
-                        // by the psychologist after counseling
-                        ProgressReport::firstOrCreate(['booking_id' => $booking->id]);
-                    }
-
                 }
 
             }else{

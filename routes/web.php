@@ -181,9 +181,11 @@ Route::middleware('auth')->group(function(){
 	/*-- Progress Reports --*/
 	Route::prefix('progress-reports')->group(function(){
 
-		Route::get('show/{report}', 'ProgressReportController@show')->name('progress-reports.show');
+		Route::get('/', 'ProgressReportController@index2')->name('progress.report');
 
-		Route::put('update-progress-report/{report}', 'ProgressReportController@update')->name('update-progress-report');
+		Route::get('show/{booking}', 'ProgressReportController@show')->name('progress-reports.show');
+
+		Route::post('progress-report', 'ProgressReportController@store')->name('progress.report.store');
 
 	});
 

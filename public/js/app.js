@@ -18178,9 +18178,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('prescriptions component');
+  data: function data() {
+    return {
+      selected: '',
+      hasMedication: false
+    };
+  },
+  created: function created() {
+    this.selected = this.hasPrescription === "1" ? true :  false || this.hasPrescription === '' ? '' : this.hasPrescription;
+  },
+  props: {
+    hasPrescription: String,
+    medication: String
+  },
+  watch: {
+    selected: function selected(value) {
+      this.hasMedication = value;
+    }
   }
 });
 
@@ -94612,7 +94639,77 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\tPrescriptions component\n")])
+  return _c("div", [
+    _c("div", { staticClass: "form-check" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.selected,
+            expression: "selected"
+          }
+        ],
+        staticClass: "form-check-input",
+        attrs: { type: "radio", name: "has_prescription", id: "yes" },
+        domProps: { value: true, checked: _vm._q(_vm.selected, true) },
+        on: {
+          change: function($event) {
+            _vm.selected = true
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { staticClass: "form-check-label", attrs: { for: "yes" } }, [
+        _vm._v("Yes")
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.hasMedication
+      ? _c("div", [
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "textarea",
+              {
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "medication",
+                  placeholder:
+                    "Please specify current medications that the client is taking"
+                }
+              },
+              [_vm._v(_vm._s(_vm.medication))]
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-check" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.selected,
+            expression: "selected"
+          }
+        ],
+        staticClass: "form-check-input",
+        attrs: { type: "radio", name: "has_prescription", id: "no" },
+        domProps: { value: false, checked: _vm._q(_vm.selected, false) },
+        on: {
+          change: function($event) {
+            _vm.selected = false
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("label", { staticClass: "form-check-label", attrs: { for: "no" } }, [
+        _vm._v("No")
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -94667,7 +94764,7 @@ var render = function() {
       _c(
         "a",
         {
-          staticClass: "list-group-item list-group-item-action",
+          staticClass: "list-group-item",
           class: { active: _vm.overallActive },
           attrs: { href: "#" },
           on: {
@@ -94680,7 +94777,7 @@ var render = function() {
         [
           _c("i", { staticClass: "fa fa-users" }),
           _vm._v(" "),
-          _c("span", [_vm._v("Overall")])
+          _c("span", { staticClass: "ml-2" }, [_vm._v("Overall")])
         ]
       ),
       _vm._v(" "),
@@ -94689,7 +94786,7 @@ var render = function() {
           "a",
           {
             key: client.id,
-            staticClass: "list-group-item list-group-item-action",
+            staticClass: "list-group-item",
             class: { active: _vm.activeId === client.id },
             attrs: { href: "#" },
             on: {
@@ -94702,7 +94799,7 @@ var render = function() {
           [
             _c("i", { staticClass: "fa fa-user" }),
             _vm._v(" "),
-            _c("span", [_vm._v(_vm._s(client.name))])
+            _c("span", { staticClass: "ml-2" }, [_vm._v(_vm._s(client.name))])
           ]
         )
       })
