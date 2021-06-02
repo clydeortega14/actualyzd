@@ -7,6 +7,7 @@ use App\Package;
 use App\PackageService;
 use App\SessionType;
 use App\Http\Requests\PackageRequest;
+use DB;
 class PackageController extends Controller
 {
     /**
@@ -37,9 +38,38 @@ class PackageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PackageRequest $request)
+    public function store(Request $request)
     {
-        $package = Package::firstOrCreate($request->all());
+        $this->validate($request, [
+
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['string', 'max:255'],
+            'price' => ['required'],
+            'no_of_months' => ['required']
+
+        ]);
+
+
+        DB::beginTransaction();
+
+        try {
+
+            $package = Package::firstOrCreate([
+
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'no_of_months' => $request->no_of_months
+            ]);
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
 
         return redirect()->route('packages.index')->with('success', 'Package successfully created');
     }
@@ -63,7 +93,9 @@ class PackageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $package = Package::findOrFail($id);
+
+        return view('pages.superadmin.packages.create', compact('package'));
     }
 
     /**
@@ -75,7 +107,37 @@ class PackageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['string', 'max:255'],
+            'price' => ['required'],
+            'no_of_months' => ['required']
+
+        ]);
+
+
+        DB::beginTransaction();
+
+        try {
+
+            Package::where('id', $id)->update([
+
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'no_of_months' => $request->no_of_months
+            ]);
+            
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+
+        return redirect()->route('packages.index')->with('success', 'Package successfully updated!');
     }
 
     /**
@@ -86,12 +148,30 @@ class PackageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+
+            Package::where('id', $id)->delete();
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+
+        return redirect()->route('packages.index')->with('success', 'Package has been deleted!');
     }
 
     public function services(Package $package)
     {
-        $session_types = SessionType::get(['id', 'name']);
+
+        $services = $package->services->pluck('session_type_id');
+
+        $session_types = SessionType::whereNotIn('id', $services)->get(['id', 'name']);
 
         return view('pages.superadmin.packages.services', compact('package', 'session_types'));
     }

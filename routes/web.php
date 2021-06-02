@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function(){
 	// Users
 	Route::resource('users', 'UsersController');
 
+	// User Profile
+	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
+
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
 

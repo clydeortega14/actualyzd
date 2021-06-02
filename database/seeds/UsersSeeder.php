@@ -22,12 +22,8 @@ class UsersSeeder extends Seeder
         $this->createRoles();
     	// Create Superadmin
         $this->superadmin();
-        // create admin
-        $this->clientAdmin();
         // psychologist
-        $this->psychologists();
-        // create member
-        $this->clientMember();        
+        $this->psychologists();  
     }
     public function psychologists()
     {
@@ -64,13 +60,15 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'Psychologist Five', 
                 'email' => 'psychologist5@psychline.ph',
-                'username' => 'psychologgist5',
+                'username' => 'psychologist5',
                 'password' => 'password', 
                 'is_active' => true 
             ],
 
         ];
 
+
+        $role = Role::where('name', 'psychologist')->first();
 
         foreach($psychologists as $psycho){
             $user = User::create([
@@ -83,7 +81,6 @@ class UsersSeeder extends Seeder
 
             ]);
 
-            $role = Role::where('name', 'psychologist')->first();
 
            $user->roles()->attach($role->id); 
         }
@@ -120,33 +117,5 @@ class UsersSeeder extends Seeder
         $superadmin = Role::where('name', 'superadmin')->first();
 
         $user->roles()->attach($superadmin->id);
-    }
-    public function clientAdmin()
-    {
-        $user = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@actualyzd.ph',
-            'username' => 'admin',
-            'password' => Hash::make('password'),
-            'is_active' => true
-        ]);
-
-        $admin = Role::where('name', 'admin')->first();
-
-        $user->roles()->attach($admin->id);
-    }
-    public function clientMember()
-    {
-        $user = User::create([
-            'name' => 'member',
-            'email' => 'member@actualyzd.ph',
-            'username' => 'member',
-            'password' => Hash::make('password'),
-            'is_active' => true
-        ]);
-
-        $member = Role::where('name', 'member')->first();
-
-        $user->roles()->attach($member->id);
     }
 }

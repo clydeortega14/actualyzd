@@ -15,6 +15,11 @@ class ModifyProgressReportsTable extends Migration
     {
         Schema::table('progress_reports', function (Blueprint $table) {
             $table->text('main_concern')->change();
+            $table->unsignedBigInteger('assignee')->nullable()->after('treatment_goal');
+
+            // foreign key
+            $table->foreign('assignee')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -26,7 +31,9 @@ class ModifyProgressReportsTable extends Migration
     public function down()
     {
         Schema::table('progress_reports', function (Blueprint $table) {
-            //
+            
+            $table->dropForeign(['assignee']);
+            $table->dropColumn(['assignee']);
         });
     }
 }

@@ -1,51 +1,53 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 @section('content')
 	
-	<div class="block-header">
-		<h2>TimeLists</h2>
-	</div>
+	<div class="container">
+		<div class="block-header">
+			<h2>TimeLists</h2>
+		</div>
 
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card mb-3">
-				<div class="card-header">
-					<a href="{{ route('time-lists.create') }}" class="btn btn-info btn-sm float-right">
-						<i class="fa fa-plus"></i>
-						<span>add time</span>
-					</a>
-				</div>
-				<div class="card-body">
-					@include('alerts.message')
-					<div class="table-responsive">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>FROM</th>
-									<th>TO</th>
-									<th></th>
-								</tr>
-							</thead>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card mb-3">
+					<div class="card-header">
+						<a href="{{ route('time-lists.create') }}" class="btn btn-primary btn-sm float-right">
+							<i class="fa fa-plus"></i>
+							<span>add time</span>
+						</a>
+					</div>
+					<div class="card-body">
+						@include('alerts.message')
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>FROM</th>
+										<th>TO</th>
+										<th></th>
+									</tr>
+								</thead>
 
-							<tbody>
-								@foreach($timelists as $time)
-                                    <tr>
-                                    	<td>{{ $time->id }}</td>
-                                    	<td>{{ $time->parseTimeFrom() }}</td>
-                                    	<td>{{ $time->parseTimeTo() }}</td>
-                                    	<td>
-                                    		<a href="{{ route('time-lists.edit', $time->id ) }}">
-                                    			<i class="fa fa-edit"></i>
-                                    		</a> |
-                                    		<a href="#" class="delete-time" data-id="{{ $time->id }}">
-                                    			<i class="fa fa-trash"></i>
-                                    		</a>
-                                    	</td>
-                                    </tr>
-								@endforeach
-							</tbody>
-						</table>
+								<tbody>
+									@foreach($timelists as $time)
+	                                    <tr>
+	                                    	<td>{{ $time->id }}</td>
+	                                    	<td>{{ $time->parseTimeFrom() }}</td>
+	                                    	<td>{{ $time->parseTimeTo() }}</td>
+	                                    	<td>
+	                                    		<a href="{{ route('time-lists.edit', $time->id ) }}">
+	                                    			<i class="fa fa-edit"></i>
+	                                    		</a> |
+	                                    		<a href="#" class="delete-time" data-id="{{ $time->id }}">
+	                                    			<i class="fa fa-trash"></i>
+	                                    		</a>
+	                                    	</td>
+	                                    </tr>
+									@endforeach
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>

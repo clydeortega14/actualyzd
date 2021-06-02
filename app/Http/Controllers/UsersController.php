@@ -13,6 +13,12 @@ use App\Http\Traits\Roles\RoleTrait;
 class UsersController extends Controller
 {
     use RoleTrait;
+
+    public function profile(User $user)
+    {
+        return view('pages.users.profile', compact('user'));
+    }
+
     /**
      * Display a listing of the resource.
      *
