@@ -18732,24 +18732,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -18758,7 +18740,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.serviceUtilization();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries", "sessionTypeSummaries"])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"]))
 });
 
@@ -95338,7 +95320,36 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(4)
+        _c("div", { staticClass: "card mb-3" }, [
+          _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("table", { staticClass: "table table-hover" }, [
+                _vm._m(4),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.sessionTypeSummaries, function(
+                    session_type_summary,
+                    index
+                  ) {
+                    return _c("tr", { key: index }, [
+                      _c("td", [_vm._v(_vm._s(session_type_summary.session))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(session_type_summary.mtd))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(session_type_summary.qtd))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(session_type_summary.ytd))])
+                    ])
+                  }),
+                  0
+                )
+              ])
+            ])
+          ])
+        ])
       ])
     ],
     2
@@ -95437,67 +95448,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-hover" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("Services")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("MTD")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("QTD")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("YTD")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("Consultation")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("66")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("195")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("780")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Group Session")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("12")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Webinar")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("12")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Hotline")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("60")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("20")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("720")])
-              ])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Services")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("MTD")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("QTD")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("YTD")])
       ])
     ])
   }
@@ -110292,7 +110251,8 @@ var state = function state() {
     clients: [],
     services: [],
     booking_by_statuses: [],
-    consultation_summaries: []
+    consultation_summaries: [],
+    session_type_summaries: []
   };
 };
 
@@ -110308,6 +110268,9 @@ var getters = {
   },
   consultationSummaries: function consultationSummaries(state) {
     return state.consultation_summaries;
+  },
+  sessionTypeSummaries: function sessionTypeSummaries(state) {
+    return state.session_type_summaries;
   }
 };
 var actions = {
@@ -110328,8 +110291,9 @@ var actions = {
               commit('setService', response.data.services);
               commit('setBookingByStatus', response.data.bookings);
               commit('setConsultationSummaries', response.data.consultation_summaries);
+              commit('setSessionTypeSummaries', response.data.session_type_summaries);
 
-            case 8:
+            case 9:
             case "end":
               return _context.stop();
           }
@@ -110350,6 +110314,9 @@ var mutations = {
   },
   setConsultationSummaries: function setConsultationSummaries(state, consultation_summaries) {
     return state.consultation_summaries = consultation_summaries;
+  },
+  setSessionTypeSummaries: function setSessionTypeSummaries(state, session_type_summaries) {
+    return state.session_type_summaries = session_type_summaries;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -110379,8 +110346,8 @@ var mutations = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\psychline-eap\app\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\psychline-eap\app\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

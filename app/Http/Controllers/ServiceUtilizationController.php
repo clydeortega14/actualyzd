@@ -7,10 +7,14 @@ use App\Client;
 use App\ClientSubscription;
 use App\SessionType;
 use App\Booking;
+use App\Http\Traits\CarbonTrait;
+use App\PsychologistSchedule;
 use DB;
 
 class ServiceUtilizationController extends Controller
 {
+    use CarbonTrait;
+
     public function dashboard(Request $request)
     {
     	$clients = Client::where('is_active', true)->has('subscription')->get(['id', 'name']);
@@ -41,7 +45,8 @@ class ServiceUtilizationController extends Controller
             'clients' => $clients,
             'services' => $services,
             'bookings' => $this->countBookings(),
-            'consultation_summaries' => $this->manageBookings()
+            'consultation_summaries' => $this->manageBookings(),
+            'session_type_summaries' => $this->getMtd()
         ];
     }
 
@@ -69,8 +74,6 @@ class ServiceUtilizationController extends Controller
 
         return $consulation_summaries;
     }
-
-
 
     public function countByStatus($booking, $status)
     {
@@ -120,5 +123,37 @@ class ServiceUtilizationController extends Controller
 
 
         return $bookings;
+    }
+
+    public function getMtd()
+    {
+        $month = now()->month;
+        // $months_of_quarter = $this->getMonthsOfTheQuarter();
+
+        $booking_schedule_id = Booking::pluck('schedule');
+        // // get schedules that are booked this month
+        // $quarter_schedules = PsychologistSchedule::whereIn('id', $booking_schedule_id)->get();
+
+        // return $quarter_schedules;
+
+        $schedules = PsychologistSchedule::whereIn('id', $booking_schedule_id)->whereMonth('start', $month)->pluck('id');
+
+        $bookings = Booking::withClient()->whereIn('schedule', $schedules)
+            ->select(DB::raw('count(*) as bookings_this_month, session_type_id'))
+            ->groupBy('session_type_id')
+            ->with(['sessionType'])
+            ->get();
+
+        $mapped_bookings = $bookings->map(function($booking){
+            return [
+                'session' => $booking->sessionType->name,
+                'mtd' => $booking->bookings_this_month,
+                'qtd' => 0,
+                'ytd' => 0
+            ];
+        });
+
+        return $mapped_bookings;
+
     }
 }

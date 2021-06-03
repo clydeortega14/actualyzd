@@ -19,4 +19,23 @@ trait CarbonTrait
 
         return $dates;
 	}
+    public function getDatesOfTheMonth()
+    {
+        $today = today();
+        $dates = [];
+
+        for ($i=1; $i < $today->daysInMonth + 1; $i++) { 
+            $dates[] = \Carbon\Carbon::createFromDate($today->year, $today->month, $i)->format('Y-m-d');
+        }
+        return $dates;
+    }
+    public function getMonthsOfTheQuarter()
+    {
+        $month = [];
+        for ($m=1; $m<=12; $m++) {
+             $month[] = date('m', mktime(0,0,0,$m, 1, date('Y')));
+        }
+        return array_chunk($month, 3)[now()->quarter - 1];
+        // return array_chunk($month, 3)[2];
+    }
 }
