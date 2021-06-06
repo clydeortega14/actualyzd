@@ -17704,7 +17704,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         time: null,
         psychologist: null,
         counselee: null,
-        choice: [],
+        onboarding_answers: [],
         selected: {
           session: null,
           client: null,
@@ -17789,6 +17789,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.show_actions = true;
       this.form.choice = answers[0];
       this.form.is_firstimer = answers[1];
+      this.form.onboarding_answers = answers;
     },
     submitBooking: function submitBooking() {
       var _this = this;
@@ -17801,6 +17802,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         session_type_id: this.form.selected.session,
         choice: this.form.choice,
         is_firstimer: this.form.is_firstimer
+        onboarding_answers: this.form.onboarding_answers
       };
       axios.post('/bookings/book', payload).then(function (response) {
         var result = response.data;
@@ -17816,7 +17818,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.form.psychologist = null;
           _this.form.choice = [];
           _this.form.is_firstimer = null; // hide some components
-
+          _this.form.onboarding_answers = []; // hide some components
           _this.time.show = false;
           _this.psychologist.show = false;
           _this.showSessionType = false;
@@ -17846,6 +17848,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _constants_App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../constants/App */ "./resources/js/constants/App.js");
+var _this = undefined;
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17879,6 +17886,58 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+<<<<<<< HEAD
+=======
+//
+//
+//
+//
+//
+//
+//
+
+
+
+var vm;
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      // Onboarding_answer: {
+      // 	chosen_choice: [],
+      // 	openEndedAnswer: []
+      // }
+      onboardingAnswers: []
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allQuestions"])),
+  created: function created() {
+    this.getQuestions();
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getQuestions"])), {}, {
+    onChanged: function onChanged(event) {
+      this.$emit('onboarding-answers', this.onboardingAnswers);
+    },
+    onChangedDebounced: Object(lodash__WEBPACK_IMPORTED_MODULE_1__["debounce"])(function (event) {
+      return _this.onChanged(event);
+    }, _constants_App__WEBPACK_IMPORTED_MODULE_2__["DEBOUNCE_DELAY_MS"])
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PsychologistComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PsychologistComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -94218,66 +94277,111 @@ var render = function() {
               "ol",
               _vm._l(category.questionnaires, function(questionnaire, key) {
                 return _c("li", { key: key }, [
-                  _vm._v(_vm._s(questionnaire.question) + "\n\t\t\t\t\t\t"),
-                  _c(
-                    "div",
-                    { staticClass: "form-group mb-4" },
-                    _vm._l(questionnaire.to_option.choices, function(
-                      choice,
-                      index
-                    ) {
-                      return _c(
-                        "div",
-                        {
-                          key: index,
-                          staticClass: "form-check form-check-inline"
-                        },
-                        [
-                          _c("input", {
+                  _vm._v(
+                    _vm._s(questionnaire.question) +
+                      "\n\t\t\t\t\t\t\n\t\t\t\t\t\t"
+                  ),
+                  questionnaire.to_option.choices.length > 0
+                    ? _c("div", [
+                        _c(
+                          "div",
+                          { staticClass: "form-group mb-4" },
+                          _vm._l(questionnaire.to_option.choices, function(
+                            choice,
+                            index
+                          ) {
+                            return _c(
+                              "div",
+                              {
+                                key: index,
+                                staticClass: "form-check form-check-inline"
+                              },
+                              [
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value:
+                                        _vm.onboardingAnswers[questionnaire.id],
+                                      expression:
+                                        "onboardingAnswers[questionnaire.id]"
+                                    }
+                                  ],
+                                  staticClass: "form-check-input",
+                                  attrs: { type: "radio", id: choice.id },
+                                  domProps: {
+                                    value: choice.value,
+                                    checked: _vm._q(
+                                      _vm.onboardingAnswers[questionnaire.id],
+                                      choice.value
+                                    )
+                                  },
+                                  on: {
+                                    change: [
+                                      function($event) {
+                                        return _vm.$set(
+                                          _vm.onboardingAnswers,
+                                          questionnaire.id,
+                                          choice.value
+                                        )
+                                      },
+                                      _vm.onChanged
+                                    ]
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "form-check-label",
+                                    attrs: { for: "mc-one-never" }
+                                  },
+                                  [_vm._v(_vm._s(choice.display_name))]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        )
+                      ])
+                    : _c("div", { staticClass: "col-sm-12" }, [
+                        _c("div", { staticClass: "form-group mb-4" }, [
+                          _c("textarea", {
                             directives: [
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.chosen_choice[questionnaire.id],
-                                expression: "chosen_choice[questionnaire.id]"
+                                value: _vm.onboardingAnswers[questionnaire.id],
+                                expression:
+                                  "onboardingAnswers[questionnaire.id]"
                               }
                             ],
-                            staticClass: "form-check-input",
-                            attrs: { type: "radio", id: choice.id },
+                            staticClass: "form-control",
+                            attrs: {
+                              rows: "3",
+                              id: questionnaire.id,
+                              placeholder: "Type your answer ..."
+                            },
                             domProps: {
-                              value: choice.value,
-                              checked: _vm._q(
-                                _vm.chosen_choice[questionnaire.id],
-                                choice.value
-                              )
+                              value: _vm.onboardingAnswers[questionnaire.id]
                             },
                             on: {
-                              change: [
-                                function($event) {
-                                  return _vm.$set(
-                                    _vm.chosen_choice,
-                                    questionnaire.id,
-                                    choice.value
-                                  )
-                                },
-                                _vm.selectChoice
-                              ]
+                              keyup: _vm.onChanged,
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.onboardingAnswers,
+                                  questionnaire.id,
+                                  $event.target.value
+                                )
+                              }
                             }
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "label",
-                            {
-                              staticClass: "form-check-label",
-                              attrs: { for: "mc-one-never" }
-                            },
-                            [_vm._v(_vm._s(choice.display_name))]
-                          )
-                        ]
-                      )
-                    }),
-                    0
-                  )
+                          })
+                        ])
+                      ])
                 ])
               }),
               0
@@ -109621,6 +109725,11 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./resources/js/components/service-utilization/ClientList.vue ***!
   \********************************************************************/
 /*! exports provided: default */
+/***/ "./resources/js/constants/App.js":
+/*!***************************************!*\
+  !*** ./resources/js/constants/App.js ***!
+  \***************************************/
+/*! exports provided: DEBOUNCE_DELAY_MS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -109978,6 +110087,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEBOUNCE_DELAY_MS", function() { return DEBOUNCE_DELAY_MS; });
+var DEBOUNCE_DELAY_MS = 500;
 
 /***/ }),
 
@@ -110437,8 +110548,8 @@ var mutations = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\actualyzd\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\actualyzd\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

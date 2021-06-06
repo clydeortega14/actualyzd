@@ -80,7 +80,7 @@
 					time: null,
 					psychologist: null,
 					counselee: null,
-					choice: [],
+					onboarding_answers: [],
 					selected: {
 						session: null,
 						client: null,
@@ -192,8 +192,12 @@
 			onboardingAnswers(answers)
 			{
 				this.show_actions = true;
+<<<<<<< HEAD
 				this.form.choice = answers[0];
 				this.form.is_firstimer = answers[1];
+=======
+				this.form.onboarding_answers = answers;
+>>>>>>> origin/jovel
 			},
 			submitBooking()
 			{
@@ -204,8 +208,12 @@
 					client: this.form.selected.client,
 					counselee: this.form.selected.counselee,
 					session_type_id: this.form.selected.session,
+<<<<<<< HEAD
 					choice: this.form.choice,
 					is_firstimer: this.form.is_firstimer
+=======
+					onboarding_answers: this.form.onboarding_answers
+>>>>>>> origin/jovel
 				}
 
 				axios.post('/bookings/book', payload)
@@ -223,8 +231,12 @@
 							this.form.selected.counselee = null;
 							this.form.selected.session = null;
 							this.form.psychologist = null;
+<<<<<<< HEAD
 							this.form.choice = [];
 							this.form.is_firstimer = null;
+=======
+							this.form.onboarding_answers = [];
+>>>>>>> origin/jovel
 
 							// hide some components
 							this.time.show = false;
