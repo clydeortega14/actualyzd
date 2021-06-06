@@ -80,7 +80,7 @@
 					time: null,
 					psychologist: null,
 					counselee: null,
-					choice: [],
+					onboarding_answers: [],
 					selected: {
 						session: null,
 						client: null,
@@ -185,7 +185,7 @@
 			onboardingAnswers(answers)
 			{
 				this.show_actions = true;
-				this.form.choice = answers;
+				this.form.onboarding_answers = answers;
 			},
 			submitBooking()
 			{
@@ -196,7 +196,7 @@
 					client: this.form.selected.client,
 					counselee: this.form.selected.counselee,
 					session_type_id: this.form.selected.session,
-					choice: this.form.choice
+					onboarding_answers: this.form.onboarding_answers
 				}
 
 				console.log(payload)
@@ -216,7 +216,7 @@
 							this.form.selected.counselee = null;
 							this.form.selected.session = null;
 							this.form.psychologist = null;
-							this.form.choice = [];
+							this.form.onboarding_answers = [];
 
 							// hide some components
 							this.time.show = false;

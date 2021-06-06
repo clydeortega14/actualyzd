@@ -10,16 +10,23 @@
 					<b>{{ category.name }}</b>
 					<ol>
 						<li v-for="(questionnaire, key) in category.questionnaires" :key="key">{{ questionnaire.question }}
-							<div class="form-group mb-4">
+							
+							<div v-if="questionnaire.to_option.choices.length > 0">
+								<div class="form-group mb-4">
+									<div class="form-check form-check-inline" v-for="(choice, index) in questionnaire.to_option.choices" :key="index">
+										
+										<input class="form-check-input" type="radio" :id="choice.id" :value="choice.value" v-model="onboardingAnswers[questionnaire.id]" @change="onChanged">
 
-								<div class="form-check form-check-inline" v-for="(choice, index) in questionnaire.to_option.choices" :key="index">
-									
-									<input class="form-check-input" type="radio" :id="choice.id" :value="choice.value" v-model="chosen_choice[questionnaire.id]" @change="selectChoice">
+										<label class="form-check-label" for="mc-one-never">{{ choice.display_name }}</label>
 
-									<label class="form-check-label" for="mc-one-never">{{ choice.display_name }}</label>
-
+									</div>
 								</div>
+							</div>
 
+							<div v-else class="col-sm-12">
+								<div class="form-group mb-4">
+									<textarea class="form-control" rows="3" :id="questionnaire.id" v-model="onboardingAnswers[questionnaire.id]" placeholder="Type your answer ..." v-on:keyup="onChanged"></textarea>
+								</div>
 							</div>
 						</li>
 					</ol>
@@ -32,14 +39,23 @@
 <script>
 
 	import { mapGetters, mapActions } from 'vuex';
+	import { debounce } from 'lodash';
+	import { DEBOUNCE_DELAY_MS } from '../constants/App';
 	
+	let vm
+
 	export default {
 
 		data(){
 
 			return {
 
-				chosen_choice: []
+				// Onboarding_answer: {
+				// 	chosen_choice: [],
+				// 	openEndedAnswer: []
+				// }
+
+				onboardingAnswers: [],
 			}
 
 		},
@@ -54,10 +70,14 @@
 		},
 		methods: {
 			...mapActions(["getQuestions"]),
-			selectChoice()
-			{
-				this.$emit('onboarding-answers', this.chosen_choice)
-			}
+
+			onChanged(event) {
+				this.$emit('onboarding-answers', this.onboardingAnswers)
+			},
+
+			onChangedDebounced: debounce(event => {
+	            return this.onChanged(event)
+	        }, DEBOUNCE_DELAY_MS)
 		}
 	}
 </script>
