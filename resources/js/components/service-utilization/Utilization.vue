@@ -1,8 +1,7 @@
 <template>
 	<div class="row mt-4 mb-4">
-
-		<!-- counting of first timers and repeaters -->
-		<div class="col-md-6">
+		<div class="col-md-3">
+			<!-- counting of first timers and repeaters -->
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -17,9 +16,7 @@
                     </div>
                 </div>
 			</div>
-		</div>
 
-		<div class="col-md-6">
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -34,12 +31,8 @@
                     </div>
                 </div>
 			</div>
-		</div>
-		<!-- counting of first timers and repeaters -->
 
-		<!-- Session Statuses -->
-		<div class="col-md-4" v-for="(booking_status, index) in getBookingByStatus" :key="index">
-			<div class="card mb-3">
+			<div class="card mb-3" v-for="(booking_status, index) in getBookingByStatus" :key="index">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
 						{{ booking_status.to_status.name }}
@@ -54,11 +47,9 @@
                 </div>
 			</div>
 		</div>
-		<!-- End Session Statuses -->
-
-
+		<!-- counting of first timers and repeaters -->
 		<!-- Sessions Table -->
-		<div class="col-md-12">
+		<div class="col-md-9">
 			<div class="card mb-3">
 				<div class="card-header">Consultation Service</div>
 				<div class="card-body">
@@ -136,29 +127,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Consultation</td>
-                                    <td>66</td>
-                                    <td>195</td>
-                                    <td>780</td>
-                                </tr>
-                                <tr>
-                                    <td>Group Session</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>Webinar</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>Hotline</td>
-                                    <td>60</td>
-                                    <td>20</td>
-                                    <td>720</td>
+                                <tr v-for="(session_type_summary, index) in sessionTypeSummaries" :key="index">
+                                    <td>{{ session_type_summary.session }}</td>
+                                    <td>{{ session_type_summary.mtd }}</td>
+                                    <td>{{ session_type_summary.qtd }}</td>
+                                    <td>{{ session_type_summary.ytd }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -186,7 +159,8 @@
 			...mapGetters([
                 "getBookingByStatus", 
                 "allServices", 
-                "consultationSummaries"
+                "consultationSummaries",
+                "sessionTypeSummaries"
             ])
 		},
 		methods: {

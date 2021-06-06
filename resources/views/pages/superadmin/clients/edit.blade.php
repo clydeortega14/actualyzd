@@ -74,7 +74,13 @@
 								@foreach($packages as $package)
 									<div class="col-md-4">
 										<div class="card mb-3">
-											<div class="card-header">{{ $package->name.' - '.$package->formattedPrice().' Pesos for '.$package->no_of_months.' Months' }}</div>
+											<div class="card-header">
+												<div class="d-sm-flex justify-content-between">
+													<div>{{ $package->name }} - &#8369; {{ $package->formattedPrice() }}</div>
+													<div>{{ $package->no_of_months }} {{ $package->no_of_months <= 1 ? 'Month' : 'Months'}}</div>
+												</div>
+												
+											</div>
 
 											<div class="card-body">
 												<div class="row justify-content-center">

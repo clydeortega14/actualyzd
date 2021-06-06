@@ -14,4 +14,8 @@ class AssessmentCategory extends Model
     {
     	return $this->hasMany('App\AssessmentQuestionnaire', 'category');
     }
+    public function bookings()
+    {
+    	return $this->hasMany(Booking::class, 'main_concern');
+    }
 }

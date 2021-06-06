@@ -16,27 +16,31 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label>Start Time</label>
-									<input type="time" value="{{ $report->booking->time->from }}" readonly class="form-control">
+									<input type="time" value="{{ $booking->time->from }}" readonly class="form-control">
 								</div>
 
 								<div class="form-group">
 									<label>To</label>
-									<input type="time" value="{{ $report->booking->time->to }}" readonly class="form-control">
+									<input type="time" value="{{ $booking->time->to }}" readonly class="form-control">
 								</div>
 
 								<div class="form-group">
 									<label>Date of session</label>
-									<input type="date" value="{{ $report->booking->toSchedule->start}}" readonly class="form-control">
+									<input type="date" value="{{ $booking->toSchedule->start}}" readonly class="form-control">
 								</div>
 
 								<div class="form-group">
 									<label>Company Name</label>
-									<input type="text" value="" readonly class="form-control">
+									<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
 								</div>
 
 								<div class="form-group">
 									<label>Employee Name</label>
-									<input type="text" value="" readonly class="form-control">
+									@if(count($booking->participants) > 0)
+										@foreach($booking->participants as $participant)
+											<input type="text" value="{{ $participant->name }}" readonly class="form-control mb-2">
+										@endforeach
+									@endif
 								</div>
 							</div>
 						</div>
@@ -47,33 +51,32 @@
 				<div class="card mb-3">
 					<div class="card-header">Progress Reports</div>
 					<div class="card-body">
-						<form action="{{ route('update-progress-report', $report->id) }}" method="POST">
+						<form action="{{ route('progress.report.store') }}" method="POST">
 							@csrf
-							@method('PUT')
+
 							@include('alerts.message')
+
+							<input type="hidden" name="booking_id" value="{{ $booking->id}}">
+
 							<div class="form-group">
 								<label>Main Concern</label>
-								<textarea type="text" name="main_concern" class="form-control" rows="4">{{ !is_null($report->main_concern) ? $report->main_concern : '' }}</textarea>
+								<textarea type="text" name="main_concern" class="form-control" rows="4"></textarea>
 							</div>
+
 							<div class="form-group"> 
 								<label>Are there any medications that the client is taking?</label>
 								<!-- client medication -->
-								<client-medication></client-medication>
-								<!-- end  client medication-->
-								<div class="form-check">
-	  								<input class="form-check-input" type="radio" name="has_prescription" id="yes" value="1" {{ $report->has_prescription ? 'checked' : '' }}>
-									<label class="form-check-label" for="yes">Yes</label>
+								<client-medication 
+									has-prescription="" 
+									medication="">
 									
-								</div>
-								<div class="form-check">
-	  								<input class="form-check-input" type="radio" name="has_prescription" id="no" value="0" {{ !$report->has_prescription ? 'checked' : '' }}>
-									<label class="form-check-label" for="no">No</label>
-								</div>
+								</client-medication>
+								<!-- end  client medication-->
 							</div>
 
 							<div class="form-group">
 								<label>What are your initial assessments of the client and what are her / his core concerns?</label>
-								<textarea type="text" name="initial_assessment" class="form-control" rows="4">{{ !is_null($report->initial_assessment) ? $report->initial_assessment : '' }}</textarea>
+								<textarea type="text" name="initial_assessment" class="form-control" rows="4"></textarea>
 							</div>
 
 							<div class="form-group">
@@ -81,14 +84,14 @@
 								<select type="combobox" name="followup_session" class="form-control">
 									<option> -- Select --</option>
 									@foreach($followup_sessions as $followup)
-										<option value="{{ $followup->id }}" {{ !is_null($report->followup_session) && $report->followup_session == $followup->id ? 'selected' : '' }}>{{ $followup->name }}</option>
+										<option value="{{ $followup->id }}" >{{ $followup->name }}</option>
 									@endforeach
 								</select>
 							</div>
 
 							<div class="form-group">
 								<label>What therapy or intervention does your client need?</label>
-								<textarea type="text" name="treatment_goal" class="form-control" rows="4">{{ !is_null($report->treatment_goal)  ? $report->treatment_goal : '' }}</textarea>
+								<textarea type="text" name="treatment_goal" class="form-control" rows="4"></textarea>
 							</div>
 							
 							<div class="form-group">

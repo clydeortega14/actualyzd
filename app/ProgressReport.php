@@ -26,4 +26,8 @@ class ProgressReport extends Model
     {
     	return $this->belongsTo(FollowupSession::class, 'followup_session');
     }
+    public function medication()
+    {
+        return $this->hasOne(Medication::class, 'id');
+    }
 }

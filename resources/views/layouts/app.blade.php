@@ -91,11 +91,16 @@
                                         <span>Time Lists</span>
                                     </a>
                                 </li>
+
+                                <li class="nav-item p-3">
+                                    <a class="nav-link" href="{{ route('progress.report') }}">
+                                        <i class="fas fa-book"></i>
+                                        <span>Progress Report</span>
+                                    </a>
+                                </li>
                             @endif
 
                             @if($user->hasRole('admin'))
-                                
-
                                 <li class="nav-item p-3">
                                     <a class="nav-link" href="#">
                                         <i class="fas fa-fw fa-clock"></i>
@@ -119,10 +124,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user.profile', auth()->user()->id) }}">
+                                        <i class="fa fa-user"></i>
+                                        <span class="ml-2">Profile</span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="far fa-arrow-alt-circle-right"></i>
+                                        <span class="ml-2">{{ __('Logout') }}</span>
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

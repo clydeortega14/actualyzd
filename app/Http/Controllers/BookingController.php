@@ -72,7 +72,7 @@ class BookingController extends Controller
 
                     'schedule' => $schedule->id,
                     'time_id' => $request->time_id,
-                    'client_id' => is_null($request->client) ? auth()->user()->client->id : $request->client,
+                    'client_id' => is_null($request->client) ? auth()->user()->client_id : $request->client,
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'is_firstimer' => $request->is_firstimer,
@@ -96,15 +96,6 @@ class BookingController extends Controller
 
                     // store session participants
                     $this->manageParticipant($booking, $request);
-
-                    // if session type is individual / consultation
-                    if($booking->session_type_id == 1){
-
-                        // create a progress report to be fill up
-                        // by the psychologist after counseling
-                        ProgressReport::firstOrCreate(['booking_id' => $booking->id]);
-                    }
-
                 }
 
             }else{

@@ -7,6 +7,9 @@ use App\ProgressReport;
 use App\Http\Requests\ProgressReportRequest;
 use App\FollowupSession;
 use App\Http\Traits\ProgressReportTrait;
+use DB;
+use App\Medication;
+use App\Booking;
 
 class ProgressReportController extends Controller
 {
@@ -18,22 +21,62 @@ class ProgressReportController extends Controller
 
         return view('pages.psychologists.index', compact('reports'));
     }
-    public function show(ProgressReport $report)
+
+    public function index2()
     {
-    	$followup_sessions = FollowupSession::get(['id', 'name']);
-    	return view('pages.progress-reports.show', compact('report', 'followup_sessions'));
+        $reports = $this->getReports();
+
+        return view('pages.progress-reports.index', compact('reports'));
     }
 
-    public function update(ProgressReport $report, ProgressReportRequest $request)
+    public function show(Booking $booking)
     {
-    	// validate $request
-    	$validated = $request->validated();
-    	// update progress report data in db
-    	$report->update($request->all());
-    	// check if report prescription is true
-    	if ($report->has_prescription) {
-    		// store it in prescriptions table
-    	}
+    	$followup_sessions = FollowupSession::get(['id', 'name']);
+    	return view('pages.progress-reports.show', compact('booking', 'followup_sessions'));
+    }
+
+    public function store(Request $request)
+    {
+    	$this->validate($request, [
+            'main_concern' => ['required'],
+            'initial_assessment' => ['required'],
+            'followup_session' => ['required'],
+            'has_prescription' => ['required'],
+            'treatment_goal' => ['required']
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            $report = ProgressReport::create([
+
+                'booking_id' => $request->booking_id,
+                'main_concern' => $request->main_concern,
+                'initial_assessment' => $request->initial_assessment,
+                'followup_session' => $request->followup_session,
+                'has_prescription' => $request->has_prescription === "true" ? 1 : 0,
+                'treatment_goal' => $request->treatment_goal
+            ]);
+
+            if($request->has_prescription == "true" || $request->has('medication')){
+
+                $this->validate($request, [
+                    'medication' => ['required']
+                ]);
+
+                Medication::create(['report_id' => $report->id, 'medication' => $request->medication]);
+            }
+            
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        
+        DB::commit();
 
     	return redirect()->back()->with('success', 'Progress report successfully updated');
     }

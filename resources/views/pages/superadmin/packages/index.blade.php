@@ -1,9 +1,9 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
 
 @section('content')
 	
-	<div class="container-fluid">
+	<div class="container">
 		<h4>Packages </h4>
 		<div class="row">
 			<div class="col-md-12">
@@ -11,7 +11,10 @@
 				<div class="card mb-3">
 					<div class="card-header">
 						<div class="d-flex justify-content-end">
-							<a href="{{ route('packages.create') }}" class="btn btn-info btn-sm">Add Package</a>
+							<a href="{{ route('packages.create') }}" class="btn btn-primary btn-sm">
+								<i class="fa fa-plus-circle"></i>
+								<span>Add Package</span>
+							</a>
 						</div>
 					</div>
 					<div class="card-body">
@@ -32,13 +35,16 @@
 													{{ $package->name }}
 												</a>
 											</td>
-											<td>{{ $package->price }} for {{ $package->no_of_months }} months</td>
+											<td> &#8369; {{ $package->formattedPrice() }} - {{ $package->no_of_months }} {{ $package->no_of_months <= 1 ? 'Month' : 'Months' }}</td>
 											<td>
-												<a href="{{ route('packages.edit', $package->id) }}">
-													Edit
+												<a href="{{ route('packages.edit', $package->id) }}" class="btn btn-primary btn-sm">
+													<i class="fa fa-edit"></i>
 												</a> |
-												<a href="{{ route('package.services', $package->id) }}">
-													Services
+												<a href="{{ route('package.services', $package->id) }}" class="btn btn-info btn-sm">
+													<i class="fa fa-hand-holding"></i>
+												</a> |
+												<a href="#" class="btn btn-secondary btn-sm">
+													<i class="fa fa-trash"></i>
 												</a>
 											</td>
 										</tr>

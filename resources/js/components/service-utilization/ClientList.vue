@@ -1,15 +1,15 @@
 <template>
 	<div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action" :class="{ active: overallActive }" @click.prevent="overAll">
+        <a href="#" class="list-group-item" :class="{ active: overallActive }" @click.prevent="overAll">
         	<i class="fa fa-users"></i>	
-        	<span>Overall</span>
+        	<span class="ml-2">Overall</span>
         </a>
 
-        <a href="#" class="list-group-item list-group-item-action" :class="{ active: activeId === client.id}"
+        <a href="#" class="list-group-item" :class="{ active: activeId === client.id}"
         	v-for="client in allClients" :key="client.id"
         	@click.prevent="toggleClient(client.id)">
         	<i class="fa fa-user"></i>
-        	<span>{{ client.name }}</span>
+        	<span class="ml-2">{{ client.name }}</span>
         </a>
     </div>
 </template>
