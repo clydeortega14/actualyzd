@@ -64,7 +64,7 @@
 			return {
 
 				chosen_choice: [],
-				is_firstimer: null
+				is_firstimer: null,
 				// Onboarding_answer: {
 				// 	chosen_choice: [],
 				// 	openEndedAnswer: []
@@ -85,13 +85,9 @@
 		},
 		methods: {
 			...mapActions(["getQuestions"]),
-			selectChoice()
-			{
-				this.$emit('onboarding-answers', [this.chosen_choice, this.is_firstimer])
-			}
 
 			onChanged(event) {
-				this.$emit('onboarding-answers', this.onboardingAnswers)
+				this.$emit('onboarding-answers', [this.is_firstimer, this.onboardingAnswers])
 			},
 
 			onChangedDebounced: debounce(event => {

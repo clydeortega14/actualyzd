@@ -17787,9 +17787,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     onboardingAnswers: function onboardingAnswers(answers) {
       this.show_actions = true;
-      this.form.choice = answers[0];
-      this.form.is_firstimer = answers[1];
-      this.form.onboarding_answers = answers;
+      this.form.is_firstimer = answers[0];
+      this.form.onboarding_answers = answers[1];
     },
     submitBooking: function submitBooking() {
       var _this = this;
@@ -17800,8 +17799,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         client: this.form.selected.client,
         counselee: this.form.selected.counselee,
         session_type_id: this.form.selected.session,
-        choice: this.form.choice,
-        is_firstimer: this.form.is_firstimer
+        is_firstimer: this.form.is_firstimer,
         onboarding_answers: this.form.onboarding_answers
       };
       axios.post('/bookings/book', payload).then(function (response) {
@@ -17817,8 +17815,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.form.selected.session = null;
           _this.form.psychologist = null;
           _this.form.choice = [];
-          _this.form.is_firstimer = null; // hide some components
+          _this.form.is_firstimer = null;
           _this.form.onboarding_answers = []; // hide some components
+
           _this.time.show = false;
           _this.psychologist.show = false;
           _this.showSessionType = false;
@@ -17890,8 +17889,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-<<<<<<< HEAD
-=======
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -17906,6 +17916,8 @@ var vm;
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      chosen_choice: [],
+      is_firstimer: null,
       // Onboarding_answer: {
       // 	chosen_choice: [],
       // 	openEndedAnswer: []
@@ -17919,58 +17931,11 @@ var vm;
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getQuestions"])), {}, {
     onChanged: function onChanged(event) {
-      this.$emit('onboarding-answers', this.onboardingAnswers);
+      this.$emit('onboarding-answers', [this.is_firstimer, this.onboardingAnswers]);
     },
     onChangedDebounced: Object(lodash__WEBPACK_IMPORTED_MODULE_1__["debounce"])(function (event) {
       return _this.onChanged(event);
     }, _constants_App__WEBPACK_IMPORTED_MODULE_2__["DEBOUNCE_DELAY_MS"])
-  })
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/PsychologistComponent.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/PsychologistComponent.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      chosen_choice: [],
-      is_firstimer: null
-    };
-  },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allQuestions"])),
-  created: function created() {
-    this.getQuestions();
-  },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getQuestions"])), {}, {
-    selectChoice: function selectChoice() {
-      this.$emit('onboarding-answers', [this.chosen_choice, this.is_firstimer]);
-    }
   })
 });
 
@@ -109725,11 +109690,6 @@ __webpack_require__.r(__webpack_exports__);
   !*** ./resources/js/components/service-utilization/ClientList.vue ***!
   \********************************************************************/
 /*! exports provided: default */
-/***/ "./resources/js/constants/App.js":
-/*!***************************************!*\
-  !*** ./resources/js/constants/App.js ***!
-  \***************************************/
-/*! exports provided: DEBOUNCE_DELAY_MS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -110070,6 +110030,20 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/constants/App.js":
+/*!***************************************!*\
+  !*** ./resources/js/constants/App.js ***!
+  \***************************************/
+/*! exports provided: DEBOUNCE_DELAY_MS */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEBOUNCE_DELAY_MS", function() { return DEBOUNCE_DELAY_MS; });
+var DEBOUNCE_DELAY_MS = 500;
+
+/***/ }),
+
 /***/ "./resources/js/mixins/service-utilization.js":
 /*!****************************************************!*\
   !*** ./resources/js/mixins/service-utilization.js ***!
@@ -110087,8 +110061,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DEBOUNCE_DELAY_MS", function() { return DEBOUNCE_DELAY_MS; });
-var DEBOUNCE_DELAY_MS = 500;
 
 /***/ }),
 
@@ -110548,8 +110520,8 @@ var mutations = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\actualyzd\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\actualyzd\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
