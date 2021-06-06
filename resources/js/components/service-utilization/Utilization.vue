@@ -1,8 +1,7 @@
 <template>
 	<div class="row mt-4 mb-4">
-
-		<!-- counting of first timers and repeaters -->
-		<div class="col-md-6">
+		<div class="col-md-3">
+			<!-- counting of first timers and repeaters -->
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -17,9 +16,7 @@
                     </div>
                 </div>
 			</div>
-		</div>
 
-		<div class="col-md-6">
 			<div class="card mb-3">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
@@ -34,12 +31,8 @@
                     </div>
                 </div>
 			</div>
-		</div>
-		<!-- counting of first timers and repeaters -->
 
-		<!-- Session Statuses -->
-		<div class="col-md-4" v-for="(booking_status, index) in getBookingByStatus" :key="index">
-			<div class="card mb-3">
+			<div class="card mb-3" v-for="(booking_status, index) in getBookingByStatus" :key="index">
 				<div class="card-header">
 					<div class="text-xs text-uppercase mb-1">
 						{{ booking_status.to_status.name }}
@@ -54,11 +47,9 @@
                 </div>
 			</div>
 		</div>
-		<!-- End Session Statuses -->
-
-
+		<!-- counting of first timers and repeaters -->
 		<!-- Sessions Table -->
-		<div class="col-md-12">
+		<div class="col-md-9">
 			<div class="card mb-3">
 				<div class="card-header">Consultation Service</div>
 				<div class="card-body">

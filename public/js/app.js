@@ -18311,6 +18311,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -18415,8 +18422,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Concern"
+  name: "Concern",
+  data: function data() {
+    return {
+      selected_main_concern: null
+    };
+  },
+  created: function created() {
+    this.serviceUtilization();
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["totalMainConcerns", "mainConcernSummarries", "concernsLists"])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"])), {}, {
+    selectMainConcern: function selectMainConcern() {
+      this.serviceUtilization({
+        params: {
+          main_concern: this.selected_main_concern
+        }
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -18577,15 +18603,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -94811,152 +94828,208 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "row mt-4 mb-4" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-3" },
+      _vm._l(_vm.totalMainConcerns, function(total) {
+        return _c(
+          "div",
+          { key: total.main_concern.id, staticClass: "card mb-3" },
+          [
+            _c("div", { staticClass: "card-header" }, [
+              _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(total.main_concern.name) +
+                    "\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "row no-gutters align-items-center" }, [
+                _c("div", { staticClass: "col mr-2" }, [
+                  _c(
+                    "div",
+                    { staticClass: "h1 mb-0 text-gray-800 text-center" },
+                    [_vm._v(_vm._s(total.main_concerns_count))]
+                  )
+                ])
+              ])
+            ])
+          ]
+        )
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-9" }, [
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v("\n                    Consultation Service\n                ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "d-sm-flex justify-content-end mb-3" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.selected_main_concern,
+                      expression: "selected_main_concern"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { name: "concern" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.selected_main_concern = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      _vm.selectMainConcern
+                    ]
+                  }
+                },
+                [
+                  _c(
+                    "option",
+                    {
+                      attrs: { disabled: "", selected: "" },
+                      domProps: { value: null }
+                    },
+                    [_vm._v("All Categories")]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.concernsLists, function(concern) {
+                    return _c(
+                      "option",
+                      { key: concern.id, domProps: { value: concern.id } },
+                      [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(concern.name) +
+                            "\n                                "
+                        )
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover text-center" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.mainConcernSummarries, function(summary) {
+                  return _c("tr", { key: summary.id }, [
+                    _c("td", [_vm._v(_vm._s(summary.to_schedule.start))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(summary.main_concern.name))])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(1)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-4 mb-4" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v(
-              "\n                    Consultation Service\n                "
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover text-center" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Month")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Mental Challenges")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Work Issues")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Personal Problems")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Intent to Self harm")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("th", [_vm._v("Date")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("30")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("19")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("11")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("5")])
-                  ])
-                ]),
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Date")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Main Concerns")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card mb-3" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-hover text-center" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("Services")]),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("3/2/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("3/3/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("0")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("3/4/2021")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")])
-                  ])
-                ])
+                _c("th", [_vm._v("MTD")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("QTD")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("YTD")])
               ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover text-center" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Services")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("MTD")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("QTD")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("YTD")])
-                  ])
-                ]),
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v("Mental Challenges")]),
                 _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("td", [_vm._v("Mental Challenges")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("30")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("120")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("380")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Work Issues")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("19")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("228")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Personal Problems")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("11")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("1")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("132")])
-                  ]),
-                  _vm._v(" "),
-                  _c("tr", [
-                    _c("td", [_vm._v("Intent to Self Harm")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("5")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("20")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("60")])
-                  ])
-                ])
+                _c("td", [_vm._v("30")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("120")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("380")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Work Issues")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("19")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("228")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Personal Problems")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("11")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("132")])
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td", [_vm._v("Intent to Self Harm")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("5")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("20")]),
+                _vm._v(" "),
+                _c("td", [_vm._v("60")])
               ])
             ])
           ])
@@ -95203,17 +95276,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row mt-4 mb-4" },
-    [
-      _vm._m(0),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _vm._l(_vm.getBookingByStatus, function(booking_status, index) {
-        return _c("div", { key: index, staticClass: "col-md-4" }, [
-          _c("div", { staticClass: "card mb-3" }, [
+  return _c("div", { staticClass: "row mt-4 mb-4" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-3" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._l(_vm.getBookingByStatus, function(booking_status, index) {
+          return _c("div", { key: index, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
                 _vm._v(
@@ -95236,144 +95309,140 @@ var render = function() {
               ])
             ])
           ])
+        })
+      ],
+      2
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-9" }, [
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v("Consultation Service")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.consultationSummaries, function(
+                  consultation,
+                  index
+                ) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(consultation.date))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.firstimers))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.repeaters))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.cancelled))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.no_show))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.completed))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(consultation.rescheduled))])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
         ])
-      }),
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Consultation Service")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(2),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.consultationSummaries, function(
-                    consultation,
-                    index
-                  ) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(consultation.date))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.firstimers))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.repeaters))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.cancelled))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.no_show))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.completed))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(consultation.rescheduled))])
-                    ])
-                  }),
-                  0
-                )
-              ])
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [_vm._v("Utilization Rate")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.allServices, function(service, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(service.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(service.limit))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(service.bookings.length))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(
+                          _vm.getPercentage(
+                            service.bookings.length,
+                            service.limit
+                          )
+                        ) + "%"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(service.completion_date))])
+                  ])
+                }),
+                0
+              )
             ])
           ])
-        ]),
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
         _vm._v(" "),
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Utilization Rate")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(3),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.allServices, function(service, index) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(service.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(service.limit))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(service.bookings.length))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _vm._v(
-                          _vm._s(
-                            _vm.getPercentage(
-                              service.bookings.length,
-                              service.limit
-                            )
-                          ) + "%"
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(service.completion_date))])
-                    ])
-                  }),
-                  0
-                )
-              ])
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card mb-3" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Services")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "table-responsive" }, [
-              _c("table", { staticClass: "table table-hover" }, [
-                _vm._m(4),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.sessionTypeSummaries, function(
-                    session_type_summary,
-                    index
-                  ) {
-                    return _c("tr", { key: index }, [
-                      _c("td", [_vm._v(_vm._s(session_type_summary.session))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(session_type_summary.mtd))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(session_type_summary.qtd))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(session_type_summary.ytd))])
-                    ])
-                  }),
-                  0
-                )
-              ])
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover" }, [
+              _vm._m(4),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.sessionTypeSummaries, function(
+                  session_type_summary,
+                  index
+                ) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(session_type_summary.session))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(session_type_summary.mtd))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(session_type_summary.qtd))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(session_type_summary.ytd))])
+                  ])
+                }),
+                0
+              )
             ])
           ])
         ])
       ])
-    ],
-    2
-  )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "card mb-3" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-            _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row no-gutters align-items-center" }, [
-            _c("div", { staticClass: "col mr-2" }, [
-              _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
-                _vm._v("0")
-              ])
+    return _c("div", { staticClass: "card mb-3" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+          _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row no-gutters align-items-center" }, [
+          _c("div", { staticClass: "col mr-2" }, [
+            _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
+              _vm._v("0")
             ])
           ])
         ])
@@ -95384,20 +95453,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "card mb-3" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-            _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row no-gutters align-items-center" }, [
-            _c("div", { staticClass: "col mr-2" }, [
-              _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
-                _vm._v("0")
-              ])
+    return _c("div", { staticClass: "card mb-3" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+          _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row no-gutters align-items-center" }, [
+          _c("div", { staticClass: "col mr-2" }, [
+            _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
+              _vm._v("0")
             ])
           ])
         ])
@@ -110252,7 +110319,10 @@ var state = function state() {
     services: [],
     booking_by_statuses: [],
     consultation_summaries: [],
-    session_type_summaries: []
+    session_type_summaries: [],
+    total_main_concerns: [],
+    main_concern_summarries: [],
+    concerns_lists: []
   };
 };
 
@@ -110271,6 +110341,15 @@ var getters = {
   },
   sessionTypeSummaries: function sessionTypeSummaries(state) {
     return state.session_type_summaries;
+  },
+  totalMainConcerns: function totalMainConcerns(state) {
+    return state.total_main_concerns;
+  },
+  mainConcernSummarries: function mainConcernSummarries(state) {
+    return state.main_concern_summarries;
+  },
+  concernsLists: function concernsLists(state) {
+    return state.concerns_lists;
   }
 };
 var actions = {
@@ -110292,8 +110371,11 @@ var actions = {
               commit('setBookingByStatus', response.data.bookings);
               commit('setConsultationSummaries', response.data.consultation_summaries);
               commit('setSessionTypeSummaries', response.data.session_type_summaries);
+              commit('setTotalMainConcerns', response.data.total_main_concerns);
+              commit('setMainConcernSummarries', response.data.main_concerns_summarries);
+              commit('setConcernsLists', response.data.list_of_main_concerns);
 
-            case 9:
+            case 12:
             case "end":
               return _context.stop();
           }
@@ -110317,6 +110399,15 @@ var mutations = {
   },
   setSessionTypeSummaries: function setSessionTypeSummaries(state, session_type_summaries) {
     return state.session_type_summaries = session_type_summaries;
+  },
+  setTotalMainConcerns: function setTotalMainConcerns(state, total_main_concerns) {
+    return state.total_main_concerns = total_main_concerns;
+  },
+  setMainConcernSummarries: function setMainConcernSummarries(state, main_concern_summarries) {
+    return state.main_concern_summarries = main_concern_summarries;
+  },
+  setConcernsLists: function setConcernsLists(state, concerns_lists) {
+    return state.concerns_lists = concerns_lists;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

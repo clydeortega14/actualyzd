@@ -8,12 +8,14 @@ use App\ClientSubscription;
 use App\SessionType;
 use App\Booking;
 use App\Http\Traits\CarbonTrait;
+use App\Http\Traits\BookingSchedulesTrait;
 use App\PsychologistSchedule;
+use App\AssessmentCategory;
 use DB;
 
 class ServiceUtilizationController extends Controller
 {
-    use CarbonTrait;
+    use CarbonTrait, BookingSchedulesTrait;
 
     public function dashboard(Request $request)
     {
@@ -46,7 +48,10 @@ class ServiceUtilizationController extends Controller
             'services' => $services,
             'bookings' => $this->countBookings(),
             'consultation_summaries' => $this->manageBookings(),
-            'session_type_summaries' => $this->getMtd()
+            'session_type_summaries' => $this->getMtd(),
+            'total_main_concerns' => $this->countMainConcerns(),
+            'main_concerns_summarries' => $this->mainConcernSummaries(),
+            'list_of_main_concerns' => $this->listOfMainConcerns()
         ];
     }
 
@@ -127,33 +132,66 @@ class ServiceUtilizationController extends Controller
 
     public function getMtd()
     {
+        // get schedules that are booked this month
         $month = now()->month;
-        // $months_of_quarter = $this->getMonthsOfTheQuarter();
+        // schedules that are booked this year
+        $year = now()->year;
 
-        $booking_schedule_id = Booking::pluck('schedule');
-        // // get schedules that are booked this month
-        // $quarter_schedules = PsychologistSchedule::whereIn('id', $booking_schedule_id)->get();
+        $session_types = SessionType::get(['id', 'name']);
 
-        // return $quarter_schedules;
+        $by_dates = [];
+        foreach($session_types as $session_type){
+            $by_dates[] = [
+                'session' => $session_type->name,
+                'mtd' => $this->countByDates($this->pluckedMonthSchedules($month), $session_type->id)->count(),
+                'qtd' => 0,
+                'ytd' => $this->countByDates( $this->pluckedYearSchedules($year), $session_type->id)->count()
+            ];
+        }
 
-        $schedules = PsychologistSchedule::whereIn('id', $booking_schedule_id)->whereMonth('start', $month)->pluck('id');
+        return $by_dates;
+    }
 
-        $bookings = Booking::withClient()->whereIn('schedule', $schedules)
-            ->select(DB::raw('count(*) as bookings_this_month, session_type_id'))
-            ->groupBy('session_type_id')
-            ->with(['sessionType'])
+    public function countByDates($schedules, $session_type_id)
+    {
+         $count_by_dates = Booking::withClient()->whereIn('schedule', $schedules)
+            ->where('session_type_id', $session_type_id)
             ->get();
 
-        $mapped_bookings = $bookings->map(function($booking){
-            return [
-                'session' => $booking->sessionType->name,
-                'mtd' => $booking->bookings_this_month,
-                'qtd' => 0,
-                'ytd' => 0
-            ];
-        });
+        return $count_by_dates;
+    }
 
-        return $mapped_bookings;
+    public function countMainConcerns()
+    {
+        $total_main_concerns = Booking::withClient()
+            ->has('mainConcern')
+            ->select(DB::raw('count(main_concern) as main_concerns_count, main_concern'))
+            ->groupBy('main_concern')
+            ->with(['mainConcern'])
+            ->get();
 
+        return $total_main_concerns;
+    }
+    public function mainConcernSummaries()
+    {
+        $month = now()->month;
+        $plucked_monthly_schedules = $this->pluckedMonthSchedules($month);
+        
+        $main_concerns_summaries = Booking::withClient()
+            ->has('mainConcern')
+            ->whereIn('schedule', $plucked_monthly_schedules)
+            ->where(function($query){
+                if(request()->has('main_concern')){
+                    $query->where('main_concern', request('main_concern'));
+                }
+            })
+            ->with(['toSchedule', 'mainConcern'])
+            ->get();
+
+        return $main_concerns_summaries;
+    }
+    public function listOfMainConcerns()
+    {
+        return AssessmentCategory::has('bookings')->get(['id', 'name']);
     }
 }
