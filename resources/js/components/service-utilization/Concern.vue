@@ -67,31 +67,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-
-                                <tr>
-                                    <td>Mental Challenges</td>
-                                    <td>30</td>
-                                    <td>120</td>
-                                    <td>380</td>
-                                </tr>
-                                <tr>
-                                    <td>Work Issues</td>
-                                    <td>19</td>
-                                    <td>1</td>
-                                    <td>228</td>
-                                </tr>
-                                <tr>
-                                    <td>Personal Problems</td>
-                                    <td>11</td>
-                                    <td>1</td>
-                                    <td>132</td>
-                                </tr>
-                                <tr>
-                                    <td>Intent to Self Harm</td>
-                                    <td>5</td>
-                                    <td>20</td>
-                                    <td>60</td>
+                                <tr v-for="(main_concern_by_date, index) in mainConcernsByDate" :key="index">
+                                    <td>{{ main_concern_by_date.name }}</td>
+                                    <td>{{ main_concern_by_date.mtd }}</td>
+                                    <td>{{ main_concern_by_date.qtd }}</td>
+                                    <td>{{ main_concern_by_date.ytd }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -118,7 +98,12 @@
             this.serviceUtilization()
         },
         computed: {
-            ...mapGetters(["totalMainConcerns", "mainConcernSummarries", "concernsLists"])
+            ...mapGetters([
+                "totalMainConcerns", 
+                "mainConcernSummarries", 
+                "concernsLists",
+                "mainConcernsByDate"
+            ])
         },
         methods: {
             ...mapActions(["serviceUtilization"]),

@@ -18164,19 +18164,19 @@ __webpack_require__.r(__webpack_exports__);
       labels: ["2020-Sept", "2020-Oct", "2020-Dec", "2021-Jan"],
       datasets: [{
         label: "Mental Challenges",
-        data: [39, 140, 120, 200],
+        data: [10, 15, 17, 20],
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 0.2)',
         borderWidth: 1
       }, {
         label: "Suicidal Intent",
-        data: [10, 23, 43, 143],
+        data: [8, 10, 12, 16],
         backgroundColor: 'rgba(80, 200, 200, 0.2)',
         borderColor: 'rgba(80, 200, 200, 0.2)',
         borderWidth: 1
       }, {
         label: "Wellbeing Issues",
-        data: [56, 14, 89, 26],
+        data: [11, 14, 17, 23],
         backgroundColor: 'rgba(70, 80, 80, 0.2)',
         borderColor: 'rgba(70, 80, 80, 0.2)',
         borderWidth: 1
@@ -18426,26 +18426,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Concern",
@@ -18457,7 +18437,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.serviceUtilization();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["totalMainConcerns", "mainConcernSummarries", "concernsLists"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["totalMainConcerns", "mainConcernSummarries", "concernsLists", "mainConcernsByDate"])),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"])), {}, {
     selectMainConcern: function selectMainConcern() {
       this.serviceUtilization({
@@ -18555,9 +18535,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
 //
 //
 //
@@ -18781,7 +18758,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   created: function created() {
     this.serviceUtilization();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries", "sessionTypeSummaries"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries", "sessionTypeSummaries", "totalFirstTimers", "totalRepeaters"])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"]))
 });
 
@@ -95023,7 +95000,34 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(1)
+      _c("div", { staticClass: "card mb-3" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table table-hover text-center" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.mainConcernsByDate, function(
+                  main_concern_by_date,
+                  index
+                ) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(main_concern_by_date.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(main_concern_by_date.mtd))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(main_concern_by_date.qtd))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(main_concern_by_date.ytd))])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+      ])
     ])
   ])
 }
@@ -95044,65 +95048,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-hover text-center" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [_vm._v("Services")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("MTD")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("QTD")]),
-                _vm._v(" "),
-                _c("th", [_vm._v("YTD")])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v("Mental Challenges")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("30")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("120")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("380")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Work Issues")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("19")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("228")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Personal Problems")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("11")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("132")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("td", [_vm._v("Intent to Self Harm")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("5")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("20")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("60")])
-              ])
-            ])
-          ])
-        ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Services")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("MTD")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("QTD")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("YTD")])
       ])
     ])
   }
@@ -95264,12 +95218,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "row mt-3 mb-3" },
-      _vm._l(_vm.allServices, function(service) {
-        return _c("div", { key: service.id, staticClass: "col-md-3" }, [
-          _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "row mt-3 mb-3" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-3" },
+        _vm._l(_vm.allServices, function(service) {
+          return _c("div", { key: service.id, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-body text-center text-primary" }, [
               _c("h5", { staticClass: "text-primary" }, [
                 _vm._v(_vm._s(service.name))
@@ -95300,13 +95254,11 @@ var render = function() {
               ])
             ])
           ])
-        ])
-      }),
-      0
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [_c("ConcernsChart")], 1)
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-9" }, [_c("ConcernsChart")], 1)
     ])
   ])
 }
@@ -95350,9 +95302,37 @@ var render = function() {
       "div",
       { staticClass: "col-md-3" },
       [
-        _vm._m(0),
+        _c("div", { staticClass: "card mb-3" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row no-gutters align-items-center" }, [
+              _c("div", { staticClass: "col mr-2" }, [
+                _c(
+                  "div",
+                  { staticClass: "h1 mb-0 text-gray-800 text-center" },
+                  [_vm._v(_vm._s(_vm.totalFirstTimers))]
+                )
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "card mb-3" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row no-gutters align-items-center" }, [
+              _c("div", { staticClass: "col mr-2" }, [
+                _c(
+                  "div",
+                  { staticClass: "h1 mb-0 text-gray-800 text-center" },
+                  [_vm._v(_vm._s(_vm.totalRepeaters))]
+                )
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
         _vm._l(_vm.getBookingByStatus, function(booking_status, index) {
           return _c("div", { key: index, staticClass: "card mb-3" }, [
@@ -95500,21 +95480,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-          _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row no-gutters align-items-center" }, [
-          _c("div", { staticClass: "col mr-2" }, [
-            _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
-              _vm._v("0")
-            ])
-          ])
-        ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+        _vm._v("\n\t\t\t\t\t\tFirst Timers\n\t\t\t\t\t")
       ])
     ])
   },
@@ -95522,21 +95490,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mb-3" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
-          _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row no-gutters align-items-center" }, [
-          _c("div", { staticClass: "col mr-2" }, [
-            _c("div", { staticClass: "h1 mb-0 text-gray-800 text-center" }, [
-              _vm._v("0")
-            ])
-          ])
-        ])
+    return _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "text-xs text-uppercase mb-1" }, [
+        _vm._v("\n\t\t\t\t\t\tRepeaters\n\t\t\t\t\t")
       ])
     ])
   },
@@ -110401,11 +110357,14 @@ var state = function state() {
     clients: [],
     services: [],
     booking_by_statuses: [],
+    total_firsttimers: 0,
+    total_repeaters: 0,
     consultation_summaries: [],
     session_type_summaries: [],
     total_main_concerns: [],
     main_concern_summarries: [],
-    concerns_lists: []
+    concerns_lists: [],
+    main_concerns_by_date: []
   };
 };
 
@@ -110418,6 +110377,12 @@ var getters = {
   },
   getBookingByStatus: function getBookingByStatus(state) {
     return state.booking_by_statuses;
+  },
+  totalFirstTimers: function totalFirstTimers(state) {
+    return state.total_firsttimers;
+  },
+  totalRepeaters: function totalRepeaters(state) {
+    return state.total_repeaters;
   },
   consultationSummaries: function consultationSummaries(state) {
     return state.consultation_summaries;
@@ -110433,6 +110398,9 @@ var getters = {
   },
   concernsLists: function concernsLists(state) {
     return state.concerns_lists;
+  },
+  mainConcernsByDate: function mainConcernsByDate(state) {
+    return state.main_concerns_by_date;
   }
 };
 var actions = {
@@ -110452,13 +110420,16 @@ var actions = {
               commit('setClient', response.data.clients);
               commit('setService', response.data.services);
               commit('setBookingByStatus', response.data.bookings);
+              commit('setTotalFirstTimers', response.data.users_experience['first_timers']);
+              commit('totalRepeaters', response.data.users_experience['repeaters']);
               commit('setConsultationSummaries', response.data.consultation_summaries);
               commit('setSessionTypeSummaries', response.data.session_type_summaries);
               commit('setTotalMainConcerns', response.data.total_main_concerns);
               commit('setMainConcernSummarries', response.data.main_concerns_summarries);
               commit('setConcernsLists', response.data.list_of_main_concerns);
+              commit('setMainConcernsByDate', response.data.main_concerns_by_date);
 
-            case 12:
+            case 15:
             case "end":
               return _context.stop();
           }
@@ -110477,6 +110448,12 @@ var mutations = {
   setBookingByStatus: function setBookingByStatus(state, booking_by_statuses) {
     return state.booking_by_statuses = booking_by_statuses;
   },
+  setTotalFirstTimers: function setTotalFirstTimers(state, total_firsttimers) {
+    return state.total_firsttimers = total_firsttimers;
+  },
+  totalRepeaters: function totalRepeaters(state, total_repeaters) {
+    return state.total_repeaters = total_repeaters;
+  },
   setConsultationSummaries: function setConsultationSummaries(state, consultation_summaries) {
     return state.consultation_summaries = consultation_summaries;
   },
@@ -110491,6 +110468,9 @@ var mutations = {
   },
   setConcernsLists: function setConcernsLists(state, concerns_lists) {
     return state.concerns_lists = concerns_lists;
+  },
+  setMainConcernsByDate: function setMainConcernsByDate(state, main_concerns_by_date) {
+    return state.main_concerns_by_date = main_concerns_by_date;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
