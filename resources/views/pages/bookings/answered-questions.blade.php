@@ -106,14 +106,16 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<div class="col-md-6 offset-md-4">
-								<a href="{{ route('progress-reports.show', $booking->id) }}">
-									<i class="fa fa-book"></i>
-									<span class="ml-2">Progress Report</span>
-								</a>
+						@if($booking->session_type_id == 1)
+							<div class="form-group row">
+								<div class="col-md-6 offset-md-4">
+									<a href="{{ route('progress-reports.show', $booking->id) }}">
+										<i class="fa fa-book"></i>
+										<span class="ml-2">Progress Report</span>
+									</a>
+								</div>
 							</div>
-						</div>
+						@endif
 
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
