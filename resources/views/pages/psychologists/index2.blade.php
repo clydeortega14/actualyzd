@@ -24,65 +24,19 @@
 
             <div class="tab-pane fade show active" id="schedules" role="tabpanel" aria-labelledby="schedules-tab">
                   <div class="mt-4">
-                        <div class="row">
-                              <div class="col-md-12">
-                                  <!-- psychologist calender -->
-                                  {{-- <schedules-component></schedules-component> --}}
-                                  <!-- end psychologist calender -->
-
-                                    <div id="calendar"></div>
-                                    @include('pages.schedules.modals.create-schedule')
-                              </div>
-                        </div>
+                      <schedules-component></schedules-component>
                   </div>
             </div>
 
           	<div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
           		<div class="mt-4">
-          			<div class="row justify-content-center">
-          				<div class="col-md-12">
-                    <div class="table-responsive">
-                        @include('pages.bookings.index')
-                    </div>
-          				</div>
-          			</div>
+          			Bookings
           		</div>
           	</div>
           	<div class="tab-pane fade" id="progress-reports" role="tabpanel" aria-labelledby="progress-reports-tab">
           		<div class="mt-4">
           			<div class="row">
-          				<div class="col-md-12">
-          					<div class="table-responsive">
-          						<table class="table">
-          							<thead>
-          								<tr>
-          									<th>Timestamp</th>
-          									<th>Date Of Session</th>
-          									<th>Company Name</th>
-          									<th>Employee Name</th>
-                            <th></th>
-          								</tr>
-          							</thead>
-                        <tbody>
-                          
-                            @foreach($bookings as $booking)
-
-                              <tr>
-                                <td>{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}</td>
-                                <td>{{ $booking->toSchedule->formattedStart() }}</td>
-                                <td>N/A</td>
-                                <td>{{ $booking->toCounselee->name }}</td>
-                                <td>
-                                  <a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">Action</a>
-                                </td>
-                              </tr>
-                            @endforeach
-
-                        </tbody>
-          						</table>
-          					</div>
-          				</div>
-          			</div>
+          				Progress reports
           		</div>
           	</div>
                 

@@ -1,14 +1,18 @@
 <template>
-	<div class="modal-mask">
-		<div class="modal-wrapper">
-			<div class="modal-container">
-				<div class="modal-header">
-					<slot name="header">
-						Header
-					</slot>	
+	<div>
+		<transition name="modal">
+			<div class="modal-mask">
+				<div class="modal-wrapper">
+					<div class="modal-container">
+						<div class="modal-header">
+							<slot name="header">
+								Header
+							</slot>	
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
+		</transition>
 	</div>
 </template>
 
@@ -17,6 +21,6 @@
 
 	export default {
 
-
+		name: "TimeSchedule"
 	}
 </script>

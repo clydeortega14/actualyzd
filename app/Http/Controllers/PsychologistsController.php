@@ -13,7 +13,7 @@ class PsychologistsController extends Controller
     public function home()
     {
         $schedules = [];
-        return view('pages.psychologists.index', compact('schedules'));
+        return view('pages.psychologists.index2', compact('schedules'));
     }
     public function bookings()
     {
