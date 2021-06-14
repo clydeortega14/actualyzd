@@ -11,7 +11,7 @@
 				<div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h1 mb-0 text-gray-800 text-center">0</div>
+                            <div class="h1 mb-0 text-gray-800 text-center">{{ totalFirstTimers }}</div>
                         </div>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
 				<div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="h1 mb-0 text-gray-800 text-center">0</div>
+                            <div class="h1 mb-0 text-gray-800 text-center">{{ totalRepeaters }}</div>
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,9 @@
                 "getBookingByStatus", 
                 "allServices", 
                 "consultationSummaries",
-                "sessionTypeSummaries"
+                "sessionTypeSummaries",
+                "totalFirstTimers",
+                "totalRepeaters"
             ])
 		},
 		methods: {

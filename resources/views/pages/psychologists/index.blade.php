@@ -94,45 +94,6 @@
               </div>
 
             @endif
-
-            
-          	{{-- <div class="tab-pane fade" id="progress-reports" role="tabpanel" aria-labelledby="progress-reports-tab">
-          		<div class="mt-4">
-          			<div class="row">
-          				<div class="col-md-12">
-          					<div class="table-responsive">
-          						<table class="table">
-          							<thead>
-          								<tr>
-          									<th>Timestamp</th>
-          									<th>Date Of Session</th>
-          									<th>Company Name</th>
-          									<th>Employee Name</th>
-                            <th></th>
-          								</tr>
-          							</thead>
-                        <tbody>
-                          
-                            @foreach($bookings as $booking)
-
-                              <tr>
-                                <td>{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}</td>
-                                <td>{{ $booking->toSchedule->formattedStart() }}</td>
-                                <td>N/A</td>
-                                <td>{{ $booking->toCounselee->name }}</td>
-                                <td>
-                                  <a href="{{ route('progress-reports.show', $booking->progressReport->id) }}">Action</a>
-                                </td>
-                              </tr>
-                            @endforeach
-
-                        </tbody>
-          						</table>
-          					</div>
-          				</div>
-          			</div>
-          		</div>
-          	</div> --}}
                 
           </div>
 					</div>

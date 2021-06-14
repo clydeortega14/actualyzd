@@ -40,6 +40,7 @@ Vue.component('service-utilization', require('./components/service-utilization/S
 
 Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

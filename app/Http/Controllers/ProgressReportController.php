@@ -10,6 +10,7 @@ use App\Http\Traits\ProgressReportTrait;
 use DB;
 use App\Medication;
 use App\Booking;
+use App\AssessmentCategory;
 
 class ProgressReportController extends Controller
 {
@@ -32,7 +33,8 @@ class ProgressReportController extends Controller
     public function show(Booking $booking)
     {
     	$followup_sessions = FollowupSession::get(['id', 'name']);
-    	return view('pages.progress-reports.show', compact('booking', 'followup_sessions'));
+        $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+    	return view('pages.progress-reports.show', compact('booking', 'followup_sessions', 'categories'));
     }
 
     public function store(Request $request)

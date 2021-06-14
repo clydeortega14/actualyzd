@@ -86,7 +86,7 @@ class BookingController extends Controller
                     $time_schedule->update(['is_booked' => true]);
 
                     // store onboarding answers
-                    if($request->has('choice')){
+                    if($request->has('onboarding_answers')){
 
                         // validate must required all fields
 
@@ -160,7 +160,7 @@ class BookingController extends Controller
 
     public function submitAnswers($booking_id, $request)
     {
-        foreach($request->choice as $index => $value){
+        foreach($request->onboarding_answers as $index => $value){
 
             if($value != null){
 
