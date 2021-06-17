@@ -11,6 +11,7 @@ use DB;
 use App\Medication;
 use App\Booking;
 use App\AssessmentCategory;
+use App\User;
 
 class ProgressReportController extends Controller
 {
@@ -51,14 +52,15 @@ class ProgressReportController extends Controller
 
         try {
 
-            $report = ProgressReport::create([
+            $report = ProgressReport::firstOrCreate([
 
                 'booking_id' => $request->booking_id,
                 'main_concern' => $request->main_concern,
                 'initial_assessment' => $request->initial_assessment,
                 'followup_session' => $request->followup_session,
                 'has_prescription' => $request->has_prescription === "true" ? 1 : 0,
-                'treatment_goal' => $request->treatment_goal
+                'treatment_goal' => $request->treatment_goal,
+                'assignee' => auth()->user()->id
             ]);
 
             if($request->has_prescription == "true" || $request->has('medication')){
@@ -67,7 +69,7 @@ class ProgressReportController extends Controller
                     'medication' => ['required']
                 ]);
 
-                Medication::create(['report_id' => $report->id, 'medication' => $request->medication]);
+                Medication::firstOrCreate(['report_id' => $report->id, 'medication' => $request->medication]);
             }
             
         } catch (Exception $e) {
@@ -80,6 +82,19 @@ class ProgressReportController extends Controller
         
         DB::commit();
 
-    	return redirect()->back()->with('success', 'Progress report successfully updated');
+    	return redirect()->back()->with('success', 'Progress report successfully created');
+    }
+
+    public function assignReport(Request $request, $id)
+    {
+        $report = ProgressReport::where('id', $id)->update(['assignee' => $request->assignee ]);
+        return response()->json(['success' => true, 'message' => 'Progress report has been assigned'], 200);
+    }
+
+    public function getAssignees()
+    {
+        $assignees = User::withRole('psychologist')->get();
+
+        return response()->json($assignees);
     }
 }

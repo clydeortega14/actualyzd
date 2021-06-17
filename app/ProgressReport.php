@@ -14,7 +14,8 @@ class ProgressReport extends Model
     		'has_prescription',
     		'initial_assessment',
     		'followup_session',
-    		'treatment_goal'
+    		'treatment_goal',
+            'assignee'
     	];
 
     public function booking()

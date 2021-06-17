@@ -29,9 +29,12 @@ import store from './store'
 
 Vue.component('calendar-page', require('./components/CalendarPage.vue').default);
 
-Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
-
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
+
+// Progress Report Client Medication Component
+Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+// Report Assignee Vue Component
+Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
 /**
  * This components are for dashboard / service utilization

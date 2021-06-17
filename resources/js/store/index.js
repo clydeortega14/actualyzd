@@ -5,6 +5,7 @@ import psychologist from './modules/psychologist.js';
 import onboarding_questions from './modules/onboarding-question.js';
 import booking from './modules/booking.js';
 import service_utilization from './modules/service-utilization.js';
+import progress_report from './modules/progress-report.js';
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
 		psychologist,
 		onboarding_questions,
 		booking,
-		service_utilization
+		service_utilization,
+		progress_report
 	}
 })

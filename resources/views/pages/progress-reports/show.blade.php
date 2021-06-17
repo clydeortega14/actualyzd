@@ -10,9 +10,9 @@
 					<div class="card-body">
 						<img src="{{ asset('images/user.png') }}" alt="" class="img-fluid rounded mx-auto d-block" height="150" width="150">
 						<div class="text-center mt-3">
-							<h5>Robert Alho</h5>
+							<h5>{{ $booking->participants[0]->name }}</h5>
 
-							<img src="{{ asset('images/logo1.png') }}" alt="" class="img-fluid mx-auto d-block" height="55" width="55">
+							<img src="{{ asset('images/logo1.png') }}" alt="" class="img-fluid rounded mx-auto d-block" height="55" width="55">
 						</div>
 						{{-- <div class="row">
 							<div class="col-md-12">
@@ -70,19 +70,23 @@
 
 									@include('alerts.message')
 
+									@php
+										$report = $booking->progressReport;
+									@endphp
+
 									<input type="hidden" name="booking_id" value="{{ $booking->id}}">
 
 									<div class="form-group">
 										<label>Main Concern</label>
-										<textarea type="text" name="main_concern" class="form-control" rows="4"></textarea>
+										<textarea type="text" name="main_concern" class="form-control" rows="4">{{ !is_null($report) ? $report->main_concern : '' }}</textarea>
 									</div>
 
 									<div class="form-group"> 
 										<label>Are there any medications that the client is taking?</label>
 										<!-- client medication -->
 										<client-medication 
-											has-prescription="" 
-											medication="">
+											has-prescription="{{ !is_null($report) ? $report->has_prescription : '' }}" 
+											medication="{{ !is_null($report) && $report->has_prescription ? $report->medication->medication : '' }}">
 											
 										</client-medication>
 										<!-- end  client medication-->
@@ -90,7 +94,7 @@
 
 									<div class="form-group">
 										<label>What are your initial assessments of the client and what are her / his core concerns?</label>
-										<textarea type="text" name="initial_assessment" class="form-control" rows="4"></textarea>
+										<textarea type="text" name="initial_assessment" class="form-control" rows="4">{{ !is_null($report) ? $report->initial_assessment : '' }}</textarea>
 									</div>
 
 									<div class="form-group">
@@ -98,14 +102,14 @@
 										<select type="combobox" name="followup_session" class="form-control">
 											<option> -- Select --</option>
 											@foreach($followup_sessions as $followup)
-												<option value="{{ $followup->id }}" >{{ $followup->name }}</option>
+												<option value="{{ $followup->id }}" {{ !is_null($report) && $report->followup_session == $followup->id ? 'selected' : '' }}>{{ $followup->name }}</option>
 											@endforeach
 										</select>
 									</div>
 
 									<div class="form-group">
 										<label>What therapy or intervention does your client need?</label>
-										<textarea type="text" name="treatment_goal" class="form-control" rows="4"></textarea>
+										<textarea type="text" name="treatment_goal" class="form-control" rows="4">{{ !is_null($report) ? $report->treatment_goal : '' }}</textarea>
 									</div>
 									
 									<div class="form-group">

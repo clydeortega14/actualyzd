@@ -190,6 +190,10 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('progress-report', 'ProgressReportController@store')->name('progress.report.store');
 
+		Route::get('assignees', 'ProgressReportController@getAssignees')->name('progress.report.assignees');
+
+		Route::post('assign-report/{id}', 'ProgressReportController@assignReport')->name('assign.report');
+
 	});
 
 });

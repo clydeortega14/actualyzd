@@ -3,6 +3,7 @@
 		<div class="form-check">
 			<input class="form-check-input" type="radio" name="has_prescription" id="yes" :value="true" v-model="selected">
 			<label class="form-check-label" for="yes">Yes</label>
+			{{ hasPrescription }}
 		</div>
 		<div v-if="hasMedication">
 			<div class="form-group">

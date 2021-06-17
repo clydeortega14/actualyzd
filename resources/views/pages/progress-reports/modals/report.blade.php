@@ -7,6 +7,9 @@
             </div>
 
             <div class="modal-body">
+
+                 <report-assignee report_id="{{ $report->id }}"></report-assignee>
+
             	<ol type="I">
             		<li class="mb-3">
             			<h6>Main Concern</h6>
