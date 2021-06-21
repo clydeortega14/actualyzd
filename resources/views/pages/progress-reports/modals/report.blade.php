@@ -8,7 +8,7 @@
 
             <div class="modal-body">
 
-                 <report-assignee report_id="{{ $report->id }}"></report-assignee>
+                 <report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
 
             	<ol type="I">
             		<li class="mb-3">

@@ -8,14 +8,14 @@ const getters = {
 
 const actions = {
 	async getAssignees({commit}){
-		const response = await axios.get('progress-reports/assignees');
+		const response = await axios.get(`${window.location.origin}/progress-reports/assignees`);
 		commit('setAssignees', response.data)
 	},
 
 	assignReport({commit}, data){
 		return new Promise((resolve, reject) => {
 
-			axios.post(`progress-reports/assign-report/${data.id}`, data)
+			axios.post(`${window.location.origin}/progress-reports/assign-report/${data.id}`, data)
 				.then(response => {
 					resolve(response)
 				})

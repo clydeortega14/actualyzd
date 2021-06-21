@@ -31,4 +31,8 @@ class ProgressReport extends Model
     {
         return $this->hasOne(Medication::class, 'id');
     }
+    public function toAssignee()
+    {
+        return $this->belongsTo(User::class, 'assignee');
+    }
 }

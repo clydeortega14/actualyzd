@@ -37,10 +37,10 @@
 			                                  	@endif
 											</td>
 											<td>
-												<a href="#" data-toggle="modal" data-target="#report-{{ $report->id }}">View Report</a>
+												<a href="{{ route('progress-reports.show', $report->booking->id) }}">View Report</a>
 											</td>
 										</tr>
-										@include('pages.progress-reports.modals.report')
+										{{-- @include('pages.progress-reports.modals.report') --}}
 									@endforeach
 								</tbody>
 							</table>

@@ -15,7 +15,7 @@
 	                            <div class="input-group mb-3">
 	                                  <select name="assignee" id="" class="form-control" v-model="selected">
 	                                        <option value="" disabled>Choose Assignee</option>
-	                                        <option v-for="option in allAssignees" :value="{id:option.id, name: option.name }" :key="option.id">{{ option.name }}</option>
+	                                        <option v-for="option in allAssignees" :value="{id:option.id, name: option.name }" :key="option.id" :selected="selected">{{ option.name }}</option>
 	                                  </select>
 	                                  <div class="input-group-append">
 	                                        <button class="btn btn-primary" type="button" id="button-addon2" @click.prevent="assigned">
@@ -46,10 +46,9 @@
 		},
 		created(){
 			this.getAssignees();
+			this.selected = this.reportAssignee;
 		},
-		props: {
-			report_id: String
-		},
+		props: ["reportId", "reportAssignee"],
 		computed: {
 
 			...mapGetters(["allAssignees"]),
@@ -62,7 +61,7 @@
 			...mapActions(["getAssignees", "assignReport"]),
 			assigned(){			
 				this.assignReport({
-					id: this.report_id,
+					id: this.reportId,
 					assignee: this.selected.id
 				}).then(response => {
 					if(response.data.success){
