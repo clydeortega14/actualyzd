@@ -12,6 +12,7 @@
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    @stack('custom_styles')
 </head>
 <body>
     <div id="app">
@@ -153,5 +154,6 @@
 
     <!-- js compiled assets -->
     <script defer src="{{ asset('js/app.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>
