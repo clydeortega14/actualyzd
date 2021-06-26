@@ -5,7 +5,7 @@
 </style>
 <template>
 	<div>
-	 <div class="row justify-content-end mb-4">
+	 <div class="row mb-4">
             <div class="col-md-12">
                   	<div class="assignee" v-if="!choose_assignee">
                         Assignee: <a href="#" @click.prevent="choose_assignee = true">{{ checkAssignee }}</a>

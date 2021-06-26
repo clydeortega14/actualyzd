@@ -188,7 +188,11 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('show/{booking}', 'ProgressReportController@show')->name('progress-reports.show');
 
+		Route::get('edit-report/{booking}', 'ProgressReportController@edit')->name('progress-reports.edit');
+
 		Route::post('progress-report', 'ProgressReportController@store')->name('progress.report.store');
+
+		Route::put('progress-report/{report}', 'ProgressReportController@update')->name('progress.report.update');
 
 		Route::get('assignees', 'ProgressReportController@getAssignees')->name('progress.report.assignees');
 
