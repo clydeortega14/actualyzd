@@ -102,7 +102,7 @@
 
                             @if($user->hasRole('admin'))
                                 <li class="nav-item p-3">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{ url('company_info') }}">
                                         <i class="fas fa-fw fa-clock"></i>
                                         <span>Company</span>
                                     </a>

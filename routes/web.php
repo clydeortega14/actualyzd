@@ -59,6 +59,11 @@ Route::middleware('auth')->group(function(){
 	// Users
 	Route::resource('users', 'UsersController');
 
+	//Company Information or Profile
+	Route::resource('company_info', 'CompanyInfoController');
+	Route::post('company_info_update', 'CompanyInfoController@update')->name('update.comapany_info');
+
+
 	// User Profile
 	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
 
