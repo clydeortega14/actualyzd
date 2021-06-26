@@ -17997,6 +17997,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -18035,6 +18042,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -18043,34 +18057,18 @@ __webpack_require__.r(__webpack_exports__);
       counselee_selected: this.counselee,
       show: {
         client: false,
-        counselee: false
+        counselee: false,
+        participants: false
       },
       session_types: [],
       clients: []
     };
   },
   props: ["session", "client", "counselee"],
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allClientUsers", "getAllClients", "allSessionTypes"])),
   created: function created() {
-    this.session_types = [{
-      id: 1,
-      name: 'Individual'
-    }, {
-      id: 2,
-      name: 'Group Session'
-    }, {
-      id: 3,
-      name: 'Webinar'
-    }];
-    this.clients = [{
-      id: 1,
-      name: 'San Miguel Corp'
-    }, {
-      id: 2,
-      name: 'Lalamove'
-    }, {
-      id: 3,
-      name: 'Concentrix'
-    }];
+    this.getSessionTypes();
+    this.getClients();
   },
   watch: {
     session_selected: function session_selected(id) {
@@ -18079,6 +18077,7 @@ __webpack_require__.r(__webpack_exports__);
       if (id === 1) {
         this.show.client = true;
         this.show.counselee = true;
+        this.show.participants = false;
       } else if (id === 2 || id === 3) {
         this.show.counselee = false;
         this.show.client = true;
@@ -18088,12 +18087,18 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     client_selected: function client_selected(client_id) {
+      if (this.session_selected !== 1) {
+        this.show.participants = true;
+      }
+
       this.$emit('client-selected', client_id);
+      this.getClientUsers(client_id);
     },
     counselee_selected: function counselee_selected(counselee_id) {
       this.$emit('counselee-selected', counselee_id);
     }
-  }
+  },
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getClientUsers", "getClients", "getSessionTypes"]))
 });
 
 /***/ }),
@@ -94688,11 +94693,11 @@ var render = function() {
             }
           },
           [
-            _c("option", { attrs: { value: "" } }, [
+            _c("option", { attrs: { value: "", selected: "", disabled: "" } }, [
               _vm._v("Choose type of session")
             ]),
             _vm._v(" "),
-            _vm._l(_vm.session_types, function(session_type) {
+            _vm._l(_vm.allSessionTypes, function(session_type) {
               return _c(
                 "option",
                 { key: session_type.id, domProps: { value: session_type.id } },
@@ -94742,11 +94747,13 @@ var render = function() {
                 }
               },
               [
-                _c("option", { attrs: { value: "" } }, [
-                  _vm._v("- Choose a client -")
-                ]),
+                _c(
+                  "option",
+                  { attrs: { value: "", selected: "", disabled: "" } },
+                  [_vm._v("- Choose a client -")]
+                ),
                 _vm._v(" "),
-                _vm._l(_vm.clients, function(client) {
+                _vm._l(_vm.getAllClients, function(client) {
                   return _c(
                     "option",
                     { key: client.id, domProps: { value: client.id } },
@@ -94757,6 +94764,35 @@ var render = function() {
               2
             )
           ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.show.participants
+        ? _c(
+            "div",
+            { staticClass: "form-group" },
+            [
+              _c("label", [_vm._v("Participants")]),
+              _vm._v(" "),
+              _vm._l(_vm.allClientUsers, function(user, index) {
+                return _c(
+                  "div",
+                  { key: index, staticClass: "form-check ml-2" },
+                  [
+                    _c("input", {
+                      staticClass: "form-check-input",
+                      attrs: { type: "checkbox", id: user.id },
+                      domProps: { value: user.id }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { staticClass: "form-check-label" }, [
+                      _vm._v(_vm._s(user.name))
+                    ])
+                  ]
+                )
+              })
+            ],
+            2
+          )
         : _vm._e(),
       _vm._v(" "),
       _vm.show.counselee
@@ -94792,20 +94828,21 @@ var render = function() {
                 }
               },
               [
-                _c("option", { attrs: { value: "" } }, [
-                  _vm._v("- Choose a counselee -")
-                ]),
+                _c(
+                  "option",
+                  { attrs: { value: "", selected: "", disabled: "" } },
+                  [_vm._v("- Choose a counselee -")]
+                ),
                 _vm._v(" "),
-                _c("option", { attrs: { value: "1" } }, [
-                  _vm._v("juan dela cruz")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "2" } }, [
-                  _vm._v("nonito del grande")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "3" } }, [_vm._v("julio cesar")])
-              ]
+                _vm._l(_vm.allClientUsers, function(user, index) {
+                  return _c(
+                    "option",
+                    { key: index, domProps: { value: user.id } },
+                    [_vm._v(_vm._s(user.name))]
+                  )
+                })
+              ],
+              2
             )
           ])
         : _vm._e()
@@ -110626,6 +110663,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_booking_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/booking.js */ "./resources/js/store/modules/booking.js");
 /* harmony import */ var _modules_service_utilization_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/service-utilization.js */ "./resources/js/store/modules/service-utilization.js");
 /* harmony import */ var _modules_progress_report_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/progress-report.js */ "./resources/js/store/modules/progress-report.js");
+/* harmony import */ var _modules_client_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/client.js */ "./resources/js/store/modules/client.js");
+/* harmony import */ var _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/session-type.js */ "./resources/js/store/modules/session-type.js");
+
+
 
 
 
@@ -110642,7 +110683,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     onboarding_questions: _modules_onboarding_question_js__WEBPACK_IMPORTED_MODULE_4__["default"],
     booking: _modules_booking_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     service_utilization: _modules_service_utilization_js__WEBPACK_IMPORTED_MODULE_6__["default"],
-    progress_report: _modules_progress_report_js__WEBPACK_IMPORTED_MODULE_7__["default"]
+    progress_report: _modules_progress_report_js__WEBPACK_IMPORTED_MODULE_7__["default"],
+    client: _modules_client_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+    session_types: _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__["default"]
   }
 }));
 
@@ -110684,6 +110727,103 @@ var actions = {
 var mutations = {
   setBooking: function setBooking(state, booking) {
     return state.booking = booking;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/client.js":
+/*!**********************************************!*\
+  !*** ./resources/js/store/modules/client.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var state = function state() {
+  return {
+    clients: [],
+    client_users: []
+  };
+};
+
+var getters = {
+  getAllClients: function getAllClients(state) {
+    return state.clients;
+  },
+  allClientUsers: function allClientUsers(state) {
+    return state.client_users;
+  }
+};
+var actions = {
+  getClients: function getClients(_ref) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var commit, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              commit = _ref.commit;
+              _context.next = 3;
+              return axios.get('/clients-with-users');
+
+            case 3:
+              response = _context.sent;
+              commit('setClients', response.data);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  },
+  getClientUsers: function getClientUsers(_ref2, id) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+      var commit, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              commit = _ref2.commit;
+              _context2.next = 3;
+              return axios.get("/client-users/".concat(id));
+
+            case 3:
+              response = _context2.sent;
+              commit('setClientUsers', response.data);
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }))();
+  }
+};
+var mutations = {
+  setClients: function setClients(state, clients) {
+    return state.clients = clients;
+  },
+  setClientUsers: function setClientUsers(state, client_users) {
+    return state.client_users = client_users;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -111139,6 +111279,73 @@ var mutations = {
   },
   setMainConcernsByDate: function setMainConcernsByDate(state, main_concerns_by_date) {
     return state.main_concerns_by_date = main_concerns_by_date;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/session-type.js":
+/*!****************************************************!*\
+  !*** ./resources/js/store/modules/session-type.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var state = function state() {
+  return {
+    session_types: []
+  };
+};
+
+var getters = {
+  allSessionTypes: function allSessionTypes(state) {
+    return state.session_types;
+  }
+};
+var actions = {
+  getSessionTypes: function getSessionTypes(_ref) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var commit, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              commit = _ref.commit;
+              _context.next = 3;
+              return axios.get('/session-types');
+
+            case 3:
+              response = _context.sent;
+              commit('setSessionTypes', response.data);
+
+            case 5:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  }
+};
+var mutations = {
+  setSessionTypes: function setSessionTypes(state, session_types) {
+    return state.session_types = session_types;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

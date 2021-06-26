@@ -120,12 +120,6 @@
 			                        </div>
 			                        
 			                  </form>
-
-								@if($user->hasRole('superadmin'))
-									<report-assignee 
-										report-id="{{ $report->id }}" 
-										report-assignee="{{ is_null($report) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
-								@endif
 			          		</div>
 			          		<div class="tab-pane" id="onboarding-questions" role="tabpanel" aria-labelledby="onboarding-questions-tab">
 			          			@if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1)

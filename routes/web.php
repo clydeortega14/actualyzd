@@ -42,9 +42,14 @@ Route::middleware('auth')->group(function(){
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
-
 	// Client Subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+	// Client Users Route
+	Route::get('client-users/{client}', 'ClientsController@clientUsers');
+
+	Route::get('clients-with-users', 'ClientsController@clientsWithUsers');
+
+	Route::get('session-types', 'SessionTypeController@allSessions');
 
 	/**
 	 * Ajax Requests for Service Utilization Dashboard
