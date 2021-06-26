@@ -6,7 +6,9 @@
       <div class="col-md-3">
         <div class="card mb-3">
           <div class="card-body">
-            <img src="{{ asset('images/user.png') }}" alt="{{ $user->name }}" class="img-fluid rounded mx-auto d-block" height="230" width="230">
+
+            {{-- run `php artisan storage:link` --}}
+            <img src="{{ $user->avatar ? $user->avatar : asset('images/user.png') }}" alt="{{ $user->name }}" class="img-fluid rounded mx-auto d-block ac-avatar">
             <div class="text-center mt-3">
               <h5>{{ $user->name }} <br>
                 <small>{{ $user->email }}</small>
@@ -14,11 +16,7 @@
 
               {{-- <a href="/bookings/create" class="btn btn-primary mr-1">Book Session</a> --}}
 
-              <button class="btn btn-primary ac-upload" style="position: relative;">
-                <input type="file" accept="image/*">
-                <i class="fa fa-upload"></i>
-                <span>Upload Avatar</span>
-              </button>
+              <upload-avatar :user-id="{{ $user->id }}" token="{{ $user->api_token }}"></upload-avatar>
 
             </div>
             {{-- divider --}}
@@ -58,14 +56,14 @@
                 </thead>
                 <tbody>
                   @forelse ($user->schedules as $schedule)
-                     <tr>
-                        <td>{{ $schedule->start }}</td>
-                        <td>{{ $schedule->end }}</td>
-                      </tr>
+                    <tr>
+                      <td>{{ $schedule->start }}</td>
+                      <td>{{ $schedule->end }}</td>
+                    </tr>
                   @empty
-                      <tr>
-                        <td col="2">No Schedules Available</td>
-                      </tr>
+                    <tr>
+                      <td col="2">No Schedules Available</td>
+                    </tr>
                   @endforelse
                 </tbody>
               </table>
@@ -75,13 +73,7 @@
       </div>
     </div>
   </div>
-
 @stop
-
-
-@push('scripts')
-
-@endpush
 
 @push('custom_styles')
 <style>
@@ -98,6 +90,11 @@
     height: 0;
     border: 1px solid #ddd;
     overflow: hidden;
+  }
+
+  .ac-avatar {
+    max-width: 100%;
+    max-height: 320px;
   }
 </style>
 @endpush

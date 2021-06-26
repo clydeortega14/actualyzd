@@ -9,6 +9,7 @@ use App\Client;
 use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -174,7 +175,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Delete avatar first before deleting the user
+        // Storage::delete($user->avatar);
     }
 
     public function userData(array $data)
@@ -186,5 +188,23 @@ class UsersController extends Controller
             'username' => $data['username']
 
         ];
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'photo' => ['required', 'file', 'image'],
+            'user' => ['required']
+        ]);
+
+        $path = $request->file('photo')->storeAs('public/avatars', $request->user);
+
+        $user = User::findOrFail($request->user);
+
+        $user->avatar = Storage::url($path);
+
+        $user->save();
+
+        return response()->json([], 200);
     }
 }
