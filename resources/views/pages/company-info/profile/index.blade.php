@@ -34,7 +34,7 @@ body{
 					<div class="card">
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
-								<img src="{{asset('images')}}/{{$company_info->logo}}" alt="Admin" class=" p-1 " width="110">
+								<img src="{{asset('storage/'.$company_info->logo )}}" alt="Admin" class=" p-1 " width="110">
 								<div class="mt-3">
 									<h4>{{ $company_info->name }}</h4>
 									<!-- <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -45,6 +45,25 @@ body{
 								</div>
 								<hr class="my-4">
 							</div>
+							@if(count($errors) > 0)
+								<div class="alert alert-danger">
+									Uploud Validation Error <br><br>
+									<ul>
+										@foreach ($errors->all() as $error)
+										<li>{{ $error}}</li>
+										@endforeach
+									</ul>
+
+								</div>
+							@endif
+
+							@if($message = Session::get('success'))
+								<div class="alert alert-success alert-block">
+									<button type="button" class="close" data-dismiss="alert">x</button>
+									<strong>{{$message}}</strong>
+
+								</div>
+							@endif
 							
 							
 							<ul class="list-group list-group-flush" id="main_info" >
@@ -104,14 +123,17 @@ body{
 								
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<input type="number" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
+									<input type="number" name="number_of_employees" class="form-control" value="{{ $users->count() }}" style="width: 359px;border-style: groove;">
 									
 								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+						
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
+								>
 									
-									<img  src="{{asset('images')}}/{{$company_info->logo}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
-									<input type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
+										<h6   class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+										
+										<img   src="{{asset('storage/'.$company_info->logo )}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
+										<input   type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
 									
 									
 								</li>
@@ -124,6 +146,35 @@ body{
 							</form>
 
 							<!-- -----------------------company employees table  -->
+							<!-- Modal -->
+							<div class="modal fade" id="import-users" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Import Excel File for Company Users</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form method="POST" action="{{url('import_excel')}}" enctype="multipart/form-data"  id="edit_info">
+										@csrf
+										<div class="form-group">
+											<label for="recipient-name" class="col-form-label">Select File for Uploud</label>
+											<input type="file" name="select_file" class="form-control">
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button type="submit" class="btn btn-primary">Save changes</button>
+										</div>
+										
+									</form>
+								</div>
+								
+								</div>
+							</div>
+							</div>
+							<!-- Modal -->
 							<div class="card mb-4" id="Users" style="display:none;">
 								<div class="card-header py-2">
 									<div class="d-sm-flex justify-content-between p-3">
@@ -240,6 +291,7 @@ $(document).ready(function(){
 	$("#edit_info").hide();
 	$("#Users").show();
   });
+ 
 
   
   

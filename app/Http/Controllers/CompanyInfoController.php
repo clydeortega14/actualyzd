@@ -32,24 +32,14 @@ class CompanyInfoController extends Controller
 
                 $query->whereNotIn('id', [$company_user->id]);
             }
-
+            
             if($company_user->hasRole('admin')){
 
                 $query->where('client_id', $company_user->client_id);
             }
+            
 
         })->with(['roles'])->get();
-
-     
-
-   
-        
-        
-
-       
-        
-        
-
         return view('pages.company-info.profile.index',compact('company_info','users'));
     }
 
@@ -106,14 +96,18 @@ class CompanyInfoController extends Controller
     public function update(Request $request)
     {
         //
+
+       
         $company_name = $request->company_name;
         $email = $request->email;
         $contact_number = $request->contact_number;
         $postal_address = $request->postal_address;
         $number_of_employees = $request->number_of_employees;
-        $image = $request->file('file');
-        $imageName = time().'.'.$image->extension();
-        $image->move(public_path('images'),$imageName);
+
+        $this->validate($request,[
+            'file'    => 'required|mimes:jpg,png'
+        ]);
+        
 
 
         
@@ -123,9 +117,16 @@ class CompanyInfoController extends Controller
         $client->contact_number = $contact_number;
         $client->postal_address = $postal_address;
         $client->number_of_employees = $number_of_employees;
-        $client->logo = $imageName;
+        // $client->logo = $imageName;
+        if($request->has('file'))
+        {
+            $client ->update(['logo' => $request->file('file')->store('logo')]);
+           
+
+            return back()->with('success', 'Company Logo Successfully Updated.');
+        }
         $client->save();
-        return back();
+        return back()->with('success', 'Successfully Updated.');
 
 
     }

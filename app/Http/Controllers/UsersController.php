@@ -7,6 +7,8 @@ use App\User;
 use App\Role;
 use App\Client;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EmployeeImport;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
 
@@ -187,5 +189,27 @@ class UsersController extends Controller
 
         ];
     }
+    public function import_excel(Request $request)
+    {
+        
+        $this->validate($request,[
+            'select_file'    => 'required|mimes:xls,xlsx,csv'
+        ]);
+
+        Excel::import(new EmployeeImport,$request->file('select_file'));
+           
+        return back()->with('success', 'Excel Data Imported Successfully.');
+        
+        
+       
+
+       
+        
+        
+        
+        
+    }
+
+
     
 }

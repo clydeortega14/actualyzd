@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function(){
 	// Users
 	Route::resource('users', 'UsersController');
 
+	// Import company Users
+	Route::post('import_excel', 'UsersController@import_excel')->name('import.comapany_users');
+
 	//Company Information or Profile
 	Route::resource('company_info', 'CompanyInfoController');
 	Route::post('company_info_update', 'CompanyInfoController@update')->name('update.comapany_info');
