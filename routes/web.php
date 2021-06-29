@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function(){
 
 	// User Profile
 	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('users/profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
+	Route::put('users/profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
 
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){

@@ -10,6 +10,7 @@ use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
@@ -17,7 +18,7 @@ class UsersController extends Controller
 
     public function profile(User $user)
     {
-        return view('pages.users.profile', compact('user'));
+        return view('pages.users.profile.index', compact('user'));
     }
 
     /**
@@ -175,7 +176,7 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        // Delete avatar first before deleting the user
+        // Delete avatar/image first before deleting the user
         // Storage::delete($user->avatar);
     }
 
@@ -206,5 +207,31 @@ class UsersController extends Controller
         $user->save();
 
         return response()->json([], 200);
+    }
+
+    public function editProfile(User $user)
+    {
+        return view('pages.users.profile.edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'max:255'],
+            'username' => ['required', 'unique:users,username,' . $user->id, 'max:255'],
+            'email' => ['required', 'unique:users,email,' . $user->id],
+        ]);
+
+        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')
+            ->withErrors($validator)
+            ->withInput();
+
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+
+        $user->save();
+
+        return view('pages.users.profile.index', compact('user'));
     }
 }
