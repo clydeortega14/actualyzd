@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function(){
 	//Company Information or Profile
 	Route::resource('company_info', 'CompanyInfoController');
 	Route::post('company_info_update', 'CompanyInfoController@update')->name('update.comapany_info');
+	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
 
 	// User Profile

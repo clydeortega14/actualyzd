@@ -196,7 +196,13 @@ class UsersController extends Controller
             'select_file'    => 'required|mimes:xls,xlsx,csv'
         ]);
 
-        Excel::import(new EmployeeImport,$request->file('select_file'));
+        $company_user = auth()->user();
+        $company_info = Client::where('id', $company_user->client_id)->first();
+        $company_userid = $company_info->id;
+        $d_pass = 'password';
+        new EmployeeImport($company_userid);
+
+        Excel::import(new EmployeeImport($company_userid),$request->file('select_file'));
            
         return back()->with('success', 'Excel Data Imported Successfully.');
         

@@ -15,14 +15,26 @@ class EmployeeImport implements ToModel,WithHeadingRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+
+    protected $company_userid;
+
+    public function __construct($company_userid)
+    {
+        $this->company_userid = $company_userid;
+        $this->d_pass = 'password';
+
+
+    }
     public function model(array $row)
     {
+        
+    
         return new User([
-            'client_id'     => $row['client_id'],
+            'client_id'     => $this->company_userid,
             'name'          => $row['name'],
             'email'         => $row['email'],
             'username'      => $row['username'],
-            'password'      => Hash::make($row['password']),
+            'password'      => Hash::make($this->d_pass),
 
             
         ]);

@@ -104,9 +104,7 @@ class CompanyInfoController extends Controller
         $postal_address = $request->postal_address;
         $number_of_employees = $request->number_of_employees;
 
-        $this->validate($request,[
-            'file'    => 'required|mimes:jpg,png'
-        ]);
+        
         
 
 
@@ -120,6 +118,9 @@ class CompanyInfoController extends Controller
         // $client->logo = $imageName;
         if($request->has('file'))
         {
+            $this->validate($request,[
+                'file'    => 'required|mimes:jpg,png'
+            ]);
             $client ->update(['logo' => $request->file('file')->store('logo')]);
            
 
@@ -130,6 +131,27 @@ class CompanyInfoController extends Controller
 
 
     }
+    public function update_companyLogo(Request $request)
+    {
+        //
+        $client = Client::find($request->client_id);
+       
+        if($request->has('file'))
+        {
+            $this->validate($request,[
+                'file'    => 'required|mimes:jpg,png'
+            ]);
+            $client ->update(['logo' => $request->file('file')->store('logo')]);
+           
+
+            return back()->with('success', 'Company Logo Successfully Updated.');
+        }
+      
+        return back()->with('success', 'Successfully Updated.');
+
+
+    }
+
 
     /**
      * Remove the specified resource from storage.
