@@ -170,6 +170,11 @@ Route::middleware('auth')->group(function(){
 	/*-- Bookings --*/
 	Route::prefix('bookings')->group(function(){
 
+		/* Booking Process / Steps */
+		Route::get('onboarding', 'BookingProcessController@onboarding')->name('booking.onboarding');
+
+		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');

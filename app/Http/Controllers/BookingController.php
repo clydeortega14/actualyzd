@@ -38,7 +38,8 @@ class BookingController extends Controller
 
     public function create()
     {
-        return view('pages.bookings.create2');
+        $categories = $this->categories;
+        return view('pages.bookings.create2', compact('categories'));
     }
     public function bookNow(Request $request)
     {

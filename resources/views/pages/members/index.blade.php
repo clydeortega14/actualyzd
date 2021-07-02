@@ -25,6 +25,14 @@
                 	<div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
 
                 		<div class="row mt-3">
+
+                			<div class="col-md-12 mb-3">
+                				<a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
+                					<i class="fa fa-calendar"></i>
+                					<span>Book A Session</span>
+                				</a>
+                			</div>
+
                 			<div class="col-xl-3 col-md-6 mb-4">
 	                            <div class="card">
 	                            	<div class="card-header">
@@ -88,7 +96,7 @@
 	 
 	            		<div class="card mt-3 mb-3">
             				<div class="card-header">
-            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
+            					Sessions
             				</div>
             				<div class="card-body">
             					<div class="table-responsive">
