@@ -114,7 +114,7 @@ class CompanyInfoController extends Controller
         $client->email = $email;
         $client->contact_number = $contact_number;
         $client->postal_address = $postal_address;
-        $client->number_of_employees = $number_of_employees;
+       
         // $client->logo = $imageName;
         if($request->has('file'))
         {
