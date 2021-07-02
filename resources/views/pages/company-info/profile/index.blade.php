@@ -68,7 +68,7 @@
 								
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<span class="text-secondary">{{ $users->count() }}</span>
+									<span class="text-secondary">{{ $company_info->number_of_employees }}</span>
 								</li>
 								<br>
 							<button type="button" id="show" class="btn btn-primary btn-lg btn-block">EDIT</button>
@@ -98,6 +98,12 @@
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
 									<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
+									
+									
+								</li>
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
+									<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
 									
 									
 								</li>

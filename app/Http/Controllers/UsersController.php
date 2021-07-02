@@ -200,6 +200,7 @@ class UsersController extends Controller
         $company_user = auth()->user();
         $company_info = Client::where('id', $company_user->client_id)->first();
         $company_userid = $company_info->id;
+        
 
         $role_id = Role::where('id','=', 4)->first()->id;
         
