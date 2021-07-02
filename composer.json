@@ -14,7 +14,8 @@
         "fideloper/proxy": "^4.4",
         "halpdesk/zizaco-entrust-laravel-6.0": "^1.9",
         "laravel/framework": "^6.20",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "maatwebsite/excel": "~2.1.0"
     },
     "require-dev": {
         "facade/ignition": "^1.16.4",
