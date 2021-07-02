@@ -19,7 +19,7 @@
 									<h4>{{ $company_info->name }}</h4>
 									<!-- <p class="text-secondary mb-1">Full Stack Developer</p>
 									<p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p> -->
-									<button class="btn btn-outline-primary" style="margin-left: 753px;" id="c_profile">Company Profile</button>
+									<button class="btn btn-outline-primary" style="margin-left: 700px;" id="c_profile">Company Profile</button>
 									<button class="btn btn-outline-primary" style=" display:none;" data-toggle="modal" data-target="#update_logo" id="logo" >Update Comppany Logo</button>
 									<button class="btn btn-primary" id="c_employees">Company Employees</button>
 						
@@ -142,8 +142,6 @@
 								<div class="modal-body">
 									<form method="POST" action="{{url('import_excel')}}" enctype="multipart/form-data"  id="edit_info">
 										@csrf
-											
-
 										<div class="form-group">
 											<label for="recipient-name" class="col-form-label">Select File for Uploud</label>
 											<input type="file" name="select_file" class="form-control">
