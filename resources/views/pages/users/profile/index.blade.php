@@ -8,13 +8,11 @@
           <div class="card-body">
 
             {{-- run `php artisan storage:link` --}}
-            <img src="{{ $user->avatar ? $user->avatar : asset('images/user.png') }}" alt="{{ $user->name }}" class="img-fluid rounded mx-auto d-block ac-avatar">
+            <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/user.png') }}" alt="{{ $user->name }}" class="img-fluid rounded mx-auto d-block ac-avatar">
             <div class="text-center mt-3">
               <h5>{{ $user->name }} <br>
                 <small>{{ $user->email }}</small>
               </h5>
-
-              {{-- <a href="/bookings/create" class="btn btn-primary mr-1">Book Session</a> --}}
 
               @if (Auth::id() === $user->id)
                 <a href="/users/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">

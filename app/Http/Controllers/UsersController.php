@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Client;
+use App\Rules\MatchOldPassword;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImport;
@@ -201,11 +202,11 @@ class UsersController extends Controller
             'user' => ['required']
         ]);
 
-        $path = $request->file('photo')->storeAs('public/avatars', $request->user);
+        $path = $request->file('photo')->storeAs('avatars', $request->user);
 
         $user = User::findOrFail($request->user);
 
-        $user->avatar = Storage::url($path);
+        $user->avatar = $path;
 
         $user->save();
 
@@ -227,9 +228,7 @@ class UsersController extends Controller
             'email' => ['required', 'unique:users,email,' . $user->id],
         ]);
 
-        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')
-            ->withErrors($validator)
-            ->withInput();
+        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')->withErrors($validator)->withInput();
 
         $user->name = $request->name;
         $user->username = $request->username;
@@ -237,7 +236,24 @@ class UsersController extends Controller
 
         $user->save();
 
-        return view('pages.users.profile.index', compact('user'));
+        return redirect()->route('user.profile.edit', ['user' => $user->id])->withSuccess('Profile information updated successfully!');
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required', 'string', 'min:8'],
+            'new_confirm_password' => ['required', 'same:new_password'],
+        ]);
+
+        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')->withErrors($validator);
+
+        $user->password = Hash::make($request->new_password);
+
+        $user->save();
+
+        return redirect()->route('user.profile.edit', ['user' => $user->id])->withSuccess('Password updated successfully!');
     }
 
     public function import_excel(Request $request)

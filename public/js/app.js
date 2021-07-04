@@ -16926,20 +16926,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 data.append('photo', event.target.files[0]);
                 data.append('user', _this.userId);
                 data.append('api_token', _this.token);
-                _context.next = 8;
+                _context.prev = 6;
+                _context.next = 9;
                 return axios.post("/api/photo", data);
 
-              case 8:
+              case 9:
                 res = _context.sent;
-                console.log(res);
                 if (res.status === 200) location.reload();
+                _context.next = 17;
+                break;
 
-              case 11:
+              case 13:
+                _context.prev = 13;
+                _context.t0 = _context["catch"](6);
+                console.log(_context.t0);
+
+                _this.$emit('upload-error', _context.t0);
+
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, null, [[6, 13]]);
       }))();
     }
   }

@@ -30,11 +30,15 @@ export default {
       data.append('user', this.userId)
       data.append('api_token', this.token)
 
-      let res = await axios.post("/api/photo", data)
+      try {
+        let res = await axios.post("/api/photo", data)
 
-      console.log(res)
+        if (res.status === 200) location.reload()
+      } catch (e) {
+        console.log(e)
 
-      if (res.status === 200) location.reload()
+        this.$emit('upload-error', e)
+      }
     }
   }
 }
