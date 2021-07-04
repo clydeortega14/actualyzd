@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -211,6 +212,8 @@ class UsersController extends Controller
 
     public function editProfile(User $user)
     {
+        if (Auth::id() !== $user->id) return redirect()->route('user.profile', ['user' => Auth::id()]);
+
         return view('pages.users.profile.edit', compact('user'));
     }
 

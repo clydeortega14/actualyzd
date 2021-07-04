@@ -16,10 +16,13 @@
 
               {{-- <a href="/bookings/create" class="btn btn-primary mr-1">Book Session</a> --}}
 
-              <a href="/users/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">
-                <i class="fa fa-pen"></i>
-                Update Profile
-              </a>
+              @if (Auth::id() === $user->id)
+                <a href="/users/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">
+                  <i class="fa fa-pen"></i>
+                  Update Profile
+                </a>
+              @endif
+
               <upload-avatar :user-id="{{ $user->id }}" token="{{ $user->api_token }}"></upload-avatar>
 
             </div>
