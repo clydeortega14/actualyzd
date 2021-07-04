@@ -23,6 +23,12 @@ class UsersSeeder extends Seeder
         $this->createRoles();
     	// Create Superadmin
         $this->superadmin();
+        // Create sanmiguel_admin
+        $this->sanmiguel_admin();
+        // Create lalamove_admin
+        // $this->lalamove_admin();
+        // Create lalamove_admin
+        // $this->concentrix_admin();
         // psychologist
         $this->psychologists();  
     }
@@ -112,5 +118,19 @@ class UsersSeeder extends Seeder
         $superadmin = Role::where('name', 'superadmin')->first();
 
         $user->roles()->attach($superadmin->id);
+    }
+    public function sanmiguel_admin()
+    {
+        $user = User::create([
+            'name' => 'San Miguel Corporation',
+            'email' => 'sanmiguel@gmail.com',
+            'username' => 'sanmiguel_admin',
+            'password' => Hash::make('password'),
+            'is_active' => true
+        ]);
+
+        $sanmiguel_admin = Role::where('name', 'admin')->first();
+
+        $user->roles()->attach($sanmiguel_admin->id);
     }
 }

@@ -23,6 +23,10 @@ class Client extends Model
     {
         return $this->hasMany(User::class, 'client_id');
     }
+    public function admin_users()
+    {
+        return $this->hasOne(User::class, 'client_id');
+    }
 
     public function subscription()
     {
