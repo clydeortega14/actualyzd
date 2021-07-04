@@ -49,6 +49,7 @@ class UsersController extends Controller
 
         })->with(['roles'])->get();
 
+
         $clients = Client::all();
 
         return view('pages.superadmin.users.index', compact('users', 'clients'));
@@ -266,10 +267,10 @@ class UsersController extends Controller
         $company_user = auth()->user();
         $company_info = Client::where('id', $company_user->client_id)->first();
         $company_userid = $company_info->id;
-        $d_pass = 'password';
-        new EmployeeImport($company_userid);
 
-        Excel::import(new EmployeeImport($company_userid),$request->file('select_file'));
+        $role_id = Role::where('id','=', 4)->first()->id;
+        
+        Excel::import(new EmployeeImport($company_userid,$role_id,$company_user),$request->file('select_file'));
 
         return back()->with('success', 'Excel Data Imported Successfully.');
     }

@@ -155,6 +155,7 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('client')->group(function() {
 
 		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
+		Route::get('user/delete-data/{user}', 'ClientUserController@deleteData')->name('client.user.delete.info');
 		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
 
 		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');

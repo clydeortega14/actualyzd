@@ -235,6 +235,37 @@ class ClientUserController extends Controller
        return response()->json([ 'error' => true, 'message' => 'User successfully deleted!' ], 200);
        
     }
+    public function deleteData($id)
+    {
+        DB::beginTransaction();
+       try {
+
+            if(!auth()->user()->can('can.delete.user')) return redirect()->back()->with('error', 'You have no permission to edit a user!');
+
+            $user = User::where('id', $id)->where(function($query) {
+                $query->where('id', '<>', auth()->user()->id);
+                if(auth()->user()->hasRole('admin')) {
+                    $query->where('id', '<>', auth()->user()->id)->where('client_id', auth()->user()->client_id);
+                } 
+            })
+            ->first();
+
+            if(!$user) return response()->json([ 'error' => true, 'message' => 'User not found!'], 404);
+
+            $user->delete();
+
+       } catch (\Exception $e) {
+
+           DB::rollback();
+           return back()->with('error', 'Something went wrong!');
+           
+       }
+
+       DB::commit();
+       
+       return back()->with('success', 'User successfully deleted!');
+       
+    }
 
     public function userData(array $data)
     {
