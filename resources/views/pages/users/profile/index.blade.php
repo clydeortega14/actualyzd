@@ -21,9 +21,9 @@
                   <i class="fa fa-pen"></i>
                   Update Profile
                 </a>
-              @endif
 
-              <upload-avatar :user-id="{{ $user->id }}" token="{{ $user->api_token }}"></upload-avatar>
+                <upload-avatar :user-id="{{ $user->id }}" token="{{ $user->api_token }}"></upload-avatar>
+              @endif
 
             </div>
             {{-- divider --}}
@@ -49,27 +49,43 @@
           </div>
         </div>
 
-        {{-- user schedules --}}
+        {{-- user bookings --}}
         <div class="card mb-3">
           <div class="card-body">
-            <h5 class="card-title">Schedules</h5>
+            <h5 class="card-title">Bookings</h5>
             <div class="d-sm-flex">
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Session Start</th>
-                    <th scope="col">Session End</th>
+                    <th scope="col">Client</th>
+                    <th scope="col">Session start</th>
+                    <th scope="col">Session end</th>
+                    <th scope="col">Time start</th>
+                    <th scope="col">Time end</th>
+                    <th scope="col">Conselee</th>
+                    <th scope="col">Booked by</th>
+                    <th scope="col">Session type</th>
+                    <th scope="col">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @forelse ($user->schedules as $schedule)
+                  @forelse ($user->bookings as $booking)
                     <tr>
-                      <td>{{ $schedule->start }}</td>
-                      <td>{{ $schedule->end }}</td>
+                      <td>{{ $booking->toClient->name }}</td>
+                      <td>{{ $booking->toSchedule->start }}</td>
+                      <td>{{ $booking->toSchedule->end }}</td>
+                      <td>{{ $booking->time->from }}</td>
+                      <td>{{ $booking->time->to }}</td>
+                      <td>{{ $booking->toCounselee === null ? '' : $booking->toCounselee->name }}</td>
+                      <td>{{ $booking->bookedBy->name }}</td>
+                      <td>{{ $booking->sessionType->name }}</td>
+                      <td>
+                        <span class="{{ $booking->toStatus->class }}">{{ $booking->toStatus->name }}</span>
+                      </td>
                     </tr>
                   @empty
                     <tr>
-                      <td col="2">No Schedules Available</td>
+                      <td col="2">No Bookings Available</td>
                     </tr>
                   @endforelse
                 </tbody>
