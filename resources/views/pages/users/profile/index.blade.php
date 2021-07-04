@@ -15,7 +15,7 @@
               </h5>
 
               @if (Auth::id() === $user->id)
-                <a href="/users/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">
+                <a href="/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">
                   <i class="fa fa-pen"></i>
                   Update Profile
                 </a>

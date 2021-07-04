@@ -228,7 +228,7 @@ class UsersController extends Controller
             'email' => ['required', 'unique:users,email,' . $user->id],
         ]);
 
-        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')->withErrors($validator)->withInput();
+        if ($validator->fails()) return redirect('profile/' . $user->id . '/edit')->withErrors($validator)->withInput();
 
         $user->name = $request->name;
         $user->username = $request->username;
@@ -247,7 +247,7 @@ class UsersController extends Controller
             'new_confirm_password' => ['required', 'same:new_password'],
         ]);
 
-        if ($validator->fails()) return redirect('users/profile/' . $user->id . '/edit')->withErrors($validator);
+        if ($validator->fails()) return redirect('profile/' . $user->id . '/edit')->withErrors($validator);
 
         $user->password = Hash::make($request->new_password);
 

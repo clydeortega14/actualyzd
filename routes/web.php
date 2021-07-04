@@ -68,10 +68,10 @@ Route::middleware('auth')->group(function(){
 	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
 	// User Profile
-	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
-	Route::get('users/profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
-	Route::put('users/profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
-	Route::put('users/profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');
+	Route::get('profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
+	Route::put('profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
+	Route::put('profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');
 
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){

@@ -21,7 +21,7 @@
           <div class="card-body">
             <h5 class="card-title">Edit Profile Information</h5>
 
-            <form method="POST" action="/users/profile/{{ $user->id }}">
+            <form method="POST" action="/profile/{{ $user->id }}">
               @csrf
               @method('PUT')
               <div class="form-group">
@@ -50,7 +50,7 @@
               </div>
               <button type="submit" class="btn btn-primary">Update</button>
               <button type="reset" class="btn btn-outline-secondary">Reset</button>
-              <a href="/users/profile/{{ $user->id }}" class="btn btn-outline-primary">Cancel</a>
+              <a href="/profile/{{ $user->id }}" class="btn btn-outline-primary">Cancel</a>
             </form>
           </div>
         </div>
@@ -61,7 +61,7 @@
           <div class="card-body">
             <h5 class="card-title">Change Password</h5>
 
-            <form method="POST" action="/users/profile/{{ $user->id }}/change-password">
+            <form method="POST" action="/profile/{{ $user->id }}/change-password">
               @csrf
               @method('PUT')
               <div class="form-group">
