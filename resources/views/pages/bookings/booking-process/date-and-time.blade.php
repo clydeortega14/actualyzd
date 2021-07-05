@@ -2,10 +2,14 @@
 
 @section('content')
 	
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<calendar-page></calendar-page>
+				<div class="card">
+					<div class="card-body">
+						<bookings-calendar></bookings-calendar>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

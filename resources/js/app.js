@@ -29,6 +29,8 @@ import store from './store'
 
 Vue.component('calendar-page', require('./components/CalendarPage.vue').default);
 
+Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue').default);
+
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
 
 // Progress Report Client Medication Component
