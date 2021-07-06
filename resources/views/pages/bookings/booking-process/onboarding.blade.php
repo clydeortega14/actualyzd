@@ -3,7 +3,7 @@
 @section('content')
 	
 	<div class="container">
-		<div class="row">
+		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-header">Onboarding Questions</div>
@@ -22,7 +22,7 @@
                         <ol style="list-style-type: upper-roman;">
                         	@foreach($categories as $category)
 	                        	<li>
-	                        		<b>{{ $category->name }}</b>
+	                        		{{ $category->name }}
 	                        		@include('pages.bookings.components.questionnaire')
 	                        	</li>
                         	@endforeach

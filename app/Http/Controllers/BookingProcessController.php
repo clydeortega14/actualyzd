@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AssessmentCategory;
+use App\Http\Traits\SchedulesTrait;
 
 class BookingProcessController extends Controller
 {
+    use SchedulesTrait;
+    
     public function onboarding()
     {
     	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);

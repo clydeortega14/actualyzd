@@ -16806,6 +16806,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/daygrid */ "./node_modules/@fullcalendar/daygrid/main.js");
 /* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.js");
 /* harmony import */ var _TimeComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../TimeComponent */ "./resources/js/components/TimeComponent.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -16818,6 +16825,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -16828,23 +16842,37 @@ __webpack_require__.r(__webpack_exports__);
       calendarOptions: {
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
         initialView: 'dayGridMonth',
-        selectable: true
-      }
+        dateClick: this.handleDateClick,
+        eventClick: this.handleEventClick,
+        selectable: true,
+        events: {
+          url: '/psychologist/schedules'
+        }
+      },
+      selected_date: null,
+      show_actions: false,
+      show_time_component: false
     };
   },
-  mounted: function mounted() {
-    this.scrollToEnd();
-  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])(["getTimeLists"])),
   components: {
     TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  methods: {
-    scrollToEnd: function scrollToEnd() {
-      var container = document.getElementById('#date-time-container');
-      console.log(container);
-      container.scrollTop = container.scrollHeight;
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])(["timeLists"])), {}, {
+    handleDateClick: function handleDateClick(arg) {
+      this.show_time_component = false;
+      this.selected_date = null;
+      this.show_actions = false;
+    },
+    handleEventClick: function handleEventClick(arg) {
+      this.show_time_component = true;
+      this.selected_date = arg.event.startStr;
+      this.timeLists(arg.event.id);
+    },
+    selectTime: function selectTime(time) {
+      this.show_actions = true;
     }
-  }
+  })
 });
 
 /***/ }),
@@ -93915,19 +93943,34 @@ var render = function() {
     "div",
     { attrs: { id: "date-time-container" } },
     [
-      _c("button", {
-        attrs: { type: "button" },
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.scrollToEnd.apply(null, arguments)
-          }
-        }
-      }),
-      _vm._v(" "),
       _c("FullCalendar", { attrs: { options: _vm.calendarOptions } }),
       _vm._v(" "),
-      _c("TimeComponent")
+      _vm.show_time_component
+        ? _c("TimeComponent", {
+            attrs: {
+              time_lists: _vm.getTimeLists,
+              selected_date: _vm.selected_date
+            },
+            on: { "select-time": _vm.selectTime }
+          })
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.show_actions
+        ? _c("div", { staticClass: "form-group mt-4" }, [
+            _c("button", { staticClass: "btn btn-primary btn-block" }, [
+              _vm._v("Proceed Next")
+            ]),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-secondary btn-block",
+                attrs: { href: "#" }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
+        : _vm._e()
     ],
     1
   )

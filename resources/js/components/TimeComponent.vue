@@ -4,7 +4,7 @@
 			<div class="d-flex justify-content-between">
 				<span>Pick a time</span>
 				<div>
-					<input type="date" name="" readonly class="form-control" :value="selected_date">
+					<input type="date" name="selected_date" readonly class="form-control" :value="selected_date">
 				</div>
 			</div>
 		</div>
