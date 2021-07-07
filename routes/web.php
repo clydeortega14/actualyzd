@@ -175,6 +175,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
 
+		Route::get('review-details', 'BookingProcessController@reviewDetails')->name('booking.review.details');
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');

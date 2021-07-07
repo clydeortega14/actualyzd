@@ -21,4 +21,9 @@ class BookingProcessController extends Controller
     {
     	return view('pages.bookings.booking-process.date-and-time');
     }
+
+    public function reviewDetails()
+    {
+        return view('pages.bookings.booking-process.review');
+    }
 }
