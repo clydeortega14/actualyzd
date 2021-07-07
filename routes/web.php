@@ -177,6 +177,13 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('review-details', 'BookingProcessController@reviewDetails')->name('booking.review.details');
 
+		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
+
+
+		/* Booking Process Actions */
+		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
+
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');

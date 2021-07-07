@@ -8,14 +8,18 @@
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-body">
-						<p class="lead text-center mt-5">
+						<h3 class="card-title text-center mt-5">
 							Review Booking Details
-						</p>
+						</h3>
 
-						<ul class="list-group">
+						<ul class="list-group mt-5">
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
-						    	On Boarding Questions
-						    	<a href="#">link to on boarding questions</a>
+						    	Firstimer
+						    	<p>YES</p>
+						  	</li>
+						  	<li class="list-group-item d-flex justify-content-between align-items-center">
+						    	Intent to self harm
+						    	<p>YES</p>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Date and Time
@@ -30,12 +34,12 @@
 
 						<div class="row mt-3">
 							<div class="col-md-6">
-								<button class="btn btn-primary btn-block">Confirm</button>
-								
+								{{-- <button class="btn btn-primary btn-lg btn-block">Confirm</button> --}}
+								<a href="{{ route('booking.success.page') }}" class="btn btn-primary btn-lg btn-block">Confirm Booking</a>
 							</div>
 
 							<div class="col-md-6">
-								<a href="#" class="btn btn-secondary btn-block">Cancel</a>
+								<a href="#" class="btn btn-outline-secondary btn-lg btn-block">Cancel</a>
 							</div>
 						</div>
 					</div>

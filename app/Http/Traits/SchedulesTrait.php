@@ -13,10 +13,34 @@ trait SchedulesTrait {
         $schedules = PsychologistSchedule::where(function($q){
 
             if(auth()->user()->hasRole('psychologist')){
+
                 $q->where('psychologist', auth()->user()->id);
             }
-        })->whereDate('start', '>=', now()->toDateString())
-        ->with(["psych"])->get();
+
+        })->where(function($query){
+
+            if(request()->session()->exists('self_harm')){
+
+                $self_harm = session('self_harm');
+
+                if($self_harm == "0"){
+
+                    // must display schedules 24 hours before
+                    $start = now()->addHours(24);
+
+                    $query->whereDate('start', '>=', $start);
+
+                }else{
+
+                    $query->whereDate('start', '>=', now()->toDateString());
+                }
+
+            }else{
+
+                $query->whereDate('start', '>=', now()->toDateString());
+            }
+
+        })->with(["psych"])->get();
 
         return $schedules;
 	}
