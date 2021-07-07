@@ -77,7 +77,8 @@ class UsersController extends Controller
             'name' => ['required', 'max:255'],
             'email' => ['required', 'unique:users'],
             'username' => ['required', 'unique:users', 'max:255'],
-            'password' => ['required', 'confirmed']
+            'password' => ['required', 'confirmed'],
+            'roles' => ['required'],
         ]);
 
 
@@ -94,6 +95,7 @@ class UsersController extends Controller
             // check if request has roles provided
             if($request->has('roles')){
 
+               
                 // attach roles
                 $this->attachRole($user, $request->roles);
             }

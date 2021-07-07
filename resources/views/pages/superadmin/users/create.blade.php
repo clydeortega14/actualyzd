@@ -84,7 +84,8 @@
 									@endif
 
 									<div class="form-group">
-										<button type="submit" class="btn btn-primary">Submit</button>
+										<button type="submit"  class="btn btn-primary">Submit</button>
+										<!-- <button type="button" id="submit" data-toggle="modal" data-target="#remind-users"  class="btn btn-primary" >Submit</button> -->
 										<a href="{{ url('users') }}" class="btn btn-danger">Cancel</a>
 									</div>
 
@@ -93,7 +94,8 @@
 								</div>
 								<div class="col-sm-7">
 									
-									<h3>Roles</h3>
+									<h3 style="display: inline-block;">Roles </h3>
+									<span style="float: right;color: red;">NOTE : Please double check when assigning roles to users.</span>
 									<div class="table-responsive">
 										<table class="table table-bordered">
 											<thead>
@@ -122,12 +124,12 @@
 																	@endif
 																@endforeach
 
-																<input type="checkbox" name="roles[]" value="{{ $role->id }}" {{ $checked }}>
+																<input type="checkbox"  name="roles[]" value="{{ $role->id }}" {{ $checked }}>
 															@else
-																<input type="checkbox" name="roles[]" value="{{ $role->id }}">
+																<input type="checkbox"  name="roles[]" value="{{ $role->id }}">
 															@endif
 														@else
-															<input type="checkbox" name="roles[]" value="{{ $role->id }}">
+															<input type="checkbox"  name="roles[]" value="{{ $role->id }}">
 														@endif
 														<!-- end for default checked -->
 														
@@ -142,6 +144,7 @@
 															<span class="badge badge-danger">no permissions available</span>
 														@endif
 													</td>
+													
 												</tr>
 												@endforeach
 											</tbody>
