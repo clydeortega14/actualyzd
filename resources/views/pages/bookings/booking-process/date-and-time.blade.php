@@ -7,7 +7,9 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<bookings-calendar></bookings-calendar>
+						<form action="{{ route('booking.store.date-time') }}" method="GET">
+							<bookings-calendar></bookings-calendar>
+						</form>
 					</div>
 				</div>
 			</div>

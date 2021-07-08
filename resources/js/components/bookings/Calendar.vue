@@ -9,8 +9,11 @@
 			:selected_date="selected_date" 
 			@select-time="selectTime" />
 
+		<!-- for schedule id hidden input -->
+		<input type="hidden" name="schedule_id" :value="schedule_id">
+
 		<div class="form-group mt-4" v-if="show_actions">
-			<button class="btn btn-primary btn-block">Proceed Next</button>
+			<button class="btn btn-primary btn-block" type="submit">Proceed Next</button>
 			<a href="#" class="btn btn-secondary btn-block">Cancel</a>
 		</div>
 	</div>
@@ -44,6 +47,7 @@
 					}
 				},
 				selected_date: null,
+				schedule_id: null,
 				show_actions: false,
 				show_time_component: false
 			}
@@ -67,9 +71,10 @@
 			},
 			handleEventClick(arg){
 
+				this.schedule_id = arg.event.id;
 				this.show_time_component = true;
 				this.selected_date = arg.event.startStr;
-				this.timeLists(arg.event.id)
+				this.timeLists(this.schedule_id);
 				
 			},
 			selectTime(time){

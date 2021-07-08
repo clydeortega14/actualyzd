@@ -16,6 +16,7 @@ class Booking extends Model
             'booked_by', 
             'session_type_id',
             'is_firstimer',
+            'self_harm',
             'status',
             'link_to_session',
             'main_concern'

@@ -15,33 +15,38 @@
 						<ul class="list-group mt-5">
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Firstimer
-						    	<p>YES</p>
+						    	<span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Intent to self harm
-						    	<p>YES</p>
+						    	<span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Date and Time
-						    	<a href="#">Friday July 9, 2021 @ 9:00 am - 10:00 am</a>
+						    	<span>
+						    		<a href="#">{{ session('booking_details.selected_date') }} @ {{ session('booking_details.timelist.from').' - '.session('booking_details.timelist.to') }}</a>
+						    	</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Psychologist
-						    	<a href="#">Juan Dela Cruz</a>
+						    	<span>
+						    		<a href="#">{{ session('booking_details.schedule.psychologist') }}</a>
+						    	<span>
 						  	</li>
 						</ul>
 
+						<form action="{{ route('booking.confirm') }}" method="POST">
+							@csrf
+							<div class="row mt-3">
+								<div class="col-md-6">
+									<button class="btn btn-primary btn-lg btn-block">Confirm</button>
+								</div>
 
-						<div class="row mt-3">
-							<div class="col-md-6">
-								{{-- <button class="btn btn-primary btn-lg btn-block">Confirm</button> --}}
-								<a href="{{ route('booking.success.page') }}" class="btn btn-primary btn-lg btn-block">Confirm Booking</a>
+								<div class="col-md-6">
+									<a href="#" class="btn btn-outline-secondary btn-lg btn-block">Cancel</a>
+								</div>
 							</div>
-
-							<div class="col-md-6">
-								<a href="#" class="btn btn-outline-secondary btn-lg btn-block">Cancel</a>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>

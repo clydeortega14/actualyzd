@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 use App\Booking;
 use DB;
 use Illuminate\Support\Facades\Validator;
+use App\AssessmentAnswer;
 
 trait BookingTrait {
 
@@ -65,5 +66,22 @@ trait BookingTrait {
         $this->bookingsFoMember($user, $query);
 
         $this->bookingsForPsychologist($user, $query);
+    }
+
+    public function submitAnswers($booking_id, $onboarding_answers)
+    {
+        foreach($onboarding_answers as $index => $value){
+
+            if($value != null){
+
+                AssessmentAnswer::create([
+                    'booking_id' => $booking_id,
+                    'category_id' => 1,
+                    'questionnaire_id' => $index,
+                    'answer' => $value
+                ]);
+            }
+            
+        }
     }
 }

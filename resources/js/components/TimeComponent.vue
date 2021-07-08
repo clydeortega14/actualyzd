@@ -12,7 +12,7 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" v-for="time in time_lists" :key="time.id">
 			    	<div class="form-group">
-			    		<input type="radio" name="time" @change="selectTime(time.id)"/>
+			    		<input type="radio" name="time" @change="selectTime(time.id)" :value="time.id" />
 			    		<label>{{ time.from+' - '+time.to }}</label>
 			    	</div>
 			    </div>
