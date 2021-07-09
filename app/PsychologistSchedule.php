@@ -24,4 +24,8 @@ class PsychologistSchedule extends Model
     {
         return date('m/d/Y', strtotime($this->start));
     }
+    public function fullStartDate()
+    {
+        return date('l, jS F Y', strtotime($this->start));
+    }
 }

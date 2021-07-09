@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 use App\Booking;
 use App\PsychologistSchedule;
+
 trait BookingSchedulesTrait {
 
 	public function getArrscheduleID()

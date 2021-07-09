@@ -18,10 +18,10 @@ class MemberController extends Controller
     public function home()
     {
         $bookings = $this->bookingsQuery();
-
+        $upcoming = $this->findUpcomingSession();
         $total_bookings = $this->totalBookings();
         $booking_by_statuses = $this->bookingByStatus();
     	
-    	return view('pages.members.index', compact('bookings', 'total_bookings', 'booking_by_statuses'));
+    	return view('pages.members.index', compact('bookings', 'total_bookings', 'booking_by_statuses', 'upcoming'));
     }
 }

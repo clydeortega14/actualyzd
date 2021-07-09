@@ -5,6 +5,7 @@ use App\Booking;
 use DB;
 use Illuminate\Support\Facades\Validator;
 use App\AssessmentAnswer;
+use App\PsychologistSchedule;
 
 trait BookingTrait {
 
@@ -83,5 +84,18 @@ trait BookingTrait {
             }
             
         }
+    }
+
+    public function findUpcomingSession()
+    {
+        $bookings = $this->bookingsQuery();
+        $schedule_id = PsychologistSchedule::select('id', 'start')->whereIn('id', $bookings->pluck('schedule'))
+            ->whereDate('start', '>=', now()->toDateString())
+            ->orderBy('start', 'asc')
+            ->first();
+
+        return Booking::where('schedule', $schedule_id->id)->with(['toSchedule', 'time'])->first();
+
+        
     }
 }
