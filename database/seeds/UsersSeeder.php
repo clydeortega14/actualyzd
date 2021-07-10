@@ -40,35 +40,30 @@ class UsersSeeder extends Seeder
                 'email' => 'psychologist1@psychline.ph',
                 'username' => 'psychologist1', 
                 'password' => 'password', 
-                'is_active' => true 
             ],
             [
                 'name' => 'Psychologist Two', 
                 'email' => 'psychologist2@psychline.ph', 
                 'username' => 'psychologist2',
                 'password' => 'password', 
-                'is_active' => true 
             ],
             [
                 'name' => 'Psychologist Three', 
                 'email' => 'psychologist3@psychline.ph', 
                 'username' => 'psychologist3',
                 'password' => 'password', 
-                'is_active' => true 
             ],
             [
                 'name' => 'Psychologist Four', 
                 'email' => 'psychologist4@psychline.ph',
                 'username' => 'psychologist4', 
                 'password' => 'password', 
-                'is_active' => true 
             ],
             [
                 'name' => 'Psychologist Five', 
                 'email' => 'psychologist5@psychline.ph',
                 'username' => 'psychologist5',
                 'password' => 'password', 
-                'is_active' => true 
             ],
 
         ];
@@ -78,15 +73,12 @@ class UsersSeeder extends Seeder
 
         foreach($psychologists as $psycho){
             $user = User::create([
-
                 'name' => $psycho['name'],
                 'email' => $psycho['email'],
                 'username' => $psycho['username'],
                 'password' => Hash::make($psycho['password']),
-                'is_active' => $psycho['is_active']
-
+                'is_active' => true,
             ]);
-
 
            $user->roles()->attach($role->id); 
         }

@@ -72,9 +72,11 @@ Route::middleware('auth')->group(function(){
 	Route::post('company_info_update', 'CompanyInfoController@update')->name('update.comapany_info');
 	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
-
 	// User Profile
-	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
+	Route::put('profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
+	Route::put('profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');
 
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
@@ -158,6 +160,7 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('client')->group(function() {
 
 		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
+		Route::get('user/delete-data/{user}', 'ClientUserController@deleteData')->name('client.user.delete.info');
 		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
 
 		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');

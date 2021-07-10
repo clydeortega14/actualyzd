@@ -19,7 +19,7 @@
 									<h4>{{ $company_info->name }}</h4>
 									<!-- <p class="text-secondary mb-1">Full Stack Developer</p>
 									<p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p> -->
-									<button class="btn btn-outline-primary" style="margin-left: 753px;" id="c_profile">Company Profile</button>
+									<button class="btn btn-outline-primary" style="margin-left: 700px;" id="c_profile">Company Profile</button>
 									<button class="btn btn-outline-primary" style=" display:none;" data-toggle="modal" data-target="#update_logo" id="logo" >Update Comppany Logo</button>
 									<button class="btn btn-primary" id="c_employees">Company Employees</button>
 						
@@ -62,13 +62,13 @@
 									<span class="text-secondary">{{ $company_info->contact_number }}</span>
 								</li>
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><line x1="4" y1="12" x2="20" y2="12"></line><polyline points="14 6 20 12 14 18"></polyline></svg> Address</h6>
+									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
 									<span class="text-secondary">{{ $company_info->postal_address }}</span>
 								</li>
 								
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
 									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<span class="text-secondary">{{ $users->count() }}</span>
+									<span class="text-secondary">{{ $company_info->number_of_employees }}</span>
 								</li>
 								<br>
 							<button type="button" id="show" class="btn btn-primary btn-lg btn-block">EDIT</button>
@@ -96,17 +96,19 @@
 									
 								</li>
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><line x1="4" y1="12" x2="20" y2="12"></line><polyline points="14 6 20 12 14 18"></polyline></svg> Address</h6>
+									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
 									<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
 									
 									
 								</li>
-								
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<input type="number" name="number_of_employees" class="form-control" value="{{ $users->count() }}" style="width: 359px;border-style: groove;">
+								<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
+									<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
+									
 									
 								</li>
+								
+								
 						
 								<!-- <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
 								>
@@ -142,8 +144,6 @@
 								<div class="modal-body">
 									<form method="POST" action="{{url('import_excel')}}" enctype="multipart/form-data"  id="edit_info">
 										@csrf
-											
-
 										<div class="form-group">
 											<label for="recipient-name" class="col-form-label">Select File for Uploud</label>
 											<input type="file" name="select_file" class="form-control">
@@ -160,6 +160,8 @@
 							</div>
 							</div>
 							<!-- Modal -->
+							
+
 							<!-- Modal update_logo -->
 							<div class="modal fade" id="update_logo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 							<div class="modal-dialog modal-dialog-centered" role="document">
@@ -190,7 +192,7 @@
 								</div>
 							</div>
 							</div>
-							<!-- Modal -->
+							<!-- Modal Import-->
 							<div class="card mb-4" id="Users" style="display:none;">
 								<div class="card-header py-2">
 									<div class="d-sm-flex justify-content-between p-3">
@@ -253,7 +255,7 @@
 														<a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">
 															<i class="fa fa-edit"></i>
 														</a> | 
-														<a href="#" class="btn btn-secondary btn-sm">
+														<a href="#" data-toggle="modal" data-target="#delete-users-{{ $user->id}}" id="logo"  class="btn btn-secondary btn-sm">
 															<i class="fa fa-trash"></i>
 														</a> |
 														<a href="#" class="btn btn-{{ $user->is_active ? 'secondary' : 'primary' }} btn-sm"
@@ -261,6 +263,7 @@
 															<i class="fa fa-eye"></i>
 														</a>
 														@include('pages.superadmin.clients.users.modals.update-status')
+														@include('pages.modals.delete-users')
 													</td>
 												</tr>
 										
