@@ -5,7 +5,6 @@ use App\User;
 use App\Role;
 use App\Http\Traits\RandomClass;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UsersSeeder extends Seeder
 {
@@ -78,7 +77,6 @@ class UsersSeeder extends Seeder
                 'email' => $psycho['email'],
                 'username' => $psycho['username'],
                 'password' => Hash::make($psycho['password']),
-                'api_token' => Str::random(60),
                 'is_active' => true,
             ]);
 
@@ -111,7 +109,6 @@ class UsersSeeder extends Seeder
             'email' => 'superadmin@actualyzd.ph',
             'username' => 'superadmin',
             'password' => Hash::make('password'),
-            'api_token' => Str::random(60),
             'is_active' => true
         ]);
 

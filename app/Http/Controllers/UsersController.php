@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImport;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,6 @@ use Illuminate\Support\Facades\Auth;
 class UsersController extends Controller
 {
     use RoleTrait;
-
-    public function profile(User $user)
-    {
-        return view('pages.users.profile.index', compact('user'));
-    }
 
     /**
      * Display a listing of the resource.
@@ -194,6 +190,16 @@ class UsersController extends Controller
             'username' => $data['username']
 
         ];
+    }
+
+    public function profile(User $user)
+    {
+        if (Auth::id() === $user->id) {
+            $user->api_token = Str::random(60);
+            $user->save();
+        }
+
+        return view('pages.users.profile.index', compact('user'));
     }
 
     public function uploadAvatar(Request $request)
