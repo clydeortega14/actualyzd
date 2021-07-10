@@ -35,9 +35,9 @@
                                 <div class="col mr-2">
                                     <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
                                 </div>
-                                <div class="col-auto">
+                                {{-- <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -54,22 +54,28 @@
             					UPCOMING SESSION
             				</div>
             				<div class="mb-4" style="font-size: 1.0em;">
-            					<b>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' '.$upcoming->time->parseTimeTo() }}</b>
+                                @if(!is_null($upcoming))
+            					<b>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</b>
+                                @else
+                                    <b>NOT AVAILABLE</b>
+                                @endif
             				</div>
             				
             		    </h5>
-            		    <div class="text-center">
-            		    	@if(!is_null($upcoming->link_to_session))
-            				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
-            				    <i class="fa fa-link"></i>
-            				    <span>link to session</span>
-            				</a>
-            				@endif
-            				<a href="#" data-toggle="tooltip" title="Cancel Session" class="mr-3">
-            				    <i class="fa fa-times"></i>
-            				    <span>Cancel</span>
-            				</a>
-            			</div>
+                        @if(!is_null($upcoming))
+                		    <div class="text-center">
+                		    	@if(!is_null($upcoming->link_to_session))
+                				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
+                				    <i class="fa fa-link"></i>
+                				    <span>link to session</span>
+                				</a>
+                				@endif
+                				<a href="#" data-toggle="tooltip" title="Cancel Session" class="mr-3">
+                				    <i class="fa fa-times"></i>
+                				    <span>Cancel</span>
+                				</a>
+                			</div>
+                        @endif
 
             		</div>
             	</div>

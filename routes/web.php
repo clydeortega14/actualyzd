@@ -179,6 +179,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
 
+		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status');
+
 
 		/* Booking Process Actions */
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');

@@ -19,11 +19,11 @@ trait SchedulesTrait {
 
         })->where(function($query){
 
-            if(request()->session()->exists('self_harm')){
+            if(request()->session()->exists('assessment.self_harm')){
 
-                $self_harm = session('self_harm');
+                $self_harm = session('assessment.self_harm');
 
-                if($self_harm == "0"){
+                if(!$self_harm){
 
                     // must display schedules 24 hours before
                     $start = now()->addHours(24);

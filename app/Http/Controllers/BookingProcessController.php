@@ -115,4 +115,11 @@ class BookingProcessController extends Controller
 
         return redirect()->route('booking.success.page')->with('success', 'Successfully booked a session');
     }
+
+    public function updateBookingStatus(Request $request, $id)
+    {
+        $booking = Booking::where('id', $id)->update(['status' => $request->status]);
+        return $booking;
+        return response()->json(['success' => true, 'message' => 'Successfully updated', 'data' => [] ], 200);
+    }
 }

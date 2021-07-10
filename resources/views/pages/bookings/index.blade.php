@@ -1,3 +1,14 @@
+<ul class="nav nav-tabs mb-3">
+	@foreach($booking_statuses as $booking_status)
+	  	<li class="nav-item">
+	    	<a class="nav-link {{ $booking_status->id == 1 ? 'active' : '' }}" href="#">
+	    	{{ $booking_status->id == 1 ? 'Upcoming' : $booking_status->name }}
+	    	<span class="{{ $booking_status->class }}">0</span>
+	    	</a>
+	    	
+	  	</li>
+  	@endforeach
+</ul>
 <table class="table">
 	<thead>
 		<tr>
@@ -9,6 +20,7 @@
 		</tr>
 	</thead>
 	<tbody>
+		
 		@foreach($bookings as $booking)
 			<tr>
 				<td>{{ $booking->toSchedule->fullStartDate().' @ '.$booking->time->parseTimeFrom().' - '. $booking->time->parseTimeTo() }}
@@ -25,12 +37,15 @@
 					</a>
 				 </td>
 				 <td>
-				 	<a href="#">{{ $booking->toStatus->name }}</a>
+
+				 	<booking-status session-status="{{ $booking->toStatus->name }}" :booking-id="{{ $booking->id }}"></booking-status>
+
+				 	{{-- <a href="#">{{ $booking->toStatus->name }}</a>
 				 	<br />
 				 	@if(!is_null($booking->reschedule))
 				 		<a href="#" data-toggle="modal" data-target="#cancel-form">see reason</a>
 				 		@include('pages.bookings.modals.cancel-form')
-				 	@endif
+				 	@endif --}}
 				 </td>
 			</tr>
 		@endforeach

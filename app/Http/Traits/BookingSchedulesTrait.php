@@ -35,4 +35,11 @@ trait BookingSchedulesTrait {
 	{
 		return PsychologistSchedule::whereIn('id', $this->getArrscheduleID());
 	}
+
+	public function bookingSchedulesQuery($bookings)
+	{
+		return PsychologistSchedule::select('id', 'start')->whereIn('id', $bookings->pluck('schedule'))
+            ->whereDate('start', '>=', now()->toDateString())
+            ->orderBy('start', 'asc');
+	}
 }
