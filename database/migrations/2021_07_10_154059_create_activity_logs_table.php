@@ -21,7 +21,7 @@ class CreateActivityLogsTable extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('type_id')->references('id')->on('activity_type')
+            $table->foreign('type_id')->references('id')->on('activity_types')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }

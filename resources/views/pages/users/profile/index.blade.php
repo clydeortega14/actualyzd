@@ -28,10 +28,32 @@
             <div class="my-4 ac-divider"></div>
 
             {{-- user activities --}}
-            <div class="">
-              user activities
+            <div class="card-body">
+              <h5 class="card-title">Activities</h5>
+              <div class="d-sm-flex">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Type</th>
+                      <th scope="col">Datetime</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{-- {{dd($user->activities)}} --}}
+                    @forelse ($user->activities as $activity)
+                      <tr>
+                        <td>{{ $activity->type->description }}</td>
+                        <td>{{ $activity->created_at }}</td>
+                      </tr>
+                    @empty
+                      <tr>
+                        <td col="2">No Activities Available</td>
+                      </tr>
+                    @endforelse
+                  </tbody>
+                </table>
+              </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -83,7 +105,7 @@
                     </tr>
                   @empty
                     <tr>
-                      <td col="2">No Bookings Available</td>
+                      <td col="9">No Bookings Available</td>
                     </tr>
                   @endforelse
                 </tbody>
