@@ -29,6 +29,17 @@ const actions = {
 
 		});
 		// const book_now = await axios.post('/bookings/book', payload);
+	},
+	updateStatus({context}, payload){
+		
+		return new Promise((resolve, reject) => {
+			axios.post(`/bookings/update-status/${payload.id}`, payload)
+				.then(response => {
+					resolve(response);
+				}).catch(error => {
+					reject(error)
+				})
+		});
 	}
 }
 

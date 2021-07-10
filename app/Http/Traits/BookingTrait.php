@@ -2,10 +2,17 @@
 
 namespace App\Http\Traits;
 use App\Booking;
+use App\BookingStatus;
 use DB;
 use Illuminate\Support\Facades\Validator;
+use App\AssessmentAnswer;
+use App\PsychologistSchedule;
+use App\Http\Traits\BookingSchedulesTrait;
+
 
 trait BookingTrait {
+
+    use BookingSchedulesTrait;
 
     public function validateBooking(array $data)
     {
@@ -19,11 +26,14 @@ trait BookingTrait {
 
 	public function bookingsQuery()
 	{
-		return Booking::where(function($query){
-            $this->queryByRole($query);
-        })
-        ->with(['progressReport'])
-        ->get();
+        $bookings = Booking::query();
+
+        // query bookings according to auth user role
+        $this->queryByRole($bookings);
+        // query bookings accoirding to status
+        $this->queryByStatus($bookings, $bookings);
+
+        return $bookings->with(['progressReport'])->get();
 	}
 
     public function totalBookings()
@@ -58,6 +68,7 @@ trait BookingTrait {
             $query->whereIn('schedule', $sched_id);
         }
     }
+
     public function queryByRole($query)
     {
         $user = auth()->user();
@@ -65,5 +76,59 @@ trait BookingTrait {
         $this->bookingsFoMember($user, $query);
 
         $this->bookingsForPsychologist($user, $query);
+    }
+
+    public function queryByStatus($query, $bookings)
+    {
+        if(request()->has('status')){
+            
+            $query->where('status', request('status'));
+            
+        }else{
+
+            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+            // get upcoming sessions
+            $query->where('status', 1)->whereIn('schedule', $schedules_id);
+        }
+    }
+
+    public function submitAnswers($booking_id, $onboarding_answers)
+    {
+        foreach($onboarding_answers as $index => $value){
+
+            if($value != null){
+
+                AssessmentAnswer::create([
+                    'booking_id' => $booking_id,
+                    'category_id' => 1,
+                    'questionnaire_id' => $index,
+                    'answer' => $value
+                ]);
+            }
+            
+        }
+    }
+
+    public function findUpcomingSession()
+    {
+        $bookings = $this->bookingsQuery();
+        $schedule = $this->bookingSchedulesQuery($bookings)->first();
+
+        if(!is_null($schedule)){
+
+           $find_booking = Booking::where('schedule', $schedule->id)->with(['toSchedule', 'time'])->first();
+           if(!is_null($find_booking)){
+                return $find_booking;
+           }else{
+                return null;
+           }
+        }else{
+            return null;
+        }
+    }
+
+    public function bookingStatuses()
+    {
+        return BookingStatus::get(['id', 'name', 'class']);
     }
 }
