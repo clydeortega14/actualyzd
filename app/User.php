@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
     }
+
+    public function activities()
+    {
+        return $this->hasMany(ActivityLog::class, 'user_id', 'id');
+    }
 }

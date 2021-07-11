@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BookingStatusSeeder::class);
         $this->call(FollowupSessionsSeeder::class);
         $this->call(SubscriptionStatusSeeder::class);
+        $this->call(ActivityTypeSeeder::class);
     }
 }
