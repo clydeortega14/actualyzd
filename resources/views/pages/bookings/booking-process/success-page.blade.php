@@ -16,19 +16,19 @@
 							<ul class="list-group mt-5">
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
 							    	Firstimer
-							    	<span>Yes</span>
+							    	<span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
 							  	</li>
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
 							    	Intent to self harm
-							    	<span>Yes</span>
+							    	<span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }}</span>
 							  	</li>
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
 							    	Date and Time
-							    	<span>Friday July 9, 2021 @ 9:00 am - 10:00 am</span>
+							    	<span>{{ session('booking_details.selected_date') }} @ {{ session('booking_details.timelist.from').' - '.session('booking_details.timelist.to') }}</span>
 							  	</li>
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
 							    	Psychologist
-							    	<span>Juan Dela Cruz</span>
+							    	<span>{{ session('booking_details.schedule.psychologist') }}</span>
 							  	</li>
 							</ul>
 							<a href="{{ route('home') }}" class="btn btn-primary btn-block mt-5">Return Home</a>

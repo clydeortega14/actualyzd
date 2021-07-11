@@ -83,7 +83,8 @@
             	<div class="card mb-3">
             		<div class="card-header">Session Logs</div>
             		<div class="card-body">
-            			@include('pages.bookings.index')
+                        <bookings-lists></bookings-lists>
+            			{{-- @include('pages.bookings.index') --}}
             		</div>
             	</div>
             </div>

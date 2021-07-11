@@ -1,12 +1,16 @@
 const state = () => ({
 
-	booking: {}
+	booking: {},
+	bookings: [],
+	booking_statuses: []
 
 });
 
 const getters = {
 
-	getBooking: state => state.booking
+	getBooking: state => state.booking,
+	allBookings: state => state.bookings,
+	allBookingStatuses: state => state.booking_statuses
 }
 
 const actions = {
@@ -40,12 +44,25 @@ const actions = {
 					reject(error)
 				})
 		});
+	},
+	async getAllBookings({ commit }, payload)
+	{
+		const response = await axios.get('/bookings/get-all-bookings', payload);
+		commit('setAllBookings', response.data);
+		
+	},
+	async getBookingStatuses({ commit })
+	{
+		const response = await axios.get('/bookings/status-summary');
+		commit('setBookingStatuses', response.data);
 	}
 }
 
 const mutations = {
 
-	setBooking: (state, booking) => (state.booking = booking)
+	setBooking: (state, booking) => (state.booking = booking),
+	setAllBookings: (state, bookings) => (state.bookings = bookings),
+	setBookingStatuses: (state, booking_statuses) => (state.booking_statuses = booking_statuses)
 }
 
 

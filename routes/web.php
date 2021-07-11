@@ -215,6 +215,13 @@ Route::middleware('auth')->group(function(){
 		Route::put('update/main/concern/{booking}', 'BookingController@updateMainConcern')->name('booking.update.main.concern');
 
 		Route::put('add/link/to/session/{booking}', 'BookingController@addLinkToSession')->name('booking.link.to.session');
+
+		// json
+		Route::get('get-all-bookings', 'BookingController@bookingsQuery');
+
+		Route::get('status-summary', 'BookingController@bookingStatuses');
+
+
 	});
 
 

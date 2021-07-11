@@ -3,6 +3,8 @@
 namespace App\Http\Traits;
 
 use App\PsychologistSchedule;
+use App\TimeList;
+use DB;
 
 trait SchedulesTrait {
 
@@ -44,4 +46,16 @@ trait SchedulesTrait {
 
         return $schedules;
 	}
+
+    public function arrTime($schedule)
+    {
+        return $schedule->timeSchedules()->pluck('time');
+    }
+    public function isGreaterThanCurretTime()
+    {
+        // find that time in timelists table where time is greater than or equal to current time
+        return TimeList::where('from', '>=', now()->toTimeString())
+            ->where('to', '>=', now()->toTimeString())
+            ->pluck('id');
+    }
 }

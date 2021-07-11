@@ -17,7 +17,7 @@ class MemberController extends Controller
 
     public function home()
     {
-        $bookings = $this->bookingsQuery();
+        $bookings =  $this->bookingsQuery();
         $booking_statuses = $this->bookingStatuses();
         $upcoming = $this->findUpcomingSession();
         $total_bookings = $this->totalBookings();

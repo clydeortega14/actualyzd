@@ -33,7 +33,16 @@ trait BookingTrait {
         // query bookings accoirding to status
         $this->queryByStatus($bookings, $bookings);
 
-        return $bookings->with(['progressReport'])->get();
+        $allBookings = $bookings->with([
+            'toSchedule.psych', 
+            'time',
+            'progressReport',
+            'sessionType',
+            'toCounselee',
+            'toStatus'
+        ])->get();
+
+        return $allBookings;
 	}
 
     public function totalBookings()
@@ -80,13 +89,17 @@ trait BookingTrait {
 
     public function queryByStatus($query, $bookings)
     {
+        $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+
         if(request()->has('status')){
             
-            $query->where('status', request('status'));
+            if(request('status') == 1){
+                $query->where('status', 1)->whereIn('schedule', $schedules_id);
+            }else{
+                $query->where('status', request('status'));
+            }
             
         }else{
-
-            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
             // get upcoming sessions
             $query->where('status', 1)->whereIn('schedule', $schedules_id);
         }
@@ -129,6 +142,20 @@ trait BookingTrait {
 
     public function bookingStatuses()
     {
-        return BookingStatus::get(['id', 'name', 'class']);
+        $bookings = BookingStatus::get(['id', 'name', 'class']);
+
+        $by_status_with_total = [];
+
+        foreach($bookings as $booking){
+            $by_status_with_total[] = [
+                'id' => $booking->id,
+                'name' => $booking->name,
+                'total' => $this->bookingsQuery()->where('status', $booking->id)->count(),
+                'class' => $booking->class
+            ];
+        }
+
+        return $by_status_with_total;
+  
     }
 }
