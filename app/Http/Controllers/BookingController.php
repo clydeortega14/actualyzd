@@ -18,7 +18,7 @@ use App\FollowupSession;
 use App\User;
 use App\SessionParticipant;
 use App\Client;
-use app\Events\BookingActivity;
+use App\Events\BookingActivity;
 
 class BookingController extends Controller
 {
