@@ -18,6 +18,7 @@ use App\FollowupSession;
 use App\User;
 use App\SessionParticipant;
 use App\Client;
+use app\Events\BookingActivity;
 
 class BookingController extends Controller
 {
@@ -110,6 +111,8 @@ class BookingController extends Controller
     	}
         
     	DB::commit();
+
+        event(new BookingActivity);
 
         return response()->json(['success' => true, 'message' => 'Successfully Booked a session'], 200);
     }
