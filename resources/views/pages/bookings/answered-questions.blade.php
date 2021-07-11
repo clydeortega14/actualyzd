@@ -101,7 +101,7 @@
 									</a>
 								@endif
 
-								@if($booking->session_type_id == 1)
+								@if($booking->session_type_id == 1 && auth()->user()->hasRole('psychologist'))
 									<a href="{{ route('progress-reports.show', $booking->id) }}" class="mr-3">
 										<i class="fa fa-book"></i>
 										<span>Report</span>

@@ -7,7 +7,6 @@ use DB;
 use App\PsychologistSchedule;
 use App\TimeList;
 use App\AssessmentCategory;
-use App\AssessmentAnswer;
 use App\Http\Requests\BookingRequest;
 use App\Http\Traits\BookingTrait;
 use App\Booking;
@@ -39,7 +38,8 @@ class BookingController extends Controller
 
     public function create()
     {
-        return view('pages.bookings.create2');
+        $categories = $this->categories;
+        return view('pages.bookings.create2', compact('categories'));
     }
     public function bookNow(Request $request)
     {
@@ -92,7 +92,7 @@ class BookingController extends Controller
                         // validate must required all fields
 
                         // submit on boarding question answers
-                        $this->submitAnswers($booking->id, $request);
+                        $this->submitAnswers($booking->id, $request->onboarding_answers);
                     }
 
                     // store session participants
@@ -161,22 +161,6 @@ class BookingController extends Controller
 
     /*  End For Participants Methods */
 
-    public function submitAnswers($booking_id, $request)
-    {
-        foreach($request->onboarding_answers as $index => $value){
-
-            if($value != null){
-
-                AssessmentAnswer::create([
-                    'booking_id' => $booking_id,
-                    'category_id' => 1,
-                    'questionnaire_id' => $index,
-                    'answer' => $value
-                ]);
-            }
-            
-        }
-    }
     public function getAssessment(Booking $booking)
     {
         $categories = $this->categories;

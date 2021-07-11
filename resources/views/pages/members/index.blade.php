@@ -4,101 +4,91 @@
 	
 	<div class="container-fluid">
 		<div class="row justify-content-center">
-			<div class="col-md-12">
-
-				<!-- Render Bookings Breadcrumbs -->
-				{{-- {{ Breadcrumbs::render() }} --}}
-				<!-- end render bookings breadcrumb -->
-
-				@include('alerts.message')
-
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Summary</a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="scheduler-tab" data-toggle="tab" href="#scheduler" role="tab" aria-controls="scheduler" aria-selected="false">Scheduler</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                	<div class="tab-pane fade show active" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-
-                		<div class="row mt-3">
-                			<div class="col-xl-3 col-md-6 mb-4">
-	                            <div class="card">
-	                            	<div class="card-header">
-	                            		<div class="text-xs text-uppercase mb-1">	
-	                            		TOTAL BOOKINGS
-	                            		</div>
-	                            	</div>
-	                                <div class="card-body">
-	                                	<div class="h1 mb-0 text-gray-800 text-center">{{ $total_bookings }}</div>
-	                                </div>
-	                            </div>
-	                        </div>
-
-	                        @foreach($booking_by_statuses as $bookedByStatus)
-
-	                        	{{-- @if($bookedByStatus->toStatus->name == "Booked")
-
-	                        		@php
-	                        			$badge = 'primary'
-	                        		@endphp
-
-	                        	@elseif($bookedByStatus->toStatus->name == "Cancelled")
-
-	                        		@php
-	                        			$badge = 'danger'
-	                        		@endphpT
-
-	                        	@elseif($bookedByStatus->toStatus->name == "Rescheduled")
-
-	                        		@php
-	                        			$badge = 'warning'
-	                        		@endphp
-
-	                        	@endif --}}
-
-	                        	<div class="col-xl-3 col-md-6 mb-4">
-		                            <div class="card h-100">
-		                            	<div class="card-header">
-		                            		<div class="text-xs text-uppercase mb-1">
-		                                        {{ $bookedByStatus->toStatus->name == "Booked" ? 'Upcoming Session' : $bookedByStatus->toStatus->name }}
-		                                    </div>
-		                            	</div>
-		                                <div class="card-body">
-		                                    <div class="row no-gutters align-items-center">
-		                                        <div class="col mr-2">
-		                                            <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
-		                                        </div>
-		                                        <div class="col-auto">
-		                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-		                                        </div>
-		                                    </div>
-		                                </div>
-		                            </div>
-		                        </div>
-	                        @endforeach
-                		</div>
-
-	            	</div>
-
-	            	<div class="tab-pane fade" id="scheduler" role="tabpanel" aria-labelledby="scheduler-tab">
-	 
-	            		<div class="card mt-3 mb-3">
-            				<div class="card-header">
-            					<a href="{{ route('bookings.create') }}" class="btn btn-primary form-control">If you want to book a session, Click here</a>
-            				</div>
-            				<div class="card-body">
-            					<div class="table-responsive">
-            						@include('pages.bookings.index')
-            					</div>
-							</div>
-	            		</div>
-	            	</div>
-                </div>
+			<div class="col-md-12 mb-3 d-flex justify-content-between">
+				<h3 class="text-gray">Home Page</h3 class="text-gray">
+				<a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
+					<i class="fa fa-calendar"></i>
+					<span>Book A Session</span>
+				</a>
 			</div>
+
+			<div class="col-xl-3 col-md-6 mb-4">
+                <div class="card mb-3">
+                	<div class="card-header">
+                		<div class="text-xs text-uppercase mb-1">	
+                		TOTAL BOOKINGS
+                		</div>
+                	</div>
+                    <div class="card-body">
+                    	<div class="h1 mb-0 text-gray-800 text-center">{{ $total_bookings }}</div>
+                    </div>
+                </div>
+                @foreach($booking_by_statuses as $bookedByStatus)
+                    <div class="card mb-3">
+                    	<div class="card-header">
+                    		<div class="text-xs text-uppercase mb-1">
+                                {{ $bookedByStatus->toStatus->name }}
+                            </div>
+                    	</div>
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
+                                </div>
+                                {{-- <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                
+            @endforeach
+            </div>
+
+            <div class="col-md-9">
+            	<div class="card mb-3">
+            		{{-- <div class="card-header">Upcoming Session</div> --}}
+            		<div class="card-body">
+            			<h5 class="card-title text-center">
+            				<div class="mb-4 p-3">
+            					UPCOMING SESSION
+            				</div>
+            				<div class="mb-4" style="font-size: 1.0em;">
+                                @if(!is_null($upcoming))
+            					<b>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</b>
+                                @else
+                                    <b>NOT AVAILABLE</b>
+                                @endif
+            				</div>
+            				
+            		    </h5>
+                        @if(!is_null($upcoming))
+                		    <div class="text-center">
+                		    	@if(!is_null($upcoming->link_to_session))
+                				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
+                				    <i class="fa fa-link"></i>
+                				    <span>link to session</span>
+                				</a>
+                				@endif
+                				<a href="#" data-toggle="tooltip" title="Cancel Session" class="mr-3">
+                				    <i class="fa fa-times"></i>
+                				    <span>Cancel</span>
+                				</a>
+                			</div>
+                        @endif
+
+            		</div>
+            	</div>
+
+            	<div class="card mb-3">
+            		<div class="card-header">Session Logs</div>
+            		<div class="card-body">
+            			@include('pages.bookings.index')
+            		</div>
+            	</div>
+            </div>
+
+
 		</div>
 	</div>
 
