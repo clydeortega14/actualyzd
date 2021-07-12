@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use App\AssessmentAnswer;
 use App\PsychologistSchedule;
 use App\Http\Traits\BookingSchedulesTrait;
+use App\Http\Traits\SchedulesTrait;
 
 
 trait BookingTrait {
 
-    use BookingSchedulesTrait;
+    use BookingSchedulesTrait, SchedulesTrait;
 
     public function validateBooking(array $data)
     {
@@ -56,7 +57,11 @@ trait BookingTrait {
 
     public function totalBookings()
     {
-        return $this->bookingsQuery()->count();
+        $bookings = Booking::query();
+
+        $this->queryByRole($bookings);
+
+        return $bookings->count();
     }
     public function bookingByStatus()
     {
@@ -103,9 +108,13 @@ trait BookingTrait {
         if(request()->has('status')){
             
             if(request('status') == 1){
+
                 $query->where('status', 1)->whereIn('schedule', $schedules_id);
+
             }else{
+
                 $query->where('status', request('status'));
+
             }
             
         }else{
@@ -135,17 +144,30 @@ trait BookingTrait {
     {
         $bookings = $this->bookingsQuery();
         $schedule = $this->bookingSchedulesQuery($bookings)->first();
+        $time = $this->isGreaterThanCurretTime($schedule);
 
-        if(!is_null($schedule)){
+        if(!is_null($schedule) && !is_null($time)){
 
-           $find_booking = Booking::where('schedule', $schedule->id)->with(['toSchedule', 'time'])->first();
+           $find_booking = Booking::where('status', 1)
+            ->whereHas('schedule', function($query){
+                $query->whereDate('start', '>=', now()->toDateString());
+            })
+            ->orWhereHas('time', function($query){
+                $query->whereTime('from', '>=', now()->toTimeString());
+            })->with(['toSchedule', 'time'])
+            ->first();
 
            if(!is_null($find_booking)){
+
                 return $find_booking;
+
            }else{
+
                 return null;
            }
+
         }else{
+
             return null;
         }
     }

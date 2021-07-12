@@ -35,58 +35,41 @@
                                 <div class="col mr-2">
                                     <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
                                 </div>
-                                {{-- <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
-                
-            @endforeach
+                @endforeach
             </div>
 
             <div class="col-md-9">
             	<div class="card mb-3">
             		{{-- <div class="card-header">Upcoming Session</div> --}}
             		<div class="card-body">
-                        <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
-                            <div>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-video"></i>
-                                    <span>Start Video Call</span>
-                                </a>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-book"></i>
-                                    <span>Progress Report</span>
-                                </a>
+                        @if(!is_null($upcoming))
+                            <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
+                                <div>
+                                    <a href="#" class="mr-3">
+                                        <i class="fa fa-video"></i>
+                                        <span>Start Video Call</span>
+                                    </a>
+                                    <a href="#" class="mr-3">
+                                        <i class="fa fa-book"></i>
+                                        <span>Progress Report</span>
+                                    </a>
+                                </div>
+                                
+                                <div>
+                                    <booking-status session-status="{{ $upcoming->toStatus->name }}" :booking-id="{{ $upcoming->id }}" :booking-status="{{ $upcoming->toStatus->id}}"></booking-status>
+                                </div>
                             </div>
-                            
-                            <div>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-eye-slash"></i>
-                                    <span>No Show</span>
-                                </a>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-times"></i>
-                                    <span>Cancel</span>
-                                </a>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>Reschedule</span>
-                                </a>
-                                <a href="#" class="mr-3">
-                                    <i class="fa fa-check"></i>
-                                    <span>Complete</span>
-                                </a>
-                            </div>
-                        </div>
+                        @endif
             			<h5 class="card-title text-center">
             				<div class="mb-4">
             					UPCOMING SESSION
             				</div>
             				<div class="mb-4">
                                 @if(!is_null($upcoming))
-            					<h4>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</h4>
+                					<h4>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</h4>
                                 @else
                                     <b>NOT AVAILABLE</b>
                                 @endif

@@ -10,11 +10,6 @@ class MemberController extends Controller
 {
     use BookingTrait;
 
-    public function __construct()
-    {
-    	//
-    }
-
     public function home()
     {
         $bookings =  $this->bookingsQuery();

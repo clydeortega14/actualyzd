@@ -6,8 +6,10 @@
 		<div v-else>
 			<div class="input-group">
 			  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option">
-			    <option v-for="(status, index) in booking_statuses" :key="index"
-			    	:value="{id: status.id, name: status.name }">{{ status.name }}</option>
+			  	<option selected>Choose Status</option>
+			    <option v-for="(status, index) in booking_statuses" 
+			    	:key="index"
+			    	:value="status.id">{{ status.name }}</option>
 			  </select>
 			  <div class="input-group-append">
 			    <button class="btn btn-outline-primary" type="button" @click.prevent="update">
@@ -29,7 +31,8 @@
 		name: "BookingStatus",
 		props: {
 			sessionStatus: String,
-			bookingId: Number
+			bookingId: Number,
+			bookingStatus: Number
 		},
 		data(){
 			return {
@@ -48,11 +51,12 @@
 			...mapActions(["updateStatus"]),
 			edit(){
 				this.editMode = true;
+				this.status_option = this.bookingStatus;
 			},
 			update(){
 				let payload = {
 					id: this.bookingId,
-					status: this.status_option.id
+					status: this.status_option
 				}
 				this.updateStatus(payload).then(res => {
 					if(res.status){

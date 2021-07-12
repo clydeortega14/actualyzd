@@ -47,7 +47,9 @@ const actions = {
 	},
 	async getAllBookings({ commit }, payload)
 	{
-		const response = await axios.get('/bookings/get-all-bookings', payload);
+		const response = await axios.get(`/bookings/get-all-bookings`, {
+			params: payload
+		});
 		commit('setAllBookings', response.data);
 		
 	},
