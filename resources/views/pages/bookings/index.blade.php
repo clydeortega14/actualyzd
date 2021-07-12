@@ -1,14 +1,15 @@
-<ul class="nav nav-tabs mb-3">
-	@foreach($booking_statuses as $booking_status)
-	  	<li class="nav-item">
-	    	<a class="nav-link {{ $booking_status->id == 1 ? 'active' : '' }}" href="#">
-	    	{{ $booking_status->id == 1 ? 'Upcoming' : $booking_status->name }}
-	    	<span class="{{ $booking_status->class }}">0</span>
-	    	</a>
-	    	
-	  	</li>
-  	@endforeach
-</ul>
+
+	<ul class="nav nav-tabs mb-3">
+			@foreach($booking_statuses as $booking_status)
+			  	<li class="nav-item">
+			    	<a class="nav-link {{ $booking_status['id'] == 1 ? 'active' : '' }}" href="#">
+			    	{{ $booking_status['id'] == 1 ? 'Upcoming' : $booking_status['name']}}
+			    	<span class="{{ $booking_status['class'] }}">{{ $booking_status['total'] }}</span>
+			    	</a>
+			    	
+			  	</li>
+	  		@endforeach
+	</ul>
 <table class="table">
 	<thead>
 		<tr>

@@ -33,6 +33,8 @@ Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue')
 
 Vue.component('booking-status', require('./components/bookings/BookingStatus').default);
 
+Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
+
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
 
 // Progress Report Client Medication Component

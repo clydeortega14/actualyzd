@@ -17,7 +17,7 @@
 							<ul>
 								{{-- First Timer / Repeater --}}
 								<li>
-									<p class="lead">Are a first timer or a repeater to this session?</p>
+									<p class="lead">Are you a first timer or a repeater to this session?</p>
 									<div class="form-group mb-4 ml-4">
 										<div class="form-check form-check-inline">
 											<input type="radio" class="form-check-input" name="is_firsttimer" value="1" id="firstimer">
@@ -33,7 +33,7 @@
 
 								{{-- Self Harm  --}}
 								<li>
-									<p class="lead">Intent to self harm?</p>
+									<p class="lead">I have plans to harm myself?</p>
 									<div class="form-group mb-4 ml-4">
 										<div class="form-check form-check-inline">
 											<input type="radio" class="form-check-input" name="self_harm" value="1" id="1">
@@ -49,14 +49,14 @@
 							</ul>
 							
 
-	                        <ol style="list-style-type: upper-roman;">
+	                        <ul>
 	                        	@foreach($categories as $category)
 		                        	<li>
 		                        		<p class="lead">{{ $category->name }}<p>
 		                        		@include('pages.bookings.components.questionnaire')
 		                        	</li>
 	                        	@endforeach
-	                        </ol>
+	                        </ul>
 
 	                        <div class="form-group">
 	                        	<button type="submit" class="btn btn-primary btn-block">Submit</button>

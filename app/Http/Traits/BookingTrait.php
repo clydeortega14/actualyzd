@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use App\AssessmentAnswer;
 use App\PsychologistSchedule;
 use App\Http\Traits\BookingSchedulesTrait;
+use App\Http\Traits\SchedulesTrait;
 
 
 trait BookingTrait {
 
-    use BookingSchedulesTrait;
+    use BookingSchedulesTrait, SchedulesTrait;
 
     public function validateBooking(array $data)
     {
@@ -33,12 +34,34 @@ trait BookingTrait {
         // query bookings accoirding to status
         $this->queryByStatus($bookings, $bookings);
 
-        return $bookings->with(['progressReport'])->get();
+        $allBookings = $bookings->with([
+            'toSchedule.psych', 
+            'time',
+            'progressReport',
+            'sessionType',
+            'toCounselee',
+            'toStatus'
+        ])->get();
+
+        return $allBookings;
 	}
+
+    public function countByStatus($status)
+    {
+        $bookings = Booking::query();
+
+        $this->queryByRole($bookings);
+
+        return $bookings->where('status', $status)->count();
+    }
 
     public function totalBookings()
     {
-        return $this->bookingsQuery()->count();
+        $bookings = Booking::query();
+
+        $this->queryByRole($bookings);
+
+        return $bookings->count();
     }
     public function bookingByStatus()
     {
@@ -80,13 +103,21 @@ trait BookingTrait {
 
     public function queryByStatus($query, $bookings)
     {
+        $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+
         if(request()->has('status')){
             
-            $query->where('status', request('status'));
+            if(request('status') == 1){
+
+                $query->where('status', 1)->whereIn('schedule', $schedules_id);
+
+            }else{
+
+                $query->where('status', request('status'));
+
+            }
             
         }else{
-
-            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
             // get upcoming sessions
             $query->where('status', 1)->whereIn('schedule', $schedules_id);
         }
@@ -113,22 +144,50 @@ trait BookingTrait {
     {
         $bookings = $this->bookingsQuery();
         $schedule = $this->bookingSchedulesQuery($bookings)->first();
+        $time = $this->isGreaterThanCurretTime($schedule);
 
-        if(!is_null($schedule)){
+        if(!is_null($schedule) && !is_null($time)){
 
-           $find_booking = Booking::where('schedule', $schedule->id)->with(['toSchedule', 'time'])->first();
+           $find_booking = Booking::where('status', 1)
+            ->whereHas('schedule', function($query){
+                $query->whereDate('start', '>=', now()->toDateString());
+            })
+            ->orWhereHas('time', function($query){
+                $query->whereTime('from', '>=', now()->toTimeString());
+            })->with(['toSchedule', 'time'])
+            ->first();
+
            if(!is_null($find_booking)){
+
                 return $find_booking;
+
            }else{
+
                 return null;
            }
+
         }else{
+
             return null;
         }
     }
 
     public function bookingStatuses()
     {
-        return BookingStatus::get(['id', 'name', 'class']);
+        $bookings = BookingStatus::get(['id', 'name', 'class']);
+
+        $by_status_with_total = [];
+
+        foreach($bookings as $booking){
+            $by_status_with_total[] = [
+                'id' => $booking->id,
+                'name' => $booking->name,
+                'total' => $this->countByStatus($booking->id),
+                'class' => $booking->class
+            ];
+        }
+
+        return $by_status_with_total;
+  
     }
 }

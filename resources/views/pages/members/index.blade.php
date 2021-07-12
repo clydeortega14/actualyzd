@@ -35,27 +35,41 @@
                                 <div class="col mr-2">
                                     <div class="h1 mb-0 text-gray-800 text-center">{{ $bookedByStatus->booking_count }}</div>
                                 </div>
-                                {{-- <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div> --}}
                             </div>
                         </div>
                     </div>
-                
-            @endforeach
+                @endforeach
             </div>
 
             <div class="col-md-9">
             	<div class="card mb-3">
             		{{-- <div class="card-header">Upcoming Session</div> --}}
             		<div class="card-body">
+                        @if(!is_null($upcoming))
+                            <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
+                                <div>
+                                    <a href="#" class="mr-3">
+                                        <i class="fa fa-video"></i>
+                                        <span>Start Video Call</span>
+                                    </a>
+                                    <a href="#" class="mr-3">
+                                        <i class="fa fa-book"></i>
+                                        <span>Progress Report</span>
+                                    </a>
+                                </div>
+                                
+                                <div>
+                                    <booking-status session-status="{{ $upcoming->toStatus->name }}" :booking-id="{{ $upcoming->id }}" :booking-status="{{ $upcoming->toStatus->id}}"></booking-status>
+                                </div>
+                            </div>
+                        @endif
             			<h5 class="card-title text-center">
-            				<div class="mb-4 p-3">
+            				<div class="mb-4">
             					UPCOMING SESSION
             				</div>
-            				<div class="mb-4" style="font-size: 1.0em;">
+            				<div class="mb-4">
                                 @if(!is_null($upcoming))
-            					<b>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</b>
+                					<h4>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</h4>
                                 @else
                                     <b>NOT AVAILABLE</b>
                                 @endif
@@ -65,15 +79,11 @@
                         @if(!is_null($upcoming))
                 		    <div class="text-center">
                 		    	@if(!is_null($upcoming->link_to_session))
-                				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
-                				    <i class="fa fa-link"></i>
-                				    <span>link to session</span>
-                				</a>
+                    				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
+                    				    <i class="fa fa-link"></i>
+                    				    <span>link to session</span>
+                    				</a>
                 				@endif
-                				<a href="#" data-toggle="tooltip" title="Cancel Session" class="mr-3">
-                				    <i class="fa fa-times"></i>
-                				    <span>Cancel</span>
-                				</a>
                 			</div>
                         @endif
 
@@ -83,7 +93,8 @@
             	<div class="card mb-3">
             		<div class="card-header">Session Logs</div>
             		<div class="card-body">
-            			@include('pages.bookings.index')
+                        <bookings-lists></bookings-lists>
+            			{{-- @include('pages.bookings.index') --}}
             		</div>
             	</div>
             </div>
