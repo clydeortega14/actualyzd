@@ -45,6 +45,15 @@ trait BookingTrait {
         return $allBookings;
 	}
 
+    public function countByStatus($status)
+    {
+        $bookings = Booking::query();
+
+        $this->queryByRole($bookings);
+
+        return $bookings->where('status', $status)->count();
+    }
+
     public function totalBookings()
     {
         return $this->bookingsQuery()->count();
@@ -130,6 +139,7 @@ trait BookingTrait {
         if(!is_null($schedule)){
 
            $find_booking = Booking::where('schedule', $schedule->id)->with(['toSchedule', 'time'])->first();
+
            if(!is_null($find_booking)){
                 return $find_booking;
            }else{
@@ -150,7 +160,7 @@ trait BookingTrait {
             $by_status_with_total[] = [
                 'id' => $booking->id,
                 'name' => $booking->name,
-                'total' => $this->bookingsQuery()->where('status', $booking->id)->count(),
+                'total' => $this->countByStatus($booking->id),
                 'class' => $booking->class
             ];
         }

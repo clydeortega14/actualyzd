@@ -49,13 +49,44 @@
             	<div class="card mb-3">
             		{{-- <div class="card-header">Upcoming Session</div> --}}
             		<div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
+                            <div>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-video"></i>
+                                    <span>Start Video Call</span>
+                                </a>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-book"></i>
+                                    <span>Progress Report</span>
+                                </a>
+                            </div>
+                            
+                            <div>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-eye-slash"></i>
+                                    <span>No Show</span>
+                                </a>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-times"></i>
+                                    <span>Cancel</span>
+                                </a>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Reschedule</span>
+                                </a>
+                                <a href="#" class="mr-3">
+                                    <i class="fa fa-check"></i>
+                                    <span>Complete</span>
+                                </a>
+                            </div>
+                        </div>
             			<h5 class="card-title text-center">
-            				<div class="mb-4 p-3">
+            				<div class="mb-4">
             					UPCOMING SESSION
             				</div>
-            				<div class="mb-4" style="font-size: 1.0em;">
+            				<div class="mb-4">
                                 @if(!is_null($upcoming))
-            					<b>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</b>
+            					<h4>{{ $upcoming->toSchedule->fullStartDate() }} @ {{ $upcoming->time->parseTimeFrom().' - '.$upcoming->time->parseTimeTo() }}</h4>
                                 @else
                                     <b>NOT AVAILABLE</b>
                                 @endif
@@ -65,15 +96,11 @@
                         @if(!is_null($upcoming))
                 		    <div class="text-center">
                 		    	@if(!is_null($upcoming->link_to_session))
-                				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
-                				    <i class="fa fa-link"></i>
-                				    <span>link to session</span>
-                				</a>
+                    				<a href="#" data-toggle="tooltip" title="Link To Session" class="mr-3">
+                    				    <i class="fa fa-link"></i>
+                    				    <span>link to session</span>
+                    				</a>
                 				@endif
-                				<a href="#" data-toggle="tooltip" title="Cancel Session" class="mr-3">
-                				    <i class="fa fa-times"></i>
-                				    <span>Cancel</span>
-                				</a>
                 			</div>
                         @endif
 
