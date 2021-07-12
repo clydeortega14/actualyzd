@@ -33,7 +33,7 @@
 
 								{{-- Self Harm  --}}
 								<li>
-									<p class="lead">Intent to self harm?</p>
+									<p class="lead">I have plans to harm myself?</p>
 									<div class="form-group mb-4 ml-4">
 										<div class="form-check form-check-inline">
 											<input type="radio" class="form-check-input" name="self_harm" value="1" id="1">
