@@ -8,10 +8,11 @@ use App\PsychologistSchedule;
 use App\TimeList;
 use App\TimeSchedule;
 use App\Http\Traits\CarbonTrait;
+use App\Http\Traits\SchedulesTrait;
 
 class SchedulesController extends Controller
 {
-    use CarbonTrait;
+    use CarbonTrait, SchedulesTrait;
 
     public function index()
     {   
@@ -23,14 +24,8 @@ class SchedulesController extends Controller
     }
     public function getSchedules()
     {
-        // chedules query
-        $schedules = PsychologistSchedule::where(function($q){
-
-            if($this->user()->hasRole('psychologist')){
-                $q->where('psychologist', $this->user()->id);
-            }
-        })->whereDate('start', '>=', now()->toDateString())
-        ->with(["psych"])->get();
+        // schedules query
+        $schedules = $this->schedulesQuery();
 
         // map collections with unique start date
         $unique = collect($schedules)->map(function($item, $key){
@@ -124,10 +119,7 @@ class SchedulesController extends Controller
 
     public function getTimeBySchedule(PsychologistSchedule $schedule)
     {
-        $time_schedules = $schedule->timeSchedules()
-            ->where('is_booked', false)
-            ->with(['toTime', 'toSchedule'])
-            ->get();
+        $time_schedules = $schedule->timeSchedules()->with(['toTime', 'toSchedule'])->get();
 
         $mapped_time_format = $time_schedules->map(function($time_schedule){
 

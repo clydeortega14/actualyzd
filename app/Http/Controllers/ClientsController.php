@@ -120,4 +120,21 @@ class ClientsController extends Controller
 
         return redirect()->back()->with('success', 'Subscribed successfully');
     }
+    public function clientsWithUsers()
+    {
+        $clients = Client::where('is_active', true)->whereHas('users', function($query){
+            $query->whereHas('roles', function($query2){
+                $query2->where('name', 'member');
+            });
+
+        })->has('subscription')->with(['users'])->get(['id', 'name']);
+
+        return response()->json($clients);
+    }
+    public function clientUsers(Client $client)
+    {
+        $client_users = $client->users()->withRole('member')->get(['id', 'name']);
+
+        return response()->json($client_users);
+    }
 }

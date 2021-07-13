@@ -9,34 +9,40 @@
 			@endphp
 
 			<div class="form-group mb-4">
-				@foreach($option->choices as $choice)
-					@php
-						$checked = '';
-						$disabled = '';
-					@endphp
-
-					@if(isset($booking))
+				@if(count($option->choices) > 0)
+					@foreach($option->choices as $choice)
 						@php
-							$answer = $booking->assessmentAnswers()->where('questionnaire_id', $questionnaire->id)->first();
+							$checked = '';
+							$disabled = '';
 						@endphp
 
-						@if(!is_null($answer) && $answer->answer == $choice->value)
+						@if(isset($booking))
 							@php
-								$checked = 'checked';
+								$answer = $booking->assessmentAnswers()->where('questionnaire_id', $questionnaire->id)->first();
 							@endphp
-						@else
 
-							@php
-								$disabled = 'disabled';
-							@endphp
+							@if(!is_null($answer) && $answer->answer == $choice->value)
+								@php
+									$checked = 'checked';
+								@endphp
+							@else
+
+								@php
+									$disabled = 'disabled';
+								@endphp
+							@endif
 						@endif
-					@endif
 
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
-						<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
+							<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
+						</div>
+					@endforeach
+				@else
+					<div class="form-group">
+						<textarea name="choice[{{ $questionnaire->id }}]" id="" cols="5" rows="5" class="form-control"></textarea>
 					</div>
-				@endforeach
+				@endif
 			</div>
 		</li>
 	@endforeach

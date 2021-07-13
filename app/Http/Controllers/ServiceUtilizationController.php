@@ -47,11 +47,13 @@ class ServiceUtilizationController extends Controller
             'clients' => $clients,
             'services' => $services,
             'bookings' => $this->countBookings(),
+            'users_experience' => $this->countUserExperience(),
             'consultation_summaries' => $this->manageBookings(),
             'session_type_summaries' => $this->getMtd(),
             'total_main_concerns' => $this->countMainConcerns(),
             'main_concerns_summarries' => $this->mainConcernSummaries(),
-            'list_of_main_concerns' => $this->listOfMainConcerns()
+            'list_of_main_concerns' => $this->listOfMainConcerns(),
+            'main_concerns_by_date' => $this->getMainConcerns()
         ];
     }
 
@@ -126,8 +128,17 @@ class ServiceUtilizationController extends Controller
             ->with(['toStatus'])
             ->get();
 
-
         return $bookings;
+    }
+
+    public function countUserExperience()
+    {
+        $first_timers = Booking::withClient()->where('is_firstimer', true)->count();
+        $repeaters = Booking::withClient()->where('is_firstimer', false)->count();
+        return [
+            'first_timers' => $first_timers,
+            'repeaters' => $repeaters
+        ];
     }
 
     public function getMtd()
@@ -148,8 +159,30 @@ class ServiceUtilizationController extends Controller
                 'ytd' => $this->countByDates( $this->pluckedYearSchedules($year), $session_type->id)->count()
             ];
         }
-
+        
         return $by_dates;
+    }
+
+    public function getMainConcerns()
+    {
+        // get schedules that are booked this month
+        $month = now()->month;
+        // schedules that are booked this year
+        $year = now()->year;
+
+        $categories = $this->listOfMainConcerns();
+        $main_concerns_by_date = [];
+
+        foreach($categories as $category){
+            $main_concerns_by_date[] = [
+                'name' => $category->name,
+                'mtd' => $this->countConcernByDates($this->pluckedMonthSchedules($month), $category->id)->count(),
+                'qtd' => 0,
+                'ytd' => $this->countConcernByDates($this->pluckedYearSchedules($year), $category->id)->count()
+            ];
+        }
+
+        return $main_concerns_by_date;
     }
 
     public function countByDates($schedules, $session_type_id)
@@ -159,6 +192,15 @@ class ServiceUtilizationController extends Controller
             ->get();
 
         return $count_by_dates;
+    }
+
+    public function countConcernByDates($schedules, $main_concern)
+    {
+        $main_concerns = Booking::withClient()->whereIn('schedule', $schedules)
+            ->where('main_concern', $main_concern)
+            ->get();
+
+        return $main_concerns;
     }
 
     public function countMainConcerns()

@@ -6,21 +6,21 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Client;
+use App\Rules\MatchOldPassword;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImport;
 use App\Exports\EmployeeExport;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
     use RoleTrait;
-
-    public function profile(User $user)
-    {
-        return view('pages.users.profile', compact('user'));
-    }
 
     /**
      * Display a listing of the resource.
@@ -180,7 +180,8 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Delete avatar/image first before deleting the user
+        // Storage::delete($user->avatar);
     }
 
     public function userData(array $data)
@@ -193,9 +194,81 @@ class UsersController extends Controller
 
         ];
     }
+
+    public function profile(User $user)
+    {
+        if (Auth::id() === $user->id) {
+            $user->api_token = Str::random(60);
+            $user->save();
+        }
+
+        return view('pages.users.profile.index', compact('user'));
+    }
+
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'photo' => ['required', 'file', 'image'],
+            'user' => ['required']
+        ]);
+
+        $path = $request->file('photo')->storeAs('avatars', $request->user);
+
+        $user = User::findOrFail($request->user);
+
+        $user->avatar = $path;
+
+        $user->save();
+
+        return response()->json([], 200);
+    }
+
+    public function editProfile(User $user)
+    {
+        if (Auth::id() !== $user->id) return redirect()->route('user.profile', ['user' => Auth::id()]);
+
+        return view('pages.users.profile.edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'max:255'],
+            'username' => ['required', 'unique:users,username,' . $user->id, 'max:255'],
+            'email' => ['required', 'unique:users,email,' . $user->id],
+        ]);
+
+        if ($validator->fails()) return redirect('profile/' . $user->id . '/edit')->withErrors($validator)->withInput();
+
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+
+        $user->save();
+
+        return redirect()->route('user.profile.edit', ['user' => $user->id])->withSuccess('Profile information updated successfully!');
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+        $validator = Validator::make($request->all(), [
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required', 'string', 'min:8'],
+            'new_confirm_password' => ['required', 'same:new_password'],
+        ]);
+
+        if ($validator->fails()) return redirect('profile/' . $user->id . '/edit')->withErrors($validator);
+
+        $user->password = Hash::make($request->new_password);
+
+        $user->save();
+
+        return redirect()->route('user.profile.edit', ['user' => $user->id])->withSuccess('Password updated successfully!');
+    }
+
     public function import_excel(Request $request)
     {
-        
+
         $this->validate($request,[
             'select_file'    => 'required|mimes:xls,xlsx,csv'
         ]);
@@ -203,19 +276,10 @@ class UsersController extends Controller
         $company_user = auth()->user();
         $company_info = Client::where('id', $company_user->client_id)->first();
         $company_userid = $company_info->id;
-        
 
         $role_id = Role::where('id','=', 4)->first()->id;
         Excel::import(new EmployeeImport($company_userid,$role_id,$company_user),$request->file('select_file'));
         return back()->with('success', 'Excel Data Imported Successfully.');
-        
-        
-       
-
-       
-        
-        
-        
         
     }
     public function export_employee()
@@ -247,11 +311,7 @@ class UsersController extends Controller
         
        
 
-       
-        
-        
-        
-        
+        return back()->with('success', 'Excel Data Imported Successfully.');
     }
 
 

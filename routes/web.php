@@ -42,9 +42,14 @@ Route::middleware('auth')->group(function(){
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
-
 	// Client Subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+	// Client Users Route
+	Route::get('client-users/{client}', 'ClientsController@clientUsers');
+
+	Route::get('clients-with-users', 'ClientsController@clientsWithUsers');
+
+	Route::get('session-types', 'SessionTypeController@allSessions');
 
 	/**
 	 * Ajax Requests for Service Utilization Dashboard
@@ -69,9 +74,11 @@ Route::middleware('auth')->group(function(){
 	Route::post('company_info_update', 'CompanyInfoController@update')->name('update.comapany_info');
 	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
-
 	// User Profile
-	Route::get('users/profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
+	Route::put('profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
+	Route::put('profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');
 
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
@@ -168,6 +175,26 @@ Route::middleware('auth')->group(function(){
 	/*-- Bookings --*/
 	Route::prefix('bookings')->group(function(){
 
+		/* Booking Process / Steps */
+		Route::get('onboarding', 'BookingProcessController@onboarding')->name('booking.onboarding');
+
+		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
+
+		Route::get('review-details', 'BookingProcessController@reviewDetails')->name('booking.review.details');
+
+		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
+
+		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status');
+
+
+		/* Booking Process Actions */
+		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
+
+		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
+
+		Route::post('confirm', 'BookingProcessController@bookingConfirm')->name('booking.confirm');
+
+
 		Route::get('/', 'BookingController@index')->name('bookings.index');
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
@@ -190,6 +217,13 @@ Route::middleware('auth')->group(function(){
 		Route::put('update/main/concern/{booking}', 'BookingController@updateMainConcern')->name('booking.update.main.concern');
 
 		Route::put('add/link/to/session/{booking}', 'BookingController@addLinkToSession')->name('booking.link.to.session');
+
+		// json
+		Route::get('get-all-bookings', 'BookingController@bookingsQuery');
+
+		Route::get('status-summary', 'BookingController@bookingStatuses');
+
+
 	});
 
 
@@ -200,7 +234,15 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('show/{booking}', 'ProgressReportController@show')->name('progress-reports.show');
 
+		Route::get('edit-report/{booking}', 'ProgressReportController@edit')->name('progress-reports.edit');
+
 		Route::post('progress-report', 'ProgressReportController@store')->name('progress.report.store');
+
+		Route::put('progress-report/{report}', 'ProgressReportController@update')->name('progress.report.update');
+
+		Route::get('assignees', 'ProgressReportController@getAssignees')->name('progress.report.assignees');
+
+		Route::post('assign-report/{id}', 'ProgressReportController@assignReport')->name('assign.report');
 
 	});
 

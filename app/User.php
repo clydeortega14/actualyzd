@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'username', 'password', 'is_active', 'client_id'
+        'name', 'email', 'username', 'password', 'api_token', 'is_active', 'client_id'
     ];
 
     /**
@@ -65,5 +65,10 @@ class User extends Authenticatable
     public function bookings()
     {
         return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(ActivityLog::class, 'user_id', 'id');
     }
 }

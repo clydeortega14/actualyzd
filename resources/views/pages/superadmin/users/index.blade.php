@@ -30,16 +30,20 @@
 			<div class="col-sm-12">
 				<div class="card mb-4">
 					<div class="card-header py-2">
-						{{-- <select name="" id="select-client">
-							<option value="0" selected>All</option>
-							@foreach($clients as $client)
-								<option value="{{ $client->id }}">{{ $client->name }}</option>
-							@endforeach
-						</select> --}}
-						<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm float-right">
-							<i class="fa fa-plus"></i>
-							<span>Create User</span>
-						</a>
+						<div class="d-sm-flex justify-content-between p-3">
+							<div>List of Users</div>
+							<div>
+								<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm">
+									<i class="fa fa-plus"></i>
+									<span>Create User</span>
+								</a>
+								<a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#import-users">
+									<i class="fa fa-upload"></i>
+									<span>Import Users</span>
+								</a>
+								@include('pages.superadmin.users.modals.import-users')
+							</div>
+						</div>
 					</div>
 
 					<div class="card-body">

@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="row mt-3 mb-3">
-			<div class="col-md-3" v-for="service in allServices" :key="service.id">
-	            <div class="card">
+			<div class="col-md-3">
+	            <div class="card mb-3" v-for="service in allServices" :key="service.id">
 	                <div class="card-body text-center text-primary">
 	                    <h5 class="text-primary">{{ service.name }}</h5>
 	                    <div class="mt-4">
@@ -22,14 +22,11 @@
 	                </div>
 	            </div>
 	        </div>
-		</div>
 
-		<div class="row">
-			<div class="col-md-12">
-				<ConcernsChart />
-			</div>
+	        <div class="col-md-9">
+	        	<ConcernsChart />
+	        </div>
 		</div>
-
 	</div>
 	
 </template>

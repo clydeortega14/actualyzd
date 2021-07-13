@@ -14,7 +14,8 @@ class ProgressReport extends Model
     		'has_prescription',
     		'initial_assessment',
     		'followup_session',
-    		'treatment_goal'
+    		'treatment_goal',
+            'assignee'
     	];
 
     public function booking()
@@ -26,8 +27,12 @@ class ProgressReport extends Model
     {
     	return $this->belongsTo(FollowupSession::class, 'followup_session');
     }
-    public function medication()
+    public function hasMedication()
     {
-        return $this->hasOne(Medication::class, 'id');
+        return $this->hasOne(Medication::class, 'report_id');
+    }
+    public function toAssignee()
+    {
+        return $this->belongsTo(User::class, 'assignee');
     }
 }

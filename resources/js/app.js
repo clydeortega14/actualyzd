@@ -29,9 +29,18 @@ import store from './store'
 
 Vue.component('calendar-page', require('./components/CalendarPage.vue').default);
 
-Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue').default);
+
+Vue.component('booking-status', require('./components/bookings/BookingStatus').default);
+
+Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
 
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
+
+// Progress Report Client Medication Component
+Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+// Report Assignee Vue Component
+Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
 /**
  * This components are for dashboard / service utilization
@@ -39,6 +48,9 @@ Vue.component('schedules-component', require('./components/schedules/Main.vue').
 Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
 
 Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
+
+
+Vue.component('upload-avatar', require('./components/profile/UploadAvatar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

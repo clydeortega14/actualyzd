@@ -10,6 +10,8 @@ use App\Http\Traits\ProgressReportTrait;
 use DB;
 use App\Medication;
 use App\Booking;
+use App\AssessmentCategory;
+use App\User;
 
 class ProgressReportController extends Controller
 {
@@ -32,41 +34,30 @@ class ProgressReportController extends Controller
     public function show(Booking $booking)
     {
     	$followup_sessions = FollowupSession::get(['id', 'name']);
-    	return view('pages.progress-reports.show', compact('booking', 'followup_sessions'));
+        $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+    	return view('pages.progress-reports.show', compact('booking', 'followup_sessions', 'categories'));
     }
 
     public function store(Request $request)
     {
-    	$this->validate($request, [
-            'main_concern' => ['required'],
-            'initial_assessment' => ['required'],
-            'followup_session' => ['required'],
-            'has_prescription' => ['required'],
-            'treatment_goal' => ['required']
-        ]);
+    	$this->validateReport($request);
 
         DB::beginTransaction();
 
         try {
 
-            $report = ProgressReport::create([
+            $report = ProgressReport::firstOrCreate([
 
                 'booking_id' => $request->booking_id,
                 'main_concern' => $request->main_concern,
                 'initial_assessment' => $request->initial_assessment,
                 'followup_session' => $request->followup_session,
-                'has_prescription' => $request->has_prescription === "true" ? 1 : 0,
-                'treatment_goal' => $request->treatment_goal
+                'has_prescription' => $request->has_prescription === "1" ? 1 : 0,
+                'treatment_goal' => $request->treatment_goal,
+                'assignee' => auth()->user()->id
             ]);
 
-            if($request->has_prescription == "true" || $request->has('medication')){
-
-                $this->validate($request, [
-                    'medication' => ['required']
-                ]);
-
-                Medication::create(['report_id' => $report->id, 'medication' => $request->medication]);
-            }
+            $this->manageMedication($request, $report);
             
         } catch (Exception $e) {
 
@@ -78,6 +69,87 @@ class ProgressReportController extends Controller
         
         DB::commit();
 
-    	return redirect()->back()->with('success', 'Progress report successfully updated');
+    	return redirect()->route('progress-reports.show', $report->booking->id)->with('success', 'Progress report successfully created');
+    }
+    public function edit(Booking $booking)
+    {
+        $edit_mode = true;
+        $followup_sessions = FollowupSession::get(['id', 'name']);
+        $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+        return view('pages.progress-reports.show', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
+    }
+    public function update(Request $request, ProgressReport $report)
+    {
+        $this->validateReport($request);
+
+        DB::beginTransaction();
+
+        try {
+
+            $this->manageMedication($request, $report);
+
+            $report->update([
+                'booking_id' => $request->booking_id,
+                'main_concern' => $request->main_concern,
+                'initial_assessment' => $request->initial_assessment,
+                'followup_session' => $request->followup_session,
+                'has_prescription' => $request->has_prescription === "1" ? 1 : 0,
+                'treatment_goal' => $request->treatment_goal,
+            ]);
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+
+        return redirect()->route('progress-reports.show', $report->booking->id)->with('success', 'Progress Report has successfully updated');
+    }
+
+    protected function manageMedication($request, $report)
+    {
+        if($request->has_prescription == "1" || $request->has('medication')){
+
+            $this->validate($request, [
+                'medication' => ['required']
+            ]);
+
+            if(!is_null($report->hasMedication)){
+
+                $report->hasMedication()->update(['medication' => $request->medication ]);
+
+            }else{
+
+                Medication::firstOrCreate(['report_id' => $report->id, 'medication' => $request->medication]);
+            }
+
+        }
+    }
+
+    protected function validateReport($request)
+    {
+        return $this->validate($request, [
+            'main_concern' => ['required'],
+            'initial_assessment' => ['required'],
+            'followup_session' => ['required'],
+            'has_prescription' => ['required'],
+            'treatment_goal' => ['required']
+        ]);
+    }
+
+    public function assignReport(Request $request, $id)
+    {
+        $report = ProgressReport::where('id', $id)->update(['assignee' => $request->assignee ]);
+        return response()->json(['success' => true, 'message' => 'Progress report has been assigned'], 200);
+    }
+
+    public function getAssignees()
+    {
+        $assignees = User::withRole('psychologist')->get();
+
+        return response()->json($assignees);
     }
 }
