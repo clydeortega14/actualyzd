@@ -14,7 +14,7 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
-								<img src="{{asset('storage/'.$company_info->logo )}}" alt="Admin" class=" p-1 " width="110">
+								<img src="{{asset('storage/'.$company_info->logo )}}" alt="Admin" class="p-1 " width="110">
 								<div class="mt-3">
 									<h4>{{ $company_info->name }}</h4>
 									<!-- <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -206,6 +206,10 @@
 												<i class="fa fa-upload"></i>
 												<span>Import Users</span>
 											</a>
+											<a href="{{ route('export.comapany_users') }}" class="btn btn-sm btn-danger" >
+												<i class="fa fa-download"></i>
+												<span>Export Users</span>
+											</a>
 											
 										</div>
 									</div>
@@ -255,9 +259,9 @@
 														<a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">
 															<i class="fa fa-edit"></i>
 														</a> | 
-														<a href="#" data-toggle="modal" data-target="#delete-users-{{ $user->id}}" id="logo"  class="btn btn-secondary btn-sm">
+														<!-- <a href="#" data-toggle="modal" data-target="#delete-users-{{ $user->id}}" id="logo"  class="btn btn-secondary btn-sm">
 															<i class="fa fa-trash"></i>
-														</a> |
+														</a> | -->
 														<a href="#" class="btn btn-{{ $user->is_active ? 'secondary' : 'primary' }} btn-sm"
 															data-toggle="modal" data-target="#update-status-{{ $user->id}}">
 															<i class="fa fa-eye"></i>
