@@ -16805,6 +16805,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _BookingStatus_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookingStatus.vue */ "./resources/js/components/bookings/BookingStatus.vue");
 /* harmony import */ var _StatusNav_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StatusNav.vue */ "./resources/js/components/bookings/StatusNav.vue");
+/* harmony import */ var _mixins_datetime_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/datetime.js */ "./resources/js/mixins/datetime.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16855,11 +16856,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookingList",
+  mixins: [_mixins_datetime_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
   created: function created() {
     this.getAllBookings();
   },
@@ -16921,6 +16927,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookingStatus",
@@ -16929,32 +16941,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     bookingId: Number,
     bookingStatus: Number
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getActions"])),
+  created: function created() {
+    this.getBookingStatuses();
+  },
   data: function data() {
     return {
       editMode: false,
-      booking_statuses: [{
-        id: 1,
-        name: 'Booked'
-      }, {
-        id: 2,
-        name: 'Completed'
-      }, {
-        id: 3,
-        name: 'No Show'
-      }, {
-        id: 4,
-        name: 'Cancelled'
-      }, {
-        id: 5,
-        name: 'Reschedule'
-      }],
       status_option: null
     };
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateStatus"])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateStatus", "getBookingStatuses"])), {}, {
     edit: function edit() {
       this.editMode = true;
-      this.status_option = this.bookingStatus;
+      this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
     },
     update: function update() {
       var payload = {
@@ -94290,15 +94290,25 @@ var render = function() {
             _vm._l(_vm.allBookings, function(booking) {
               return _c("tr", { key: booking.id }, [
                 _c("td", [
-                  _vm._v(
-                    _vm._s(
-                      booking.to_schedule.start +
-                        " @ " +
-                        booking.time.from +
-                        " - " +
-                        booking.time.to
+                  _c("b", [_vm._v("Date: ")]),
+                  _c("span", [
+                    _vm._v(
+                      _vm._s("" + _vm.wholeDate(booking.to_schedule.start))
                     )
-                  )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("Time: ")]),
+                  _c("span", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.wholeTime(booking.time.from) +
+                          " - " +
+                          _vm.wholeTime(booking.time.to)
+                      )
+                    )
+                  ])
                 ]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(booking.session_type.name))]),
@@ -94398,19 +94408,23 @@ var render = function() {
   return _c("div", [
     !_vm.editMode
       ? _c("div", [
-          _c(
-            "a",
-            {
-              attrs: { href: "#" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.edit.apply(null, arguments)
-                }
-              }
-            },
-            [_vm._v(_vm._s(_vm.sessionStatus))]
-          )
+          _vm.sessionStatus === "Booked"
+            ? _c("div", [
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.edit.apply(null, arguments)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(_vm.sessionStatus))]
+                )
+              ])
+            : _c("div", [_c("b", [_vm._v(_vm._s(_vm.sessionStatus))])])
         ])
       : _c("div", [
           _c("div", { staticClass: "input-group" }, [
@@ -94447,11 +94461,16 @@ var render = function() {
                 }
               },
               [
-                _c("option", { attrs: { selected: "" } }, [
-                  _vm._v("Choose Status")
-                ]),
+                _c(
+                  "option",
+                  {
+                    attrs: { selected: "", disabled: "" },
+                    domProps: { value: null }
+                  },
+                  [_vm._v("Choose Status")]
+                ),
                 _vm._v(" "),
-                _vm._l(_vm.booking_statuses, function(status, index) {
+                _vm._l(_vm.getActions, function(status, index) {
                   return _c(
                     "option",
                     { key: index, domProps: { value: status.id } },
@@ -109257,6 +109276,8 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -109266,6 +109287,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.prototype.$bus = new Vue();
+
  // import modal from 'vue-js-modal';
 // Vue.use(modal, { dialog: true, dynamic: true });
 
@@ -110769,6 +110791,31 @@ var DEBOUNCE_DELAY_MS = 500;
 
 /***/ }),
 
+/***/ "./resources/js/mixins/datetime.js":
+/*!*****************************************!*\
+  !*** ./resources/js/mixins/datetime.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    wholeDate: function wholeDate(date) {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('LLLL');
+    },
+    wholeTime: function wholeTime(time) {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(time, "HH:mm:ss").format('LT');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/mixins/service-utilization.js":
 /*!****************************************************!*\
   !*** ./resources/js/mixins/service-utilization.js ***!
@@ -110856,7 +110903,8 @@ var state = function state() {
   return {
     booking: {},
     bookings: [],
-    booking_statuses: []
+    booking_statuses: [],
+    actions: []
   };
 };
 
@@ -110869,6 +110917,9 @@ var getters = {
   },
   allBookingStatuses: function allBookingStatuses(state) {
     return state.booking_statuses;
+  },
+  getActions: function getActions(state) {
+    return state.actions;
   }
 };
 var actions = {
@@ -110931,9 +110982,10 @@ var actions = {
 
             case 3:
               response = _context2.sent;
-              commit('setBookingStatuses', response.data);
+              commit('setBookingStatuses', response.data.by_status_with_total);
+              commit('setActions', response.data.actions);
 
-            case 5:
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -110951,6 +111003,9 @@ var mutations = {
   },
   setBookingStatuses: function setBookingStatuses(state, booking_statuses) {
     return state.booking_statuses = booking_statuses;
+  },
+  setActions: function setActions(state, actions) {
+    return state.actions = actions;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -111599,8 +111654,8 @@ var mutations = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
