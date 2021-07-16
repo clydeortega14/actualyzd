@@ -10,6 +10,7 @@ use App\Rules\MatchOldPassword;
 use DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\EmployeeImport;
+use App\Exports\EmployeeExport;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
 use Illuminate\Support\Str;
@@ -77,7 +78,8 @@ class UsersController extends Controller
             'name' => ['required', 'max:255'],
             'email' => ['required', 'unique:users'],
             'username' => ['required', 'unique:users', 'max:255'],
-            'password' => ['required', 'confirmed']
+            'password' => ['required', 'confirmed'],
+            'roles' => ['required'],
         ]);
 
 
@@ -94,6 +96,7 @@ class UsersController extends Controller
             // check if request has roles provided
             if($request->has('roles')){
 
+               
                 // attach roles
                 $this->attachRole($user, $request->roles);
             }
@@ -275,9 +278,43 @@ class UsersController extends Controller
         $company_userid = $company_info->id;
 
         $role_id = Role::where('id','=', 4)->first()->id;
-        
         Excel::import(new EmployeeImport($company_userid,$role_id,$company_user),$request->file('select_file'));
+        return back()->with('success', 'Excel Data Imported Successfully.');
+        
+    }
+    public function export_employee()
+    {
+        $users = User::where(function($query){
+
+            $auth = auth()->user();
+
+            if($auth){
+
+                $query->whereNotIn('id', [$auth->id]);
+            }
+
+            if($auth->hasRole('admin')){
+
+                $query->where('client_id', $auth->client_id);
+            }
+
+        })->with(['roles'])->get();
+        
+        $company_user = auth()->user();
+        $company_info = Client::where('id', $company_user->client_id)->first();
+
+        
+        
+        return Excel::download(new EmployeeExport($users,$company_info), 'company_user.xlsx');
+        
+        
+        
+       
 
         return back()->with('success', 'Excel Data Imported Successfully.');
     }
+
+
+
+    
 }

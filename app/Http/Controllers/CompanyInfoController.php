@@ -23,6 +23,8 @@ class CompanyInfoController extends Controller
 
         $company_user = auth()->user();
         $company_info = Client::where('id', $company_user->client_id)->first();
+        
+
 
         $users = User::where(function($query){
 
@@ -40,6 +42,7 @@ class CompanyInfoController extends Controller
             
 
         })->with(['roles'])->get();
+      
         return view('pages.company-info.profile.index',compact('company_info','users'));
     }
 
@@ -123,6 +126,7 @@ class CompanyInfoController extends Controller
             $this->validate($request,[
                 'file'    => 'required|mimes:jpg,png'
             ]);
+            
             $client ->update(['logo' => $request->file('file')->store('logo')]);
            
 
