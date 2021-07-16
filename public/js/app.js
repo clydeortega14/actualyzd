@@ -94441,6 +94441,7 @@ var render = function() {
                 ],
                 staticClass: "custom-select",
                 attrs: {
+                  name: "status",
                   id: "inputGroupSelect04",
                   "aria-label": "Example select with button addon"
                 },
@@ -94482,20 +94483,7 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "input-group-append" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.update.apply(null, arguments)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-check" })]
-              ),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "button",
@@ -94516,7 +94504,18 @@ var render = function() {
         ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-outline-primary", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fa fa-check" })]
+    )
+  }
+]
 render._withStripped = true
 
 
