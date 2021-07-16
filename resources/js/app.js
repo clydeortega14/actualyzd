@@ -11,6 +11,7 @@ window.Vue = require('vue');
 Vue.prototype.$bus = new Vue();
 
 import store from './store'
+import moment from 'moment'
 
 // import modal from 'vue-js-modal';
 

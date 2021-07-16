@@ -1,13 +1,19 @@
 <template>
 	<div>
 		<div v-if="!editMode">
-			<a href="#" @click.prevent="edit">{{ sessionStatus }}</a>
+			<div v-if="sessionStatus === 'Booked' ">
+				<a href="#" @click.prevent="edit">{{ sessionStatus }}</a>
+			</div>
+
+			<div v-else>
+				<b>{{ sessionStatus }}</b>
+			</div>
 		</div>
 		<div v-else>
 			<div class="input-group">
 			  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option">
-			  	<option selected>Choose Status</option>
-			    <option v-for="(status, index) in booking_statuses" 
+			  	<option selected disabled :value="null">Choose Status</option>
+			    <option v-for="(status, index) in getActions" 
 			    	:key="index"
 			    	:value="status.id">{{ status.name }}</option>
 			  </select>
@@ -26,7 +32,8 @@
 
 <script>
 
-	import { mapActions } from 'vuex';
+	import { mapGetters, mapActions } from 'vuex';
+	
 	export default {
 		name: "BookingStatus",
 		props: {
@@ -34,24 +41,23 @@
 			bookingId: Number,
 			bookingStatus: Number
 		},
+		computed: {
+			...mapGetters(["getActions"])
+		},
+		created(){
+			this.getBookingStatuses()
+		},
 		data(){
 			return {
 				editMode: false,
-				booking_statuses: [
-					{ id: 1, name: 'Booked'},
-					{ id: 2, name: 'Completed'},
-					{ id: 3, name: 'No Show'},
-					{ id: 4, name: 'Cancelled'},
-					{ id: 5, name: 'Reschedule'},
-				],
 				status_option: null
 			}
 		},
 		methods: {
-			...mapActions(["updateStatus"]),
+			...mapActions(["updateStatus", "getBookingStatuses"]),
 			edit(){
 				this.editMode = true;
-				this.status_option = this.bookingStatus;
+				this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
 			},
 			update(){
 				let payload = {

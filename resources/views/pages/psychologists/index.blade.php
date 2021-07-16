@@ -43,10 +43,11 @@
             		<div class="mt-4">
             			<div class="row justify-content-center">
             				<div class="col-md-12">
-                      <div class="table-responsive">
+                      {{-- <bookings-lists></bookings-lists> --}}
+                      {{-- <div class="table-responsive">
                           @include('pages.bookings.index')
                       </div>
-            				</div>
+ --}}            				</div>
             			</div>
             		</div>
             	</div>

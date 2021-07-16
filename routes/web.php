@@ -222,8 +222,6 @@ Route::middleware('auth')->group(function(){
 		Route::get('get-all-bookings', 'BookingController@bookingsQuery');
 
 		Route::get('status-summary', 'BookingController@bookingStatuses');
-
-
 	});
 
 

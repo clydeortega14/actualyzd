@@ -38,15 +38,7 @@
 					</a>
 				 </td>
 				 <td>
-
 				 	<booking-status session-status="{{ $booking->toStatus->name }}" :booking-id="{{ $booking->id }}"></booking-status>
-
-				 	{{-- <a href="#">{{ $booking->toStatus->name }}</a>
-				 	<br />
-				 	@if(!is_null($booking->reschedule))
-				 		<a href="#" data-toggle="modal" data-target="#cancel-form">see reason</a>
-				 		@include('pages.bookings.modals.cancel-form')
-				 	@endif --}}
 				 </td>
 			</tr>
 		@endforeach

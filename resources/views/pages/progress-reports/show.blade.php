@@ -8,12 +8,23 @@
 			<div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-body">
-						<img src="{{ asset('images/user.png') }}" alt="" class="img-fluid rounded mx-auto d-block" height="150" width="150">
-						<div class="text-center mt-3">
-							<h5>{{ $booking->participants[0]->name }}</h5>
-
-							<img src="{{ asset('images/logo1.png') }}" alt="" class="img-fluid rounded mx-auto d-block" height="55" width="55">
-						</div>
+						@if(!is_null($booking->counselee))
+							<img src="{{ asset('images/user.png') }}" alt="" class="img-fluid rounded mx-auto d-block mb-3" height="150" width="150">
+							<ul class="list-group">
+							  <li class="list-group-item d-flex justify-content-between align-items-center">
+							    Name
+							    <span>{{  $booking->toCounselee->name }}</span>
+							  </li>
+							  <li class="list-group-item d-flex justify-content-between align-items-center">
+							    Email
+							    <span>{{ $booking->toCounselee->email }}</span>
+							  </li>
+							  <li class="list-group-item d-flex justify-content-between align-items-center">
+							    Company
+							    <span>{{$booking->toCounselee->client->name }}</span>
+							  </li>
+							</ul>
+						@endif
 					</div>
 				</div>
 			</div>
@@ -40,20 +51,26 @@
 									$readOnly = is_null($report)  || isset($edit_mode) ? '' : 'readonly';
 								@endphp
 
-								<!-- auth user has role of superadmin can only assign a report to other psychologist-->
-								@if(auth()->user()->hasRole('superadmin'))
-								<report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
-								@endif
+								<div class="d-flex justify-content-between mb-3">
+									<!-- auth user has role of superadmin can only assign a report to other psychologist-->
+									@if(auth()->user()->hasRole('superadmin'))
+									<div>
+										<report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
+									</div>
+									
+									@endif
 
-								<!-- EDIT REPORT -->
-								@if(!is_null($report))
-									<a href="{{ route('progress-reports.edit', $booking->id) }}" class="btn btn-primary btn-sm">
-										<i class="fa fa-edit"></i>
-										<span>Edit Report</span>
-									</a>
-								@endif
-								<!--  END EDIT REPORT -->
-								<hr>
+									<!-- EDIT REPORT -->
+									@if(!is_null($report))
+										<div>
+											<a href="{{ route('progress-reports.edit', $booking->id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Edit Report">
+												<i class="fa fa-edit"></i>
+											</a>
+										</div>	
+									@endif
+									<!--  END EDIT REPORT -->
+								</div>
+
 								<form action="{{ is_null($report) ? route('progress.report.store') : route('progress.report.update', $report->id) }}" method="POST">
 			                        @csrf
 
@@ -86,7 +103,7 @@
 			                                    has-prescription="{{ !is_null($report) ? $report->has_prescription : '' }}"
 			                                    user-role="{{ $user_role }}"
 			                                    user-id="{{ $user->id}}"
-			                                    assignee="{{ is_null($report) ? 0 : $report->toAssignee->id }}"
+			                                    assignee="{{ is_null($report) || is_null($report->assignee) ? '' : $report->toAssignee->id }}"
 			                                    medication="{{ !is_null($report) && $report->has_prescription ? $report->hasMedication->medication : '' }}"
 			                                    read-only="{{ $readOnly }}">
 			                                    

@@ -12,12 +12,15 @@ class MemberController extends Controller
 
     public function home()
     {
+        if(request()->session()->exists('assessment') || request()->session()->exists('booking_details')){
+            request()->session()->forget(['assessment', 'booking_details']);
+        }
+
         $bookings =  $this->bookingsQuery();
-        $booking_statuses = $this->bookingStatuses();
         $upcoming = $this->findUpcomingSession();
         $total_bookings = $this->totalBookings();
         $booking_by_statuses = $this->bookingByStatus();
     	
-    	return view('pages.members.index', compact('bookings', 'total_bookings', 'booking_by_statuses', 'upcoming', 'booking_statuses'));
+    	return view('pages.members.index', compact('bookings', 'total_bookings', 'booking_by_statuses', 'upcoming'));
     }
 }

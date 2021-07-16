@@ -2,7 +2,8 @@ const state = () => ({
 
 	booking: {},
 	bookings: [],
-	booking_statuses: []
+	booking_statuses: [],
+	actions: []
 
 });
 
@@ -10,7 +11,8 @@ const getters = {
 
 	getBooking: state => state.booking,
 	allBookings: state => state.bookings,
-	allBookingStatuses: state => state.booking_statuses
+	allBookingStatuses: state => state.booking_statuses,
+	getActions: state => state.actions,
 }
 
 const actions = {
@@ -56,7 +58,8 @@ const actions = {
 	async getBookingStatuses({ commit })
 	{
 		const response = await axios.get('/bookings/status-summary');
-		commit('setBookingStatuses', response.data);
+		commit('setBookingStatuses', response.data.by_status_with_total);
+		commit('setActions', response.data.actions)
 	}
 }
 
@@ -64,7 +67,8 @@ const mutations = {
 
 	setBooking: (state, booking) => (state.booking = booking),
 	setAllBookings: (state, bookings) => (state.bookings = bookings),
-	setBookingStatuses: (state, booking_statuses) => (state.booking_statuses = booking_statuses)
+	setBookingStatuses: (state, booking_statuses) => (state.booking_statuses = booking_statuses),
+	setActions: (state, actions) => (state.actions = actions),
 }
 
 

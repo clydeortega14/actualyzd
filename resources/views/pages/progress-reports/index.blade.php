@@ -13,13 +13,18 @@
 					</div>
 					<div class="card-body">
 						<div class="table-reponsive">
-							<table class="table">
+							<table class="table table-bordered table-hover table-striped">
 								<thead>
 									<tr>
 										<th>Timestamp</th>
 										<th>Date of Session</th>
 										<th>Company Name</th>
 										<th>Employee Name</th>
+										<th>Main Concern</th>
+										<th>Current Prescriptions and Over the counter</th>
+										<th>Initial Assessment</th>
+										<th>Recomended Follow up session</th>
+										<th>Intervention plan / treatment goal</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -30,14 +35,17 @@
 											<td>{{ $report->booking->toSchedule->formattedStart() }}</td>
 											<td>{{ $report->booking->toClient->name }}</td>
 											<td>
-												@if(count($report->booking->participants) > 0)
-				                                    @foreach($report->booking->participants as $participant)
-				                                      <span>{{ $participant->name }}</span>
-				                                    @endforeach
-			                                  	@endif
+												<span>{{ !is_null($report->booking->toCounselee) ? $report->booking->toCounselee->name : 'N/A' }}</span>
 											</td>
+											<td>{{ $report->main_concern }}</td>
+											<td>{{ $report->has_prescription && !is_null($report->hasMedication) ?  $report->hasMedication->medication : 'None'}}</td>
+											<td>{{ $report->initial_assessment }}</td>
+											<td>{{ $report->followupSession->name }}</td>
+											<td>{{ $report->treatment_goal }}</td>
 											<td>
-												<a href="{{ route('progress-reports.show', $report->booking->id) }}">View Report</a>
+												<a href="{{ route('progress-reports.show', $report->booking->id) }}">
+													<i class="fa fa-eye"></i>
+												</a>
 											</td>
 										</tr>
 										{{-- @include('pages.progress-reports.modals.report') --}}

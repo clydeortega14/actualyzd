@@ -142,34 +142,15 @@ trait BookingTrait {
 
     public function findUpcomingSession()
     {
-        $bookings = $this->bookingsQuery();
-        $schedule = $this->bookingSchedulesQuery($bookings)->first();
-        $time = $this->isGreaterThanCurretTime($schedule);
-
-        if(!is_null($schedule) && !is_null($time)){
-
-           $find_booking = Booking::where('status', 1)
-            ->whereHas('schedule', function($query){
-                $query->whereDate('start', '>=', now()->toDateString());
-            })
-            ->orWhereHas('time', function($query){
-                $query->whereTime('from', '>=', now()->toTimeString());
-            })->with(['toSchedule', 'time'])
-            ->first();
-
-           if(!is_null($find_booking)){
-
-                return $find_booking;
-
-           }else{
-
-                return null;
-           }
-
-        }else{
-
-            return null;
-        }
+        // query bookings by role
+        $bookings = Booking::query();
+        $this->queryByRole($bookings);
+        return $bookings->whereHas('toSchedule', function($query){
+            $query->where('start', '>=', now()->toDateString())
+            ->orWhereHas('timeSchedules.toTime', function($query2){
+                $query2->where('from', '>=', now()->toTimeString());
+            });
+        })->where('status', 1)->first();
     }
 
     public function bookingStatuses()
@@ -187,7 +168,31 @@ trait BookingTrait {
             ];
         }
 
-        return $by_status_with_total;
-  
+        return response()->json([
+            'by_status_with_total' => $by_status_with_total,
+            'actions' => $this->statusActionByRole()
+        ]);
+    }
+
+    public function statusActionByRole()
+    {
+        if(auth()->user()->hasRole('member')){
+            // cancel action only
+            $statuses = [
+                ['id' => 4, 'name' => 'Cancel']
+            ]; 
+        }
+
+        if(auth()->user()->hasRole(['psychologist', 'superadmin', 'admin'])){
+
+            $statuses = [
+                ['id' => 2, 'name' => 'Complete'],  
+                ['id' => 3, 'name' => 'No Show'],  
+                ['id' => 4, 'name' => 'Cancel'],  
+                ['id' => 5, 'name' => 'Reschedule'],  
+            ];
+        }
+
+        return $statuses;
     }
 }
