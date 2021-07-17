@@ -5,6 +5,9 @@
 	
 	<div class="container-fluid">
 		<div class="row">
+			<div class="col-md-12">
+				{{ Breadcrumbs::render('progress.report.create-for-booking', $booking) }}
+			</div>
 			<div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-body">
@@ -48,7 +51,7 @@
 			          			@php
 									$report = $booking->progressReport;
 									$user = auth()->user();
-									$readOnly = is_null($report)  || isset($edit_mode) ? '' : 'readonly';
+									$readOnly = is_null($report) || $edit_mode ? '' : 'readonly';
 								@endphp
 
 								<div class="d-flex justify-content-between mb-3">
@@ -58,9 +61,8 @@
 											<report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
 										</div>
 									@endif
-
 									<!-- EDIT REPORT -->
-									@if(!isset($edit_mode))
+									@if(!$edit_mode)
 										<div>
 											<a href="{{ route('progress-reports.edit', $booking->id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Edit Report">
 												<i class="fa fa-edit"></i>
@@ -141,7 +143,7 @@
 			                        </div>
 			                        
 			                        <div class="form-group">
-			                              <button class="btn btn-primary btn-block" type="submit" {{ is_null($report) || isset($edit_mode) ? '' : 'disabled' }}>{{ is_null($report) ? 'Submit' : 'Save Changes'}}</button>
+			                              <button class="btn btn-primary btn-block" type="submit" {{ is_null($report) || $edit_mode ? '' : 'disabled' }}>{{ is_null($report) ? 'Submit' : 'Save Changes'}}</button>
 			                              <a href="{{ route('booking.answered.questions', $booking->id) }}" class="btn btn-secondary btn-block" data-dismiss="modal">Return</a>
 			                        </div>
 			                        

@@ -11,7 +11,7 @@
 		</div>
 		<div v-else>
 			<div class="input-group">
-			  <select class="custom-select" name="status" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option">
+			  <select class="custom-select" name="status" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option" required>
 			  	<option selected disabled :value="null">Choose Status</option>
 			    <option v-for="(status, index) in getActions" 
 			    	:key="index"

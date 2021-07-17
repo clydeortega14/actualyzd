@@ -94320,6 +94320,8 @@ var render = function() {
                       attrs: {
                         src: "/images/user.png",
                         alt: booking.to_counselee.name,
+                        "data-toggle": "tooltip",
+                        title: booking.to_counselee.name,
                         width: "50",
                         height: "50"
                       }
@@ -94334,6 +94336,8 @@ var render = function() {
                       attrs: {
                         src: "/images/profile.png",
                         alt: booking.to_schedule.psych.name,
+                        "data-toggle": "tooltip",
+                        title: booking.to_schedule.psych.name,
                         width: "50",
                         height: "50"
                       }
@@ -94443,7 +94447,8 @@ var render = function() {
                 attrs: {
                   name: "status",
                   id: "inputGroupSelect04",
-                  "aria-label": "Example select with button addon"
+                  "aria-label": "Example select with button addon",
+                  required: ""
                 },
                 on: {
                   change: function($event) {

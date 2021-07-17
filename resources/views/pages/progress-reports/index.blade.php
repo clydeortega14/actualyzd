@@ -6,6 +6,9 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				{{ Breadcrumbs::render('progress.report') }}
+			</div>
+			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-header">
 						<i class="fa fa-book"></i>
@@ -43,7 +46,7 @@
 											<td>{{ $report->followupSession->name }}</td>
 											<td>{{ $report->treatment_goal }}</td>
 											<td>
-												<a href="{{ route('progress-reports.show', $report->booking->id) }}">
+												<a href="{{ route('progress.report.create-for-booking', $report->booking->id) }}">
 													<i class="fa fa-eye"></i>
 												</a>
 											</td>

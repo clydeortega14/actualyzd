@@ -176,29 +176,22 @@ trait BookingTrait {
 
     public function statusActionByRole()
     {
-        // if(auth()->user()->hasRole('member')){
-        //     // cancel action only
-        //     $statuses = [
-        //         ['id' => 4, 'name' => 'Cancel']
-        //     ]; 
-        // }
+        if(auth()->user()->hasRole('member')){
+            // cancel action only
+            $statuses = [
+                ['id' => 4, 'name' => 'Cancel']
+            ]; 
+        }
 
-        // if(auth()->user()->hasRole(['psychologist', 'superadmin', 'admin'])){
+        if(auth()->user()->hasRole(['psychologist', 'superadmin', 'admin'])){
 
-        //     $statuses = [
-        //         ['id' => 2, 'name' => 'Complete'],  
-        //         ['id' => 3, 'name' => 'No Show'],  
-        //         ['id' => 4, 'name' => 'Cancel'],  
-        //         ['id' => 5, 'name' => 'Reschedule'],  
-        //     ];
-        // }
-
-        $statuses = [
+            $statuses = [
                 ['id' => 2, 'name' => 'Complete'],  
                 ['id' => 3, 'name' => 'No Show'],  
                 ['id' => 4, 'name' => 'Cancel'],  
                 ['id' => 5, 'name' => 'Reschedule'],  
             ];
+        }
 
         return $statuses;
     }

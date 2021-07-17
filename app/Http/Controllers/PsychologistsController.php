@@ -13,12 +13,13 @@ class PsychologistsController extends Controller
     public function home()
     {
         $schedules = [];
-        return view('pages.psychologists.index', compact('schedules'));
+        return view('pages.psychologists.main', compact('schedules'));
     }
     public function bookings()
     {
         $bookings = $this->bookingsQuery();
-        return view('pages.psychologists.index', compact('bookings'));
+        $upcoming = $this->findUpcomingSession();
+        return view('pages.psychologists.bookings', compact('bookings', 'upcoming'));
     }
 
     /**

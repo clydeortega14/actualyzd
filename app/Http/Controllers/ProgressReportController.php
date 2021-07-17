@@ -71,6 +71,9 @@ class ProgressReportController extends Controller
             ]);
 
             $this->manageMedication($request, $report);
+
+            // update booking status to complete
+            $report->booking()->update(['status' => 2]);
             
         } catch (Exception $e) {
 
