@@ -15,13 +15,15 @@ trait ProgressReportTrait {
 
 		if($user->hasRole('psychologist')){
 
-			// get all psychologist schedules
-			$user_schedules = $user->schedules->pluck('id');
+			$reports->where('assignee', $user->id);
 
-			// get all bookings based on user bookings
-			$user_bookings = Booking::whereIn('id', $user_schedules)->pluck('id');
+			// // get all psychologist schedules
+			// $user_schedules = $user->schedules->pluck('id');
 
-			$reports->whereIn('booking_id', $user_bookings);
+			// // get all bookings based on user bookings
+			// $user_bookings = Booking::whereIn('id', $user_schedules)->pluck('id');
+
+			// $reports->whereIn('booking_id', $user_bookings);
 		}
 
 

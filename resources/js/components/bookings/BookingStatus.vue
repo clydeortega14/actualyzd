@@ -11,14 +11,14 @@
 		</div>
 		<div v-else>
 			<div class="input-group">
-			  <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option">
+			  <select class="custom-select" name="status" id="inputGroupSelect04" aria-label="Example select with button addon" v-model="status_option" required>
 			  	<option selected disabled :value="null">Choose Status</option>
 			    <option v-for="(status, index) in getActions" 
 			    	:key="index"
 			    	:value="status.id">{{ status.name }}</option>
 			  </select>
 			  <div class="input-group-append">
-			    <button class="btn btn-outline-primary" type="button" @click.prevent="update">
+			    <button class="btn btn-outline-primary" type="submit">
 			    	<i class="fa fa-check"></i>
 			    </button>
 			    <button class="btn btn-outline-secondary" type="button" @click.prevent="cancel">

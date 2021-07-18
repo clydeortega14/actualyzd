@@ -52,14 +52,13 @@
                                         <i class="fa fa-video"></i>
                                         <span>Start Video Call</span>
                                     </a>
-                                    <a href="#" class="mr-3">
-                                        <i class="fa fa-book"></i>
-                                        <span>Progress Report</span>
-                                    </a>
                                 </div>
                                 
                                 <div>
-                                    <booking-status session-status="{{ $upcoming->toStatus->name }}" :booking-id="{{ $upcoming->id }}" :booking-status="{{ $upcoming->toStatus->id}}"></booking-status>
+                                    <form action="{{ route('booking.update.status', $upcoming->id) }}" method="POST">
+                                        @csrf
+                                        <booking-status session-status="{{ $upcoming->toStatus->name }}" :booking-id="{{ $upcoming->id }}" :booking-status="{{ $upcoming->toStatus->id}}"></booking-status>
+                                    </form>
                                 </div>
                             </div>
                         @endif

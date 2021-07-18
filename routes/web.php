@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
+		Route::get('schedules-page', 'PsychologistsController@schedules')->name('psychologist.schedules.page');
+
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 
 		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');
@@ -199,6 +201,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
 
+		Route::get('cancel/{booking}', 'BookingController@cancel')->name('bookings.cancel');
+
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
 		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
@@ -208,7 +212,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
 
-		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
+		Route::post('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
 
 		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
 
@@ -229,6 +233,8 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('progress-reports')->group(function(){
 
 		Route::get('/', 'ProgressReportController@index2')->name('progress.report');
+
+		Route::get('create-for-booking/{booking}', 'ProgressReportController@create')->name('progress.report.create-for-booking');
 
 		Route::get('show/{booking}', 'ProgressReportController@show')->name('progress-reports.show');
 

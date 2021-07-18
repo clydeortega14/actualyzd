@@ -94319,7 +94319,15 @@ var render = function() {
                       staticClass: "rounded-circle",
                       attrs: {
                         src: "/images/user.png",
-                        alt: booking.to_counselee.name,
+                        alt:
+                          booking.to_counselee == null
+                            ? "N/A"
+                            : booking.to_counselee.name,
+                        "data-toggle": "tooltip",
+                        title:
+                          booking.to_counselee == null
+                            ? "N/A"
+                            : booking.to_counselee.name,
                         width: "50",
                         height: "50"
                       }
@@ -94334,6 +94342,8 @@ var render = function() {
                       attrs: {
                         src: "/images/profile.png",
                         alt: booking.to_schedule.psych.name,
+                        "data-toggle": "tooltip",
+                        title: booking.to_schedule.psych.name,
                         width: "50",
                         height: "50"
                       }
@@ -94441,8 +94451,10 @@ var render = function() {
                 ],
                 staticClass: "custom-select",
                 attrs: {
+                  name: "status",
                   id: "inputGroupSelect04",
-                  "aria-label": "Example select with button addon"
+                  "aria-label": "Example select with button addon",
+                  required: ""
                 },
                 on: {
                   change: function($event) {
@@ -94482,20 +94494,7 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "input-group-append" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-primary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.update.apply(null, arguments)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-check" })]
-              ),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "button",
@@ -94516,7 +94515,18 @@ var render = function() {
         ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-outline-primary", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fa fa-check" })]
+    )
+  }
+]
 render._withStripped = true
 
 
