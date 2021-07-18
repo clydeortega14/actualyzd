@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
+		Route::get('schedules-page', 'PsychologistsController@schedules')->name('psychologist.schedules.page');
+
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 
 		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');

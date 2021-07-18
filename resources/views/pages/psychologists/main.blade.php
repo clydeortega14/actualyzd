@@ -16,7 +16,7 @@
 				</div>
 			</div>
 			<div class="col-md-4">
-				<a href="#">
+				<a href="{{ route('psychologist.schedules.page') }}">
 				    <div class="card mb-3">
 						<div class="card-body text-center">
 							<h5 class="card-title mb-3">Schedules</h5>

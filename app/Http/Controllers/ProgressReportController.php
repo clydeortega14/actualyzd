@@ -85,7 +85,7 @@ class ProgressReportController extends Controller
         
         DB::commit();
 
-    	return redirect()->route('progress-reports.show', $report->booking->id)->with('success', 'Progress report successfully created');
+    	return redirect()->route('progress.report.create-for-booking', $report->booking->id)->with('success', 'Progress report successfully created');
     }
     public function edit(Booking $booking)
     {

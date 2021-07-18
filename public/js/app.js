@@ -94319,9 +94319,15 @@ var render = function() {
                       staticClass: "rounded-circle",
                       attrs: {
                         src: "/images/user.png",
-                        alt: booking.to_counselee.name,
+                        alt:
+                          booking.to_counselee == null
+                            ? "N/A"
+                            : booking.to_counselee.name,
                         "data-toggle": "tooltip",
-                        title: booking.to_counselee.name,
+                        title:
+                          booking.to_counselee == null
+                            ? "N/A"
+                            : booking.to_counselee.name,
                         width: "50",
                         height: "50"
                       }

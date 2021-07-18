@@ -21,7 +21,7 @@
 						<td>{{ booking.session_type.name }}</td>
 						<td>
 							<a href="#">
-								<img :src="`/images/user.png`" :alt="booking.to_counselee.name" data-toggle="tooltip" :title="booking.to_counselee.name" class="rounded-circle"
+								<img :src="`/images/user.png`" :alt="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" data-toggle="tooltip" :title="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" class="rounded-circle"
 								width="50" height="50">
 							</a>
 						</td>
