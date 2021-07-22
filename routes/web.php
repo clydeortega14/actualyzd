@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
+	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');
+
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
@@ -83,6 +85,12 @@ Route::middleware('auth')->group(function(){
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
 
+		// Home
+		Route::get('/', 'HomeController@setUps')->name('setups.home');
+
+		// Access Rights
+		Route::get('access-rights', 'HomeController@accessRights')->name('access.rights');
+
 		// Roles
 		Route::resource('roles', 'RolesController');
 		
@@ -94,6 +102,9 @@ Route::middleware('auth')->group(function(){
 
 		// Assessment Groups
 		Route::prefix('assessment')->group(function(){
+
+			// Home
+			Route::get('/', 'HomeController@assessments')->name('assessments');
 
 			// Categories
 			Route::resource('categories', 'AssessmentCategoryController');

@@ -7,6 +7,21 @@
 	<div class="container-fluid">
 		<div class="row offset-md-3">
 			<div class="col-md-8">
+				<h4>New Package</h4>
+				<hr>
+				<a href="{{ route('home') }}" class="btn btn-info mr-2">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mr-2">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+				<a href="{{ route('packages.index') }}" class="btn btn-outline-info mr-2">
+					<i class="fa fa-clipboard-list"></i>
+					<span>Packages Lists</span>
+				</a>
+
 				{{-- @include('alerts.message') --}}
 				<div class="card mb-3 mt-3">
 					<div class="card-body">

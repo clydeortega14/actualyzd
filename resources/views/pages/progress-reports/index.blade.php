@@ -8,6 +8,12 @@
 			<div class="col-md-12">
 				{{ Breadcrumbs::render('progress.report') }}
 			</div>
+			<div class="col-md-12 mb-3">
+				<a href="{{ auth()->user()->hasRole('psychologists') ? route('psychologist.home') : route('home') }}" class="btn btn-info">
+					<i class="fa fa-arrow-left"></i>
+					<span>Return Back</span>
+				</a>
+			</div>
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-header">
