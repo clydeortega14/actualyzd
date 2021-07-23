@@ -31,7 +31,7 @@ trait BookingTrait {
 
         // query bookings according to auth user role
         $this->queryByRole($bookings);
-        // query bookings accoirding to status
+        // query bookings according to status
         $this->queryByStatus($bookings, $bookings);
 
         $allBookings = $bookings->with([
