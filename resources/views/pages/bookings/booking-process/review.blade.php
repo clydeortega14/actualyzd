@@ -8,19 +8,51 @@
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h3 class="card-title text-center mt-5">
-							Review Booking Details
-						</h3>
+						<div class="align-content-center text-center">
+							 <div class="align-content-center text-center">
+								<h5 class="card-title">Please review session details</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-3">
+					<div class="card-body">
+						
 
 						<ul class="list-group mt-5">
+							@if(session()->has('assessment'))
+						  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+						    	    Firstimer
+						    	    <span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+						  	    </li>
+						  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+						    	    Intent to self harm
+						    	    <span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
+						  	    </li>
+						  	@endif
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
-						    	Firstimer
-						    	<span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+						  		Session Type
+						  		<span>Webinar</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
-						    	Intent to self harm
-						    	<span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
+						  		Client
+						  		<span>San Miguel</span>
 						  	</li>
+						  	<li class="list-group-item d-flex justify-content-between align-items-center">
+						  		Counselee / Participants
+						  		<span>
+						  			@if(session()->has('client-participants.participants'))
+						  			<ul>
+						  				@foreach(session('client-participants.participants') as $participant)
+						  				     <li>{{ $participant }}</li>
+						  				@endforeach
+						  			</ul>
+						  			@else
+						  				N/A
+						  			@endif
+						  		</span>
+						  	</li>
+
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Date and Time
 						    	<span>

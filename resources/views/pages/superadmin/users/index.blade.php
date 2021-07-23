@@ -8,9 +8,8 @@
 		<h1 class="h3 mb-3 text-gray-800">Users</h1>
 		<hr>
 		<a href="{{ route('home') }}" class="btn btn-info mb-3">
-			<i class="fa fa-arrow-left">
-				<span>Return Back</span>
-			</i>
+			<i class="fa fa-arrow-left"></i>
+			<span>Return Back</span>
 		</a>
 		@if(count($errors) > 0)
 			<div class="alert alert-danger">

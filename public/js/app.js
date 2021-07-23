@@ -17120,6 +17120,83 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ClientParticipant",
+  data: function data() {
+    return {
+      selected_client: null,
+      participants: []
+    };
+  },
+  props: {
+    clients: Array
+  },
+  created: function created() {
+    console.log(this.clients);
+  },
+  methods: {
+    getUsers: function getUsers() {
+      var _this = this;
+
+      var client = this.clients.find(function (client) {
+        return client.id == _this.selected_client;
+      });
+
+      if (client !== undefined) {
+        this.participants = client.users;
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/charts/ConcernsChart.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/charts/ConcernsChart.vue?vue&type=script&lang=js& ***!
@@ -94655,6 +94732,134 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "form-group row mt-4" }, [
+      _c(
+        "label",
+        {
+          staticClass: "col-form-label text-md-right col-sm-4",
+          attrs: { required: "" }
+        },
+        [_vm._v("Select Client")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.selected_client,
+                expression: "selected_client"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "client" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.selected_client = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                _vm.getUsers
+              ]
+            }
+          },
+          [
+            _c(
+              "option",
+              {
+                attrs: { disabled: "", selected: "" },
+                domProps: { value: null }
+              },
+              [_vm._v("Choose Client")]
+            ),
+            _vm._v(" "),
+            _vm._l(_vm.clients, function(client) {
+              return _c(
+                "option",
+                { key: client.id, domProps: { value: client.id } },
+                [_vm._v(_vm._s(client.name))]
+              )
+            })
+          ],
+          2
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group row mt-3" }, [
+      _c("div", { staticClass: "col-md-6 offset-md-4" }, [
+        _c("table", { staticClass: "table mt-4" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.participants, function(participant) {
+              return _c("tr", { key: participant.id }, [
+                _c("td", [
+                  _c("input", {
+                    attrs: { type: "checkbox", name: "participants[]" },
+                    domProps: { value: participant.id }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(participant.name))])
+              ])
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_c("input", { attrs: { type: "checkbox" } })]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Participants")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/Booking.vue?vue&type=template&id=454f4cca&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modals/Booking.vue?vue&type=template&id=454f4cca& ***!
@@ -109319,7 +109524,9 @@ Vue.component('schedules-component', __webpack_require__(/*! ./components/schedu
 
 Vue.component('client-medication', __webpack_require__(/*! ./components/progress-reports/ClientMedication.vue */ "./resources/js/components/progress-reports/ClientMedication.vue")["default"]); // Report Assignee Vue Component
 
-Vue.component('report-assignee', __webpack_require__(/*! ./components/progress-reports/ReportAssignee.vue */ "./resources/js/components/progress-reports/ReportAssignee.vue")["default"]);
+Vue.component('report-assignee', __webpack_require__(/*! ./components/progress-reports/ReportAssignee.vue */ "./resources/js/components/progress-reports/ReportAssignee.vue")["default"]); //Client Participants Form Component
+
+Vue.component('client-participants', __webpack_require__(/*! ./components/bookings/clients/ClientParticipant.vue */ "./resources/js/components/bookings/clients/ClientParticipant.vue")["default"]);
 /**
  * This components are for dashboard / service utilization
  */
@@ -110024,6 +110231,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatusNav_vue_vue_type_template_id_81a00ab2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatusNav_vue_vue_type_template_id_81a00ab2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/clients/ClientParticipant.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/bookings/clients/ClientParticipant.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ClientParticipant.vue?vue&type=template&id=707670f7& */ "./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7&");
+/* harmony import */ var _ClientParticipant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ClientParticipant.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ClientParticipant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/bookings/clients/ClientParticipant.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientParticipant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ClientParticipant.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientParticipant_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ClientParticipant.vue?vue&type=template&id=707670f7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=template&id=707670f7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientParticipant_vue_vue_type_template_id_707670f7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -10,15 +10,37 @@ use App\PsychologistSchedule;
 use DB;
 use App\Booking;
 use App\Http\Traits\BookingTrait;
+use App\SessionType;
+use App\Client;
+
 
 class BookingProcessController extends Controller
 {
     use SchedulesTrait, BookingTrait;
-    
+
+    public function selectSessionType()
+    {
+        $session_types = SessionType::get(['id', 'name']);
+
+        return view('pages.bookings.booking-process.select-session', compact('session_types'));
+    }
+    public function selectClientParticipants()
+    {
+        $clients = Client::whereHas('users', function($query){
+            $query->where('is_active', true);
+        })->with(['users'])->get();
+
+        return view('pages.bookings.booking-process.select-client-participants', compact('clients'));
+    }
     public function onboarding()
     {
-    	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+        $user = auth()->user();
 
+        if($user->hasRole('superadmin')){
+            return redirect()->route('select.session.type');
+        }
+
+    	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
     	return view('pages.bookings.booking-process.onboarding', compact('categories'));
     }
 
@@ -39,6 +61,29 @@ class BookingProcessController extends Controller
 
     }
 
+    public function storeSessionType(Request $request)
+    {
+        dd($request->all());
+        session(['session_type' => [
+            'id' => $request->session_type_id,
+            'name' => $request->session_name
+        ] ]);
+
+        dd(session('session_type'));
+        
+        return redirect()->route('booking.select.client.participants');
+    }
+    public function storeClientParticipants(Request $request){
+
+        // store request to session
+        session([ 'client-participants' => [
+                'client' => $request->client,
+                'participants' => $request->participants
+            ]
+
+        ]);
+        return redirect()->route('booking.date.and.time');
+    }
 
     /*  Post Methods */
     public function storeOnBoardingQuestions(Request $request)

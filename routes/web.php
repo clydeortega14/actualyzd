@@ -189,6 +189,10 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('bookings')->group(function(){
 
 		/* Booking Process / Steps */
+		Route::get('select-session-type', 'BookingProcessController@selectSessionType')->name('select.session.type');
+
+		Route::get('select-client-participants', 'BookingProcessController@selectClientParticipants')->name('booking.select.client.participants');
+
 		Route::get('onboarding', 'BookingProcessController@onboarding')->name('booking.onboarding');
 
 		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
@@ -201,6 +205,10 @@ Route::middleware('auth')->group(function(){
 
 
 		/* Booking Process Actions */
+		Route::get('store/client/participants', 'BookingProcessController@storeClientParticipants')->name('booking.store.client.participants');
+		
+		Route::get('store/session-type', 'BookingProcessController@storeSessionType')->name('booking.store.session.type');
+
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
 		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
