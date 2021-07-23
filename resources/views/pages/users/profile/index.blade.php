@@ -38,9 +38,6 @@
           </div>
         </div>
 
-
-
-
         <div class="card mb-3">
           <div class="card-body">
             <nav>
@@ -54,42 +51,7 @@
 
               {{-- user bookings --}}
               <div class="tab-pane fade show active" id="nav-bookings" role="tabpanel" aria-labelledby="nav-bookings-tab">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Client</th>
-                      <th scope="col">Session start</th>
-                      <th scope="col">Session end</th>
-                      <th scope="col">Time start</th>
-                      <th scope="col">Time end</th>
-                      <th scope="col">Conselee</th>
-                      <th scope="col">Booked by</th>
-                      <th scope="col">Session type</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @forelse ($user->bookings as $booking)
-                      <tr>
-                        <td>{{ $booking->toClient->name }}</td>
-                        <td>{{ $booking->toSchedule->start }}</td>
-                        <td>{{ $booking->toSchedule->end }}</td>
-                        <td>{{ $booking->time->from }}</td>
-                        <td>{{ $booking->time->to }}</td>
-                        <td>{{ $booking->toCounselee === null ? '' : $booking->toCounselee->name }}</td>
-                        <td>{{ $booking->bookedBy->name }}</td>
-                        <td>{{ $booking->sessionType->name }}</td>
-                        <td>
-                          <span class="{{ $booking->toStatus->class }}">{{ $booking->toStatus->name }}</span>
-                        </td>
-                      </tr>
-                    @empty
-                      <tr>
-                        <td col="9">No Bookings Available</td>
-                      </tr>
-                    @endforelse
-                  </tbody>
-                </table>
+                <bookings-lists class="mt-4"></bookings-lists>
               </div>
 
               {{-- user activities --}}
