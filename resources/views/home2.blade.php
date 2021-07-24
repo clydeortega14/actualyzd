@@ -42,10 +42,10 @@
 			</div>
 			@if(auth()->user()->hasRole('superadmin'))
 				<div class="col-md-4">
-					<a href="{{ route('booking.onboarding') }}">
+					<a href="{{ route('bookings.index') }}">
 					<div class="card mb-3">
 						<div class="card-body text-center">
-							<h5 class="card-title mb-3">Book a session</h5>
+							<h5 class="card-title mb-3">Bookings</h5>
 
 							<div class="d-flex align-items-center justify-content-center">
 								<span style="font-size: 3.5em;">

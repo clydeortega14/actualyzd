@@ -33,6 +33,12 @@ trait BookingTrait {
         $this->queryByRole($bookings);
         // query bookings accoirding to status
         $this->queryByStatus($bookings, $bookings);
+        // with participants
+        $this->withParticipants($bookings)
+        ->where(function($query){
+            $this->queryByStatus($query, $query);
+        });
+        
 
         $allBookings = $bookings->with([
             'toSchedule.psych', 
@@ -46,13 +52,40 @@ trait BookingTrait {
         return $allBookings;
 	}
 
+    public function withParticipants($query){
+
+        return $query->orWhereHas('participants', function($query2){
+            $query2->where('id', auth()->user()->id);
+        });
+    }
+
     public function countByStatus($status)
     {
         $bookings = Booking::query();
 
         $this->queryByRole($bookings);
 
-        return $bookings->where('status', $status)->count();
+        $bookings->where('status', $status)
+        ->where(function($query) use ($bookings, $status){
+            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+            if($status == 1){
+                $query->where('status', $status)->whereIn('schedule', $schedules_id);
+            }else{
+                $query->where('status', $status);
+            }
+        });
+
+        $this->withParticipants($bookings)
+        ->where(function($query) use ($bookings, $status){
+            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+            if($status == 1){
+                $query->where('status', $status)->whereIn('schedule', $schedules_id);
+            }else{
+                $query->where('status', $status);
+            }
+        });
+
+        return $bookings->count();
     }
 
     public function totalBookings()
@@ -74,16 +107,14 @@ trait BookingTrait {
             ->get();
     }
 
-    public function bookingsFoMember($user, $query)
+    public function queryByRole($query)
     {
-        if($user->hasRole('member')){
+        $user = auth()->user();
 
+        if($user->hasRole('member')){
             $query->where('booked_by', $user->id);
         }
-    }
-    public function bookingsForPsychologist($user, $query)
-    {
-        // when user is a psychologist
+
         if($user->hasRole('psychologist')){
 
             $sched_id = $user->schedules->pluck('id');
@@ -92,19 +123,9 @@ trait BookingTrait {
         }
     }
 
-    public function queryByRole($query)
-    {
-        $user = auth()->user();
-
-        $this->bookingsFoMember($user, $query);
-
-        $this->bookingsForPsychologist($user, $query);
-    }
-
     public function queryByStatus($query, $bookings)
     {
         $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
-
         if(request()->has('status')){
             
             if(request('status') == 1){

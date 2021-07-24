@@ -32,11 +32,11 @@
 						  	@endif
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Session Type
-						  		<span>{{ session('selected_session.name') }}</span>
+						  		<span>{{ session()->has('selected_session') ? session('selected_session.name') : 'Individual' }}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Client
-						  		<span>{{ session('selected_client.name') }}</span>
+						  		<span>{{ session()->has('selected_client') ? session('selected_client.name') : auth()->user()->client->name }}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Counselee / Participants
@@ -48,7 +48,7 @@
 						  				@endforeach
 						  			</ul>
 						  			@else
-						  				N/A
+						  				<span>{{ auth()->user()->name }}</span>
 						  			@endif
 						  		</span>
 						  	</li>
