@@ -8,19 +8,51 @@
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h3 class="card-title text-center mt-5">
-							Review Booking Details
-						</h3>
+						<div class="align-content-center text-center">
+							 <div class="align-content-center text-center">
+								<h5 class="card-title">Please review session details</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-3">
+					<div class="card-body">
+						
 
 						<ul class="list-group mt-5">
+							@if(session()->has('assessment'))
+						  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+						    	    Firstimer
+						    	    <span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+						  	    </li>
+						  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+						    	    Intent to self harm
+						    	    <span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
+						  	    </li>
+						  	@endif
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
-						    	Firstimer
-						    	<span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+						  		Session Type
+						  		<span>{{ session()->has('selected_session') ? session('selected_session.name') : 'Individual' }}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
-						    	Intent to self harm
-						    	<span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
+						  		Client
+						  		<span>{{ session()->has('selected_client') ? session('selected_client.name') : auth()->user()->client->name }}</span>
 						  	</li>
+						  	<li class="list-group-item d-flex justify-content-between align-items-center">
+						  		Counselee / Participants
+						  		<span>
+						  			@if(session()->has('participants'))
+						  			<ul>
+						  				@foreach(session('participants') as $participant)
+						  				     <li>{{ $participant->name }}</li>
+						  				@endforeach
+						  			</ul>
+						  			@else
+						  				<span>{{ auth()->user()->name }}</span>
+						  			@endif
+						  		</span>
+						  	</li>
+
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						    	Date and Time
 						    	<span>

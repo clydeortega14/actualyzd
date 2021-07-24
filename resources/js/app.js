@@ -43,6 +43,9 @@ Vue.component('client-medication', require('./components/progress-reports/Client
 // Report Assignee Vue Component
 Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
+//Client Participants Form Component
+Vue.component('client-participants', require('./components/bookings/clients/ClientParticipant.vue').default);
+
 /**
  * This components are for dashboard / service utilization
  */

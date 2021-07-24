@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
+	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');
+
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
@@ -83,6 +85,12 @@ Route::middleware('auth')->group(function(){
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
 
+		// Home
+		Route::get('/', 'HomeController@setUps')->name('setups.home');
+
+		// Access Rights
+		Route::get('access-rights', 'HomeController@accessRights')->name('access.rights');
+
 		// Roles
 		Route::resource('roles', 'RolesController');
 		
@@ -94,6 +102,9 @@ Route::middleware('auth')->group(function(){
 
 		// Assessment Groups
 		Route::prefix('assessment')->group(function(){
+
+			// Home
+			Route::get('/', 'HomeController@assessments')->name('assessments');
 
 			// Categories
 			Route::resource('categories', 'AssessmentCategoryController');
@@ -178,6 +189,10 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('bookings')->group(function(){
 
 		/* Booking Process / Steps */
+		Route::get('select-session-type', 'BookingProcessController@selectSessionType')->name('select.session.type');
+
+		Route::get('select-client-participants', 'BookingProcessController@selectClientParticipants')->name('booking.select.client.participants');
+
 		Route::get('onboarding', 'BookingProcessController@onboarding')->name('booking.onboarding');
 
 		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
@@ -190,6 +205,10 @@ Route::middleware('auth')->group(function(){
 
 
 		/* Booking Process Actions */
+		Route::get('store/client/participants', 'BookingProcessController@storeClientParticipants')->name('booking.store.client.participants');
+		
+		Route::get('store/session-type', 'BookingProcessController@storeSessionType')->name('booking.store.session.type');
+
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
 		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');

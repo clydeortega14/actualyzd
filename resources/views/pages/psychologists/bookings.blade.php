@@ -7,6 +7,26 @@
 			<div class="col-md-12">
 				{{ Breadcrumbs::render('psychologist.bookings') }}
 			</div>
+            <div class="col-md-12 mb-3">
+                @if(auth()->user()->hasRole('psychologist'))
+                    @php
+                        $route = route('psychologist.home');
+                    @endphp
+                @elseif(auth()->user()->hasRole('member'))
+                    @php
+                        $route = route('member.home');
+                    @endphp
+                @else
+                    @php
+                        $route = route('home');
+                    @endphp
+
+                @endif
+                <a href="{{ $route }}" class="btn btn-info">
+                    <i class="fa fa-arrow-left"></i>
+                    <span>Return Back</span>
+                </a>
+            </div>
 			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-body">

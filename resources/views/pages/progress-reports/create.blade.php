@@ -7,6 +7,13 @@
 		<div class="row">
 			<div class="col-md-12">
 				{{ Breadcrumbs::render('progress.report.create-for-booking', $booking) }}
+				
+			</div>
+			<div class="col-md-12 mb-3">
+				<a href="{{ route('progress.report') }}" class="btn btn-info">
+					<i class="fa fa-arrow-left"></i>
+					<span>Return Back</span>
+				</a>
 			</div>
 			<div class="col-md-3">
 				<div class="card mb-3">

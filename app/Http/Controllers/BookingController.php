@@ -32,8 +32,7 @@ class BookingController extends Controller
     }
     public function index()
     {
-        $bookings = $this->bookingsQuery();
-        return view('pages.bookings.index', compact('bookings'));
+        return view('pages.superadmin.bookings.index');
     }
 
     public function create()

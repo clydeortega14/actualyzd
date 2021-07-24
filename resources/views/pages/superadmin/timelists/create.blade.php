@@ -5,6 +5,22 @@
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-sm-8">
+				<h4 class="text-center">Timelists</h4>
+				<hr>
+				<a href="{{ route('home') }}" class="btn btn-info mr-2 mb-3">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+
+				<a href="{{ route('time-lists.index') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-fw fa-clock"></i>
+					<span>Timelists</span>
+				</a>
+
 				<div class="card">
 					<div class="card-header">
 						add time
