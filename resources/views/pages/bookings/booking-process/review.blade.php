@@ -32,19 +32,19 @@
 						  	@endif
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Session Type
-						  		<span>Webinar</span>
+						  		<span>{{ session('selected_session.name') }}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Client
-						  		<span>San Miguel</span>
+						  		<span>{{ session('selected_client.name') }}</span>
 						  	</li>
 						  	<li class="list-group-item d-flex justify-content-between align-items-center">
 						  		Counselee / Participants
 						  		<span>
-						  			@if(session()->has('client-participants.participants'))
+						  			@if(session()->has('participants'))
 						  			<ul>
-						  				@foreach(session('client-participants.participants') as $participant)
-						  				     <li>{{ $participant }}</li>
+						  				@foreach(session('participants') as $participant)
+						  				     <li>{{ $participant->name }}</li>
 						  				@endforeach
 						  			</ul>
 						  			@else

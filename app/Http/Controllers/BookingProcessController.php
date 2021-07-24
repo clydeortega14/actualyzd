@@ -12,6 +12,8 @@ use App\Booking;
 use App\Http\Traits\BookingTrait;
 use App\SessionType;
 use App\Client;
+use App\User;
+use App\Bookings\IndividualSession;
 
 
 class BookingProcessController extends Controller
@@ -30,14 +32,16 @@ class BookingProcessController extends Controller
             $query->where('is_active', true);
         })->with(['users'])->get();
 
-        return view('pages.bookings.booking-process.select-client-participants', compact('clients'));
+        $session_types = SessionType::get(['id', 'name']);
+
+        return view('pages.bookings.booking-process.select-client-participants', compact('clients', 'session_types'));
     }
     public function onboarding()
     {
         $user = auth()->user();
 
         if($user->hasRole('superadmin')){
-            return redirect()->route('select.session.type');
+            return redirect()->route('booking.select.client.participants');
         }
 
     	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
@@ -76,12 +80,14 @@ class BookingProcessController extends Controller
     public function storeClientParticipants(Request $request){
 
         // store request to session
-        session([ 'client-participants' => [
-                'client' => $request->client,
-                'participants' => $request->participants
-            ]
-
-        ]);
+        $selected_session = SessionType::findOrFail($request->session_type);
+        $selected_client = Client::findOrFail($request->client);
+        $participants = User::whereIn('id', $request->participants)->get();
+        
+        session(['selected_session' => $selected_session ]);
+        session(['selected_client' => $selected_client ]);
+        session(['participants' => $participants]);
+        
         return redirect()->route('booking.date.and.time');
     }
 
@@ -126,29 +132,30 @@ class BookingProcessController extends Controller
         
         return redirect()->route('booking.review.details');
     }
-    public function bookingConfirm(Request $request)
+    public function bookingConfirm(Request $request, IndividualSession $individual)
     {
         DB::beginTransaction();
 
         try {
+            dd($individual->create());
 
-            $booking = Booking::create([
+            // $booking = Booking::create([
 
-                'schedule' => session('booking_details.schedule.id'),
-                'time_id' => session('booking_details.timelist.id'),
-                'client_id' => auth()->user()->client_id,
-                'booked_by' => auth()->user()->id,
-                'counselee' => auth()->user()->id,
-                'session_type_id' => 1,
-                'self_harm' => session('assessment.self_harm'),
-                'is_firstimer' => session('assessment.is_firsttimer'),
-                'status' => 1
-            ]);
+            //     'schedule' => session('booking_details.schedule.id'),
+            //     'time_id' => session('booking_details.timelist.id'),
+            //     'client_id' => auth()->user()->client_id,
+            //     'booked_by' => auth()->user()->id,
+            //     'counselee' => auth()->user()->id,
+            //     'session_type_id' => 1,
+            //     'self_harm' => session('assessment.self_harm'),
+            //     'is_firstimer' => session('assessment.is_firsttimer'),
+            //     'status' => 1
+            // ]);
 
-            if($request->session()->has('assessment.onboarding_answers')){
+            // if($request->session()->has('assessment.onboarding_answers')){
 
-                $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
-            }
+            //     $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
+            // }
             
         } catch (Exception $e) {
             DB::rollback();
