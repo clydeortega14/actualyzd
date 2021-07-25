@@ -9,20 +9,33 @@
 
             {{-- run `php artisan storage:link` --}}
             <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/user.png') }}" alt="{{ $user->name }}" class="img-fluid rounded mx-auto d-block ac-avatar">
-            <div class="text-center mt-3">
-              <h5>{{ $user->name }} <br>
-                <small>{{ $user->email }}</small>
-              </h5>
 
-              @if (Auth::id() === $user->id)
+            <div class="mt-3">
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <h6 class="mb-0">Name</h6>
+                  <span>{{ $user->name }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <h6 class="mb-0">Email</h6>
+                  <span>{{ $user->email }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <h6 class="mb-0">Company</h6>
+                  <span>{{ $user->client->name ?? 'n/a' }}</span>
+                </li>
+              </ul>
+            </div>
+            @if (Auth::id() === $user->id)
+              <div class="text-center mt-3">
                 <a href="/profile/{{ $user->id }}/edit" class="btn btn-outline-primary mr-1">
                   <i class="fa fa-pen"></i>
                   Update Profile
                 </a>
 
                 <upload-avatar :user-id="{{ $user->id }}" token="{{ $user->api_token }}"></upload-avatar>
-              @endif
-            </div>
+              </div>
+            @endif
           </div>
         </div>
       </div>
