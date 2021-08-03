@@ -10,6 +10,7 @@
 						<th>Counselee</th>
 						<th>Psychologist</th>
 						<th>Status</th>
+						<th>Link to session</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -37,6 +38,11 @@
 								:booking-id="booking.id" 
 								:booking-status="booking.to_status.id" 
 							/>
+						</td>
+						<td>
+							<a :href="videoChatUrl(booking)" target="_blank">
+								<i class="fa fa-link"></i>
+							</a>
 						</td>
 					</tr>
 				</tbody>
@@ -69,6 +75,9 @@
 			...mapActions(["getAllBookings"]),
 			filterStatus(id){
 				this.getAllBookings({ status: id })
+			},
+			videoChatUrl(booking){
+				return `${window.location.origin}/video-chat/${booking.refno}`
 			}
 		}
 	}

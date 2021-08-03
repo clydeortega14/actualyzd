@@ -15,6 +15,7 @@ class IndividualSession extends AbstractBooking implements BookingInterface {
 	{
 		 $booking = Booking::create([
 
+            'room_id' => uniqid(),
             'schedule' => session('booking_details.schedule.id'),
             'time_id' => session('booking_details.timelist.id'),
             'client_id' => auth()->user()->client_id,

@@ -12,7 +12,7 @@
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    @stack('custom_styles')
+    @yield('custom_styles')
 </head>
 <body>
     <div id="app">
