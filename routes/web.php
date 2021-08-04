@@ -248,7 +248,9 @@ Route::middleware('auth')->group(function(){
 	});
 
 	/* Video Chat Route*/
-	Route::get('video-chat/{refno}', 'VideoChatController@index');
+	Route::get('video-chat/{room_id}', 'VideoChatController@index');
+
+	Route::post('video-chat', 'VideoChatController@store')->name('video-chat.store');
 
 
 	/*-- Progress Reports --*/

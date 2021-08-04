@@ -16887,7 +16887,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     videoChatUrl: function videoChatUrl(booking) {
-      return "".concat(window.location.origin, "/video-chat/").concat(booking.refno);
+      return "".concat(window.location.origin, "/video-chat/").concat(booking.room_id);
     }
   })
 });

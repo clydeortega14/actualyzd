@@ -77,7 +77,8 @@
 				this.getAllBookings({ status: id })
 			},
 			videoChatUrl(booking){
-				return `${window.location.origin}/video-chat/${booking.refno}`
+
+				return `${window.location.origin}/video-chat/${booking.room_id}`
 			}
 		}
 	}

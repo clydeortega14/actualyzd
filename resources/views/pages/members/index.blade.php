@@ -91,6 +91,12 @@
 
             	<div class="card mb-3">
             		<div class="card-body">
+
+                        @if(session()->has('error'))
+                            <div class="alert alert-danger">
+                                <span>{{ session('error') }}</span>
+                            </div>
+                        @endif
                         <bookings-lists></bookings-lists>
             			{{-- @include('pages.bookings.index') --}}
             		</div>

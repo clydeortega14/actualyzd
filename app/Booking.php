@@ -81,6 +81,10 @@ class Booking extends Model
     {
         return $this->belongsTo(AssessmentCategory::class, 'main_concern');
     }
+    public function chats()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
 
     public function scopeWithClient($query)
     {
