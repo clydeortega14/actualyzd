@@ -20,3 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->group(function () {
     Route::post('photo', 'UsersController@uploadAvatar');
 });
+
+// Chat Messages API
+Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
+
+Route::post('chat-message', 'Api\ChatMessageController@store');

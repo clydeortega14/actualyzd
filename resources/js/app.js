@@ -50,6 +50,12 @@ Vue.component('client-participants', require('./components/bookings/clients/Clie
 // Video Chat Component
 Vue.component('chat-component', require('./components/video-chat/ChatComponent.vue').default);
 
+// Chat Messages Components
+Vue.component('chat-messages', require('./components/video-chat/ChatMessages.vue').default);
+
+// Chat Footer Component
+Vue.component('chat-footer', require('./components/video-chat/ChatFooter').default);
+
 /**
  * This components are for dashboard / service utilization
  */
