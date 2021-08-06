@@ -118,12 +118,14 @@
 
 			...mapGetters(["allMessages"])
 		},
-		created(){
-
-			Echo.private('new-message')
+		mounted(){
+			// Broadcast new chat message events using laravel echo
+			Echo.private(`new-message.${this.booking.room_id}`)
 	            .listen('NewMessage', (e) => {
-	                console.log(e)
+	                this.$store.commit('storeMessage', e.chat_message)
 	         })
+		},
+		created(){
 
 			this.getMessages(this.booking.room_id);
 		},

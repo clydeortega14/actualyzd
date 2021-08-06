@@ -54,7 +54,7 @@ class ChatMessageController extends Controller
 
         $chat_message->load(['createdBy', 'booking']);
 
-        event(new NewMessage($chat_message));
+        broadcast(new NewMessage($chat_message))->toOthers();
 
         return response()->json(['error' => false, 'message' => 'success', 'data' => $chat_message ]);
     }

@@ -15,7 +15,6 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('new-message', function(){
-
+Broadcast::channel('new-message.{room_id}', function($room_id){
     return true;
 });

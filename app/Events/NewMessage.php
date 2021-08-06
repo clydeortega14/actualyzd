@@ -34,13 +34,13 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('new-message');
+        return new PrivateChannel('new-message.'.$this->chat_message->booking->room_id);
     }
 
     public function broadcastWith()
     {
         return [
-            'name' => 'Hello World'
+            'chat_message' => $this->chat_message
         ];
     }
 }

@@ -18428,10 +18428,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     authUser: Object
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allMessages"])),
-  created: function created() {
-    Echo["private"]('new-message').listen('NewMessage', function (e) {
-      console.log(e);
+  mounted: function mounted() {
+    var _this = this;
+
+    Echo["private"]("new-message.".concat(this.booking.room_id)).listen('NewMessage', function (e) {
+      _this.$store.commit('storeMessage', e.chat_message);
     });
+  },
+  created: function created() {
     this.getMessages(this.booking.room_id);
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getMessages"])), {}, {
