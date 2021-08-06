@@ -8,6 +8,7 @@ use App\Booking;
 use App\ChatMessage;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use App\Events\NewMessage;
 
 class ChatMessageController extends Controller
 {
@@ -50,7 +51,10 @@ class ChatMessageController extends Controller
 
         DB::commit();
 
+
         $chat_message->load(['createdBy', 'booking']);
+
+        event(new NewMessage($chat_message));
 
         return response()->json(['error' => false, 'message' => 'success', 'data' => $chat_message ]);
     }

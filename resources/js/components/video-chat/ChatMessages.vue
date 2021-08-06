@@ -120,7 +120,12 @@
 		},
 		created(){
 
-			this.getMessages(this.booking.room_id)
+			Echo.private('new-message')
+	            .listen('NewMessage', (e) => {
+	                console.log(e)
+	         })
+
+			this.getMessages(this.booking.room_id);
 		},
 		methods: {
 
