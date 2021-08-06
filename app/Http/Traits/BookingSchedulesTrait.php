@@ -42,4 +42,8 @@ trait BookingSchedulesTrait {
             ->whereDate('start', '>=', now()->toDateString())
             ->orderBy('start', 'asc');
 	}
+	public function queryByDate()
+	{
+		return PsychologistSchedule::whereDate('start', '>=', now()->toDateString())->get();
+	}
 }

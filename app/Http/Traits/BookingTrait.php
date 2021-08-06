@@ -31,8 +31,14 @@ trait BookingTrait {
 
         // query bookings according to auth user role
         $this->queryByRole($bookings);
-        // query bookings accoirding to status
+        // query bookings according to status
         $this->queryByStatus($bookings, $bookings);
+        // with participants
+        $this->withParticipants($bookings)
+        ->where(function($query){
+            $this->queryByStatus($query, $query);
+        });
+        
 
         $allBookings = $bookings->with([
             'toSchedule.psych', 
@@ -46,13 +52,40 @@ trait BookingTrait {
         return $allBookings;
 	}
 
+    public function withParticipants($query){
+
+        return $query->orWhereHas('participants', function($query2){
+            $query2->where('id', auth()->user()->id);
+        });
+    }
+
     public function countByStatus($status)
     {
         $bookings = Booking::query();
 
         $this->queryByRole($bookings);
 
-        return $bookings->where('status', $status)->count();
+        $bookings->where('status', $status)
+        ->where(function($query) use ($bookings, $status){
+            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+            if($status == 1){
+                $query->where('status', $status)->whereIn('schedule', $schedules_id);
+            }else{
+                $query->where('status', $status);
+            }
+        });
+
+        $this->withParticipants($bookings)
+        ->where(function($query) use ($bookings, $status){
+            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+            if($status == 1){
+                $query->where('status', $status)->whereIn('schedule', $schedules_id);
+            }else{
+                $query->where('status', $status);
+            }
+        });
+
+        return $bookings->count();
     }
 
     public function totalBookings()
@@ -74,16 +107,14 @@ trait BookingTrait {
             ->get();
     }
 
-    public function bookingsFoMember($user, $query)
+    public function queryByRole($query)
     {
-        if($user->hasRole('member')){
+        $user = auth()->user();
 
+        if($user->hasRole('member')){
             $query->where('booked_by', $user->id);
         }
-    }
-    public function bookingsForPsychologist($user, $query)
-    {
-        // when user is a psychologist
+
         if($user->hasRole('psychologist')){
 
             $sched_id = $user->schedules->pluck('id');
@@ -92,19 +123,9 @@ trait BookingTrait {
         }
     }
 
-    public function queryByRole($query)
-    {
-        $user = auth()->user();
-
-        $this->bookingsFoMember($user, $query);
-
-        $this->bookingsForPsychologist($user, $query);
-    }
-
     public function queryByStatus($query, $bookings)
     {
         $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
-
         if(request()->has('status')){
             
             if(request('status') == 1){
@@ -142,34 +163,15 @@ trait BookingTrait {
 
     public function findUpcomingSession()
     {
-        $bookings = $this->bookingsQuery();
-        $schedule = $this->bookingSchedulesQuery($bookings)->first();
-        $time = $this->isGreaterThanCurretTime($schedule);
-
-        if(!is_null($schedule) && !is_null($time)){
-
-           $find_booking = Booking::where('status', 1)
-            ->whereHas('schedule', function($query){
-                $query->whereDate('start', '>=', now()->toDateString());
-            })
-            ->orWhereHas('time', function($query){
-                $query->whereTime('from', '>=', now()->toTimeString());
-            })->with(['toSchedule', 'time'])
-            ->first();
-
-           if(!is_null($find_booking)){
-
-                return $find_booking;
-
-           }else{
-
-                return null;
-           }
-
-        }else{
-
-            return null;
-        }
+        // query bookings by role
+        $bookings = Booking::query();
+        $this->queryByRole($bookings);
+        return $bookings->whereHas('toSchedule', function($query){
+            $query->where('start', '>=', now()->toDateString())
+            ->orWhereHas('timeSchedules.toTime', function($query2){
+                $query2->where('from', '>=', now()->toTimeString());
+            });
+        })->where('status', 1)->first();
     }
 
     public function bookingStatuses()
@@ -187,7 +189,31 @@ trait BookingTrait {
             ];
         }
 
-        return $by_status_with_total;
-  
+        return response()->json([
+            'by_status_with_total' => $by_status_with_total,
+            'actions' => $this->statusActionByRole()
+        ]);
+    }
+
+    public function statusActionByRole()
+    {
+        if(auth()->user()->hasRole('member')){
+            // cancel action only
+            $statuses = [
+                ['id' => 4, 'name' => 'Cancel']
+            ]; 
+        }
+
+        if(auth()->user()->hasRole(['psychologist', 'superadmin', 'admin'])){
+
+            $statuses = [
+                ['id' => 2, 'name' => 'Complete'],  
+                ['id' => 3, 'name' => 'No Show'],  
+                ['id' => 4, 'name' => 'Cancel'],  
+                ['id' => 5, 'name' => 'Reschedule'],  
+            ];
+        }
+
+        return $statuses;
     }
 }

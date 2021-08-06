@@ -10,15 +10,42 @@ use App\PsychologistSchedule;
 use DB;
 use App\Booking;
 use App\Http\Traits\BookingTrait;
+use App\SessionType;
+use App\Client;
+use App\User;
+use App\Bookings\BookingInterface;
+use App\TimeSchedule;
+
 
 class BookingProcessController extends Controller
 {
     use SchedulesTrait, BookingTrait;
-    
+
+    public function selectSessionType()
+    {
+        $session_types = SessionType::get(['id', 'name']);
+
+        return view('pages.bookings.booking-process.select-session', compact('session_types'));
+    }
+    public function selectClientParticipants()
+    {
+        $clients = Client::whereHas('users', function($query){
+            $query->where('is_active', true);
+        })->with(['users'])->get();
+
+        $session_types = SessionType::get(['id', 'name']);
+
+        return view('pages.bookings.booking-process.select-client-participants', compact('clients', 'session_types'));
+    }
     public function onboarding()
     {
-    	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+        $user = auth()->user();
 
+        if($user->hasRole('superadmin')){
+            return redirect()->route('booking.select.client.participants');
+        }
+
+    	$categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
     	return view('pages.bookings.booking-process.onboarding', compact('categories'));
     }
 
@@ -39,6 +66,31 @@ class BookingProcessController extends Controller
 
     }
 
+    public function storeSessionType(Request $request)
+    {
+        dd($request->all());
+        session(['session_type' => [
+            'id' => $request->session_type_id,
+            'name' => $request->session_name
+        ] ]);
+
+        dd(session('session_type'));
+        
+        return redirect()->route('booking.select.client.participants');
+    }
+    public function storeClientParticipants(Request $request){
+
+        // store request to session
+        $selected_session = SessionType::findOrFail($request->session_type);
+        $selected_client = Client::findOrFail($request->client);
+        $participants = User::whereIn('id', $request->participants)->get();
+        
+        session(['selected_session' => $selected_session ]);
+        session(['selected_client' => $selected_client ]);
+        session(['participants' => $participants]);
+        
+        return redirect()->route('booking.date.and.time');
+    }
 
     /*  Post Methods */
     public function storeOnBoardingQuestions(Request $request)
@@ -81,45 +133,60 @@ class BookingProcessController extends Controller
         
         return redirect()->route('booking.review.details');
     }
-    public function bookingConfirm(Request $request)
+    public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
+        // find schedule by schedule_id
+        $schedule = PsychologistSchedule::findOrFail(session('booking_details.schedule.id'));
+
+        // find time schedules by request schedule and time_id
+        $time_schedule = TimeSchedule::where('schedule', session('booking_details.schedule.id'))
+            ->where('time', session('booking_details.timelist.id'))->first();
+
+
         DB::beginTransaction();
-
         try {
+            if(!is_null($schedule) && !is_null($time_schedule)){
+                $booking_interface->create();
 
-            $booking = Booking::create([
+                DB::commit();
 
-                'schedule' => session('booking_details.schedule.id'),
-                'time_id' => session('booking_details.timelist.id'),
-                'client_id' => auth()->user()->client_id,
-                'booked_by' => auth()->user()->id,
-                'counselee' => auth()->user()->id,
-                'session_type_id' => 1,
-                'self_harm' => session('assessment.self_harm'),
-                'is_firstimer' => session('assessment.is_firsttimer'),
-                'status' => 1
-            ]);
+                $time_schedule->update(['is_booked' => true]);
+            }else{
 
-            if($request->session()->has('assessment.onboarding_answers')){
-
-                $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
+                return redirect()->back()->with('error', 'Schedule and time selected was not found');
             }
-            
         } catch (Exception $e) {
             DB::rollback();
 
             return redirect()->back()->with('error', $e->getMessage());
         }
-
-        DB::commit();
-
+        
         return redirect()->route('booking.success.page')->with('success', 'Successfully booked a session');
     }
 
     public function updateBookingStatus(Request $request, $id)
     {
-        $booking = Booking::where('id', $id)->update(['status' => $request->status]);
-        return $booking;
-        return response()->json(['success' => true, 'message' => 'Successfully updated', 'data' => [] ], 200);
+        $booking = Booking::findOrFail($id);
+
+        if($request->status == 2){
+
+            // redirect to progress reports
+            return redirect()->route('progress.report.create-for-booking', $id);
+        }
+
+        if($request->status == 4){
+            // redirect to reason for canceling
+            return redirect()->route('bookings.cancel', $booking->id);
+        }
+
+        if($request->status == 5){
+
+            return redirect()->route('booking.reschedule', $booking->id);
+        }
+
+        if($request->status == 3){
+             $booking->update(['status' => 3]); 
+             return redirect()->route('home');
+        }
     }
 }

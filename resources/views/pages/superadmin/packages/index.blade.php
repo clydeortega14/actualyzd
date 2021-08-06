@@ -4,8 +4,21 @@
 @section('content')
 	
 	<div class="container">
-		<h4>Packages </h4>
 		<div class="row">
+			<div class="col-md-12">
+				<h4>Packages </h4>
+				<hr>
+			</div>
+			<div class="col-md-12">
+				<a href="{{ route('home') }}" class="btn btn-info mb-3 mr-2">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mb-3 mr-2">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+			</div>
 			<div class="col-md-12">
 				@include('alerts.message')
 				<div class="card mb-3">
@@ -42,9 +55,6 @@
 												</a> |
 												<a href="{{ route('package.services', $package->id) }}" class="btn btn-info btn-sm">
 													<i class="fa fa-hand-holding"></i>
-												</a> |
-												<a href="#" class="btn btn-secondary btn-sm">
-													<i class="fa fa-trash"></i>
 												</a>
 											</td>
 										</tr>

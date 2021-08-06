@@ -5,20 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Psychologist;
 use App\Http\Traits\BookingTrait;
+use App\Http\Traits\BookingSchedulesTrait;
 
 class PsychologistsController extends Controller
 {
-    use BookingTrait;
+    use BookingTrait, BookingSchedulesTrait;
 
     public function home()
     {
-        $schedules = [];
-        return view('pages.psychologists.index', compact('schedules'));
+        return view('pages.psychologists.main');
     }
     public function bookings()
     {
         $bookings = $this->bookingsQuery();
-        return view('pages.psychologists.index', compact('bookings'));
+        $upcoming = $this->findUpcomingSession();
+        return view('pages.psychologists.bookings', compact('bookings', 'upcoming'));
+    }
+
+    public function schedules()
+    {
+        return view('pages.psychologists.schedule');
     }
 
     /**

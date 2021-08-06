@@ -11,6 +11,7 @@ window.Vue = require('vue');
 Vue.prototype.$bus = new Vue();
 
 import store from './store'
+import moment from 'moment'
 
 // import modal from 'vue-js-modal';
 
@@ -41,6 +42,9 @@ Vue.component('schedules-component', require('./components/schedules/Main.vue').
 Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
 // Report Assignee Vue Component
 Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
+
+//Client Participants Form Component
+Vue.component('client-participants', require('./components/bookings/clients/ClientParticipant.vue').default);
 
 /**
  * This components are for dashboard / service utilization

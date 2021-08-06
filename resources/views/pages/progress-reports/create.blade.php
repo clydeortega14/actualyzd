@@ -5,6 +5,16 @@
 	
 	<div class="container-fluid">
 		<div class="row">
+			<div class="col-md-12">
+				{{ Breadcrumbs::render('progress.report.create-for-booking', $booking) }}
+				
+			</div>
+			<div class="col-md-12 mb-3">
+				<a href="{{ route('progress.report') }}" class="btn btn-info">
+					<i class="fa fa-arrow-left"></i>
+					<span>Return Back</span>
+				</a>
+			</div>
 			<div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-body">
@@ -48,20 +58,18 @@
 			          			@php
 									$report = $booking->progressReport;
 									$user = auth()->user();
-									$readOnly = is_null($report)  || isset($edit_mode) ? '' : 'readonly';
+									$readOnly = is_null($report) || $edit_mode ? '' : 'readonly';
 								@endphp
 
 								<div class="d-flex justify-content-between mb-3">
 									<!-- auth user has role of superadmin can only assign a report to other psychologist-->
-									@if(auth()->user()->hasRole('superadmin'))
-									<div>
-										<report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
-									</div>
-									
+									@if(auth()->user()->hasRole('superadmin') && !is_null($report))
+										<div>
+											<report-assignee report-id="{{ $report->id }}" report-assignee="{{ is_null($report->assignee) ? 'No Assignee' : $report->toAssignee->name }}"></report-assignee>
+										</div>
 									@endif
-
 									<!-- EDIT REPORT -->
-									@if(!is_null($report))
+									@if(!$edit_mode)
 										<div>
 											<a href="{{ route('progress-reports.edit', $booking->id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Edit Report">
 												<i class="fa fa-edit"></i>
@@ -83,7 +91,17 @@
 			                        <input type="hidden" name="booking_id" value="{{ $booking->id}}">
 
 			                        <div class="form-group">
-			                              <label>Main Concern</label>
+			                        	<label>Please select a category that you think is the main concern</label>
+			                        	<select name="category" id="category" class="form-control" required  {{$readOnly }}>
+			                        		<option value="" selected disabled>Select Category</option>
+			                        		@foreach($categories as $category)
+			                        			<option value="{{ $category->id }}" {{ !is_null($report) && $report->booking->main_concern == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+			                        		@endforeach
+			                        	</select>
+			                        </div>
+
+			                        <div class="form-group">
+			                              <label>Please explain why you select those category as the main concern</label>
 			                              <textarea type="text" name="main_concern" class="form-control" rows="4" {{ $readOnly }}>{{ !is_null($report) ? $report->main_concern : '' }}</textarea>
 			                        </div>
 
@@ -132,14 +150,14 @@
 			                        </div>
 			                        
 			                        <div class="form-group">
-			                              <button class="btn btn-primary btn-block" type="submit" {{ is_null($report) || isset($edit_mode) ? '' : 'disabled' }}>{{ is_null($report) ? 'Submit' : 'Save Changes'}}</button>
+			                              <button class="btn btn-primary btn-block" type="submit" {{ is_null($report) || $edit_mode ? '' : 'disabled' }}>{{ is_null($report) ? 'Submit' : 'Save Changes'}}</button>
 			                              <a href="{{ route('booking.answered.questions', $booking->id) }}" class="btn btn-secondary btn-block" data-dismiss="modal">Return</a>
 			                        </div>
 			                        
 			                  </form>
 			          		</div>
 			          		<div class="tab-pane" id="onboarding-questions" role="tabpanel" aria-labelledby="onboarding-questions-tab">
-			          			@if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1)
+			          			{{-- @if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1) --}}
 									
 									<ol type="I">
 										@foreach($categories as $category)
@@ -152,7 +170,7 @@
 										@endforeach
 									</ol>
 									
-								@endif
+								{{-- @endif --}}
 			          		</div>
 			          	</div>
 					</div>

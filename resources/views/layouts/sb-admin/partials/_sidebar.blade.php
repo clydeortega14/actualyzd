@@ -14,14 +14,8 @@
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
     <a class="nav-link" href="{{ route('home') }}">
-        <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
-</li>
-
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('bookings.create') }}">
-        <i class="fas fa-fw fa-calendar"></i>
-        <span>Book A Session</span></a>
+        <i class="fas fa-home"></i>
+        <span>Home</span></a>
 </li>
 @if(auth()->user()->hasRole('admin'))
     <li class="nav-item">

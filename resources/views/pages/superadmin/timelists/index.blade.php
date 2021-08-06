@@ -3,12 +3,19 @@
 @section('content')
 	
 	<div class="container">
-		<div class="block-header">
-			<h2>TimeLists</h2>
-		</div>
-
 		<div class="row">
 			<div class="col-sm-12">
+				<h4 class="text-center">TimeLists</h4>
+				<hr>
+				<a href="{{ route('home') }}" class="btn btn-info mr-2 mb-3">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+
 				<div class="card mb-3">
 					<div class="card-header">
 						<a href="{{ route('time-lists.create') }}" class="btn btn-primary btn-sm float-right">

@@ -46,16 +46,11 @@ trait SchedulesTrait {
 
         return $schedules;
 	}
-
-    public function arrTime($schedule)
-    {
-        return $schedule->timeSchedules()->pluck('time');
-    }
     public function isGreaterThanCurretTime($schedule)
     {
         // find that time in timelists table where time is greater than or equal to current time
         return TimeList::where('from', '>=', now()->toTimeString())
-            ->where('to', '>=', now()->toTimeString())
+            ->orwhere('to', '>=', now()->toTimeString())
             ->first();
     }
 }

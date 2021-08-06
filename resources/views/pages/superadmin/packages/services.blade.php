@@ -5,7 +5,23 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				<h4>Services</h4>
+				<hr>
+				<a href="{{ route('home') }}" class="btn btn-info mr-2 mb-3">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+				<a href="{{ route('packages.index') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-clipboard-list"></i>
+					<span>Packages Lists</span>
+				</a>
 				@include('alerts.message')
+
+
 			</div>
 
 			<div class="col-md-4">

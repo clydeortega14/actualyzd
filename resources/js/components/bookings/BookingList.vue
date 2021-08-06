@@ -14,17 +14,20 @@
 				</thead>
 				<tbody>
 					<tr v-for="booking in allBookings" :key="booking.id">
-						<td>{{ `${booking.to_schedule.start} @ ${booking.time.from} - ${booking.time.to}` }}</td>
+						<td>
+							<b>Date: </b><span>{{ `${wholeDate(booking.to_schedule.start)}` }}</span> <br>
+							<b>Time: </b><span>{{ `${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`}}</span>
+						</td>
 						<td>{{ booking.session_type.name }}</td>
 						<td>
 							<a href="#">
-								<img :src="`/images/user.png`" :alt="booking.to_counselee.name" class="rounded-circle"
+								<img :src="`/images/user.png`" :alt="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" data-toggle="tooltip" :title="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" class="rounded-circle"
 								width="50" height="50">
 							</a>
 						</td>
 						<td>
 							<a href="#">
-								<img src="/images/profile.png" :alt="booking.to_schedule.psych.name"
+								<img src="/images/profile.png" :alt="booking.to_schedule.psych.name" data-toggle="tooltip" :title="booking.to_schedule.psych.name"
 								class="rounded-circle" width="50" height="50">
 							</a>
 						</td>
@@ -47,9 +50,11 @@
 	import { mapGetters, mapActions } from 'vuex'
 	import BookingStatus from './BookingStatus.vue';
 	import StatusNav from './StatusNav.vue';
+	import DateTime from '../../mixins/datetime.js';
 
 	export default {
 		name: "BookingList",
+		mixins: [ DateTime ],
 		created(){
 			this.getAllBookings();
 		},

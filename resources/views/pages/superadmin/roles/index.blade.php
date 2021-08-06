@@ -3,9 +3,24 @@
 @section('content')
 	
 	<div class="container-fluid">
-		<h1 class="h3 mb-3 text-gray-800">Roles</h1>
 
 		<div class="row">
+			<div class="col-md-12">
+				<h4>Roles</h4>
+				<hr>
+				<a href="{{ route('home') }}" class="btn btn-info mr-2 mb-3">
+					<i class="fa fa-home"></i>
+					<span>Home</span>
+				</a>
+				<a href="{{ route('setups.home') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-cogs"></i>
+					<span>Set ups</span>
+				</a>
+				<a href="{{ route('access.rights') }}" class="btn btn-outline-info mr-2 mb-3">
+					<i class="fa fa-wrench"></i>
+					<span>Access Rights</span>
+				</a>
+			</div>
 			<div class="col-sm-12">
 				<div class="card shadow mb-4">
 					<div class="card-header py-4">

@@ -9,6 +9,14 @@
 	    <!-- Clients widgets -->
 	    <div class="row clearfix">
 	    	<div class="col-12">
+                <h1 class="h3 mb-3 text-gray-800">Clients</h1>
+                <hr>
+                <a href="{{ route('home') }}" class="btn btn-info mb-3">
+                    <i class="fa fa-arrow-left">
+                        <span>Return Back</span>
+                    </i>
+                </a>
+
                 @include('alerts.message')
 	    		<div class="card mb-3">
                     <div class="card-header">Client Lists</div>

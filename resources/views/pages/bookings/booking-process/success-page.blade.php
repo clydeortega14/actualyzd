@@ -14,13 +14,37 @@
 							</h3>
 
 							<ul class="list-group mt-5">
+							  	@if(session()->has('assessment'))
+							  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+							    	    Firstimer
+							    	    <span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+							  	    </li>
+							  	    <li class="list-group-item d-flex justify-content-between align-items-center">
+							    	    Intent to self harm
+							    	    <span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }} </span>
+							  	    </li>
+							  	@endif
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Firstimer
-							    	<span>{{ session('assessment.is_firsttimer') ? 'YES' : 'NO'}}</span>
+							  		Session Type
+							  		<span>{{ session()->has('selected_session') ? session('selected_session.name') : 'Individual' }}</span>
 							  	</li>
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Intent to self harm
-							    	<span>{{ session('assessment.self_harm') ? 'YES' : 'NO' }}</span>
+							  		Client
+							  		<span>{{ session()->has('selected_client') ? session('selected_client.name') : auth()->user()->client->name }}</span>
+							  	</li>
+							  	<li class="list-group-item d-flex justify-content-between align-items-center">
+							  		Counselee / Participants
+							  		<span>
+							  			@if(session()->has('participants'))
+							  			<ul>
+							  				@foreach(session('participants') as $participant)
+							  				     <li>{{ $participant->name }}</li>
+							  				@endforeach
+							  			</ul>
+							  			@else
+							  				<span>{{ auth()->user()->name }}</span>
+							  			@endif
+							  		</span>
 							  	</li>
 							  	<li class="list-group-item d-flex justify-content-between align-items-center">
 							    	Date and Time

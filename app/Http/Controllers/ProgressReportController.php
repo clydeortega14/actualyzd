@@ -17,6 +17,11 @@ class ProgressReportController extends Controller
 {
     use ProgressReportTrait;
 
+    public function __construct()
+    {
+        $this->editMode = false;
+    }
+
     public function index()
     {
         $reports = $this->getReports();
@@ -29,6 +34,14 @@ class ProgressReportController extends Controller
         $reports = $this->getReports();
 
         return view('pages.progress-reports.index', compact('reports'));
+    }
+
+    public function create(Booking $booking)
+    {
+        $edit_mode = false;
+        $followup_sessions = FollowupSession::get(['id', 'name']);
+        $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
+        return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
     }
 
     public function show(Booking $booking)
@@ -58,6 +71,9 @@ class ProgressReportController extends Controller
             ]);
 
             $this->manageMedication($request, $report);
+
+            // update booking status to complete
+            $report->booking()->update(['status' => 2]);
             
         } catch (Exception $e) {
 
@@ -69,14 +85,14 @@ class ProgressReportController extends Controller
         
         DB::commit();
 
-    	return redirect()->route('progress-reports.show', $report->booking->id)->with('success', 'Progress report successfully created');
+    	return redirect()->route('progress.report.create-for-booking', $report->booking->id)->with('success', 'Progress report successfully created');
     }
     public function edit(Booking $booking)
     {
         $edit_mode = true;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
-        return view('pages.progress-reports.show', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
+        return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
     }
     public function update(Request $request, ProgressReport $report)
     {
@@ -85,6 +101,7 @@ class ProgressReportController extends Controller
         DB::beginTransaction();
 
         try {
+            $report->booking()->update(['main_concern' => $request->category]);
 
             $this->manageMedication($request, $report);
 
@@ -97,6 +114,10 @@ class ProgressReportController extends Controller
                 'treatment_goal' => $request->treatment_goal,
             ]);
 
+            if($report->booking->status != 2){
+                $report->booking()->update(['status' => 2]);
+            }
+
         } catch (Exception $e) {
 
             DB::rollback();
@@ -106,7 +127,7 @@ class ProgressReportController extends Controller
 
         DB::commit();
 
-        return redirect()->route('progress-reports.show', $report->booking->id)->with('success', 'Progress Report has successfully updated');
+        return redirect()->route('progress.report.create-for-booking', $report->booking->id)->with('success', 'Progress Report has successfully updated');
     }
 
     protected function manageMedication($request, $report)
@@ -132,6 +153,7 @@ class ProgressReportController extends Controller
     protected function validateReport($request)
     {
         return $this->validate($request, [
+            'category' => ['required'],
             'main_concern' => ['required'],
             'initial_assessment' => ['required'],
             'followup_session' => ['required'],

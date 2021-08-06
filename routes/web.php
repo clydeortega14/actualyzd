@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
+	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');
+
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
@@ -83,6 +85,12 @@ Route::middleware('auth')->group(function(){
 	/*--- All Set Ups ---*/
 	Route::prefix('set-up')->group(function(){
 
+		// Home
+		Route::get('/', 'HomeController@setUps')->name('setups.home');
+
+		// Access Rights
+		Route::get('access-rights', 'HomeController@accessRights')->name('access.rights');
+
 		// Roles
 		Route::resource('roles', 'RolesController');
 		
@@ -94,6 +102,9 @@ Route::middleware('auth')->group(function(){
 
 		// Assessment Groups
 		Route::prefix('assessment')->group(function(){
+
+			// Home
+			Route::get('/', 'HomeController@assessments')->name('assessments');
 
 			// Categories
 			Route::resource('categories', 'AssessmentCategoryController');
@@ -137,6 +148,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('bookings', 'PsychologistsController@bookings')->name('psychologist.bookings');
 
+		Route::get('schedules-page', 'PsychologistsController@schedules')->name('psychologist.schedules.page');
+
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 
 		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');
@@ -177,6 +190,10 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('bookings')->group(function(){
 
 		/* Booking Process / Steps */
+		Route::get('select-session-type', 'BookingProcessController@selectSessionType')->name('select.session.type');
+
+		Route::get('select-client-participants', 'BookingProcessController@selectClientParticipants')->name('booking.select.client.participants');
+
 		Route::get('onboarding', 'BookingProcessController@onboarding')->name('booking.onboarding');
 
 		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
@@ -189,6 +206,10 @@ Route::middleware('auth')->group(function(){
 
 
 		/* Booking Process Actions */
+		Route::get('store/client/participants', 'BookingProcessController@storeClientParticipants')->name('booking.store.client.participants');
+		
+		Route::get('store/session-type', 'BookingProcessController@storeSessionType')->name('booking.store.session.type');
+
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
 		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
@@ -200,6 +221,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('/create', 'BookingController@create')->name('bookings.create');
 
+		Route::get('cancel/{booking}', 'BookingController@cancel')->name('bookings.cancel');
+
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
 		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
@@ -209,7 +232,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('cancel/{booking}', 'BookingController@updateToCancel')->name('cancel.booking');
 
-		Route::put('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
+		Route::post('reschedule/{booking}', 'BookingController@reschedBooking')->name('booking.reschedule.update');
 
 		Route::put('complete/{booking}', 'BookingController@complete')->name('booking.complete');
 
@@ -223,8 +246,6 @@ Route::middleware('auth')->group(function(){
 		Route::get('get-all-bookings', 'BookingController@bookingsQuery');
 
 		Route::get('status-summary', 'BookingController@bookingStatuses');
-
-
 	});
 
 
@@ -232,6 +253,8 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('progress-reports')->group(function(){
 
 		Route::get('/', 'ProgressReportController@index2')->name('progress.report');
+
+		Route::get('create-for-booking/{booking}', 'ProgressReportController@create')->name('progress.report.create-for-booking');
 
 		Route::get('show/{booking}', 'ProgressReportController@show')->name('progress-reports.show');
 

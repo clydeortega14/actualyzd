@@ -18,7 +18,7 @@ use App\FollowupSession;
 use App\User;
 use App\SessionParticipant;
 use App\Client;
-use app\Events\BookingActivity;
+use App\Events\BookingActivity;
 
 class BookingController extends Controller
 {
@@ -32,14 +32,17 @@ class BookingController extends Controller
     }
     public function index()
     {
-        $bookings = $this->bookingsQuery();
-        return view('pages.bookings.index', compact('bookings'));
+        return view('pages.superadmin.bookings.index');
     }
 
     public function create()
     {
         $categories = $this->categories;
         return view('pages.bookings.create2', compact('categories'));
+    }
+    public function cancel(Booking $booking)
+    {
+        return view('pages.bookings.cancel', compact('booking'));
     }
     public function bookNow(Request $request)
     {
@@ -179,7 +182,7 @@ class BookingController extends Controller
         // update the schedule to available again
         $booking->toSchedule->update(['status' => 1 ]);
 
-        return redirect()->back()->with('success', 'Session has been cancelled');
+        return redirect()->route('home')->with('success', 'Session has been cancelled');
     }
 
     public function complete(Booking $booking)
@@ -213,37 +216,17 @@ class BookingController extends Controller
 
        $booking = $booking->with(['toSchedule'])->first();
 
-        return view('pages.bookings.create2', compact('booking'));
+        return view('pages.bookings.reschedule', compact('booking'));
     }
     public function reschedBooking(Booking $booking, Request $request)
     {
-        // Find Schedule first based on newly selected schedule
-        $schedule = $this->findSchedule($request);
+        $booking->update(['status' => 5]);
 
-        if(!is_null($schedule)){
-
-            // on the psychologist schedule side, update status to available
-            $booking->toSchedule->update(['status' => 1]);
-
-            // update booking id based on new schedule id
-            // also update status to rescheduled, 
-            $booking->update(['schedule' => $schedule->id, 'status' => 6]);
-
-            // store the reason for rescheduling the session in the reschedule bookings
-            $resched_reason = $this->storeReason($booking, $request);
-
-
-            // after updating booking schedule, the newly selected schedule status
-            // must be changed to not available or 2
-            $schedule->update(['status' => 2]);
-
-
-            return redirect()->back()->with('success', 'Booking rescheduled');
-
-        }
-
-        // return error message if schedule was not found
-        return redirect()->back()->with('error', 'Schedule that has been selected was not found!');
+         // store reason for cancelling in the database
+        $reason = $this->storeReason($booking, $request);
+        
+        return redirect()->route('home')->with('success', 'Session has been cancelled');
+        
     }
 
     public function updateMainConcern(Booking $booking, Request $request)

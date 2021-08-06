@@ -23,7 +23,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         return view('home2');
+    }
+
+    public function serviceUtilizationDashboard()
+    {
+        return view('pages.service-utilization-dashboard');
+    }
+
+    public function setUps()
+    {
+        return view('pages.superadmin.set-ups');
+    }
+    public function accessRights()
+    {
+        return view('pages.superadmin.access-rights');
+    }
+    public function assessments()
+    {
+        return view('pages.superadmin.assessments');
     }
 }
