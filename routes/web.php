@@ -167,6 +167,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
+		Route::post('user/store', 'ClientUserController@store_employee')->name('client.user_employee.store');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');
 		Route::delete('user/delete/{id}', 'ClientUserController@destroy');

@@ -25,6 +25,7 @@ class EmployeeImport implements ToModel,WithHeadingRow
     {
         $this->company_userid = $company_userid;
         $this->d_pass = 'password';
+        
         $this->role_id = $role;
         $this->userID = $company_user->id;
         
@@ -43,7 +44,8 @@ class EmployeeImport implements ToModel,WithHeadingRow
             'client_id'     => $this->company_userid,
                 'name'          => $row['name'],
                 'email'         => $row['email'],
-                'username'      => $row['username'],
+                'country'       => $row['country'],
+                'username'      => $row['name'],
                 'password'      => Hash::make($this->d_pass),
           ]
         );

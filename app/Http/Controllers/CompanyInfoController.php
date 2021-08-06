@@ -6,12 +6,21 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Client;
+use App\Rules\MatchOldPassword;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EmployeeImport;
+use App\Exports\EmployeeExport;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyInfoController extends Controller
 {
+    use RoleTrait;
     /**
      * Display a listing of the resource.
      *
@@ -42,8 +51,10 @@ class CompanyInfoController extends Controller
             
 
         })->with(['roles'])->get();
+        $roles = $this->rolesQuery();
+        $clients = Client::get(['id', 'name']);
       
-        return view('pages.company-info.profile.index',compact('company_info','users'));
+        return view('pages.company-info.profile.index',compact('company_info','users','clients','roles'));
     }
 
     /**

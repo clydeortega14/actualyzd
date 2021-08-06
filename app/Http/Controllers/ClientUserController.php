@@ -101,6 +101,43 @@ class ClientUserController extends Controller
         DB::commit();
         return redirect()->back('pages.superadmin.client.users.index')->with('success', 'New users has been added');
     }
+    public function store_employee(Request $request)
+    {
+        
+        $request->validate([
+
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'unique:users'],
+            'username' => ['required', 'unique:users'],
+            'password' => ['required', 'confirmed'],
+        ]);
+
+
+        DB::beginTransaction();
+
+        try {
+
+            $user = User::create($this->userData($request->toArray()) + [
+                'password' => Hash::make($request->password),
+                'client_id' => $request->client_id
+            ]);
+
+            // check if has roles
+            if($request->has('roles')){
+
+                // attach role
+                $this->attachRole($user, $roles);
+            }
+
+        } catch (Exception $e) {
+
+            DB::rollback();
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        DB::commit();
+        return redirect()->back('pages.company-info.profile.index')->with('success', 'New users has been added');
+    }
 
     /**
      * Display the specified resource.

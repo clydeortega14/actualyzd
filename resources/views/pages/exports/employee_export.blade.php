@@ -5,7 +5,7 @@
             <th style="font-weight:bold;text-align:center;">Name</th>
             <th style="font-weight:bold;text-align:center;">Position</th>
             <th style="font-weight:bold;text-align:center;">Company</th>
-            <th style="font-weight:bold;text-align:center;">Email Address</th>
+            <th style="font-weight:bold;text-align:center;">Email </th>
             <th style="font-weight:bold;text-align:center;">Country</th>
         </tr>
     </thead>
