@@ -40,11 +40,21 @@ Vue.component('schedules-component', require('./components/schedules/Main.vue').
 
 // Progress Report Client Medication Component
 Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+
 // Report Assignee Vue Component
 Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
 //Client Participants Form Component
 Vue.component('client-participants', require('./components/bookings/clients/ClientParticipant.vue').default);
+
+// Video Chat Component
+Vue.component('chat-component', require('./components/video-chat/ChatComponent.vue').default);
+
+// Chat Messages Components
+Vue.component('chat-messages', require('./components/video-chat/ChatMessages.vue').default);
+
+// Chat Footer Component
+Vue.component('chat-footer', require('./components/video-chat/ChatFooter').default);
 
 /**
  * This components are for dashboard / service utilization

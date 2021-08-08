@@ -9,6 +9,7 @@ class Booking extends Model
     protected $table = 'bookings';
     protected $fillable = 
         [
+            'room_id',
             'schedule', 
             'time_id',
             'client_id',
@@ -79,6 +80,10 @@ class Booking extends Model
     public function mainConcern()
     {
         return $this->belongsTo(AssessmentCategory::class, 'main_concern');
+    }
+    public function chats()
+    {
+        return $this->hasMany(ChatMessage::class);
     }
 
     public function scopeWithClient($query)

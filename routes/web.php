@@ -247,6 +247,11 @@ Route::middleware('auth')->group(function(){
 		Route::get('status-summary', 'BookingController@bookingStatuses');
 	});
 
+	/* Video Chat Route*/
+	Route::get('video-chat/{room_id}', 'VideoChatController@index');
+
+	Route::post('video-chat', 'VideoChatController@store')->name('video-chat.store');
+
 
 	/*-- Progress Reports --*/
 	Route::prefix('progress-reports')->group(function(){
