@@ -24,7 +24,7 @@ try {
 window.axios = require('axios');
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8000'
+	baseURL: window.location.hostname
 })
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -41,8 +41,8 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    key: 'ABCDEFG',
+    cluster: 'mt1',
     wsHost: window.location.hostname,
     wsPort:6001,
     forceTLS: false,
