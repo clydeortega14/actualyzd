@@ -74,7 +74,7 @@
 
 @section('content')
 
-	<div class="container">
+	<div class="container-fluid">
 
 		<h4>Video Chat</h4>
 
@@ -86,37 +86,50 @@
 
 		@include('alerts.message')
 
-		
-		{{-- Chat Header --}}
-		<div class="chat-header">
-			<div class="chat-header-img">
-				<i class="fa fa-home fa-lg mt-2"></i>
+
+		<div class="row">
+			
+			<div class="col-md-7">
+				<video-call></video-call>
 			</div>
-			<div class="active">
-				<h4>
-					<strong>ROOM ID: </strong> 
-					<small>{{ $booking->room_id }}</small>
-				</h4>
-			</div>
-			<div class="header-icons">
-				<i class="fa fa-video"></i>
+
+
+			<div class="col-md-5">
+				{{-- Chat Header --}}
+				<div class="chat-header">
+					<div class="chat-header-img">
+						<i class="fa fa-home fa-lg mt-2"></i>
+					</div>
+					{{-- <div class="active">
+						<h4>
+							<strong>ROOM ID: </strong> 
+							<small>{{ $booking->room_id }}</small>
+						</h4>
+					</div>
+					<div class="header-icons">
+						<i class="fa fa-video"></i>
+					</div> --}}
+				</div>
+
+				{{-- Chat Body --}}
+				<chat-messages
+
+					:booking="{{ $booking }}" 
+					:auth-user="{{ auth()->user() }}">
+						
+				</chat-messages>
+
+				{{-- Chat footer --}}
+				<chat-footer
+					:booking="{{ $booking }}" 
+					:auth-user="{{ auth()->user() }}">
+						
+				</chat-footer>
 			</div>
 		</div>
 
-		{{-- Chat Body --}}
-		<chat-messages
-
-			:booking="{{ $booking }}" 
-			:auth-user="{{ auth()->user() }}">
-				
-		</chat-messages>
-
-		{{-- Chat footer --}}
-		<chat-footer
-			:booking="{{ $booking }}" 
-			:auth-user="{{ auth()->user() }}">
-				
-		</chat-footer>
+		
+		
 	</div>
 
 	

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Booking;
 use App\ChatMessage;
 use DB;
+use App\Events\VideoCallEvent;
 
 class VideoChatController extends Controller
 {
@@ -17,6 +18,8 @@ class VideoChatController extends Controller
 
             return redirect()->back()->with('error', 'Session has no room');
         }
+
+        // broadcast(new VideoCallEvent($booking));
         
         return view('pages.video-chat.index', compact('booking'));
     }

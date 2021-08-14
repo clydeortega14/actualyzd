@@ -56,6 +56,9 @@ Vue.component('chat-messages', require('./components/video-chat/ChatMessages.vue
 // Chat Footer Component
 Vue.component('chat-footer', require('./components/video-chat/ChatFooter').default);
 
+// Video Call
+Vue.component('video-call', require('./components/video-chat/VideoCall.vue').default);
+
 /**
  * This components are for dashboard / service utilization
  */
