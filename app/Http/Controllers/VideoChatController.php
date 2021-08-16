@@ -18,8 +18,6 @@ class VideoChatController extends Controller
 
             return redirect()->back()->with('error', 'Session has no room');
         }
-
-        // broadcast(new VideoCallEvent($booking));
         
         return view('pages.video-chat.index', compact('booking'));
     }
@@ -46,5 +44,17 @@ class VideoChatController extends Controller
 
         return redirect()->back();
 
+    }
+
+    public function broadcastCall($room_id)
+    {
+        $booking = Booking::where('room_id', $room_id)->first();
+
+        if(is_null($booking)){
+
+            return response()->json(['error' => true, 'message' => 'Room not available']);
+        }
+
+        broadcast(new VideoCallEvent($booking, auth()->user() ))->toOthers();
     }
 }

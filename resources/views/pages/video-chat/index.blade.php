@@ -90,7 +90,7 @@
 		<div class="row">
 			
 			<div class="col-md-7">
-				<video-call></video-call>
+				<video-call :booking="{{ $booking }}"></video-call>
 			</div>
 
 

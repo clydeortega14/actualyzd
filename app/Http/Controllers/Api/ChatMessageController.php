@@ -9,7 +9,6 @@ use App\ChatMessage;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Events\NewMessage;
-use App\Events\VideoCallEvent;
 
 class ChatMessageController extends Controller
 {
@@ -23,8 +22,6 @@ class ChatMessageController extends Controller
         }
 
         $messages = $booking->chats()->with(['createdBy', 'booking'])->get();
-
-        broadcast(new VideoCallEvent($booking));
 
         return response()->json(['error' => false, 'data' => $messages]);
     }

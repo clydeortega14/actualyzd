@@ -18457,6 +18457,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_media_handler_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/media-handler.js */ "./resources/js/mixins/media-handler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -18497,21 +18505,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "VideoCall",
+  mixins: [_mixins_media_handler_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      hasMedia: false,
+      otherUserId: null
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getOtherUsers"])),
+  props: {
+    booking: Object
+  },
   mounted: function mounted() {
-    console.log('video call component');
-    Echo["private"]('video-call.61174d6b7be18').listen('VideoCallEvent', function (e) {
-      console.log(e);
+    var _this = this;
+
+    // get media handler permissions, video, audio
+    this.getPermissions();
+    Echo.join("video-call.".concat(this.booking.room_id)).listen('VideoCallEvent', function (e) {
+      _this.$store.commit('setOtherUsers', e);
     });
+  },
+  created: function created() {
+    this.getVideoCall();
+  },
+  methods: {
+    getVideoCall: function getVideoCall() {
+      axios.get("/broadcast/call/".concat(this.booking.room_id)).then(function (response) {//
+      })["catch"](function (err) {
+        return console.log(error);
+      });
+    }
   }
 });
 
@@ -103043,146 +103070,109 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("div", { staticClass: "card mb-3 h-100 py-4" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-4" }, [
+            _c(
+              "div",
+              { staticClass: "card", staticStyle: { width: "18 rem" } },
+              [
+                _c(
+                  "ul",
+                  { staticClass: "list-group list-group-flush" },
+                  _vm._l(_vm.getOtherUsers, function(other_user, index) {
+                    return _c(
+                      "li",
+                      { key: index, staticClass: "list-group-item" },
+                      [
+                        _vm._m(0, true),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "row mt-3 justify-content-center align-items-center"
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\t( " +
+                                _vm._s(other_user.name) +
+                                " )\n\t\t\t\t\t\t\t\t"
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(1)
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("div", { staticClass: "card mb-3 h-100 py-4" }, [
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-4" }, [
-              _c(
-                "div",
-                { staticClass: "card", staticStyle: { width: "18 rem" } },
-                [
-                  _c("ul", { staticClass: "list-group list-group-flush" }, [
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "row justify-content-center align-items-center"
-                        },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: "/images/user.png",
-                              width: "150",
-                              height: "150"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "row mt-3 justify-content-center align-items-center"
-                        },
-                        [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t\t\t\t( Antinio Bandera )\n\t\t\t\t\t\t\t\t"
-                          )
-                        ]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "list-group-item" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "row justify-content-center align-items-center"
-                        },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: "/images/user.png",
-                              width: "150",
-                              height: "150"
-                            }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "row mt-3 justify-content-center align-items-center"
-                        },
-                        [
-                          _vm._v(
-                            "\n\t\t\t\t\t\t\t\t\t( Miguel Cotto )\n\t\t\t\t\t\t\t\t"
-                          )
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
+    return _c(
+      "div",
+      { staticClass: "row justify-content-center align-items-center" },
+      [
+        _c("img", {
+          attrs: { src: "/images/user.png", width: "150", height: "150" }
+        })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-8" }, [
+      _c(
+        "div",
+        { staticClass: "row justify-content-center align-items-center" },
+        [
+          _c("img", {
+            attrs: { src: "/images/user.png", width: "275", height: "275" }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row justify-content-center align-items-center mt-3" },
+        [_c("p", { staticClass: "card-text" }, [_vm._v("( Clyde Ortega )")])]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "row justify-content-center mt-4" }, [
+        _c(
+          "div",
+          {
+            staticClass: "btn-group",
+            attrs: { role: "group", "aria-label": "Call Actions" }
+          },
+          [
+            _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Mute")]),
+            _vm._v(" "),
+            _c("button", { staticClass: "btn btn-info" }, [
+              _vm._v("Show Camera")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-md-8" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "row justify-content-center align-items-center"
-                },
-                [
-                  _c("img", {
-                    attrs: {
-                      src: "/images/user.png",
-                      width: "275",
-                      height: "275"
-                    }
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "row justify-content-center align-items-center mt-3"
-                },
-                [
-                  _c("p", { staticClass: "card-text" }, [
-                    _vm._v("( Clyde Ortega )")
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "row justify-content-center mt-4" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "btn-group",
-                    attrs: { role: "group", "aria-label": "Call Actions" }
-                  },
-                  [
-                    _c("button", { staticClass: "btn btn-primary" }, [
-                      _vm._v("Mute")
-                    ]),
-                    _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-info" }, [
-                      _vm._v("Show Camera")
-                    ]),
-                    _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-danger" }, [
-                      _vm._v("Leave Call")
-                    ])
-                  ]
-                )
-              ])
+            _c("button", { staticClass: "btn btn-danger" }, [
+              _vm._v("Leave Call")
             ])
-          ])
-        ])
+          ]
+        )
       ])
     ])
   }
@@ -118723,6 +118713,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/mixins/media-handler.js":
+/*!**********************************************!*\
+  !*** ./resources/js/mixins/media-handler.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    getPermissions: function getPermissions() {
+      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      return new Promise(function (resolve, reject) {
+        navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: true
+        }).then(function (stream) {
+          resolve(stream);
+        })["catch"](function (error) {
+          throw new Error("Unable to fetch stream ".concat(error));
+        });
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/mixins/service-utilization.js":
 /*!****************************************************!*\
   !*** ./resources/js/mixins/service-utilization.js ***!
@@ -118764,6 +118783,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_client_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/client.js */ "./resources/js/store/modules/client.js");
 /* harmony import */ var _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/session-type.js */ "./resources/js/store/modules/session-type.js");
 /* harmony import */ var _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/chat-message.js */ "./resources/js/store/modules/chat-message.js");
+/* harmony import */ var _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/video-call.js */ "./resources/js/store/modules/video-call.js");
+
 
 
 
@@ -118786,7 +118807,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     progress_report: _modules_progress_report_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     client: _modules_client_js__WEBPACK_IMPORTED_MODULE_8__["default"],
     session_types: _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__["default"],
-    chat_messages: _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__["default"]
+    chat_messages: _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    video_call: _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__["default"]
   }
 }));
 
@@ -119616,6 +119638,42 @@ var actions = {
 var mutations = {
   setSessionTypes: function setSessionTypes(state, session_types) {
     return state.session_types = session_types;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/video-call.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/video-call.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = function state() {
+  return {
+    other_users: []
+  };
+};
+
+var getters = {
+  getOtherUsers: function getOtherUsers(state) {
+    return state.other_users;
+  }
+};
+var actions = {//
+};
+var mutations = {
+  setOtherUsers: function setOtherUsers(state, user) {
+    return state.other_users.push(user);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

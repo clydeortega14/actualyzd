@@ -6,20 +6,12 @@
 					<div class="col-md-4">
 						<div class="card" style="width:18 rem;">
 							<ul class="list-group list-group-flush">
-								<li class="list-group-item">
+								<li class="list-group-item" v-for="(other_user, index) in getOtherUsers" :key="index">
 									<div class="row justify-content-center align-items-center">
 										<img src="/images/user.png" width="150" height="150">
 									</div>
 									<div class="row mt-3 justify-content-center align-items-center">
-										( Antinio Bandera )
-									</div>
-								</li>
-								<li class="list-group-item">
-									<div class="row justify-content-center align-items-center">
-										<img src="/images/user.png" width="150" height="150">
-									</div>
-									<div class="row mt-3 justify-content-center align-items-center">
-										( Miguel Cotto )
+										( {{ other_user.name }} )
 									</div>
 								</li>
 							</ul>
@@ -47,18 +39,52 @@
 </template>
 
 <script>
+
+	import MediaHandler from '../../mixins/media-handler.js'
+	import { mapGetters } from 'vuex';
 	
 	export default {
 		name: "VideoCall",
+		mixins: [ MediaHandler ],
+		data(){
+			return {
+
+				hasMedia: false,
+				otherUserId: null
+			}
+		},
+		computed: {
+
+			...mapGetters(["getOtherUsers"])
+		},
+		props: {
+			booking: Object
+		},
 		mounted(){
 
-			console.log('video call component')
+			// get media handler permissions, video, audio
+			this.getPermissions();
 
-			Echo.private('video-call.61174d6b7be18')
-				.listen('VideoCallEvent', (e) => {
+			Echo.join(`video-call.${this.booking.room_id}`)
+			.listen('VideoCallEvent', (e) => {
 
-					console.log(e)
-				})
+				this.$store.commit('setOtherUsers', e);
+			});
+		},
+
+		created(){
+			this.getVideoCall();
+		},
+		methods: {
+
+			getVideoCall(){
+
+				axios.get(`/broadcast/call/${this.booking.room_id}`)
+					.then(response => {
+						//
+					}).catch(err => console.log(error))
+			}
 		}
+
 	}
 </script>
