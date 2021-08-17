@@ -22,7 +22,7 @@
 							<img src="/images/user.png" width="275" height="275">
 						</div>
 						<div class="row justify-content-center align-items-center mt-3">
-							<p class="card-text">( Clyde Ortega )</p>
+							<p class="card-text">( {{ authUser.name }} )</p>
 						</div>
 						<div class="row justify-content-center mt-4">
 							<div class="btn-group" role="group" aria-label="Call Actions">
@@ -58,7 +58,8 @@
 			...mapGetters(["getOtherUsers"])
 		},
 		props: {
-			booking: Object
+			booking: Object,
+			authUser: Object
 		},
 		mounted(){
 
@@ -66,9 +67,27 @@
 			this.getPermissions();
 
 			Echo.join(`video-call.${this.booking.room_id}`)
-			.listen('VideoCallEvent', (e) => {
+			.here((users) => {
+				this.$store.commit('allUsers', users)
+			})
+			.joining((user) => {
 
-				this.$store.commit('setOtherUsers', e);
+				const index = this.getOtherUsers.findIndex(other_user => other_user.id === this.authUser.id);
+				if(index === -1){
+					this.$store.commit('setOtherUsers', user)
+				}
+			})
+			.leaving((user) => {
+				const index = this.getOtherUsers.indexOf(user);
+				if(index >= -1){
+					return this.getOtherUsers.splice(index, 1);
+				}
+			})
+			.listen('VideoCallEvent', (e) => {
+				const index = this.getOtherUsers.findIndex(other_user => other_user.id === e.id);
+				if(index === -1){
+					this.$store.commit('setOtherUsers', e)
+				}
 			});
 		},
 

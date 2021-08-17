@@ -23,6 +23,11 @@ Broadcast::channel('new-message.{room_id}', function($room_id){
 
 
 // Video Call Channel
-Broadcast::channel('video-call.{room_id}', function($room_id){
-    return true;
+Broadcast::channel('video-call.{room_id}', function($user, $room_id){
+    return [
+
+        'id' => $user->id,
+        'name' => $user->name
+
+    ];
 });

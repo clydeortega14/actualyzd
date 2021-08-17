@@ -90,7 +90,11 @@
 		<div class="row">
 			
 			<div class="col-md-7">
-				<video-call :booking="{{ $booking }}"></video-call>
+				<video-call 
+					:booking="{{ $booking }}"
+					:auth-user="{{ auth()->user() }}">
+					
+				</video-call>
 			</div>
 
 

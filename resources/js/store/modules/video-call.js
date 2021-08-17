@@ -15,7 +15,17 @@ const actions = {
 
 const mutations = {
 
-	setOtherUsers: (state, user) => (state.other_users.push(user))
+	allUsers: (state, users) => (state.other_users = users),
+	setOtherUsers: (state, user) => (state.other_users.push(user)),
+	userLeave: (state, user) => {
+
+		const index = state.other_users.indexOf(user);
+
+		if(index > -1){
+			console.log('found and leave')
+			return state.other_users.splice(index, 1);
+		}
+	},
 }
 
 

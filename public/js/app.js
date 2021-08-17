@@ -18518,15 +18518,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getOtherUsers"])),
   props: {
-    booking: Object
+    booking: Object,
+    authUser: Object
   },
   mounted: function mounted() {
     var _this = this;
 
     // get media handler permissions, video, audio
     this.getPermissions();
-    Echo.join("video-call.".concat(this.booking.room_id)).listen('VideoCallEvent', function (e) {
-      _this.$store.commit('setOtherUsers', e);
+    Echo.join("video-call.".concat(this.booking.room_id)).here(function (users) {
+      _this.$store.commit('allUsers', users);
+    }).joining(function (user) {
+      var index = _this.getOtherUsers.findIndex(function (other_user) {
+        return other_user.id === _this.authUser.id;
+      });
+
+      if (index === -1) {
+        _this.$store.commit('setOtherUsers', user);
+      }
+    }).leaving(function (user) {
+      var index = _this.getOtherUsers.indexOf(user);
+
+      if (index >= -1) {
+        return _this.getOtherUsers.splice(index, 1);
+      }
+    }).listen('VideoCallEvent', function (e) {
+      var index = _this.getOtherUsers.findIndex(function (other_user) {
+        return other_user.id === e.id;
+      });
+
+      if (index === -1) {
+        _this.$store.commit('setOtherUsers', e);
+      }
     });
   },
   created: function created() {
@@ -103112,7 +103135,24 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "col-md-8" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "row justify-content-center align-items-center mt-3"
+              },
+              [
+                _c("p", { staticClass: "card-text" }, [
+                  _vm._v("( " + _vm._s(_vm.authUser.name) + " )")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
         ])
       ])
     ])
@@ -103137,43 +103177,39 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8" }, [
+    return _c(
+      "div",
+      { staticClass: "row justify-content-center align-items-center" },
+      [
+        _c("img", {
+          attrs: { src: "/images/user.png", width: "275", height: "275" }
+        })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center mt-4" }, [
       _c(
         "div",
-        { staticClass: "row justify-content-center align-items-center" },
+        {
+          staticClass: "btn-group",
+          attrs: { role: "group", "aria-label": "Call Actions" }
+        },
         [
-          _c("img", {
-            attrs: { src: "/images/user.png", width: "275", height: "275" }
-          })
+          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Mute")]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-info" }, [
+            _vm._v("Show Camera")
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-danger" }, [
+            _vm._v("Leave Call")
+          ])
         ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "row justify-content-center align-items-center mt-3" },
-        [_c("p", { staticClass: "card-text" }, [_vm._v("( Clyde Ortega )")])]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "row justify-content-center mt-4" }, [
-        _c(
-          "div",
-          {
-            staticClass: "btn-group",
-            attrs: { role: "group", "aria-label": "Call Actions" }
-          },
-          [
-            _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Mute")]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-info" }, [
-              _vm._v("Show Camera")
-            ]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-danger" }, [
-              _vm._v("Leave Call")
-            ])
-          ]
-        )
-      ])
+      )
     ])
   }
 ]
@@ -119672,8 +119708,19 @@ var getters = {
 var actions = {//
 };
 var mutations = {
+  allUsers: function allUsers(state, users) {
+    return state.other_users = users;
+  },
   setOtherUsers: function setOtherUsers(state, user) {
     return state.other_users.push(user);
+  },
+  userLeave: function userLeave(state, user) {
+    var index = state.other_users.indexOf(user);
+
+    if (index > -1) {
+      console.log('found and leave');
+      return state.other_users.splice(index, 1);
+    }
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
