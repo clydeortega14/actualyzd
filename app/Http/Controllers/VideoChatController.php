@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Booking;
 use App\ChatMessage;
 use DB;
+use App\Events\VideoCallEvent;
 
 class VideoChatController extends Controller
 {
@@ -43,5 +44,17 @@ class VideoChatController extends Controller
 
         return redirect()->back();
 
+    }
+
+    public function broadcastCall($room_id)
+    {
+        $booking = Booking::where('room_id', $room_id)->first();
+
+        if(is_null($booking)){
+
+            return response()->json(['error' => true, 'message' => 'Room not available']);
+        }
+
+        broadcast(new VideoCallEvent($booking, auth()->user() ))->toOthers();
     }
 }

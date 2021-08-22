@@ -252,6 +252,8 @@ Route::middleware('auth')->group(function(){
 
 	Route::post('video-chat', 'VideoChatController@store')->name('video-chat.store');
 
+	Route::get('broadcast/call/{room_id}', 'VideoChatController@broadcastCall');
+
 
 	/*-- Progress Reports --*/
 	Route::prefix('progress-reports')->group(function(){

@@ -9,6 +9,7 @@ import progress_report from './modules/progress-report.js';
 import client from './modules/client.js';
 import session_types from './modules/session-type.js';
 import chat_messages from './modules/chat-message.js';
+import video_call from './modules/video-call.js';
 
 Vue.use(Vuex)
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
 		progress_report,
 		client,
 		session_types,
-		chat_messages
+		chat_messages,
+		video_call
 	}
 })

@@ -18448,6 +18448,125 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_media_handler_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/media-handler.js */ "./resources/js/mixins/media-handler.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "VideoCall",
+  mixins: [_mixins_media_handler_js__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  data: function data() {
+    return {
+      hasMedia: false,
+      otherUserId: null
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getOtherUsers"])),
+  props: {
+    booking: Object,
+    authUser: Object
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    // get media handler permissions, video, audio
+    this.getPermissions();
+    Echo.join("video-call.".concat(this.booking.room_id)).here(function (users) {
+      _this.$store.commit('allUsers', users);
+    }).joining(function (user) {
+      var index = _this.getOtherUsers.findIndex(function (other_user) {
+        return other_user.id === _this.authUser.id;
+      });
+
+      if (index === -1) {
+        _this.$store.commit('setOtherUsers', user);
+      }
+    }).leaving(function (user) {
+      var index = _this.getOtherUsers.indexOf(user);
+
+      if (index >= -1) {
+        return _this.getOtherUsers.splice(index, 1);
+      }
+    }).listen('VideoCallEvent', function (e) {
+      var index = _this.getOtherUsers.findIndex(function (other_user) {
+        return other_user.id === e.id;
+      });
+
+      if (index === -1) {
+        _this.$store.commit('setOtherUsers', e);
+      }
+    });
+  },
+  created: function created() {
+    this.getVideoCall();
+  },
+  methods: {
+    getVideoCall: function getVideoCall() {
+      axios.get("/broadcast/call/".concat(this.booking.room_id)).then(function (response) {//
+      })["catch"](function (err) {
+        return console.log(error);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -102959,6 +103078,147 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "card mb-3 h-100 py-4" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-4" }, [
+            _c(
+              "div",
+              { staticClass: "card", staticStyle: { width: "18 rem" } },
+              [
+                _c(
+                  "ul",
+                  { staticClass: "list-group list-group-flush" },
+                  _vm._l(_vm.getOtherUsers, function(other_user, index) {
+                    return _c(
+                      "li",
+                      { key: index, staticClass: "list-group-item" },
+                      [
+                        _vm._m(0, true),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "row mt-3 justify-content-center align-items-center"
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\t( " +
+                                _vm._s(other_user.name) +
+                                " )\n\t\t\t\t\t\t\t\t"
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-8" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "row justify-content-center align-items-center mt-3"
+              },
+              [
+                _c("p", { staticClass: "card-text" }, [
+                  _vm._v("( " + _vm._s(_vm.authUser.name) + " )")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(2)
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row justify-content-center align-items-center" },
+      [
+        _c("img", {
+          attrs: { src: "/images/user.png", width: "150", height: "150" }
+        })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row justify-content-center align-items-center" },
+      [
+        _c("img", {
+          attrs: { src: "/images/user.png", width: "275", height: "275" }
+        })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row justify-content-center mt-4" }, [
+      _c(
+        "div",
+        {
+          staticClass: "btn-group",
+          attrs: { role: "group", "aria-label": "Call Actions" }
+        },
+        [
+          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Mute")]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-info" }, [
+            _vm._v("Show Camera")
+          ]),
+          _vm._v(" "),
+          _c("button", { staticClass: "btn btn-danger" }, [
+            _vm._v("Leave Call")
+          ])
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -116486,7 +116746,9 @@ Vue.component('chat-component', __webpack_require__(/*! ./components/video-chat/
 
 Vue.component('chat-messages', __webpack_require__(/*! ./components/video-chat/ChatMessages.vue */ "./resources/js/components/video-chat/ChatMessages.vue")["default"]); // Chat Footer Component
 
-Vue.component('chat-footer', __webpack_require__(/*! ./components/video-chat/ChatFooter */ "./resources/js/components/video-chat/ChatFooter.vue")["default"]);
+Vue.component('chat-footer', __webpack_require__(/*! ./components/video-chat/ChatFooter */ "./resources/js/components/video-chat/ChatFooter.vue")["default"]); // Video Call
+
+Vue.component('video-call', __webpack_require__(/*! ./components/video-chat/VideoCall.vue */ "./resources/js/components/video-chat/VideoCall.vue")["default"]);
 /**
  * This components are for dashboard / service utilization
  */
@@ -118379,6 +118641,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/video-chat/VideoCall.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/video-chat/VideoCall.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VideoCall.vue?vue&type=template&id=30e3ddbf& */ "./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf&");
+/* harmony import */ var _VideoCall_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VideoCall.vue?vue&type=script&lang=js& */ "./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _VideoCall_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/video-chat/VideoCall.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VideoCall_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./VideoCall.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/video-chat/VideoCall.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VideoCall_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./VideoCall.vue?vue&type=template&id=30e3ddbf& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/video-chat/VideoCall.vue?vue&type=template&id=30e3ddbf&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VideoCall_vue_vue_type_template_id_30e3ddbf___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/constants/App.js":
 /*!***************************************!*\
   !*** ./resources/js/constants/App.js ***!
@@ -118412,6 +118743,35 @@ __webpack_require__.r(__webpack_exports__);
     },
     wholeTime: function wholeTime(time) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(time, "HH:mm:ss").format('LT');
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/media-handler.js":
+/*!**********************************************!*\
+  !*** ./resources/js/mixins/media-handler.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    getPermissions: function getPermissions() {
+      navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      return new Promise(function (resolve, reject) {
+        navigator.mediaDevices.getUserMedia({
+          video: false,
+          audio: true
+        }).then(function (stream) {
+          resolve(stream);
+        })["catch"](function (error) {
+          throw new Error("Unable to fetch stream ".concat(error));
+        });
+      });
     }
   }
 });
@@ -118459,6 +118819,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_client_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/client.js */ "./resources/js/store/modules/client.js");
 /* harmony import */ var _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/session-type.js */ "./resources/js/store/modules/session-type.js");
 /* harmony import */ var _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/chat-message.js */ "./resources/js/store/modules/chat-message.js");
+/* harmony import */ var _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/video-call.js */ "./resources/js/store/modules/video-call.js");
+
 
 
 
@@ -118481,7 +118843,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     progress_report: _modules_progress_report_js__WEBPACK_IMPORTED_MODULE_7__["default"],
     client: _modules_client_js__WEBPACK_IMPORTED_MODULE_8__["default"],
     session_types: _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__["default"],
-    chat_messages: _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__["default"]
+    chat_messages: _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__["default"],
+    video_call: _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__["default"]
   }
 }));
 
@@ -119322,6 +119685,53 @@ var mutations = {
 
 /***/ }),
 
+/***/ "./resources/js/store/modules/video-call.js":
+/*!**************************************************!*\
+  !*** ./resources/js/store/modules/video-call.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = function state() {
+  return {
+    other_users: []
+  };
+};
+
+var getters = {
+  getOtherUsers: function getOtherUsers(state) {
+    return state.other_users;
+  }
+};
+var actions = {//
+};
+var mutations = {
+  allUsers: function allUsers(state, users) {
+    return state.other_users = users;
+  },
+  setOtherUsers: function setOtherUsers(state, user) {
+    return state.other_users.push(user);
+  },
+  userLeave: function userLeave(state, user) {
+    var index = state.other_users.indexOf(user);
+
+    if (index > -1) {
+      console.log('found and leave');
+      return state.other_users.splice(index, 1);
+    }
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -119340,8 +119750,8 @@ var mutations = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\clyde-projects\actualyzd\src\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\clyde-projects\actualyzd\src\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\clyde-projects\actualyzd\src2\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\clyde-projects\actualyzd\src2\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
