@@ -36,6 +36,7 @@ Vue.component('booking-status', require('./components/bookings/BookingStatus').d
 
 Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
 
+// Psychologist Schedules Component
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
 
 // Progress Report Client Medication Component

@@ -17275,8 +17275,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "TimeSchedule"
+  name: "TimeSchedule",
+  data: function data() {
+    return {
+      time_lists: [],
+      selected_time: []
+    };
+  },
+  created: function created() {
+    this.time_lists = [{
+      id: 1,
+      value: '7:00 am - 8:00 am'
+    }, {
+      id: 2,
+      value: '8:00 am - 9:00 am'
+    }, {
+      id: 3,
+      value: '9:00 am - 10:00 am'
+    }];
+  },
+  methods: {
+    selectATime: function selectATime(id) {
+      console.log(id);
+    }
+  }
 });
 
 /***/ }),
@@ -17564,12 +17594,8 @@ __webpack_require__.r(__webpack_exports__);
         editable: true,
         selectable: true,
         navLinks: true,
-        select: function select(arg) {
-          console.log(arg);
-          $('#create-schedule').modal('show');
-        }
-      },
-      showModal: true
+        select: this.handleSelect
+      }
     };
   },
   components: {
@@ -17577,7 +17603,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleSelect: function handleSelect(argument) {
-      console.log(argument);
+      var element = this.$refs.show_time_modal.$el;
+      $(element).modal('show');
     }
   }
 });
@@ -101729,30 +101756,82 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        id: "show-time",
+        "data-backdrop": "static",
+        "data-keyboard": "false",
+        tabindex: "-1",
+        "aria-labelledby": "show-time-label",
+        "aria-hidden": "true"
+      }
+    },
     [
-      _c("transition", { attrs: { name: "modal" } }, [
-        _c("div", { staticClass: "modal-mask" }, [
-          _c("div", { staticClass: "modal-wrapper" }, [
-            _c("div", { staticClass: "modal-container" }, [
-              _c(
-                "div",
-                { staticClass: "modal-header" },
-                [
-                  _vm._t("header", function() {
-                    return [_vm._v("\n\t\t\t\t\t\t\tHeader\n\t\t\t\t\t\t")]
-                  })
-                ],
-                2
-              )
-            ])
-          ])
+      _c("div", { staticClass: "modal-dialog" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "modal-body" },
+            _vm._l(_vm.time_lists, function(time_list, index) {
+              return _c("div", { key: index, staticClass: "form-group mb-3" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    attrs: { value: time_list.id },
+                    on: {
+                      click: function($event) {
+                        return _vm.selectATime(time_list.id)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(time_list.value) +
+                        "\n\t\t\t\t\t"
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
       ])
-    ],
-    1
+    ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "show-time-label" } },
+        [_vm._v("Select time for")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -102063,17 +102142,12 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("FullCalendar", { attrs: { options: _vm.options } }),
+      _c("FullCalendar", {
+        ref: "fullCalendar",
+        attrs: { options: _vm.options }
+      }),
       _vm._v(" "),
-      _vm.showModal
-        ? _c("TimeSchedule", {
-            on: {
-              close: function($event) {
-                _vm.showModal = false
-              }
-            }
-          })
-        : _vm._e()
+      _c("TimeSchedule", { ref: "show_time_modal" })
     ],
     1
   )
@@ -116733,7 +116807,8 @@ Vue.prototype.$bus = new Vue();
 Vue.component('calendar-page', __webpack_require__(/*! ./components/CalendarPage.vue */ "./resources/js/components/CalendarPage.vue")["default"]);
 Vue.component('bookings-calendar', __webpack_require__(/*! ./components/bookings/Calendar.vue */ "./resources/js/components/bookings/Calendar.vue")["default"]);
 Vue.component('booking-status', __webpack_require__(/*! ./components/bookings/BookingStatus */ "./resources/js/components/bookings/BookingStatus.vue")["default"]);
-Vue.component('bookings-lists', __webpack_require__(/*! ./components/bookings/BookingList.vue */ "./resources/js/components/bookings/BookingList.vue")["default"]);
+Vue.component('bookings-lists', __webpack_require__(/*! ./components/bookings/BookingList.vue */ "./resources/js/components/bookings/BookingList.vue")["default"]); // Psychologist Schedules Component
+
 Vue.component('schedules-component', __webpack_require__(/*! ./components/schedules/Main.vue */ "./resources/js/components/schedules/Main.vue")["default"]); // Progress Report Client Medication Component
 
 Vue.component('client-medication', __webpack_require__(/*! ./components/progress-reports/ClientMedication.vue */ "./resources/js/components/progress-reports/ClientMedication.vue")["default"]); // Report Assignee Vue Component

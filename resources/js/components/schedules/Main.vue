@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<FullCalendar :options="options" />
+		<FullCalendar ref="fullCalendar" :options="options" />
 
-		<TimeSchedule v-if="showModal" @close="showModal = false"/>
+		<TimeSchedule ref="show_time_modal" />
 	</div>
 </template>
 
@@ -26,12 +26,8 @@
 					editable: true,
 					selectable: true,
 					navLinks: true,
-					select(arg){
-						console.log(arg)
-						$('#create-schedule').modal('show');
-					}
+					select: this.handleSelect,
 				},
-				showModal: true
 			}
 		},
 		components: {
@@ -41,7 +37,8 @@
 		methods: {
 
 			handleSelect(argument){
-				console.log(argument)
+				let element = this.$refs.show_time_modal.$el;
+				$(element).modal('show');
 			}
 
 		}
