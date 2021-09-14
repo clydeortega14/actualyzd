@@ -19,6 +19,8 @@ use App\User;
 use App\SessionParticipant;
 use App\Client;
 use App\Events\BookingActivity;
+use App\ReasonOption;
+use App\CancelledBooking;
 
 class BookingController extends Controller
 {
@@ -42,7 +44,9 @@ class BookingController extends Controller
     }
     public function cancel(Booking $booking)
     {
-        return view('pages.bookings.cancel', compact('booking'));
+        $reason_options = ReasonOption::get();
+
+        return view('pages.bookings.cancel', compact('booking', 'reason_options'));
     }
     public function bookNow(Request $request)
     {
@@ -173,14 +177,35 @@ class BookingController extends Controller
 
     public function updateToCancel(Booking $booking, Request $request)
     {
+
+        $request->validate([
+
+            'reason' => ['required_without_all'] 
+        ]);
+
+
+        if($request->reason == 5){
+
+            $request->validate([
+
+                'others_specify' => ['required']
+            ]);
+        }
+
         //Update booking status to cancelled
         $booking->update(['status' => 4]);
 
         // store reason for cancelling in the database
-        $reason = $this->storeReason($booking, $request);
+        $cancelled_booking = CancelledBooking::create([
 
-        // update the schedule to available again
-        $booking->toSchedule->update(['status' => 1 ]);
+            'booking_id' => $booking->id,
+            'cancelled_by' => auth()->user()->id,
+            'reason_option_id' => $request->reason
+
+        ] + ['others_specify' => $request->has('others_specify') ? $request->others_specify : null]);
+
+        // update the time schedule to available again
+        $booking->toSchedule->timeSchedules()->where('time', $booking->time_id)->update(['is_booked' => false]);
 
         return redirect()->route('home')->with('success', 'Session has been cancelled');
     }
@@ -250,6 +275,7 @@ class BookingController extends Controller
 
     protected function storeReason($booking, $request)
     {
+
         return RescheduledBooking::create([
             'booking_id' => $booking->id, 
             'updated_by' => auth()->user()->id, 

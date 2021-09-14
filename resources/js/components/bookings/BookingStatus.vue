@@ -18,7 +18,7 @@
 			    	:value="status.id">{{ status.name }}</option>
 			  </select>
 			  <div class="input-group-append">
-			    <button class="btn btn-outline-primary" type="submit">
+			    <button class="btn btn-outline-primary" type="submit" @click.prevent="update">
 			    	<i class="fa fa-check"></i>
 			    </button>
 			    <button class="btn btn-outline-secondary" type="button" @click.prevent="cancel">
@@ -60,18 +60,21 @@
 				this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
 			},
 			update(){
-				let payload = {
-					id: this.bookingId,
-					status: this.status_option
-				}
-				this.updateStatus(payload).then(res => {
-					if(res.status){
 
-						location.reload();
-					}
-				}).catch(error => {
-					console.log(error)
-				})
+				window.location.href = `${window.location.origin}/bookings/cancel/${this.bookingId}`;
+
+				// let payload = {
+				// 	id: this.bookingId,
+				// 	status: this.status_option
+				// }
+				// this.updateStatus(payload).then(res => {
+				// 	if(res.status){
+
+				// 		location.reload();
+				// 	}
+				// }).catch(error => {
+				// 	console.log(error)
+				// })
 			},
 			cancel(){
 				this.editMode = false;

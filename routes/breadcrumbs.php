@@ -65,3 +65,11 @@ Breadcrumbs::for('progress-reports.edit', function($trail, $booking){
 	$trail->parent('progress.report', route('progress.report'));
 	$trail->push('Progress Report', route('progress-reports.edit', $booking));
 });
+
+// Reason for canceling
+Breadcrumbs::for('bookings.cancel', function($trail, $booking){
+
+	$trail->parent('home', route('home'));
+	$trail->push('Booking canceling', route('bookings.cancel', $booking));
+
+});

@@ -16865,6 +16865,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -16966,17 +16967,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
     },
     update: function update() {
-      var payload = {
-        id: this.bookingId,
-        status: this.status_option
-      };
-      this.updateStatus(payload).then(function (res) {
-        if (res.status) {
-          location.reload();
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      window.location.href = "".concat(window.location.origin, "/bookings/cancel/").concat(this.bookingId); // let payload = {
+      // 	id: this.bookingId,
+      // 	status: this.status_option
+      // }
+      // this.updateStatus(payload).then(res => {
+      // 	if(res.status){
+      // 		location.reload();
+      // 	}
+      // }).catch(error => {
+      // 	console.log(error)
+      // })
     },
     cancel: function cancel() {
       this.editMode = false;
@@ -101307,16 +101308,20 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("td", [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href: _vm.videoChatUrl(booking),
-                        target: "_blank"
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-link" })]
-                  )
+                  booking.to_status.id === 1
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: _vm.videoChatUrl(booking),
+                            target: "_blank"
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-link" })]
+                      )
+                    : _c("span", { staticClass: "badge badge-secondary" }, [
+                        _vm._v("Link not available")
+                      ])
                 ])
               ])
             }),
@@ -101450,7 +101455,20 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "input-group-append" }, [
-              _vm._m(0),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary",
+                  attrs: { type: "submit" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.update.apply(null, arguments)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-check" })]
+              ),
               _vm._v(" "),
               _c(
                 "button",
@@ -101471,18 +101489,7 @@ var render = function() {
         ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "btn btn-outline-primary", attrs: { type: "submit" } },
-      [_c("i", { staticClass: "fa fa-check" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

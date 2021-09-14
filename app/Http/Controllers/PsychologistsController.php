@@ -24,7 +24,7 @@ class PsychologistsController extends Controller
 
     public function schedules()
     {
-        return view('pages.psychologists.schedules');
+        return view('pages.psychologists.schedule');
     }
 
     /**

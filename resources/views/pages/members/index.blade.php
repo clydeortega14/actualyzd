@@ -6,10 +6,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-12 mb-3 d-flex justify-content-between">
 				<h3 class="text-gray">Home Page</h3 class="text-gray">
-				<a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
-					<i class="fa fa-calendar"></i>
-					<span>Book A Session</span>
-				</a>
+				
 			</div>
 
 			<div class="col-xl-3 col-md-6 mb-4">
@@ -42,8 +39,7 @@
             </div>
 
             <div class="col-md-9">
-            	<div class="card mb-3">
-            		{{-- <div class="card-header">Upcoming Session</div> --}}
+            	{{-- <div class="card mb-3">
             		<div class="card-body">
                         @if(!is_null($upcoming))
                             <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
@@ -87,9 +83,17 @@
                         @endif
 
             		</div>
-            	</div>
+            	</div> --}}
 
             	<div class="card mb-3">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
+                                <i class="fa fa-calendar"></i>
+                                <span>Book A Session</span>
+                            </a>
+                        </div>
+                    </div>
             		<div class="card-body">
 
                         @if(session()->has('error'))
