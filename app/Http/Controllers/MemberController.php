@@ -12,6 +12,7 @@ class MemberController extends Controller
 
     public function home()
     {
+
         if(request()->session()->exists('assessment') || request()->session()->exists('booking_details')){
             request()->session()->forget(['assessment', 'booking_details']);
         }

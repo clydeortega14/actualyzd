@@ -13,7 +13,16 @@ class PsychologistsController extends Controller
 
     public function home()
     {
-        return view('pages.psychologists.main');
+        $unclosed_bookings = $this->unClosedBookings()
+                                ->whereIn('schedule', $this->pluckPastdueSchedules())
+                                ->where(function($query){
+                                    if(auth()->user()->hasRole('psychologist')){
+                                        $query->whereIn('schedule', auth()->user()->schedules->pluck('id'));
+                                    }
+                                })
+                                ->get();
+
+        return view('pages.psychologists.main', compact('unclosed_bookings'));
     }
     public function bookings()
     {
