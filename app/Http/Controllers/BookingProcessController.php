@@ -166,27 +166,35 @@ class BookingProcessController extends Controller
 
     public function updateBookingStatus(Request $request, $id)
     {
-        $booking = Booking::findOrFail($id);
 
-        if($request->status == 2){
+        $booking = Booking::where('id', $id)->update(['status' => $request->status ]);
 
-            // redirect to progress reports
-            return redirect()->route('progress.report.create-for-booking', $id);
+        if($booking){
+
+            return response()->json(['success' => true, 'message' => 'Successfully updated!', 'data' => [] ], 200);
         }
 
-        if($request->status == 4){
-            // redirect to reason for canceling
-            return redirect()->route('bookings.cancel', $booking->id);
-        }
+        // $booking = Booking::findOrFail($id);
 
-        if($request->status == 5){
+        // if($request->status == 2){
 
-            return redirect()->route('booking.reschedule', $booking->id);
-        }
+        //     // redirect to progress reports
+        //     return redirect()->route('progress.report.create-for-booking', $id);
+        // }
 
-        if($request->status == 3){
-             $booking->update(['status' => 3]); 
-             return redirect()->route('home');
-        }
+        // if($request->status == 4){
+        //     // redirect to reason for canceling
+        //     return redirect()->route('bookings.cancel', $booking->id);
+        // }
+
+        // if($request->status == 5){
+
+        //     return redirect()->route('booking.reschedule', $booking->id);
+        // }
+
+        // if($request->status == 3){
+        //      $booking->update(['status' => 3]); 
+        //      return redirect()->route('home');
+        // }
     }
 }

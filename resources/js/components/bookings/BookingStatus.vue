@@ -18,7 +18,7 @@
 			    	:value="status.id">{{ status.name }}</option>
 			  </select>
 			  <div class="input-group-append">
-			    <button class="btn btn-outline-primary" type="submit">
+			    <button class="btn btn-outline-primary" type="submit" @click.prevent="update">
 			    	<i class="fa fa-check"></i>
 			    </button>
 			    <button class="btn btn-outline-secondary" type="button" @click.prevent="cancel">
@@ -32,6 +32,7 @@
 
 <script>
 
+	import Swal from 'sweetalert2';
 	import { mapGetters, mapActions } from 'vuex';
 	
 	export default {
@@ -60,18 +61,34 @@
 				this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
 			},
 			update(){
-				let payload = {
-					id: this.bookingId,
-					status: this.status_option
-				}
-				this.updateStatus(payload).then(res => {
-					if(res.status){
 
-						location.reload();
+				if(this.status_option === 2){
+
+					window.location.href = `${window.location.origin}/progress-reports/create-for-booking/${this.bookingId}`;
+
+				}else if(this.status_option === 4){
+
+					window.location.href = `${window.location.origin}/bookings/cancel/${this.bookingId}`;
+
+				}else if(this.status_option === 5){
+
+					alert('feature not available for now, coming soon');
+
+				}else{
+
+					let payload = {
+						id: this.bookingId,
+						status: this.status_option
 					}
-				}).catch(error => {
-					console.log(error)
-				})
+					this.updateStatus(payload).then(res => {
+						if(res.data.success){
+							Swal.fire('Success!', res.data.message, 'success');
+							location.reload();
+						}
+					}).catch(error => {
+						console.log(error)
+					})
+				}
 			},
 			cancel(){
 				this.editMode = false;

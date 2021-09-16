@@ -40,9 +40,10 @@
 							/>
 						</td>
 						<td>
-							<a :href="videoChatUrl(booking)" target="_blank">
+							<a :href="videoChatUrl(booking)" target="_blank" v-if="booking.to_status.id === 1">
 								<i class="fa fa-link"></i>
 							</a>
+							<span v-else class="badge badge-secondary">Link not available</span>
 						</td>
 					</tr>
 				</tbody>
