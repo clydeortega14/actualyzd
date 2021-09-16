@@ -49,16 +49,18 @@ Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
 
 // Psychologist booking breadcrumbs
 Breadcrumbs::for('psychologist.bookings', function($trail){
-	$trail->push('Bookings Home', route('psychologist.bookings'));
+	$trail->parent('home');
+	$trail->push('Bookings', route('psychologist.bookings'));
 });
 
 Breadcrumbs::for('progress.report', function($trail){
-	$trail->push('Home', route('progress.report'));
+	$trail->parent('home');
+	$trail->push('Progress Reports', route('progress.report'));
 });
 
 Breadcrumbs::for('progress.report.create-for-booking', function($trail, $booking){
 	$trail->parent('progress.report', route('progress.report'));
-	$trail->push('Progress Report', route('progress.report.create-for-booking', $booking));
+	$trail->push('View report', route('progress.report.create-for-booking', $booking));
 });
 
 Breadcrumbs::for('progress-reports.edit', function($trail, $booking){

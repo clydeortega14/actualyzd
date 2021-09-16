@@ -6,15 +6,13 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+
+				<h3>Progress Report</h3>
+
 				{{ Breadcrumbs::render('progress.report.create-for-booking', $booking) }}
 				
 			</div>
-			<div class="col-md-12 mb-3">
-				<a href="{{ route('progress.report') }}" class="btn btn-info">
-					<i class="fa fa-arrow-left"></i>
-					<span>Return Back</span>
-				</a>
-			</div>
+			
 			<div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-body">
@@ -151,7 +149,7 @@
 			                        
 			                        <div class="form-group">
 			                              <button class="btn btn-primary btn-block" type="submit" {{ is_null($report) || $edit_mode ? '' : 'disabled' }}>{{ is_null($report) ? 'Submit' : 'Save Changes'}}</button>
-			                              <a href="{{ route('booking.answered.questions', $booking->id) }}" class="btn btn-secondary btn-block" data-dismiss="modal">Return</a>
+			                              <a href="{{ route('progress.report') }}" class="btn btn-secondary btn-block" data-dismiss="modal">Return Home</a>
 			                        </div>
 			                        
 			                  </form>

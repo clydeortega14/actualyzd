@@ -8,9 +8,9 @@
 				<div class="card mb-3">
 					<div class="card-body">
 						<div clas="d-flex align-items-center">
-						<h1 class="card-title text-center align-items-center">
-							Main Menu
-						</h1>
+						<h3 class="card-title text-center align-items-center">
+							Welcome, {{ auth()->user()->name }}
+						</h3>
 						</div>
 					</div>
 				</div>

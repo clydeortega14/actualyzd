@@ -32,6 +32,7 @@
 
 <script>
 
+	import Swal from 'sweetalert2';
 	import { mapGetters, mapActions } from 'vuex';
 	
 	export default {
@@ -61,20 +62,33 @@
 			},
 			update(){
 
-				window.location.href = `${window.location.origin}/bookings/cancel/${this.bookingId}`;
+				if(this.status_option === 2){
 
-				// let payload = {
-				// 	id: this.bookingId,
-				// 	status: this.status_option
-				// }
-				// this.updateStatus(payload).then(res => {
-				// 	if(res.status){
+					window.location.href = `${window.location.origin}/progress-reports/create-for-booking/${this.bookingId}`;
 
-				// 		location.reload();
-				// 	}
-				// }).catch(error => {
-				// 	console.log(error)
-				// })
+				}else if(this.status_option === 4){
+
+					window.location.href = `${window.location.origin}/bookings/cancel/${this.bookingId}`;
+
+				}else if(this.status_option === 5){
+
+					alert('feature not available for now, coming soon');
+
+				}else{
+
+					let payload = {
+						id: this.bookingId,
+						status: this.status_option
+					}
+					this.updateStatus(payload).then(res => {
+						if(res.data.success){
+							Swal.fire('Success!', res.data.message, 'success');
+							location.reload();
+						}
+					}).catch(error => {
+						console.log(error)
+					})
+				}
 			},
 			cancel(){
 				this.editMode = false;
