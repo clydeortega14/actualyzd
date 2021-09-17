@@ -7,7 +7,9 @@
 					<tr>
 						<th>DateTime</th>
 						<th>Type</th>
-						<th v-if="role !== 'member'">Progress Report</th>
+						<th v-if="role !== 'member'">
+							Progress Report
+						</th>
 						<th v-if="role !== 'member'">Counselee</th>
 						<th>Psychologist</th>
 						<th>Status</th>
@@ -22,14 +24,17 @@
 						</td>
 						<td>{{ booking.session_type.name }}</td>
 						<td v-if="role !== 'member'">
-							<a href="#">
-								<i class="fa fa-book mr-2"></i>
-								<span>report</span>
-							</a>
+							<div v-if="booking.counselee !== null && booking.to_counselee.progress_reports.length && booking.to_status.id == 1">
+								<a :href="oldReportLink(booking.to_counselee.progress_reports[0].booking_id)" target="_blank">
+									<i class="fa fa-book mr-2"></i>
+									<span>report</span>
+								</a>
+							</div>
+							<span class="badge badge-info" v-else>N/A</span>
 						</td>
 						<td v-if="role !== 'member'">
 							<a href="#">
-								<img :src="( booking.to_counseelee == null && booking.to_counselee.avatar == null )? `/images/user.png` : `${baseUrl}/storage/${booking.to_counselee.avatar}`" 
+								<img :src="( booking.counselee == null) ? `/images/user.png` : `${baseUrl}/storage/${booking.to_counselee.avatar}`" 
 								:alt="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" 
 								data-toggle="tooltip" 
 								:title="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" class="rounded-circle"
@@ -78,7 +83,6 @@
 			userAvatar: String
 		},
 		created(){
-			console.log(this.userAvatar)
 			this.getAllBookings();
 		},
 		computed: {
@@ -100,6 +104,10 @@
 			videoChatUrl(booking){
 
 				return `${window.location.origin}/video-chat/${booking.room_id}`
+			},
+			oldReportLink(booking_id){
+
+				return `${this.baseUrl}/progress-reports/create-for-booking/${booking_id}`
 			}
 		}
 	}

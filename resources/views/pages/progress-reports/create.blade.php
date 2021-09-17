@@ -17,7 +17,7 @@
 				<div class="card mb-3">
 					<div class="card-body">
 						@if(!is_null($booking->counselee))
-							<img src="{{ asset('images/user.png') }}" alt="" class="img-fluid rounded mx-auto d-block mb-3" height="150" width="150">
+							<img src="{{ !is_null($booking->toCounselee->avatar) ? asset('storage/'.$booking->toCounselee->avatar) : asset('images/user.png') }}" alt="" class="img-fluid rounded mx-auto d-block mb-3" height="150" width="150">
 							<ul class="list-group">
 							  <li class="list-group-item d-flex justify-content-between align-items-center">
 							    Name
@@ -67,7 +67,7 @@
 										</div>
 									@endif
 									<!-- EDIT REPORT -->
-									@if(!$edit_mode)
+									@if($edit_mode || !is_null($report))
 										<div>
 											<a href="{{ route('progress-reports.edit', $booking->id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Edit Report">
 												<i class="fa fa-edit"></i>
@@ -88,9 +88,11 @@
 
 			                        <input type="hidden" name="booking_id" value="{{ $booking->id}}">
 
+			                        <input type="hidden" name="counselee" value="{{ $booking->counselee }}">
+
 			                        <div class="form-group">
 			                        	<label>Please select a category that you think is the main concern</label>
-			                        	<select name="category" id="category" class="form-control" required  {{$readOnly }}>
+			                        	<select name="category" id="category" class="form-control"  {{$readOnly }}>
 			                        		<option value="" selected disabled>Select Category</option>
 			                        		@foreach($categories as $category)
 			                        			<option value="{{ $category->id }}" {{ !is_null($report) && $report->booking->main_concern == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -156,17 +158,60 @@
 			          		</div>
 			          		<div class="tab-pane" id="onboarding-questions" role="tabpanel" aria-labelledby="onboarding-questions-tab">
 			          			{{-- @if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1) --}}
+			          			<ul>
+									{{-- First Timer / Repeater --}}
+									<li>
+										<div class="mb-3">
+											<h5>Are you a first timer or a repeater to this session?</h5>
+										</div>
+										<div class="ml-3">
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="1" id="firstimer" 
+													{{ $booking->is_firstimer == 1 ? 'checked' : '' }} disabled>
+												<label class="custom-control-label" for="firstimer">First Timer</label>
+											</div>
+
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="0" id="repeater" {{ $booking->is_firstimer == 0 ? 'checked' : '' }} disabled>
+												<label class="custom-control-label" for="repeater">Repeater</label>
+											</div>
+										</div>
+									</li>
+
+									{{-- Self Harm  --}}
+									<li>
+										<div class="mb-3">
+											<h5>I have plans to harm myself?</h5>
+										</div>
+
+										<div class="ml-3">
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" disabled {{ $booking->self_harm == 1 ? 'checked' : '' }}>
+												<label class="custom-control-label" for="1">Yes</label>
+											</div>
+										
+
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="self_harm" value="0" id="0" disabled {{ $booking->self_harm == 0 ? 'checked' : '' }}>
+												<label class="custom-control-label" for="0">No</label>
+											</div>
+										</div>
+											
+										
+										
+									</li>
+								</ul>
 									
-									<ol type="I">
-										@foreach($categories as $category)
-		                                    <li>
-		                                    	<div class="mb-3">
-		                                    		<h5>{{ $category->name }}</h5>
-		                                    	</div>
-		                                    	@include('pages.bookings.components.questionnaire')
-		                                    </li>
-										@endforeach
-									</ol>
+								<ul>
+									@foreach($categories as $category)
+	                                    <li>
+	                                    	<div class="mb-3">
+	                                    		<h5>{{ $category->name }}</h5>
+	                                    	</div>
+	                                    	@include('pages.bookings.components.questionnaire')
+	                                    </li>
+									@endforeach
+								</ul>
 									
 								{{-- @endif --}}
 			          		</div>
