@@ -177,13 +177,13 @@ class BookingController extends Controller
 
     public function updateToCancel(Booking $booking, Request $request)
     {
-
+        // validate reason must be required
         $request->validate([
 
             'reason' => ['required_without_all'] 
         ]);
 
-
+        // if reason is others, must specify other reason why he /she cancel the booking
         if($request->reason == 5){
 
             $request->validate([
@@ -208,40 +208,6 @@ class BookingController extends Controller
         $booking->toSchedule->timeSchedules()->where('time', $booking->time_id)->update(['is_booked' => false]);
 
         return redirect()->route('home')->with('success', 'Session has been cancelled');
-    }
-
-    public function complete(Booking $booking)
-    {
-        // update booking status to complete
-        $booking->update(['status' => 2 ]);
-
-        if(!$booking){
-            return redirect()->back()->with('error', 'There was an error during completing this session');
-        }
-
-        return redirect()->back()->with('success', 'Session has been completed');
-    }
-
-    public function noShow(Booking $booking)
-    {
-        // update status to no show
-        $booking->update(['status' => 3 ]);
-
-        if(!$booking){
-            return redirect()->back()->with('error', 'Oops! There was an error');
-        }
-
-        return redirect()->back()->with('success', 'No Show!');
-    }
-
-    public function reschedule(Booking $booking)
-    {
-        // $time_lists = $this->time_lists;
-        // $categories = $this->categories;
-
-       $booking = $booking->with(['toSchedule'])->first();
-
-        return view('pages.bookings.reschedule', compact('booking'));
     }
     public function reschedBooking(Booking $booking, Request $request)
     {
@@ -282,4 +248,39 @@ class BookingController extends Controller
             'reason' => $request->reason 
         ]);
     }
+
+
+    // public function complete(Booking $booking)
+    // {
+    //     // update booking status to complete
+    //     $booking->update(['status' => 2 ]);
+
+    //     if(!$booking){
+    //         return redirect()->back()->with('error', 'There was an error during completing this session');
+    //     }
+
+    //     return redirect()->back()->with('success', 'Session has been completed');
+    // }
+
+    // public function noShow(Booking $booking)
+    // {
+    //     // update status to no show
+    //     $booking->update(['status' => 3 ]);
+
+    //     if(!$booking){
+    //         return redirect()->back()->with('error', 'Oops! There was an error');
+    //     }
+
+    //     return redirect()->back()->with('success', 'No Show!');
+    // }
+
+    // public function reschedule(Booking $booking)
+    // {
+    //     // $time_lists = $this->time_lists;
+    //     // $categories = $this->categories;
+
+    //    $booking = $booking->with(['toSchedule'])->first();
+
+    //     return view('pages.bookings.reschedule', compact('booking'));
+    // }
 }

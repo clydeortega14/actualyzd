@@ -101,7 +101,39 @@
                                 <span>{{ session('error') }}</span>
                             </div>
                         @endif
-                        <bookings-lists></bookings-lists>
+
+                        {{-- For user role --}}
+                            @php
+                                $user = auth()->user();
+                                $user_avatar = $user->avatar;
+                            @endphp
+
+                            @if($user->hasRole('member'))
+                                @php
+                                    $role = 'member';
+                                @endphp
+                            @elseif($user->hasRole('psychologist'))
+                                @php
+                                    $role = 'psychologist';
+                                @endphp
+                            @elseif($user->hasRole('admin'))
+                                @php
+                                    $role = 'admin';
+                                @endphp
+                            @elseif($user->hasRole('superadmin'))
+                                @php
+                                    $role = 'superadmin';
+                                @endphp
+                            @endif
+
+                        {{-- end for user role  --}}
+
+                        <bookings-lists 
+                            role="{{ $role }}"
+                            user-avatar="{{ $user_avatar }}"
+                            >
+                                
+                        </bookings-lists>
             			{{-- @include('pages.bookings.index') --}}
             		</div>
             	</div>

@@ -7,7 +7,10 @@
 					<tr>
 						<th>DateTime</th>
 						<th>Type</th>
-						<th>Counselee</th>
+						<th v-if="role !== 'member'">
+							Progress Report
+						</th>
+						<th v-if="role !== 'member'">Counselee</th>
 						<th>Psychologist</th>
 						<th>Status</th>
 						<th>Link to session</th>
@@ -20,15 +23,28 @@
 							<b>Time: </b><span>{{ `${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`}}</span>
 						</td>
 						<td>{{ booking.session_type.name }}</td>
-						<td>
+						<td v-if="role !== 'member'">
+							<div v-if="booking.counselee !== null && booking.to_counselee.progress_reports.length && booking.to_status.id == 1">
+								<a :href="oldReportLink(booking.to_counselee.progress_reports[0].booking_id)" target="_blank">
+									<i class="fa fa-book mr-2"></i>
+									<span>report</span>
+								</a>
+							</div>
+							<span class="badge badge-info" v-else>N/A</span>
+						</td>
+						<td v-if="role !== 'member'">
 							<a href="#">
-								<img :src="`/images/user.png`" :alt="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" data-toggle="tooltip" :title="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" class="rounded-circle"
-								width="50" height="50">
+								<img :src="( booking.counselee == null) ? `/images/user.png` : `${baseUrl}/storage/${booking.to_counselee.avatar}`" 
+								:alt="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" 
+								data-toggle="tooltip" 
+								:title="booking.to_counselee == null ? 'N/A' : booking.to_counselee.name" class="rounded-circle"
+								width="50" 
+								height="50">
 							</a>
 						</td>
 						<td>
 							<a href="#">
-								<img src="/images/profile.png" :alt="booking.to_schedule.psych.name" data-toggle="tooltip" :title="booking.to_schedule.psych.name"
+								<img :src="booking.to_schedule.psych.avatar == null ? '/images/profile.png' : `${baseUrl}/storage/${booking.to_schedule.psych.avatar}`" :alt="booking.to_schedule.psych.name" data-toggle="tooltip" :title="booking.to_schedule.psych.name"
 								class="rounded-circle" width="50" height="50">
 							</a>
 						</td>
@@ -62,11 +78,19 @@
 	export default {
 		name: "BookingList",
 		mixins: [ DateTime ],
+		props: {
+			role: String,
+			userAvatar: String
+		},
 		created(){
 			this.getAllBookings();
 		},
 		computed: {
-			...mapGetters(["allBookings"])
+			...mapGetters(["allBookings"]),
+			baseUrl(){
+
+				return window.location.origin;
+			}
 		},
 		components: {
 			BookingStatus,
@@ -80,6 +104,10 @@
 			videoChatUrl(booking){
 
 				return `${window.location.origin}/video-chat/${booking.room_id}`
+			},
+			oldReportLink(booking_id){
+
+				return `${this.baseUrl}/progress-reports/create-for-booking/${booking_id}`
 			}
 		}
 	}

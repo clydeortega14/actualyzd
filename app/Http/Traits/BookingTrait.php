@@ -9,7 +9,7 @@ use App\AssessmentAnswer;
 use App\PsychologistSchedule;
 use App\Http\Traits\BookingSchedulesTrait;
 use App\Http\Traits\SchedulesTrait;
-
+use App\User;
 
 trait BookingTrait {
 
@@ -29,6 +29,8 @@ trait BookingTrait {
 	{
         $bookings = Booking::query();
 
+        $bookings->whereNotNull('counselee');
+
         // query bookings according to auth user role
         $this->queryByRole($bookings);
         // query bookings according to status
@@ -38,16 +40,20 @@ trait BookingTrait {
         ->where(function($query){
             $this->queryByStatus($query, $query);
         });
+
         
 
         $allBookings = $bookings->with([
             'toSchedule.psych', 
             'time',
-            'progressReport',
             'sessionType',
-            'toCounselee',
             'toStatus'
-        ])->get();
+        ])
+        ->with(['toCounselee.progressReports' => function($query2){
+            $query2->orderBy('created_at', 'desc');
+
+        }])
+        ->get();
 
         return $allBookings;
 	}
@@ -62,6 +68,8 @@ trait BookingTrait {
     public function countByStatus($status)
     {
         $bookings = Booking::query();
+
+        $bookings->whereNotNull('counselee');
 
         $this->queryByRole($bookings);
 

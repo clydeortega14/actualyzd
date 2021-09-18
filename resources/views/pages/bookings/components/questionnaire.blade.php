@@ -33,9 +33,12 @@
 							@endif
 						@endif
 
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
-							<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
+						<div class="custom-control custom-radio mb-2">
+							<input class="custom-control-input" type="radio" name="choice[{{ $questionnaire->id }}]" 
+								id="choice[{{ $questionnaire->id }}][{{ $choice->value }}]" 
+								value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
+								
+							<label class="custom-control-label" for="choice[{{ $questionnaire->id }}][{{ $choice->value }}]">{{$choice->display_name }}</label>
 						</div>
 					@endforeach
 				@else

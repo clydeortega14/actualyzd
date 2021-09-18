@@ -19,7 +19,7 @@ class PsychologistsController extends Controller
                                     if(auth()->user()->hasRole('psychologist')){
                                         $query->whereIn('schedule', auth()->user()->schedules->pluck('id'));
                                     }
-                                })
+                                })->whereNotNull('counselee')
                                 ->get();
 
         return view('pages.psychologists.main', compact('unclosed_bookings'));

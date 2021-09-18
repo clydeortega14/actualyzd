@@ -12,6 +12,7 @@ use App\Medication;
 use App\Booking;
 use App\AssessmentCategory;
 use App\User;
+use Illuminate\Support\Facades\Validator;
 
 class ProgressReportController extends Controller
 {
@@ -38,7 +39,7 @@ class ProgressReportController extends Controller
 
     public function create(Booking $booking)
     {
-        $edit_mode = false;
+        $edit_mode = $this->editMode;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
         return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
@@ -53,7 +54,7 @@ class ProgressReportController extends Controller
 
     public function store(Request $request)
     {
-    	$this->validateReport($request);
+    	$this->validateReport($request->all())->validate();
 
         DB::beginTransaction();
 
@@ -62,6 +63,7 @@ class ProgressReportController extends Controller
             $report = ProgressReport::firstOrCreate([
 
                 'booking_id' => $request->booking_id,
+                'counselee' => $request->counselee,
                 'main_concern' => $request->main_concern,
                 'initial_assessment' => $request->initial_assessment,
                 'followup_session' => $request->followup_session,
@@ -73,7 +75,7 @@ class ProgressReportController extends Controller
             $this->manageMedication($request, $report);
 
             // update booking status to complete
-            $report->booking()->update(['status' => 2]);
+            $report->booking()->update(['status' => 2, 'main_concern' => $request->category ]);
             
         } catch (Exception $e) {
 
@@ -89,14 +91,15 @@ class ProgressReportController extends Controller
     }
     public function edit(Booking $booking)
     {
-        $edit_mode = true;
+        $this->editMode = true;
+        $edit_mode = $this->editMode;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
         return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
     }
     public function update(Request $request, ProgressReport $report)
     {
-        $this->validateReport($request);
+        $this->validateReport($request->all())->validate();
 
         DB::beginTransaction();
 
@@ -150,9 +153,9 @@ class ProgressReportController extends Controller
         }
     }
 
-    protected function validateReport($request)
+    protected function validateReport(array $data)
     {
-        return $this->validate($request, [
+        return Validator::make($data, [
             'category' => ['required'],
             'main_concern' => ['required'],
             'initial_assessment' => ['required'],
