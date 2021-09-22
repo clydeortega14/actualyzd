@@ -54,6 +54,11 @@ class BookingProcessController extends Controller
     	return view('pages.bookings.booking-process.date-and-time');
     }
 
+    public function availableLinks()
+    {
+        return view('pages.bookings.booking-process.available-links');
+    }
+
     public function reviewDetails()
     {
         return view('pages.bookings.booking-process.review');
@@ -131,7 +136,7 @@ class BookingProcessController extends Controller
             ]
         ]]);
         
-        return redirect()->route('booking.review.details');
+        return redirect()->route('booking.available.links');
     }
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {

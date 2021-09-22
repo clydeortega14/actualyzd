@@ -197,6 +197,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('date-and-time', 'BookingProcessController@dateAndTime')->name('booking.date.and.time');
 
+		Route::get('available-links', 'BookingProcessController@availableLinks')->name('booking.available.links');
+
 		Route::get('review-details', 'BookingProcessController@reviewDetails')->name('booking.review.details');
 
 		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');

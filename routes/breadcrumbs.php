@@ -36,10 +36,25 @@ Breadcrumbs::for('home', function ($trail) {
 });
 
 // Link to onboarding questions
-Breadcrumbs::for('booking.answered.questions', function($trail, $booking){
+Breadcrumbs::for('booking.onboarding', function($trail){
 	$trail->parent('home');
-	$trail->push('On Boarding Questions', route('booking.answered.questions', $booking));
+	$trail->push('Onboarding Questions', route('booking.onboarding'));
 
+});
+
+// link to choose date, time, psychologist
+Breadcrumbs::for('booking.date.and.time', function($trail){
+
+	$trail->parent('booking.onboarding');
+	$trail->push('Chose date, time and psychologist', route('booking.date.and.time'));
+
+});
+
+// available liks to session
+Breadcrumbs::for('booking.available.links', function($trail){
+
+	$trail->parent('booking.date.and.time');
+	$trail->push('Choose link to session', route('booking.available.links'));
 });
 
 Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
