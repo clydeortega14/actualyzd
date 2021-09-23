@@ -29,14 +29,7 @@
 						  	</div>
 						</div>
 					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Choose link to session</h4>
-						    	<p class="card-text">We offer some links available and use it as a room during the session.</p>
-						  	</div>
-						</div>
-					</div>
+					
 					<div class="col-md-12">
 						<div class="card mb-3">
 						  	<div class="card-body">

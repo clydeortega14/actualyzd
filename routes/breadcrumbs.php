@@ -50,11 +50,18 @@ Breadcrumbs::for('booking.date.and.time', function($trail){
 
 });
 
-// available liks to session
-Breadcrumbs::for('booking.available.links', function($trail){
+// review booking
+Breadcrumbs::for('booking.review.details', function($trail){
 
 	$trail->parent('booking.date.and.time');
-	$trail->push('Choose link to session', route('booking.available.links'));
+	$trail->push('Review', route('booking.review.details'));
+});
+
+// Breadcrumb for success booked a session
+Breadcrumbs::for('booking.success.page', function($trail){
+
+	$trail->parent('home');
+	$trail->push('Complete', route('booking.success.page'));
 });
 
 Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
