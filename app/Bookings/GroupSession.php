@@ -5,7 +5,7 @@ namespace App\Bookings;
 use App\Bookings\AbstractBooking;
 use App\Bookings\BookingInterface;
 use App\Booking;
-use App\Booking\Traits\EncryptLink;
+use App\Bookings\Traits\EncryptLink;
 
 class GroupSession extends AbstractBooking implements BookingInterface {
 

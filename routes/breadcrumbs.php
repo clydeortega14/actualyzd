@@ -35,6 +35,12 @@ Breadcrumbs::for('home', function ($trail) {
     $trail->push('Home', route('home'));
 });
 
+// breadcrumb for selecting session type, client and participants
+Breadcrumbs::for('booking.select.client.participants', function($trail){
+	$trail->parent('home');
+	$trail->push('select session type, client and participants', route('booking.select.client.participants'));
+});
+
 // Link to onboarding questions
 Breadcrumbs::for('booking.onboarding', function($trail){
 	$trail->parent('home');

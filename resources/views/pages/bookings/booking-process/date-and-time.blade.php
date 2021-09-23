@@ -14,12 +14,24 @@
 			<div class="col-md-3">
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Onboarding Questions</h4>
-						    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
-						  	</div>
-						</div>
+
+						@if(auth()->user()->hasRole('superadmin'))
+							<div class="card mb-3">
+						  		<div class="card-body">
+							    	<h4 class="card-title">Select session type, client and participants</h4>
+							    	<p class="card-text">Select session type, client and participants of the session</p>
+							  	</div>
+							</div>
+						@else
+
+							<div class="card mb-3">
+							  	<div class="card-body">
+							    	<h4 class="card-title">Onboarding Questions</h4>
+							    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
+							  	</div>
+							</div>
+
+						@endif
 					</div>
 					<div class="col-md-12">
 						<div class="card text-white bg-primary mb-3">
