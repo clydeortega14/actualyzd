@@ -53,4 +53,38 @@ trait SchedulesTrait {
             ->orwhere('to', '>=', now()->toTimeString())
             ->first();
     }
+
+    public function scheduleTimeQuery(PsychologistSchedule $schedule){
+        
+        $time_schedules = $this->filterTimeDisp($schedule)->with(['toTime', 'toSchedule'])->get();
+
+        $mapped_time_format = $time_schedules->map(function($time_schedule){
+
+            return [
+
+                'id' => $time_schedule->time,
+                'from' => $time_schedule->toTime->parseTimeFrom(),
+                'to' => $time_schedule->toTime->parseTimeTo()
+            ];
+        });
+
+        return $mapped_time_format;
+    }
+
+    public function filterTimeDisp(PsychologistSchedule $schedule){
+
+
+        $current_time = now()->addHour(1)->toTimeString();
+
+        $time_lists = TimeList::whereTime('from', '>=', $current_time)->get();
+
+        return $schedule->timeSchedules()->where(function($query) use ($time_lists, $schedule) {
+
+            if($schedule->start == now()->toDateString()){
+
+                $query->whereIn('time', $time_lists->pluck('id'));
+            }
+
+        })->where('is_booked', false);
+    }
 }

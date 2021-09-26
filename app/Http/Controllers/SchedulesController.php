@@ -119,18 +119,6 @@ class SchedulesController extends Controller
 
     public function getTimeBySchedule(PsychologistSchedule $schedule)
     {
-        $time_schedules = $schedule->timeSchedules()->with(['toTime', 'toSchedule'])->get();
-
-        $mapped_time_format = $time_schedules->map(function($time_schedule){
-
-            return [
-
-                'id' => $time_schedule->time,
-                'from' => $time_schedule->toTime->parseTimeFrom(),
-                'to' => $time_schedule->toTime->parseTimeTo()
-            ];
-        });
-
-        return response()->json($mapped_time_format);
+        return response()->json($this->scheduleTimeQuery($schedule));
     }
 }
