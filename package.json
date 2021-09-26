@@ -35,6 +35,7 @@
         "@fullcalendar/vue": "^5.7.0",
         "@popperjs/core": "^2.9.2",
         "bootswatch": "^5.0.1",
+        "bs-stepper": "^1.7.0",
         "chart.js": "^2.9.4",
         "laravel-echo": "^1.11.1",
         "moment": "^2.29.1",

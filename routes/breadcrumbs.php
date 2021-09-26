@@ -35,11 +35,39 @@ Breadcrumbs::for('home', function ($trail) {
     $trail->push('Home', route('home'));
 });
 
-// Link to onboarding questions
-Breadcrumbs::for('booking.answered.questions', function($trail, $booking){
+// breadcrumb for selecting session type, client and participants
+Breadcrumbs::for('booking.select.client.participants', function($trail){
 	$trail->parent('home');
-	$trail->push('On Boarding Questions', route('booking.answered.questions', $booking));
+	$trail->push('select session type, client and participants', route('booking.select.client.participants'));
+});
 
+// Link to onboarding questions
+Breadcrumbs::for('booking.onboarding', function($trail){
+	$trail->parent('home');
+	$trail->push('Onboarding Questions', route('booking.onboarding'));
+
+});
+
+// link to choose date, time, psychologist
+Breadcrumbs::for('booking.date.and.time', function($trail){
+
+	$trail->parent('booking.onboarding');
+	$trail->push('Chose date, time and psychologist', route('booking.date.and.time'));
+
+});
+
+// review booking
+Breadcrumbs::for('booking.review.details', function($trail){
+
+	$trail->parent('booking.date.and.time');
+	$trail->push('Review', route('booking.review.details'));
+});
+
+// Breadcrumb for success booked a session
+Breadcrumbs::for('booking.success.page', function($trail){
+
+	$trail->parent('home');
+	$trail->push('Complete', route('booking.success.page'));
 });
 
 Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {

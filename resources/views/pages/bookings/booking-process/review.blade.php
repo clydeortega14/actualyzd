@@ -3,22 +3,75 @@
 
 @section('content')
 
-	<div class="container">
+	<div class="container-fluid">
+		<h1>Book a session</h1>
+		<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
+			<i class="fa fa-arrow-left"></i>
+			<span>Back to Home</span>
+		</a>
+
 		<div class="row">
-			<div class="col-md-12">
-				<div class="card mb-3">
-					<div class="card-body">
-						<div class="align-content-center text-center">
-							 <div class="align-content-center text-center">
-								<h5 class="card-title">Please review session details</h5>
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-12">
+						@if(auth()->user()->hasRole('superadmin'))
+							<div class="card mb-3">
+						  		<div class="card-body">
+							    	<h4 class="card-title">Select session type, client and participants</h4>
+							    	<p class="card-text">Select session type, client and participants of the session</p>
+							  	</div>
 							</div>
+						@else
+
+							<div class="card mb-3">
+							  	<div class="card-body">
+							    	<h4 class="card-title">Onboarding Questions</h4>
+							    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
+							  	</div>
+							</div>
+
+						@endif
+					</div>
+					<div class="col-md-12">
+						<div class="card mb-3">
+						  	<div class="card-body">
+						    	<h4 class="card-title">Choose date and time and psychologist</h4>
+						    	<p class="card-text">select available date, time and psychologist.</p>
+						  	</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="card text-white bg-primary mb-3">
+						  	<div class="card-body">
+						    	<h4 class="card-title">Review</h4>
+						    	<p class="card-text">Before the system will process your booking please review the session details.</p>
+						  	</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="card mb-3">
+						  	<div class="card-body">
+						    	<h4 class="card-title">Complete</h4>
+						    	<p class="card-text">You have successfully booked a session.</p>
+						  	</div>
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="col-md-9">
+				
+				{{ Breadcrumbs::render('booking.review.details') }}
+
+				<div class="card text-white bg-primary mb-3">
+					<div class="card-body text-center">
+						<h4 class="card-title">Review</h4>
+						<p class="card-text">Before the system will process your booking please review the session details.</p>
+					</div>
+				</div>
+
 				<div class="card mb-3">
 					<div class="card-body">
 						
-
 						<ul class="list-group mt-5">
 							@if(session()->has('assessment'))
 						  	    <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -75,12 +128,13 @@
 								</div>
 
 								<div class="col-md-6">
-									<a href="#" class="btn btn-outline-secondary btn-lg btn-block">Cancel</a>
+									<a href="{{ route('booking.date.and.time') }}" class="btn btn-secondary btn-lg btn-block">Return to previous</a>
 								</div>
 							</div>
 						</form>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>

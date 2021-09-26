@@ -54,6 +54,11 @@ class BookingProcessController extends Controller
     	return view('pages.bookings.booking-process.date-and-time');
     }
 
+    public function availableLinks()
+    {
+        return view('pages.bookings.booking-process.available-links');
+    }
+
     public function reviewDetails()
     {
         return view('pages.bookings.booking-process.review');
@@ -133,8 +138,10 @@ class BookingProcessController extends Controller
         
         return redirect()->route('booking.review.details');
     }
+
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
+
         // find schedule by schedule_id
         $schedule = PsychologistSchedule::findOrFail(session('booking_details.schedule.id'));
 
@@ -173,28 +180,5 @@ class BookingProcessController extends Controller
 
             return response()->json(['success' => true, 'message' => 'Successfully updated!', 'data' => [] ], 200);
         }
-
-        // $booking = Booking::findOrFail($id);
-
-        // if($request->status == 2){
-
-        //     // redirect to progress reports
-        //     return redirect()->route('progress.report.create-for-booking', $id);
-        // }
-
-        // if($request->status == 4){
-        //     // redirect to reason for canceling
-        //     return redirect()->route('bookings.cancel', $booking->id);
-        // }
-
-        // if($request->status == 5){
-
-        //     return redirect()->route('booking.reschedule', $booking->id);
-        // }
-
-        // if($request->status == 3){
-        //      $booking->update(['status' => 3]); 
-        //      return redirect()->route('home');
-        // }
     }
 }

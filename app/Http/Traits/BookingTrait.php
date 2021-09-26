@@ -29,7 +29,10 @@ trait BookingTrait {
 	{
         $bookings = Booking::query();
 
-        $bookings->whereNotNull('counselee');
+        if(!auth()->user()->hasRole('superadmin')){
+
+            $bookings->whereNotNull('counselee');
+        }
 
         // query bookings according to auth user role
         $this->queryByRole($bookings);

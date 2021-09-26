@@ -6,10 +6,11 @@ use App\Bookings\AbstractBooking;
 use App\Booking;
 use App\Bookings\BookingInterface;
 use App\Http\Traits\BookingTrait;
+use App\Bookings\Traits\EncryptLink;
 
 class IndividualSession extends AbstractBooking implements BookingInterface {
 
-	use BookingTrait;
+	use BookingTrait, EncryptLink;
 
 	public function create()
 	{
@@ -24,7 +25,8 @@ class IndividualSession extends AbstractBooking implements BookingInterface {
             'session_type_id' => 1,
             'self_harm' => session('assessment.self_harm'),
             'is_firstimer' => session('assessment.is_firsttimer'),
-            'status' => 1
+            'status' => 1,
+            'link_to_session' => $this->encLinkToSession(),
         ]);
 
         if(session()->has('assessment.onboarding_answers')){
