@@ -33,4 +33,16 @@ class PsychologistSchedule extends Model
     {
         return date('l, jS F Y', strtotime($this->start));
     }
+
+    public function scopeWithStart($query){
+
+        $query->where('start', request()->date);
+    }
+
+    public function scopeWithTime($query){
+        $query->where('time_id', request()->time_id);
+    }
+    public function scopeWithNotBooked($query){
+        $query->where('is_booked', false);
+    }
 }

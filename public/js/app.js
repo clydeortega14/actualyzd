@@ -17071,6 +17071,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -17096,19 +17099,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       show_time_component: false
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapGetters"])(["getTimeLists"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapGetters"])(["getTimeLists", "getTimeByDate"])),
   components: {
     TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     TimePsych: _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapActions"])(["timeLists"])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapActions"])(["timeLists", "timeByDate"])), {}, {
     handleDateClick: function handleDateClick(arg) {
       var element = this.$refs.modal.$el;
-      console.log(arg);
       $(element).modal('show');
-      this.show_time_component = false;
-      this.selected_date = null;
-      this.show_actions = false;
+      this.timeByDate({
+        date: arg.dateStr
+      }); // this.show_time_component = false;
+
+      this.selected_date = arg.dateStr; // this.show_actions = false;
     },
     handleEventClick: function handleEventClick(arg) {
       this.schedule_id = arg.event.id;
@@ -17369,6 +17373,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -17408,11 +17419,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "TimePsych"
+  name: "TimePsych",
+  data: function data() {
+    return {
+      selected_time: null,
+      selected_psychologist: null
+    };
+  },
+  props: {
+    timeLists: Array,
+    selectedDate: String
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allPsychologists"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])),
+  watch: {
+    selected_time: function selected_time(value) {
+      this.selected_psychologist = null;
+      this.getPsychologists({
+        date: this.selectedDate,
+        time_id: value
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -99690,7 +99720,13 @@ var render = function() {
           })
         : _vm._e(),
       _vm._v(" "),
-      _c("TimePsych", { ref: "modal" }),
+      _c("TimePsych", {
+        ref: "modal",
+        attrs: {
+          "selected-date": _vm.selected_date,
+          "time-lists": _vm.getTimeByDate
+        }
+      }),
       _vm._v(" "),
       _c("input", {
         attrs: { type: "hidden", name: "schedule_id" },
@@ -100025,148 +100061,180 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        id: "timePsych",
+        "data-backdrop": "static",
+        "data-keyboard": "false",
+        tabindex: "-1",
+        "aria-labelledby": "timePsychLabel",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog modal-lg" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-md-6 border-right" },
+                [
+                  _c("h5", { staticClass: "card-title text-center mb-3" }, [
+                    _vm._v("Select Time")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.timeLists, function(time, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "custom-control custom-radio mb-3 ml-3"
+                      },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selected_time,
+                              expression: "selected_time"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            name: "time",
+                            id: "time-" + time.time_list.id
+                          },
+                          domProps: {
+                            value: time.time_list.id,
+                            checked: _vm._q(
+                              _vm.selected_time,
+                              time.time_list.id
+                            )
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.selected_time = time.time_list.id
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "time-" + time.time_list.id }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(
+                                time.time_list.from + " - " + time.time_list.to
+                              )
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("h5", { staticClass: "card-title text-center mb-3" }, [
+                    _vm._v("Select Psychologist")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.allPsychologists, function(psychologist, index) {
+                    return _c(
+                      "div",
+                      { staticClass: "custom-control custom-radio mb-3 ml-3" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.selected_psychologist,
+                              expression: "selected_psychologist"
+                            }
+                          ],
+                          staticClass: "custom-control-input",
+                          attrs: {
+                            type: "radio",
+                            name: "psychologist",
+                            id: "psychologist-" + psychologist.id
+                          },
+                          domProps: {
+                            value: psychologist.id,
+                            checked: _vm._q(
+                              _vm.selected_psychologist,
+                              psychologist.id
+                            )
+                          },
+                          on: {
+                            change: function($event) {
+                              _vm.selected_psychologist = psychologist.id
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "custom-control-label",
+                            attrs: { for: "psychologist-" + psychologist.id }
+                          },
+                          [_vm._v(_vm._s(psychologist.name))]
+                        )
+                      ]
+                    )
+                  })
+                ],
+                2
+              )
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "timePsych",
-          "data-backdrop": "static",
-          "data-keyboard": "false",
-          tabindex: "-1",
-          "aria-labelledby": "timePsychLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog modal-lg" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "modal-header" }, [
-              _c(
-                "h5",
-                { staticClass: "modal-title", attrs: { id: "timePsychLabel" } },
-                [_vm._v("Select Time and Psychologists")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: {
-                    type: "button",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  }
-                },
-                [
-                  _c("span", { attrs: { "aria-hidden": "true" } }, [
-                    _vm._v("×")
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-md-6 border-right" }, [
-                  _c("h5", { staticClass: "card-title text-center mb-3" }, [
-                    _vm._v("Select Time")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "custom-control custom-radio mb-3 ml-3" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: {
-                          type: "radio",
-                          name: "time",
-                          id: "1",
-                          value: "1"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "custom-control-label",
-                          attrs: { for: "1" }
-                        },
-                        [_vm._v("7:00 AM - 8:00 AM")]
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "custom-control custom-radio mb-3 ml-3" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: {
-                          type: "radio",
-                          name: "time",
-                          id: "2",
-                          value: "2"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "custom-control-label",
-                          attrs: { for: "2" }
-                        },
-                        [_vm._v("8:00 AM - 9:00 AM")]
-                      )
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-6" }, [
-                  _c("h5", { staticClass: "card-title text-center mb-3" }, [
-                    _vm._v("Select Psychologist")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "custom-control custom-radio mb-3 ml-3" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: {
-                          type: "radio",
-                          name: "psychologist",
-                          id: "psych-1",
-                          value: "psychologist1"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "custom-control-label",
-                          attrs: { for: "psych-1" }
-                        },
-                        [_vm._v("Psychologist One")]
-                      )
-                    ]
-                  )
-                ])
-              ])
-            ])
-          ])
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "timePsychLabel" } },
+        [_vm._v("Select Time and Psychologists")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -118010,12 +118078,12 @@ var state = function state() {
 };
 
 var getters = {
-  getAvailable: function getAvailable(state) {
+  allPsychologists: function allPsychologists(state) {
     return state.psychologists;
   }
 };
 var actions = {
-  availablePsychologist: function availablePsychologist(_ref, time) {
+  getPsychologists: function getPsychologists(_ref, payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var commit, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -118024,11 +118092,13 @@ var actions = {
             case 0:
               commit = _ref.commit;
               _context.next = 3;
-              return axios.get("/psychologist/available/".concat(time));
+              return axios.get("/psychologists-by-date-time", {
+                params: payload
+              });
 
             case 3:
               response = _context.sent;
-              commit('setPsychologist', response.data);
+              commit('setPsychologists', response.data);
 
             case 5:
             case "end":
@@ -118040,7 +118110,7 @@ var actions = {
   }
 };
 var mutations = {
-  setPsychologist: function setPsychologist(state, psychologists) {
+  setPsychologists: function setPsychologists(state, psychologists) {
     return state.psychologists = psychologists;
   }
 };
@@ -118073,7 +118143,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = function state() {
   return {
     schedules: [],
-    time_lists: []
+    time_lists: [],
+    time_by_date: []
   };
 };
 
@@ -118083,6 +118154,9 @@ var getters = {
   },
   getTimeLists: function getTimeLists(state) {
     return state.time_lists;
+  },
+  getTimeByDate: function getTimeByDate(state) {
+    return state.time_by_date;
   }
 };
 var actions = {
@@ -118130,6 +118204,31 @@ var actions = {
         }
       }, _callee2);
     }))();
+  },
+  timeByDate: function timeByDate(_ref3, payload) {
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var commit, response;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              commit = _ref3.commit;
+              _context3.next = 3;
+              return axios.get('/time-by-date', {
+                params: payload
+              });
+
+            case 3:
+              response = _context3.sent;
+              commit('setTimeByDate', response.data);
+
+            case 5:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3);
+    }))();
   }
 };
 var mutations = {
@@ -118138,6 +118237,9 @@ var mutations = {
   },
   setTimeLists: function setTimeLists(state, time_lists) {
     return state.time_lists = time_lists;
+  },
+  setTimeByDate: function setTimeByDate(state, time_by_date) {
+    return state.time_by_date = time_by_date;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

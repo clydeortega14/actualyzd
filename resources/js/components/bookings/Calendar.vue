@@ -10,7 +10,10 @@
 			@select-time="selectTime" />
 
 		<!-- Modal For Selecting Time and Psychologist -->
-		<TimePsych ref="modal" />
+		<TimePsych ref="modal"
+			:selected-date="selected_date" 
+			:time-lists="getTimeByDate"
+			/>
 
 		<!-- for schedule id hidden input -->
 		<input type="hidden" name="schedule_id" :value="schedule_id">
@@ -59,7 +62,8 @@
 		computed:{
 
 			...mapGetters([
-				"getTimeLists"
+				"getTimeLists",
+				"getTimeByDate"
 			])
 		},
 		components: {
@@ -69,20 +73,26 @@
 		methods: {
 
 			...mapActions([
-				"timeLists"
+				"timeLists",
+				"timeByDate"
 			]),
 
 			handleDateClick(arg){
 
 				let element = this.$refs.modal.$el;
-
-				console.log(arg)
 				$(element).modal('show');
-				this.show_time_component = false;
-				this.selected_date = null;
-				this.show_actions = false;
+
+				this.timeByDate({
+					date: arg.dateStr
+				})
+
+
+				// this.show_time_component = false;
+				this.selected_date = arg.dateStr;
+				// this.show_actions = false;
 			},
 			handleEventClick(arg){
+
 				this.schedule_id = arg.event.id;
 				this.show_time_component = true;
 				this.selected_date = arg.event.startStr;

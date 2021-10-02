@@ -9,6 +9,7 @@ use App\TimeList;
 use App\TimeSchedule;
 use App\Http\Traits\CarbonTrait;
 use App\Http\Traits\SchedulesTrait;
+use Illuminate\Support\Facades\Validator;
 
 class SchedulesController extends Controller
 {
@@ -116,5 +117,58 @@ class SchedulesController extends Controller
     public function getTimeBySchedule(PsychologistSchedule $schedule)
     {
         return response()->json($this->scheduleTimeQuery($schedule));
+    }
+
+    /**
+     * Time By Date function
+     * */
+
+    public function timeByDate(Request $request){
+
+        if($this->validateTimeBySchedule($request->all())->fails()){
+            return response()->json([
+                'success' => true,
+                'message' => 'Validation error',
+                'data' => $this->validateTimeBySchedule($request->all())->errors()->all(),
+            ]);
+        }
+
+
+        $schedules = PsychologistSchedule::withStart()
+                        ->withNotBooked()
+                        ->with(['timeList'])
+                        ->get()
+                        ->unique(['time_id'])
+                        ->values()
+                        ->all();
+
+        return response()->json($schedules);
+    }
+
+    public function validateTimeBySchedule(array $data){
+
+        return Validator::make($data, [
+
+            'date' => ['required']
+        ]);
+    }
+
+    public function psychologistsByDateTime(Request $request){
+
+        $schedules = PsychologistSchedule::withStart()
+                        ->withTime()
+                        ->withNotBooked()
+                        ->with(['psych', 'timeList'])
+                        ->get();
+
+        $map_to_psychologists = $schedules->map(function($schedule){
+            return [
+
+                'id' => $schedule->psych->id,
+                'name' => $schedule->psych->name
+            ];
+        });
+
+        return response()->json($map_to_psychologists);
     }
 }

@@ -2,13 +2,14 @@ const state = () => ({
 
 	schedules: [],
 	time_lists: [],
+	time_by_date: []
 })
 
 const getters = {
 
 	getSchedules: (state) => state.schedules,
-
-	getTimeLists: state => state.time_lists
+	getTimeLists: state => state.time_lists,
+	getTimeByDate: state => state.time_by_date
 }
 const actions = {
 
@@ -20,13 +21,22 @@ const actions = {
 	{
 		const response = await axios.get(`/time-by-schedule/${schedule_id}`);
 		commit('setTimeLists', response.data);
+	},
+	async timeByDate({ commit }, payload){
+
+		const response = await axios.get('/time-by-date', {
+			params: payload
+		});
+
+		commit('setTimeByDate', response.data);
 	}
 
 }
 const mutations = {
 
 	commitSchedules: (state, schedules) => (state.schedules = schedules),
-	setTimeLists: (state, time_lists) => (state.time_lists = time_lists)
+	setTimeLists: (state, time_lists) => (state.time_lists = time_lists),
+	setTimeByDate: (state, time_by_date) => ( state.time_by_date = time_by_date)
 }
 
 
