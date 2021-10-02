@@ -42,7 +42,9 @@ trait SchedulesTrait {
                 $query->whereDate('start', '>=', now()->toDateString());
             }
 
-        })->with(["psych"])->get();
+        })->where('is_booked', false)
+        ->with(["psych", "timeList"])
+        ->get();
 
         return $schedules;
 	}

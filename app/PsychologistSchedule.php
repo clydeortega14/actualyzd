@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class PsychologistSchedule extends Model
 {
     protected $fillable = [
-    	'psychologist', 'start', 'end'
+    	'psychologist', 'start', 'end', 'time_id', 'is_booked'
     ];
 
     public $timestamps = false;
+
+    public function timeList(){
+
+        return $this->belongsTo(TimeList::class, 'time_id');
+    }
 
     public function psych()
     {

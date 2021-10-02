@@ -27,19 +27,19 @@ class SchedulesController extends Controller
         // schedules query
         $schedules = $this->schedulesQuery();
 
-        // map collections with unique start date
-        $unique = collect($schedules)->map(function($item, $key){
+        // // map collections with unique start date
+        $mapped_schedules = $schedules->map(function($item, $key){
 
             return [
                 'id' => $item->id,
-                'title' => $item->psych->name,
                 'start' => $item->start,
                 'end' => $item->end,
-                'allDay' => true
+                'display' => 'background',
+                'color' => '#6fbf7f'
             ];
-        });
+        })->unique(['start'])->values()->all();
         
-        return response()->json($unique);
+        return response()->json($mapped_schedules);
     }
     public function storeSchedule(Request $request)
     {
@@ -52,19 +52,15 @@ class SchedulesController extends Controller
         if($request->has('time_lists')){
             // loop time lists array
             foreach($dates as $d){
-                // Create schedule
-                $schedule = PsychologistSchedule::firstOrCreate([
-                    'psychologist' => auth()->user()->id,
-                    'start' => $d,
-                    'end' => $d
-                ]);
                 // loop time lists array
                 foreach($request->time_lists as $key => $time)
                 {
                     // store time schedules
-                    TimeSchedule::firstOrCreate([
-                        'schedule' => $schedule->id,
-                        'time' => $time
+                    PsychologistSchedule::firstOrCreate([
+                        'psychologist' => auth()->user()->id,
+                        'start' => $d,
+                        'end' => $d,
+                        'time_id' => $time
                     ]);
                 }
             }

@@ -15,7 +15,6 @@ const actions = {
 	async getAllSchedules({ commit })
 	{
 		const response = await axios.get('/psychologist/schedules');
-		commit('commitSchedules', response.data);
 	},
 	async timeLists({ commit }, schedule_id)
 	{

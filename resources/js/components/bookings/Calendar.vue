@@ -9,6 +9,9 @@
 			:selected_date="selected_date" 
 			@select-time="selectTime" />
 
+		<!-- Modal For Selecting Time and Psychologist -->
+		<TimePsych ref="modal" />
+
 		<!-- for schedule id hidden input -->
 		<input type="hidden" name="schedule_id" :value="schedule_id">
 
@@ -26,6 +29,7 @@
 	import interactionPlugin from '@fullcalendar/interaction';
 
 	import TimeComponent from '../TimeComponent';
+	import TimePsych from '../modals/TimePsych';
 
 	import { mapGetters, mapActions } from 'vuex';
 	
@@ -54,23 +58,31 @@
 		},
 		computed:{
 
-			...mapGetters(["getTimeLists"])
+			...mapGetters([
+				"getTimeLists"
+			])
 		},
 		components: {
-			TimeComponent
+			TimeComponent,
+			TimePsych
 		},
 		methods: {
 
-			...mapActions(["timeLists"]),
+			...mapActions([
+				"timeLists"
+			]),
 
 			handleDateClick(arg){
 
+				let element = this.$refs.modal.$el;
+
+				console.log(arg)
+				$(element).modal('show');
 				this.show_time_component = false;
 				this.selected_date = null;
 				this.show_actions = false;
 			},
 			handleEventClick(arg){
-
 				this.schedule_id = arg.event.id;
 				this.show_time_component = true;
 				this.selected_date = arg.event.startStr;
