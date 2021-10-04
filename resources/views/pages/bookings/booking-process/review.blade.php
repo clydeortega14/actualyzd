@@ -59,6 +59,21 @@
 				</div>
 			</div>
 			<div class="col-md-9">
+
+				@if($errors->any())
+					@foreach($errors->all() as $error)
+					<div class="alert alert-danger" role="alert">
+  						{{ $error }}
+					</div>
+					@endforeach
+				@endif
+
+				@if(session()->has('error'))
+
+					<div class="alert alert-danger" role="alert">
+  						{{ session('error') }}
+					</div>
+				@endif
 				
 				{{ Breadcrumbs::render('booking.review.details') }}
 

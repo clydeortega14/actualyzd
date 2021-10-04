@@ -24,6 +24,7 @@ class IndividualSession extends AbstractBooking implements BookingInterface {
             'counselee' => auth()->user()->id,
             'session_type_id' => 1,
             'self_harm' => session('assessment.self_harm'),
+            'harm_other_people' => session('assessment.harm_other_people'),
             'is_firstimer' => session('assessment.is_firsttimer'),
             'status' => 1,
             'link_to_session' => $this->encLinkToSession(),

@@ -111,6 +111,28 @@
 										
 										
 									</li>
+
+									{{-- Harm Other People --}}
+									<li>
+										
+										<p class="lead">I have plans to harm other people?</p>
+										
+										<div class="ml-5">
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="1" id="yes-harm-other-people">
+												<label class="custom-control-label" for="yes-harm-other-people">Yes</label>
+											</div>
+										
+
+											<div class="custom-control custom-radio mb-2">
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="0" id="no-harm-other-people">
+												<label class="custom-control-label" for="no-harm-other-people">No</label>
+											</div>
+										</div>
+											
+										
+										
+									</li>
 								</ul>
 							
 

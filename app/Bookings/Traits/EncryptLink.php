@@ -7,6 +7,6 @@ use Illuminate\Support\Str;
 trait EncryptLink {
 
 	public function encLinkToSession(){
-		return config('services.meetjitsi.jit_url').md5(uniqid(rand(), true)).'@'.Str::random(64);
+		return md5(uniqid(rand(), true));
 	}
 }

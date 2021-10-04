@@ -3,16 +3,17 @@
 
 		<FullCalendar :options="calendarOptions" />
 
-		<TimeComponent 
+		<!-- <TimeComponent 
 			v-if="show_time_component"
 			:time_lists="getTimeLists"
 			:selected_date="selected_date" 
-			@select-time="selectTime" />
+			@select-time="selectTime" /> -->
 
 		<!-- Modal For Selecting Time and Psychologist -->
 		<TimePsych ref="modal"
 			:selected-date="selected_date" 
 			:time-lists="getTimeByDate"
+			:has-assessment="hasAssessment"
 			/>
 
 		<!-- for schedule id hidden input -->
@@ -59,11 +60,17 @@
 				show_time_component: false
 			}
 		},
+		props: {
+			hasAssessment: Number
+		},
 		computed:{
 
 			...mapGetters([
 				"getTimeLists",
-				"getTimeByDate"
+				"getTimeByDate",
+				"getSelectedDate",
+				"getSelectedTime",
+				"getSelectedPsychologist"
 			])
 		},
 		components: {
@@ -86,10 +93,9 @@
 					date: arg.dateStr
 				})
 
-
-				// this.show_time_component = false;
 				this.selected_date = arg.dateStr;
-				// this.show_actions = false;
+				this.$store.commit('setSelectedDate', this.selected_date);
+				this.$store.commit('setShowBookingReview', true);
 			},
 			handleEventClick(arg){
 

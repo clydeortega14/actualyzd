@@ -104,12 +104,14 @@ class BookingProcessController extends Controller
 
             'is_firsttimer' => ['required'],
             'self_harm' => ['required'],
+            'harm_other_people' => ['required'],
             'onboarding_answers' => ['require_with_all']
         ]);
 
         session(['assessment' => [
             'is_firsttimer' => $request->is_firsttimer == "1" ? true : false,
             'self_harm' => $request->self_harm == "1" ? true : false,
+            'harm_other_people' => $request->harm_other_people == "1" ? true : false,
             'onboarding_answers' => $request->choice
         ]]);
 
@@ -119,50 +121,84 @@ class BookingProcessController extends Controller
     public function storeDateTime(Request $request)
     {
         // store selected date to session, but must convert to full date first
-        $selected_date = date('l jS F Y', strtotime($request->selected_date));
-        $psych_schedule = PsychologistSchedule::findOrFail($request->schedule_id);
-        $timelist = TimeList::findOrFail($request->time);
+        // $selected_date = date('l jS F Y', strtotime($request->selected_date));
+        // $psych_schedule = PsychologistSchedule::findOrFail($request->schedule_id);
+        // $timelist = TimeList::findOrFail($request->time);
+
+        $schedule = PsychologistSchedule::withStart()
+                        ->withTime()
+                        ->where('psychologist', $request->psychologist)
+                        ->with(["timeList", "psych"])
+                        ->first();
+
+
+        if(is_null($schedule)){
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Schedule Not Found'
+            ], 404);
+        }
 
         session(['booking_details' => [
-            'selected_date' => $selected_date,
-            'timelist' => [
-                'id' => $timelist->id,
-                'from' => $timelist->parseTimeFrom(),
-                'to' => $timelist->parseTimeTo(),
-            ],
             'schedule' => [
-                'id' => $psych_schedule->id,
-                'psychologist' => $psych_schedule->psych->name
+                'id' => $schedule->id
+            ],
+            'selected_date' => $schedule->start,
+            'timelist' => [
+                'id' => $schedule->timeList->id,
+                'from' => $schedule->timeList->parseTimeFrom(),
+                'to' => $schedule->timeList->parseTimeTo(),
+            ],
+            'psychologist' => [
+                'id' => $schedule->psych->id,
+                'name' => $schedule->psych->name,
+                'avatar' => $schedule->psych->avatar
             ]
         ]]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Success please proceed to next step',
+            'data' => session('booking_details')
+        ], 200);
         
-        return redirect()->route('booking.review.details');
+        // return redirect()->route('booking.review.details');
     }
 
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
+        // // find schedule by schedule_id
+        // $schedule = PsychologistSchedule::findOrFail(session('booking_details.schedule.id'));
 
-        // find schedule by schedule_id
-        $schedule = PsychologistSchedule::findOrFail(session('booking_details.schedule.id'));
+        // // find time schedules by request schedule and time_id
+        // $time_schedule = TimeSchedule::where('schedule', session('booking_details.schedule.id'))
+        //     ->where('time', session('booking_details.timelist.id'))->first();
 
-        // find time schedules by request schedule and time_id
-        $time_schedule = TimeSchedule::where('schedule', session('booking_details.schedule.id'))
-            ->where('time', session('booking_details.timelist.id'))->first();
+        $booking_details = session('booking_details');
 
+        $schedule = PsychologistSchedule::whereDate('start', $booking_details['selected_date'])
+                        ->where('time_id', $booking_details['timelist']['id'])
+                        ->where('psychologist', $booking_details['psychologist']['id'])
+                        ->with(["timeList", "psych"])
+                        ->first();
 
         DB::beginTransaction();
+
         try {
-            if(!is_null($schedule) && !is_null($time_schedule)){
+            if(!is_null($schedule)){
+
                 $booking_interface->create();
 
                 DB::commit();
 
-                $time_schedule->update(['is_booked' => true]);
+                $schedule->update(['is_booked' => true]);
             }else{
 
                 return redirect()->back()->with('error', 'Schedule and time selected was not found');
             }
         } catch (Exception $e) {
+
             DB::rollback();
 
             return redirect()->back()->with('error', $e->getMessage());

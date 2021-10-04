@@ -12,7 +12,7 @@
 
 		<div class="row">
 			<div class="col-md-3">
-				<div class="row">
+				<div class="row mb-3">
 					<div class="col-md-12">
 
 						@if(auth()->user()->hasRole('superadmin'))
@@ -58,6 +58,7 @@
 						  	</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 
@@ -71,22 +72,13 @@
 					</div>
 				</div>
 
-				<form action="{{ route('booking.store.date-time') }}" method="GET">
-					<bookings-calendar></bookings-calendar>
-				</form>
+				{{-- <form action="{{ route('booking.store.date-time') }}" method="GET"> --}}
+					<bookings-calendar
+						:has-assessment="{{ session()->has('assessment') }}"></bookings-calendar>
+				{{-- </form> --}}
 
 			</div>
 		</div>
 	</div>
-	{{-- <div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-body">
-											</div>
-				</div>
-			</div>
-		</div>
-	</div> --}}
 
 @stop

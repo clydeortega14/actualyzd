@@ -216,7 +216,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
-		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
+		Route::post('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
 
 		Route::post('confirm', 'BookingProcessController@bookingConfirm')->name('booking.confirm');
 

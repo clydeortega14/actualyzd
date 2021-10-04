@@ -89,4 +89,13 @@ trait SchedulesTrait {
 
         })->where('is_booked', false);
     }
+
+    public function pluckedAllTime(){
+
+        $current_time = now()->addHour(1)->toTimeString();
+
+        $time_lists = TimeList::whereTime('from', '>=', $current_time)->pluck('id');
+
+        return $time_lists;
+    }
 }

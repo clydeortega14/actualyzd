@@ -4,7 +4,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="timePsychLabel">Select Time and Psychologists</h5>
+					<h5 class="modal-title" id="timePsychLabel">Book A session</h5>
         			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           				<span aria-hidden="true">&times;</span>
         			</button>
@@ -13,22 +13,52 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-6 border-right">
-							<h5 class="card-title text-center mb-3">Select Time</h5>
-							<div class="custom-control custom-radio mb-3 ml-3" v-for="(time, index) in timeLists" :key="index">
-								<input type="radio" name="time" class="custom-control-input" :id="`time-${time.time_list.id}`" :value="time.time_list.id" v-model="selected_time">
-								<label class="custom-control-label" :for="`time-${time.time_list.id}`">{{ `${time.time_list.from} - ${time.time_list.to}` }}</label>
-							</div>
-							
-						</div>
 
+
+							<h5 class="card-title text-center mb-3">Review Session Details</h5>
+
+							<ReviewBooking 
+								:has-assessment="hasAssessment"
+								/>
+						</div>
+							
 						<div class="col-md-6">
-							<h5 class="card-title text-center mb-3">Select Psychologist</h5>
-							<div class="custom-control custom-radio mb-3 ml-3" v-for="(psychologist, index) in allPsychologists">
-								<input type="radio" name="psychologist" class="custom-control-input" :id="`psychologist-${psychologist.id}`" :value="psychologist.id" v-model="selected_psychologist">
-								<label class="custom-control-label" :for="`psychologist-${psychologist.id}`">{{ psychologist.name }}</label>
+
+							<div v-if="show_time_lists" class="mb-3">
+								<h5 class="card-title mb-3 border-bottom">Select Time</h5>
+								<div class="custom-control custom-radio mb-3 ml-3" v-for="(time, index) in timeLists" :key="index">
+									<input type="radio" name="time" class="custom-control-input" 
+										:id="`time-${time.time_list.id}`" 
+										:value="{ id: time.time_list.id, name: `${time.time_list.from} - ${time.time_list.to}`}" 
+										v-model="selected_time">
+									<label class="custom-control-label" :for="`time-${time.time_list.id}`">{{ `${time.time_list.from} - ${time.time_list.to}` }}</label>
+								</div>
 							</div>
+
+							<div v-if="show_psychologists" class="mb-3">
+
+								<h5 class="card-title mb-3 border-bottom">Select Psychologist</h5>
+
+								<div class="custom-control custom-radio mb-3 ml-3" v-for="(psychologist, index) in allPsychologists">
+
+									<input type="radio" name="psychologist" class="custom-control-input" 
+										:id="`psychologist-${psychologist.id}`"
+										:value="{ id: psychologist.id, name: psychologist.name }"
+										v-model="selected_psychologist">
+
+									<label class="custom-control-label" :for="`psychologist-${psychologist.id}`">{{ psychologist.name }}</label>
+								</div>
+
+							</div>
+
 						</div>
 					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary">
+						<i class="fa fa-check"></i>
+						<span>Submit Booking</span>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -40,6 +70,7 @@
 <script>
 	
 	import { mapGetters, mapActions } from 'vuex';
+	import ReviewBooking from '../bookings/ReviewBooking.vue'
 
 	export default {
 		name: "TimePsych",
@@ -48,17 +79,30 @@
 			return {
 
 				selected_time: null,
-				selected_psychologist: null
+				selected_psychologist: null,
+				show_time_lists: true,
+				show_psychologists: false
 			}
 		},
 		props: {
 			timeLists: Array,
-			selectedDate: String
+			selectedDate: String,
+			hasAssessment: Number
+		},
+		components: {
+
+			ReviewBooking
 		},
 		computed: {
 			...mapGetters([
-				"allPsychologists"
-			])
+				"allPsychologists",
+				"getSelectedDate",
+				"getSelectedTimeId",
+				"getSelectedPsychologist"
+			]),
+			selectedPsychologist(){
+				return this.$store.state.selected_psychologist
+			}
 		},
 		methods: {
 
@@ -70,12 +114,22 @@
 
 			selected_time(value){
 
-				this.selected_psychologist = null
+				this.show_psychologists = true;
+
+				this.$store.commit('setSelectedPsychologistId', null);
+				this.$store.commit('setSelectedPsychologist', null);
 
 				this.getPsychologists({
 					date: this.selectedDate,
-					time_id: value
-				})
+					time_id: value.id
+				});
+
+				this.$store.commit('setSelectedTimeId', value.id);
+				this.$store.commit('setSelectedTime', value.name);
+			},
+			selected_psychologist(value){
+				this.$store.commit('setSelectedPsychologistId', value.id);
+				this.$store.commit('setSelectedPsychologist', value.name);
 			}
 		}
 	}

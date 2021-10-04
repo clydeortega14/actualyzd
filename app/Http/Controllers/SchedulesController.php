@@ -133,8 +133,20 @@ class SchedulesController extends Controller
             ]);
         }
 
+        // pluck time list by id
+        $plucked_time_id = $this->pluckedAllTime();
 
-        $schedules = PsychologistSchedule::withStart()
+        $schedules = PsychologistSchedule::withStart()->where(function($query) use ($plucked_time_id, $request){
+
+                            // if selected date is equal to current date
+                            if($request->date == now()->toDateString()){
+
+                                // must filter time_id to be display 
+                                // make the time advance to 1 hour from the current time
+                                $query->whereIn('time_id', $plucked_time_id);
+                            }
+
+                        })
                         ->withNotBooked()
                         ->with(['timeList'])
                         ->get()
