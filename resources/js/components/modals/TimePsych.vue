@@ -14,20 +14,33 @@
 					<div class="row">
 						<div class="col-md-6 border-right">
 
-
 							<h5 class="card-title text-center mb-3">Review Session Details</h5>
 
 							<ReviewBooking 
 								:has-assessment="hasAssessment"
+								:is-firsttimer="isFirsttimer"
+								:self-harm="selfHarm"
+								:harm-other-people="harmOtherPeople"
+								:participants="participants"
 								/>
 						</div>
 							
 						<div class="col-md-6">
 
+							<input type="hidden" name="selected_date" :value="getSelectedDate">
+
+							<!-- Hidden Input for time id that will be pass in the request -->
+							<input type="hidden" name="time_id" :value="getSelectedTimeId">
+
+							<!-- Hidden input for psychologist that will be pass in the request -->
+							<input type="hidden" name="psychologist" :value="getSelectedPsychologistId">
+
+
+
 							<div v-if="show_time_lists" class="mb-3">
 								<h5 class="card-title mb-3 border-bottom">Select Time</h5>
 								<div class="custom-control custom-radio mb-3 ml-3" v-for="(time, index) in timeLists" :key="index">
-									<input type="radio" name="time" class="custom-control-input" 
+									<input type="radio" class="custom-control-input" 
 										:id="`time-${time.time_list.id}`" 
 										:value="{ id: time.time_list.id, name: `${time.time_list.from} - ${time.time_list.to}`}" 
 										v-model="selected_time">
@@ -41,7 +54,9 @@
 
 								<div class="custom-control custom-radio mb-3 ml-3" v-for="(psychologist, index) in allPsychologists">
 
-									<input type="radio" name="psychologist" class="custom-control-input" 
+									
+
+									<input type="radio" class="custom-control-input" 
 										:id="`psychologist-${psychologist.id}`"
 										:value="{ id: psychologist.id, name: psychologist.name }"
 										v-model="selected_psychologist">
@@ -55,10 +70,11 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary">
+					<button class="btn btn-primary" type="submit">
 						<i class="fa fa-check"></i>
 						<span>Submit Booking</span>
 					</button>
+					<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">CLOSE</button>
 				</div>
 			</div>
 		</div>
@@ -87,7 +103,11 @@
 		props: {
 			timeLists: Array,
 			selectedDate: String,
-			hasAssessment: Number
+			hasAssessment: Number,
+			isFirsttimer: Number,
+			selfHarm: Number,
+			harmOtherPeople: Number,
+			participants: Array
 		},
 		components: {
 
@@ -98,6 +118,7 @@
 				"allPsychologists",
 				"getSelectedDate",
 				"getSelectedTimeId",
+				"getSelectedPsychologistId",
 				"getSelectedPsychologist"
 			]),
 			selectedPsychologist(){

@@ -17080,6 +17080,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -17093,7 +17095,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
         initialView: 'dayGridMonth',
         dateClick: this.handleDateClick,
-        eventClick: this.handleEventClick,
         selectable: true,
         events: {
           url: '/psychologist/schedules'
@@ -17106,7 +17107,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   props: {
-    hasAssessment: Number
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapGetters"])(["getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
   components: {
@@ -17124,12 +17129,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.commit('setSelectedDate', this.selected_date);
       this.$store.commit('setShowBookingReview', true);
     },
-    handleEventClick: function handleEventClick(arg) {
-      this.schedule_id = arg.event.id;
-      this.show_time_component = true;
-      this.selected_date = arg.event.startStr;
-      this.timeLists(this.schedule_id);
-    },
+    // handleEventClick(arg){
+    // 	this.schedule_id = arg.event.id;
+    // 	this.show_time_component = true;
+    // 	this.selected_date = arg.event.startStr;
+    // 	this.timeLists(this.schedule_id);
+    // },
     selectTime: function selectTime(time) {
       this.show_actions = true;
     }
@@ -17232,15 +17237,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ReviewBooking",
   mixins: [_mixins_sweet_alert_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
   props: {
-    hasAssessment: Number
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getSelectedDate", "getSelectedTime", "getSelectedPsychologist", "showBookingReview", "getSelectedTimeId", "getSelectedPsychologistId"])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getSelectedDate", "getSelectedTime", "getSelectedPsychologist", "showBookingReview", "getSelectedTimeId", "getSelectedPsychologistId"])), {}, {
+    checkFirstTimer: function checkFirstTimer() {
+      return this.isFirsttimer === 1 ? 'Yes' : 'No';
+    },
+    checkSelfHarm: function checkSelfHarm() {
+      return this.selfHarm === 1 ? 'Yes' : 'No';
+    },
+    checkHarmOtherPeople: function checkHarmOtherPeople() {
+      return this.harmOtherPeople === 1 ? 'Yes' : 'No';
+    }
+  }),
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['storeDateTime'])), {}, {
     submiDataAndTime: function submiDataAndTime() {
       var _this = this;
@@ -17590,6 +17613,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17605,12 +17644,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: {
     timeLists: Array,
     selectedDate: String,
-    hasAssessment: Number
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
   },
   components: {
     ReviewBooking: _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allPsychologists", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologist"])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allPsychologists", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologistId", "getSelectedPsychologist"])), {}, {
     selectedPsychologist: function selectedPsychologist() {
       return this.$store.state.selected_psychologist;
     }
@@ -99385,13 +99428,12 @@ var render = function() {
         attrs: {
           "selected-date": _vm.selected_date,
           "time-lists": _vm.getTimeByDate,
-          "has-assessment": _vm.hasAssessment
+          "has-assessment": _vm.hasAssessment,
+          "is-firsttimer": _vm.isFirsttimer,
+          "self-harm": _vm.selfHarm,
+          "harm-other-people": _vm.harmOtherPeople,
+          participants: _vm.participants
         }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "hidden", name: "schedule_id" },
-        domProps: { value: _vm.schedule_id }
       }),
       _vm._v(" "),
       _vm.show_actions
@@ -99452,7 +99494,7 @@ var render = function() {
             },
             [
               _vm._v("\n\t\t\t Firstimer\n    \t    "),
-              _c("span", [_vm._v("NO")])
+              _c("span", [_vm._v(_vm._s(_vm.checkFirstTimer))])
             ]
           )
         : _vm._e(),
@@ -99466,7 +99508,7 @@ var render = function() {
             },
             [
               _vm._v("\n    \t    Intent to self harm\n    \t    "),
-              _c("span", [_vm._v("NO")])
+              _c("span", [_vm._v(_vm._s(_vm.checkSelfHarm))])
             ]
           )
         : _vm._e(),
@@ -99480,12 +99522,33 @@ var render = function() {
             },
             [
               _vm._v("\n    \t    Intent to harm other people\n    \t    "),
-              _c("span", [_vm._v("NO")])
+              _c("span", [_vm._v(_vm._s(_vm.checkHarmOtherPeople))])
             ]
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(0),
+      _c(
+        "li",
+        {
+          staticClass:
+            "list-group-item d-flex justify-content-between align-items-center"
+        },
+        [
+          _vm._v("\n\t  \t\tCounselee / Participants\n\t  \t\t"),
+          _c(
+            "ul",
+            { staticClass: "unstyled-list" },
+            _vm._l(_vm.participants, function(participant, index) {
+              return _c("li", { key: index }, [
+                _vm._v(
+                  "\n\t  \t\t\t\t" + _vm._s(participant.name) + "\n\t  \t\t\t"
+                )
+              ])
+            }),
+            0
+          )
+        ]
+      ),
       _vm._v(" "),
       _vm.getSelectedDate !== null
         ? _c(
@@ -99531,24 +99594,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "li",
-      {
-        staticClass:
-          "list-group-item d-flex justify-content-between align-items-center"
-      },
-      [
-        _vm._v("\n\t  \t\tCounselee / Participants\n\t  \t\t"),
-        _c("span", [_vm._v("Juan Dela Cruz")])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -99880,13 +99926,34 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("ReviewBooking", {
-                    attrs: { "has-assessment": _vm.hasAssessment }
+                    attrs: {
+                      "has-assessment": _vm.hasAssessment,
+                      "is-firsttimer": _vm.isFirsttimer,
+                      "self-harm": _vm.selfHarm,
+                      "harm-other-people": _vm.harmOtherPeople,
+                      participants: _vm.participants
+                    }
                   })
                 ],
                 1
               ),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  attrs: { type: "hidden", name: "selected_date" },
+                  domProps: { value: _vm.getSelectedDate }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "time_id" },
+                  domProps: { value: _vm.getSelectedTimeId }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "psychologist" },
+                  domProps: { value: _vm.getSelectedPsychologistId }
+                }),
+                _vm._v(" "),
                 _vm.show_time_lists
                   ? _c(
                       "div",
@@ -99919,7 +99986,6 @@ var render = function() {
                                 staticClass: "custom-control-input",
                                 attrs: {
                                   type: "radio",
-                                  name: "time",
                                   id: "time-" + time.time_list.id
                                 },
                                 domProps: {
@@ -100009,7 +100075,6 @@ var render = function() {
                                 staticClass: "custom-control-input",
                                 attrs: {
                                   type: "radio",
-                                  name: "psychologist",
                                   id: "psychologist-" + psychologist.id
                                 },
                                 domProps: {
@@ -100090,11 +100155,24 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-footer" }, [
-      _c("button", { staticClass: "btn btn-primary" }, [
-        _c("i", { staticClass: "fa fa-check" }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Submit Booking")])
-      ])
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [
+          _c("i", { staticClass: "fa fa-check" }),
+          _vm._v(" "),
+          _c("span", [_vm._v("Submit Booking")])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary waves-effect",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("CLOSE")]
+      )
     ])
   }
 ]

@@ -3,20 +3,24 @@
 		<ul class="list-group mt-3">
 			<li class="list-group-item d-flex justify-content-between align-items-center" v-if="hasAssessment === 1">
 				 Firstimer
-	    	    <span>NO</span>
+	    	    <span>{{ checkFirstTimer }}</span>
 			</li>
 			 <li class="list-group-item d-flex justify-content-between align-items-center" v-if="hasAssessment === 1">
 	    	    Intent to self harm
-	    	    <span>NO</span>
+	    	    <span>{{ checkSelfHarm }}</span>
 	  	    </li>
 
 	  	    <li class="list-group-item d-flex justify-content-between align-items-center" v-if="hasAssessment === 1">
 	    	    Intent to harm other people
-	    	    <span>NO</span>
+	    	    <span>{{ checkHarmOtherPeople }}</span>
 	  	    </li>
 	  	    <li class="list-group-item d-flex justify-content-between align-items-center">
 		  		Counselee / Participants
-		  		<span>Juan Dela Cruz</span>
+		  		<ul class="unstyled-list">
+		  			<li v-for="(participant, index) in participants" :key="index">
+		  				{{ participant.name}}
+		  			</li>
+		  		</ul>
 		  	</li>
 
 		  	<li class="list-group-item d-flex justify-content-between align-items-center" v-if="getSelectedDate !== null">
@@ -84,7 +88,11 @@
 		name: "ReviewBooking",
 		mixins: [ SweetAlert ],
 		props: {
-			hasAssessment: Number
+			hasAssessment: Number,
+			isFirsttimer: Number,
+			selfHarm: Number,
+			harmOtherPeople: Number,
+			participants: Array
 		},
 		computed: {
 
@@ -95,7 +103,16 @@
 				"showBookingReview",
 				"getSelectedTimeId",
 				"getSelectedPsychologistId"
-			])
+			]),
+			checkFirstTimer(){
+				return this.isFirsttimer === 1 ? 'Yes' : 'No'
+			},
+			checkSelfHarm(){
+				return this.selfHarm === 1 ? 'Yes' : 'No'
+			},
+			checkHarmOtherPeople(){
+				return this.harmOtherPeople === 1 ? 'Yes' : 'No'
+			}
 		},
 		methods: {
 

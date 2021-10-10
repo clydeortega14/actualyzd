@@ -14,10 +14,12 @@
 			:selected-date="selected_date" 
 			:time-lists="getTimeByDate"
 			:has-assessment="hasAssessment"
+			:is-firsttimer="isFirsttimer"
+			:self-harm="selfHarm"
+			:harm-other-people="harmOtherPeople"
+			:participants="participants"
 			/>
 
-		<!-- for schedule id hidden input -->
-		<input type="hidden" name="schedule_id" :value="schedule_id">
 
 		<div class="form-group mt-4" v-if="show_actions">
 			<button class="btn btn-primary btn-block" type="submit">Proceed Next</button>
@@ -48,7 +50,6 @@
 					plugins:[dayGridPlugin, interactionPlugin],
 					initialView: 'dayGridMonth',
 					dateClick: this.handleDateClick,
-					eventClick: this.handleEventClick,
 					selectable: true,
 					events: {
 						url: '/psychologist/schedules'
@@ -61,7 +62,11 @@
 			}
 		},
 		props: {
-			hasAssessment: Number
+			hasAssessment: Number,
+			isFirsttimer: Number,
+			selfHarm: Number,
+			harmOtherPeople: Number,
+			participants: Array
 		},
 		computed:{
 
@@ -97,14 +102,14 @@
 				this.$store.commit('setSelectedDate', this.selected_date);
 				this.$store.commit('setShowBookingReview', true);
 			},
-			handleEventClick(arg){
+			// handleEventClick(arg){
 
-				this.schedule_id = arg.event.id;
-				this.show_time_component = true;
-				this.selected_date = arg.event.startStr;
-				this.timeLists(this.schedule_id);
+			// 	this.schedule_id = arg.event.id;
+			// 	this.show_time_component = true;
+			// 	this.selected_date = arg.event.startStr;
+			// 	this.timeLists(this.schedule_id);
 				
-			},
+			// },
 			selectTime(time){
 
 				this.show_actions = true;

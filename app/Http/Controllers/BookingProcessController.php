@@ -51,7 +51,13 @@ class BookingProcessController extends Controller
 
     public function dateAndTime()
     {
-    	return view('pages.bookings.booking-process.date-and-time');
+        $has_assessment  = session()->has('assessment') ? 1 : 0;
+        $is_firsttimer = $has_assessment ? (session('assessment.is_firsttimer') ? 1 : 0 ) : 0 ;
+        $self_harm = $has_assessment ? (session('assessment.self_harm') ? 1 : 0) : 0;
+        $harm_other_people = $has_assessment ? (session('assessment.harm_other_people') ? 1 : 0) : 0;
+        $participants = session()->has('participants') ? ['participants' =>  session('participants') ] : ['participants' => collect([ auth()->user() ]) ];
+
+    	return view('pages.bookings.booking-process.date-and-time', compact('has_assessment', 'is_firsttimer', 'self_harm', 'harm_other_people', 'participants'));
     }
 
     public function availableLinks()
@@ -168,19 +174,10 @@ class BookingProcessController extends Controller
 
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
-        // // find schedule by schedule_id
-        // $schedule = PsychologistSchedule::findOrFail(session('booking_details.schedule.id'));
-
-        // // find time schedules by request schedule and time_id
-        // $time_schedule = TimeSchedule::where('schedule', session('booking_details.schedule.id'))
-        //     ->where('time', session('booking_details.timelist.id'))->first();
-
-        $booking_details = session('booking_details');
-
-        $schedule = PsychologistSchedule::whereDate('start', $booking_details['selected_date'])
-                        ->where('time_id', $booking_details['timelist']['id'])
-                        ->where('psychologist', $booking_details['psychologist']['id'])
-                        ->with(["timeList", "psych"])
+        $schedule = PsychologistSchedule::whereDate('start', $request->selected_date)
+                        ->where('time_id', $request->time_id)
+                        ->where('psychologist', $request->psychologist)
+                        ->where('is_booked', false)
                         ->first();
 
         DB::beginTransaction();
@@ -188,23 +185,66 @@ class BookingProcessController extends Controller
         try {
             if(!is_null($schedule)){
 
-                $booking_interface->create();
+                $has_selected_session = session()->has('selected_session');
 
-                DB::commit();
+                $booking = Booking::create([
 
+                    'room_id' => uniqid(),
+                    'schedule' => $schedule->id,
+                    'time_id' => request('time_id'),
+                    'client_id' => session()->has('selected_client') ? session('selected_client.id') : auth()->user()->client_id,
+                    'booked_by' => auth()->user()->id,
+                    'counselee' => $has_selected_session ? null : auth()->user()->id,
+                    'session_type_id' =>  $has_selected_session ? session('selected_session.id') : 1,
+                    'self_harm' => $has_selected_session ? null : session('assessment.self_harm'),
+                    'harm_other_people' => $has_selected_session ? null : session('assessment.harm_other_people'),
+                    'is_firstimer' => $has_selected_session ? null : session('assessment.is_firsttimer'),
+                    'status' => 1,
+                    'link_to_session' => md5(uniqid(rand(), true)),
+                ]);
+
+                /**
+                 * Check if session has assessments,
+                 * it means that the session type is individual session and users answers
+                 * onboarding questions
+                 * */
+
+                if(session()->has('assessment.onboarding_answers')){
+                    $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
+                }
+
+
+                /**
+                 * check if session has participants
+                 * this means that the session is webinar or group
+                 * */
+
+                if(session()->has('participants')){
+                    foreach(session('participants') as $participant){
+                        $booking->participants()->attach($participant);
+                    }
+                }
+
+                /**
+                 * update schedule booked to true
+                 * */
                 $schedule->update(['is_booked' => true]);
+
             }else{
 
                 return redirect()->back()->with('error', 'Schedule and time selected was not found');
             }
+
         } catch (Exception $e) {
 
             DB::rollback();
 
             return redirect()->back()->with('error', $e->getMessage());
         }
+
+        DB::commit();
         
-        return redirect()->route('booking.success.page')->with('success', 'Successfully booked a session');
+        return redirect()->route(auth()->user()->hasRole('superadmin') ? 'home' : 'member.home')->with('success', 'Successfully booked a session');
     }
 
     public function updateBookingStatus(Request $request, $id)
