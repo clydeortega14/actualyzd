@@ -37,6 +37,8 @@
 	import TimeComponent from '../TimeComponent';
 	import TimePsych from '../modals/TimePsych';
 
+	import Swal from 'sweetalert2';
+
 	import { mapGetters, mapActions } from 'vuex';
 	
 	export default {
@@ -91,16 +93,38 @@
 
 			handleDateClick(arg){
 
-				let element = this.$refs.modal.$el;
-				$(element).modal('show');
-
 				this.timeByDate({
 					date: arg.dateStr
+				}).then(response => {
+					let data = response.data
+
+					if(data.success){
+
+						// check length of data
+						if(data.data.length > 0){
+
+							let element = this.$refs.modal.$el;
+
+							$(element).modal('show');
+
+							this.selected_date = arg.dateStr;
+
+							this.$store.commit('setTimeByDate', data.data);
+
+							this.$store.commit('setSelectedDate', this.selected_date);
+							
+							this.$store.commit('setShowBookingReview', true);
+						}else{
+
+							Swal.fire('Oops!', 'Selected date has no schedule please select another date', 'error');
+						}
+					}
+
+				}).catch(error => {
+					console.log(error)
 				})
 
-				this.selected_date = arg.dateStr;
-				this.$store.commit('setSelectedDate', this.selected_date);
-				this.$store.commit('setShowBookingReview', true);
+				
 			},
 			// handleEventClick(arg){
 

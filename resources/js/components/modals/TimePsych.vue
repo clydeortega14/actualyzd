@@ -5,9 +5,9 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="timePsychLabel">Book A session</h5>
-        			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           				<span aria-hidden="true">&times;</span>
-        			</button>
+        			</button> -->
 				</div>
 
 				<div class="modal-body">
@@ -70,11 +70,11 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary" type="submit">
+					<button class="btn btn-primary" type="submit" :disabled="disabledSubmitBtn">
 						<i class="fa fa-check"></i>
 						<span>Submit Booking</span>
 					</button>
-					<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">CLOSE</button>
+					<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal" @click="cancelSubmit">Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -97,7 +97,8 @@
 				selected_time: null,
 				selected_psychologist: null,
 				show_time_lists: true,
-				show_psychologists: false
+				show_psychologists: false,
+				disabledSubmitBtn: true
 			}
 		},
 		props: {
@@ -129,28 +130,61 @@
 
 			...mapActions([
 				"getPsychologists"
-			])
+			]),
+			cancelSubmit(){
+
+				this.show_psychologists = false;
+				this.selected_time = null;
+				this.selected_psychologist = null;
+
+				this.$store.commit('setSelectedTimeId', null);
+				this.$store.commit('setSelectedTime', null);
+
+				this.$store.commit('setSelectedPsychologistId', null);
+				this.$store.commit('setSelectedPsychologist', null);
+
+				this.disabledSubmitBtn = true;
+
+			}
 		},
 		watch: {
 
 			selected_time(value){
 
-				this.show_psychologists = true;
+				if(!_.isNil(value)){
 
-				this.$store.commit('setSelectedPsychologistId', null);
-				this.$store.commit('setSelectedPsychologist', null);
+					this.show_psychologists = true;
 
-				this.getPsychologists({
-					date: this.selectedDate,
-					time_id: value.id
-				});
+					if(this.selected_psychologist !== null && this.show_psychologists){
 
-				this.$store.commit('setSelectedTimeId', value.id);
-				this.$store.commit('setSelectedTime', value.name);
+						this.selected_psychologist = null;
+						this.$store.commit('setSelectedPsychologistId', null);
+						this.$store.commit('setSelectedPsychologist', null);
+
+					}
+
+					this.getPsychologists({
+						date: this.selectedDate,
+						time_id: value.id
+					});
+
+					this.$store.commit('setSelectedTimeId', value.id);
+					this.$store.commit('setSelectedTime', value.name);
+				}
+
+				
 			},
 			selected_psychologist(value){
-				this.$store.commit('setSelectedPsychologistId', value.id);
-				this.$store.commit('setSelectedPsychologist', value.name);
+				if(!_.isNil(value)){
+					this.$store.commit('setSelectedPsychologistId', value.id);
+					this.$store.commit('setSelectedPsychologist', value.name);
+					this.disabledSubmitBtn = false;
+
+				}else{
+
+					this.disabledSubmitBtn = true
+				}
+				
 			}
 		}
 	}

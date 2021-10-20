@@ -36,7 +36,7 @@ class PsychologistSchedule extends Model
 
     public function scopeWithStart($query){
 
-        $query->where('start', request()->date);
+        $query->whereDate('start', request()->date);
     }
 
     public function scopeWithTime($query){

@@ -17045,7 +17045,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.js");
 /* harmony import */ var _TimeComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../TimeComponent */ "./resources/js/components/TimeComponent.vue");
 /* harmony import */ var _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../modals/TimePsych */ "./resources/js/components/modals/TimePsych.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17088,6 +17090,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -17113,21 +17116,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     harmOtherPeople: Number,
     participants: Array
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapGetters"])(["getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapGetters"])(["getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
   components: {
     TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     TimePsych: _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapActions"])(["timeLists", "timeByDate"])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["timeLists", "timeByDate"])), {}, {
     handleDateClick: function handleDateClick(arg) {
-      var element = this.$refs.modal.$el;
-      $(element).modal('show');
+      var _this = this;
+
       this.timeByDate({
         date: arg.dateStr
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data.success) {
+          // check length of data
+          if (data.data.length > 0) {
+            var element = _this.$refs.modal.$el;
+            $(element).modal('show');
+            _this.selected_date = arg.dateStr;
+
+            _this.$store.commit('setTimeByDate', data.data);
+
+            _this.$store.commit('setSelectedDate', _this.selected_date);
+
+            _this.$store.commit('setShowBookingReview', true);
+          } else {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire('Oops!', 'Selected date has no schedule please select another date', 'error');
+          }
+        }
+      })["catch"](function (error) {
+        console.log(error);
       });
-      this.selected_date = arg.dateStr;
-      this.$store.commit('setSelectedDate', this.selected_date);
-      this.$store.commit('setShowBookingReview', true);
     },
     // handleEventClick(arg){
     // 	this.schedule_id = arg.event.id;
@@ -17638,7 +17659,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       selected_time: null,
       selected_psychologist: null,
       show_time_lists: true,
-      show_psychologists: false
+      show_psychologists: false,
+      disabledSubmitBtn: true
     };
   },
   props: {
@@ -17658,22 +17680,45 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.$store.state.selected_psychologist;
     }
   }),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])),
-  watch: {
-    selected_time: function selected_time(value) {
-      this.show_psychologists = true;
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])), {}, {
+    cancelSubmit: function cancelSubmit() {
+      this.show_psychologists = false;
+      this.selected_time = null;
+      this.selected_psychologist = null;
+      this.$store.commit('setSelectedTimeId', null);
+      this.$store.commit('setSelectedTime', null);
       this.$store.commit('setSelectedPsychologistId', null);
       this.$store.commit('setSelectedPsychologist', null);
-      this.getPsychologists({
-        date: this.selectedDate,
-        time_id: value.id
-      });
-      this.$store.commit('setSelectedTimeId', value.id);
-      this.$store.commit('setSelectedTime', value.name);
+      this.disabledSubmitBtn = true;
+    }
+  }),
+  watch: {
+    selected_time: function selected_time(value) {
+      if (!_.isNil(value)) {
+        this.show_psychologists = true;
+
+        if (this.selected_psychologist !== null && this.show_psychologists) {
+          this.selected_psychologist = null;
+          this.$store.commit('setSelectedPsychologistId', null);
+          this.$store.commit('setSelectedPsychologist', null);
+        }
+
+        this.getPsychologists({
+          date: this.selectedDate,
+          time_id: value.id
+        });
+        this.$store.commit('setSelectedTimeId', value.id);
+        this.$store.commit('setSelectedTime', value.name);
+      }
     },
     selected_psychologist: function selected_psychologist(value) {
-      this.$store.commit('setSelectedPsychologistId', value.id);
-      this.$store.commit('setSelectedPsychologist', value.name);
+      if (!_.isNil(value)) {
+        this.$store.commit('setSelectedPsychologistId', value.id);
+        this.$store.commit('setSelectedPsychologist', value.name);
+        this.disabledSubmitBtn = false;
+      } else {
+        this.disabledSubmitBtn = true;
+      }
     }
   }
 });
@@ -100118,7 +100163,30 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "submit", disabled: _vm.disabledSubmitBtn }
+              },
+              [
+                _c("i", { staticClass: "fa fa-check" }),
+                _vm._v(" "),
+                _c("span", [_vm._v("Submit Booking")])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary waves-effect",
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: { click: _vm.cancelSubmit }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
         ])
       ])
     ]
@@ -100134,44 +100202,6 @@ var staticRenderFns = [
         "h5",
         { staticClass: "modal-title", attrs: { id: "timePsychLabel" } },
         [_vm._v("Book A session")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [
-          _c("i", { staticClass: "fa fa-check" }),
-          _vm._v(" "),
-          _c("span", [_vm._v("Submit Booking")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary waves-effect",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("CLOSE")]
       )
     ])
   }
@@ -115135,7 +115165,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.prototype.$bus = new Vue();
 
- // import modal from 'vue-js-modal';
+
+window.EventBus = new Vue(); // import modal from 'vue-js-modal';
 // Vue.use(modal, { dialog: true, dynamic: true });
 
 /**
@@ -118123,29 +118154,16 @@ var actions = {
     }))();
   },
   timeByDate: function timeByDate(_ref3, payload) {
-    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-      var commit, response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              commit = _ref3.commit;
-              _context3.next = 3;
-              return axios.get('/time-by-date', {
-                params: payload
-              });
-
-            case 3:
-              response = _context3.sent;
-              commit('setTimeByDate', response.data);
-
-            case 5:
-            case "end":
-              return _context3.stop();
-          }
-        }
-      }, _callee3);
-    }))();
+    var commit = _ref3.commit;
+    return new Promise(function (resolve, reject) {
+      axios.get('/time-by-date', {
+        params: payload
+      }).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
   }
 };
 var mutations = {

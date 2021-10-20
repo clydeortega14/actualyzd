@@ -133,6 +133,15 @@ class SchedulesController extends Controller
             ]);
         }
 
+        if($request->date < now()->toDateString()){
+
+            return response()->json([
+                'success' => true,
+                'message' => '',
+                'data' => []
+            ]);
+        }
+
         // pluck time list by id
         $plucked_time_id = $this->pluckedAllTime();
 
@@ -154,7 +163,11 @@ class SchedulesController extends Controller
                         ->values()
                         ->all();
 
-        return response()->json($schedules);
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => $schedules
+        ]);
     }
 
     public function validateTimeBySchedule(array $data){

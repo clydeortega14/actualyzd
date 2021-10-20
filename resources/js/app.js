@@ -13,6 +13,8 @@ Vue.prototype.$bus = new Vue();
 import store from './store'
 import moment from 'moment'
 
+window.EventBus = new Vue();
+
 // import modal from 'vue-js-modal';
 
 // Vue.use(modal, { dialog: true, dynamic: true });

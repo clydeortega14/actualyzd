@@ -22,13 +22,20 @@ const actions = {
 		const response = await axios.get(`/time-by-schedule/${schedule_id}`);
 		commit('setTimeLists', response.data);
 	},
-	async timeByDate({ commit }, payload){
+	timeByDate({ commit }, payload){
 
-		const response = await axios.get('/time-by-date', {
-			params: payload
-		});
+		return new Promise((resolve, reject) => {
 
-		commit('setTimeByDate', response.data);
+			axios.get('/time-by-date', {
+				params: payload
+			})
+			.then(response => {
+				resolve(response)
+			})
+			.catch(error => {
+				reject(error)
+			})
+		})
 	}
 
 }
