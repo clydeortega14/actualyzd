@@ -16806,6 +16806,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BookingStatus_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BookingStatus.vue */ "./resources/js/components/bookings/BookingStatus.vue");
 /* harmony import */ var _StatusNav_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StatusNav.vue */ "./resources/js/components/bookings/StatusNav.vue");
 /* harmony import */ var _mixins_datetime_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/datetime.js */ "./resources/js/mixins/datetime.js");
+/* harmony import */ var _constants_url_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constants/url.js */ "./resources/js/constants/url.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16886,6 +16887,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "BookingList",
   mixins: [_mixins_datetime_js__WEBPACK_IMPORTED_MODULE_3__["default"]],
@@ -16899,6 +16901,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allBookings"])), {}, {
     baseUrl: function baseUrl() {
       return window.location.origin;
+    },
+    jitsiUrl: function jitsiUrl() {
+      return "https://meet.jit.si/" + '3123sda';
     }
   }),
   components: {
@@ -17039,7 +17044,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/daygrid */ "./node_modules/@fullcalendar/daygrid/main.js");
 /* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.js");
 /* harmony import */ var _TimeComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../TimeComponent */ "./resources/js/components/TimeComponent.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../modals/TimePsych */ "./resources/js/components/modals/TimePsych.vue");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17067,6 +17075,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -17079,7 +17098,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
         initialView: 'dayGridMonth',
         dateClick: this.handleDateClick,
-        eventClick: this.handleEventClick,
         selectable: true,
         events: {
           url: '/psychologist/schedules'
@@ -17091,24 +17109,203 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       show_time_component: false
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])(["getTimeLists"])),
-  components: {
-    TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
+  props: {
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])(["timeLists"])), {}, {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapGetters"])(["getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
+  components: {
+    TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
+    TimePsych: _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__["default"]
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapActions"])(["timeLists", "timeByDate"])), {}, {
     handleDateClick: function handleDateClick(arg) {
-      this.show_time_component = false;
-      this.selected_date = null;
-      this.show_actions = false;
+      var _this = this;
+
+      this.timeByDate({
+        date: arg.dateStr
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data.success) {
+          // check length of data
+          if (data.data.length > 0) {
+            var element = _this.$refs.modal.$el;
+            $(element).modal('show');
+            _this.selected_date = arg.dateStr;
+
+            _this.$store.commit('setTimeByDate', data.data);
+
+            _this.$store.commit('setSelectedDate', _this.selected_date);
+
+            _this.$store.commit('setShowBookingReview', true);
+          } else {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire('Oops!', 'Selected date has no schedule please select another date', 'error');
+          }
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
-    handleEventClick: function handleEventClick(arg) {
-      this.schedule_id = arg.event.id;
-      this.show_time_component = true;
-      this.selected_date = arg.event.startStr;
-      this.timeLists(this.schedule_id);
-    },
+    // handleEventClick(arg){
+    // 	this.schedule_id = arg.event.id;
+    // 	this.show_time_component = true;
+    // 	this.selected_date = arg.event.startStr;
+    // 	this.timeLists(this.schedule_id);
+    // },
     selectTime: function selectTime(time) {
       this.show_actions = true;
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_sweet_alert_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/sweet-alert.js */ "./resources/js/mixins/sweet-alert.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ReviewBooking",
+  mixins: [_mixins_sweet_alert_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  props: {
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
+  },
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getSelectedDate", "getSelectedTime", "getSelectedPsychologist", "showBookingReview", "getSelectedTimeId", "getSelectedPsychologistId"])), {}, {
+    checkFirstTimer: function checkFirstTimer() {
+      return this.isFirsttimer === 1 ? 'Yes' : 'No';
+    },
+    checkSelfHarm: function checkSelfHarm() {
+      return this.selfHarm === 1 ? 'Yes' : 'No';
+    },
+    checkHarmOtherPeople: function checkHarmOtherPeople() {
+      return this.harmOtherPeople === 1 ? 'Yes' : 'No';
+    }
+  }),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['storeDateTime'])), {}, {
+    submiDataAndTime: function submiDataAndTime() {
+      var _this = this;
+
+      this.storeDateTime({
+        date: this.getSelectedDate,
+        time_id: this.getSelectedTimeId,
+        psychologist: this.getSelectedPsychologistId
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data.success) {
+          _this.success(data.message);
+
+          window.location.href = "".concat(window.location.origin, "/bookings/review-details");
+        } else {
+          _this.error(data.message);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   })
 });
@@ -17345,6 +17542,183 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     selectATime: function selectATime(id) {
       console.log(id);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bookings/ReviewBooking.vue */ "./resources/js/components/bookings/ReviewBooking.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TimePsych",
+  data: function data() {
+    return {
+      selected_time: null,
+      selected_psychologist: null,
+      show_time_lists: true,
+      show_psychologists: false,
+      disabledSubmitBtn: true
+    };
+  },
+  props: {
+    timeLists: Array,
+    selectedDate: String,
+    hasAssessment: Number,
+    isFirsttimer: Number,
+    selfHarm: Number,
+    harmOtherPeople: Number,
+    participants: Array
+  },
+  components: {
+    ReviewBooking: _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allPsychologists", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologistId", "getSelectedPsychologist"])), {}, {
+    selectedPsychologist: function selectedPsychologist() {
+      return this.$store.state.selected_psychologist;
+    }
+  }),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])), {}, {
+    cancelSubmit: function cancelSubmit() {
+      this.show_psychologists = false;
+      this.selected_time = null;
+      this.selected_psychologist = null;
+      this.$store.commit('setSelectedTimeId', null);
+      this.$store.commit('setSelectedTime', null);
+      this.$store.commit('setSelectedPsychologistId', null);
+      this.$store.commit('setSelectedPsychologist', null);
+      this.disabledSubmitBtn = true;
+    }
+  }),
+  watch: {
+    selected_time: function selected_time(value) {
+      if (!_.isNil(value)) {
+        this.show_psychologists = true;
+
+        if (this.selected_psychologist !== null && this.show_psychologists) {
+          this.selected_psychologist = null;
+          this.$store.commit('setSelectedPsychologistId', null);
+          this.$store.commit('setSelectedPsychologist', null);
+        }
+
+        this.getPsychologists({
+          date: this.selectedDate,
+          time_id: value.id
+        });
+        this.$store.commit('setSelectedTimeId', value.id);
+        this.$store.commit('setSelectedTime', value.name);
+      }
+    },
+    selected_psychologist: function selected_psychologist(value) {
+      if (!_.isNil(value)) {
+        this.$store.commit('setSelectedPsychologistId', value.id);
+        this.$store.commit('setSelectedPsychologist', value.name);
+        this.disabledSubmitBtn = false;
+      } else {
+        this.disabledSubmitBtn = true;
+      }
     }
   }
 });
@@ -18151,88 +18525,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBookingByStatus", "allServices", "consultationSummaries", "sessionTypeSummaries", "totalFirstTimers", "totalRepeaters"])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["serviceUtilization"]))
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bs-stepper */ "./node_modules/bs-stepper/dist/js/bs-stepper.js");
-/* harmony import */ var bs_stepper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bs_stepper__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "BsStepper",
-  data: function data() {
-    return {
-      stepper: '',
-      stepperNode: ''
-    };
-  },
-  mounted: function mounted() {// this.stepper = new Stepper(this.$el.querySelector('.bs-stepper'));
-    // this.stepperNode = this.$el.querySelector('.bs-stepper');
-  },
-  methods: {
-    next: function next(event) {
-      console.warn(event);
-      this.stepper.next();
-    },
-    previous: function previous(event) {
-      console.warn(event);
-      this.stepper.previous();
-    }
-  }
 });
 
 /***/ }),
@@ -23154,444 +23446,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 })));
 //# sourceMappingURL=bootstrap.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/bs-stepper/dist/js/bs-stepper.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/bs-stepper/dist/js/bs-stepper.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*!
- * bsStepper v1.7.0 (https://github.com/Johann-S/bs-stepper)
- * Copyright 2018 - 2019 Johann-S <johann.servoire@gmail.com>
- * Licensed under MIT (https://github.com/Johann-S/bs-stepper/blob/master/LICENSE)
- */
-(function (global, factory) {
-   true ? module.exports = factory() :
-  undefined;
-}(this, function () { 'use strict';
-
-  function _extends() {
-    _extends = Object.assign || function (target) {
-      for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];
-
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-
-      return target;
-    };
-
-    return _extends.apply(this, arguments);
-  }
-
-  var matches = window.Element.prototype.matches;
-
-  var closest = function closest(element, selector) {
-    return element.closest(selector);
-  };
-
-  var WinEvent = function WinEvent(inType, params) {
-    return new window.Event(inType, params);
-  };
-
-  var createCustomEvent = function createCustomEvent(eventName, params) {
-    var cEvent = new window.CustomEvent(eventName, params);
-    return cEvent;
-  };
-  /* istanbul ignore next */
-
-
-  function polyfill() {
-    if (!window.Element.prototype.matches) {
-      matches = window.Element.prototype.msMatchesSelector || window.Element.prototype.webkitMatchesSelector;
-    }
-
-    if (!window.Element.prototype.closest) {
-      closest = function closest(element, selector) {
-        if (!document.documentElement.contains(element)) {
-          return null;
-        }
-
-        do {
-          if (matches.call(element, selector)) {
-            return element;
-          }
-
-          element = element.parentElement || element.parentNode;
-        } while (element !== null && element.nodeType === 1);
-
-        return null;
-      };
-    }
-
-    if (!window.Event || typeof window.Event !== 'function') {
-      WinEvent = function WinEvent(inType, params) {
-        params = params || {};
-        var e = document.createEvent('Event');
-        e.initEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable));
-        return e;
-      };
-    }
-
-    if (typeof window.CustomEvent !== 'function') {
-      var originPreventDefault = window.Event.prototype.preventDefault;
-
-      createCustomEvent = function createCustomEvent(eventName, params) {
-        var evt = document.createEvent('CustomEvent');
-        params = params || {
-          bubbles: false,
-          cancelable: false,
-          detail: null
-        };
-        evt.initCustomEvent(eventName, params.bubbles, params.cancelable, params.detail);
-
-        evt.preventDefault = function () {
-          if (!this.cancelable) {
-            return;
-          }
-
-          originPreventDefault.call(this);
-          Object.defineProperty(this, 'defaultPrevented', {
-            get: function get() {
-              return true;
-            }
-          });
-        };
-
-        return evt;
-      };
-    }
-  }
-
-  polyfill();
-
-  var MILLISECONDS_MULTIPLIER = 1000;
-  var ClassName = {
-    ACTIVE: 'active',
-    LINEAR: 'linear',
-    BLOCK: 'dstepper-block',
-    NONE: 'dstepper-none',
-    FADE: 'fade',
-    VERTICAL: 'vertical'
-  };
-  var transitionEndEvent = 'transitionend';
-  var customProperty = 'bsStepper';
-
-  var show = function show(stepperNode, indexStep, options, done) {
-    var stepper = stepperNode[customProperty];
-
-    if (stepper._steps[indexStep].classList.contains(ClassName.ACTIVE) || stepper._stepsContents[indexStep].classList.contains(ClassName.ACTIVE)) {
-      return;
-    }
-
-    var showEvent = createCustomEvent('show.bs-stepper', {
-      cancelable: true,
-      detail: {
-        from: stepper._currentIndex,
-        to: indexStep,
-        indexStep: indexStep
-      }
-    });
-    stepperNode.dispatchEvent(showEvent);
-
-    var activeStep = stepper._steps.filter(function (step) {
-      return step.classList.contains(ClassName.ACTIVE);
-    });
-
-    var activeContent = stepper._stepsContents.filter(function (content) {
-      return content.classList.contains(ClassName.ACTIVE);
-    });
-
-    if (showEvent.defaultPrevented) {
-      return;
-    }
-
-    if (activeStep.length) {
-      activeStep[0].classList.remove(ClassName.ACTIVE);
-    }
-
-    if (activeContent.length) {
-      activeContent[0].classList.remove(ClassName.ACTIVE);
-
-      if (!stepperNode.classList.contains(ClassName.VERTICAL) && !stepper.options.animation) {
-        activeContent[0].classList.remove(ClassName.BLOCK);
-      }
-    }
-
-    showStep(stepperNode, stepper._steps[indexStep], stepper._steps, options);
-    showContent(stepperNode, stepper._stepsContents[indexStep], stepper._stepsContents, activeContent, done);
-  };
-
-  var showStep = function showStep(stepperNode, step, stepList, options) {
-    stepList.forEach(function (step) {
-      var trigger = step.querySelector(options.selectors.trigger);
-      trigger.setAttribute('aria-selected', 'false'); // if stepper is in linear mode, set disabled attribute on the trigger
-
-      if (stepperNode.classList.contains(ClassName.LINEAR)) {
-        trigger.setAttribute('disabled', 'disabled');
-      }
-    });
-    step.classList.add(ClassName.ACTIVE);
-    var currentTrigger = step.querySelector(options.selectors.trigger);
-    currentTrigger.setAttribute('aria-selected', 'true'); // if stepper is in linear mode, remove disabled attribute on current
-
-    if (stepperNode.classList.contains(ClassName.LINEAR)) {
-      currentTrigger.removeAttribute('disabled');
-    }
-  };
-
-  var showContent = function showContent(stepperNode, content, contentList, activeContent, done) {
-    var stepper = stepperNode[customProperty];
-    var toIndex = contentList.indexOf(content);
-    var shownEvent = createCustomEvent('shown.bs-stepper', {
-      cancelable: true,
-      detail: {
-        from: stepper._currentIndex,
-        to: toIndex,
-        indexStep: toIndex
-      }
-    });
-
-    function complete() {
-      content.classList.add(ClassName.BLOCK);
-      content.removeEventListener(transitionEndEvent, complete);
-      stepperNode.dispatchEvent(shownEvent);
-      done();
-    }
-
-    if (content.classList.contains(ClassName.FADE)) {
-      content.classList.remove(ClassName.NONE);
-      var duration = getTransitionDurationFromElement(content);
-      content.addEventListener(transitionEndEvent, complete);
-
-      if (activeContent.length) {
-        activeContent[0].classList.add(ClassName.NONE);
-      }
-
-      content.classList.add(ClassName.ACTIVE);
-      emulateTransitionEnd(content, duration);
-    } else {
-      content.classList.add(ClassName.ACTIVE);
-      content.classList.add(ClassName.BLOCK);
-      stepperNode.dispatchEvent(shownEvent);
-      done();
-    }
-  };
-
-  var getTransitionDurationFromElement = function getTransitionDurationFromElement(element) {
-    if (!element) {
-      return 0;
-    } // Get transition-duration of the element
-
-
-    var transitionDuration = window.getComputedStyle(element).transitionDuration;
-    var floatTransitionDuration = parseFloat(transitionDuration); // Return 0 if element or transition duration is not found
-
-    if (!floatTransitionDuration) {
-      return 0;
-    } // If multiple durations are defined, take the first
-
-
-    transitionDuration = transitionDuration.split(',')[0];
-    return parseFloat(transitionDuration) * MILLISECONDS_MULTIPLIER;
-  };
-
-  var emulateTransitionEnd = function emulateTransitionEnd(element, duration) {
-    var called = false;
-    var durationPadding = 5;
-    var emulatedDuration = duration + durationPadding;
-
-    function listener() {
-      called = true;
-      element.removeEventListener(transitionEndEvent, listener);
-    }
-
-    element.addEventListener(transitionEndEvent, listener);
-    window.setTimeout(function () {
-      if (!called) {
-        element.dispatchEvent(WinEvent(transitionEndEvent));
-      }
-
-      element.removeEventListener(transitionEndEvent, listener);
-    }, emulatedDuration);
-  };
-
-  var detectAnimation = function detectAnimation(contentList, options) {
-    if (options.animation) {
-      contentList.forEach(function (content) {
-        content.classList.add(ClassName.FADE);
-        content.classList.add(ClassName.NONE);
-      });
-    }
-  };
-
-  var buildClickStepLinearListener = function buildClickStepLinearListener() {
-    return function clickStepLinearListener(event) {
-      event.preventDefault();
-    };
-  };
-
-  var buildClickStepNonLinearListener = function buildClickStepNonLinearListener(options) {
-    return function clickStepNonLinearListener(event) {
-      event.preventDefault();
-      var step = closest(event.target, options.selectors.steps);
-      var stepperNode = closest(step, options.selectors.stepper);
-      var stepper = stepperNode[customProperty];
-
-      var stepIndex = stepper._steps.indexOf(step);
-
-      show(stepperNode, stepIndex, options, function () {
-        stepper._currentIndex = stepIndex;
-      });
-    };
-  };
-
-  var DEFAULT_OPTIONS = {
-    linear: true,
-    animation: false,
-    selectors: {
-      steps: '.step',
-      trigger: '.step-trigger',
-      stepper: '.bs-stepper'
-    }
-  };
-
-  var Stepper =
-  /*#__PURE__*/
-  function () {
-    function Stepper(element, _options) {
-      var _this = this;
-
-      if (_options === void 0) {
-        _options = {};
-      }
-
-      this._element = element;
-      this._currentIndex = 0;
-      this._stepsContents = [];
-      this.options = _extends({}, DEFAULT_OPTIONS, {}, _options);
-      this.options.selectors = _extends({}, DEFAULT_OPTIONS.selectors, {}, this.options.selectors);
-
-      if (this.options.linear) {
-        this._element.classList.add(ClassName.LINEAR);
-      }
-
-      this._steps = [].slice.call(this._element.querySelectorAll(this.options.selectors.steps));
-
-      this._steps.filter(function (step) {
-        return step.hasAttribute('data-target');
-      }).forEach(function (step) {
-        _this._stepsContents.push(_this._element.querySelector(step.getAttribute('data-target')));
-      });
-
-      detectAnimation(this._stepsContents, this.options);
-
-      this._setLinkListeners();
-
-      Object.defineProperty(this._element, customProperty, {
-        value: this,
-        writable: true
-      });
-
-      if (this._steps.length) {
-        show(this._element, this._currentIndex, this.options, function () {});
-      }
-    } // Private
-
-
-    var _proto = Stepper.prototype;
-
-    _proto._setLinkListeners = function _setLinkListeners() {
-      var _this2 = this;
-
-      this._steps.forEach(function (step) {
-        var trigger = step.querySelector(_this2.options.selectors.trigger);
-
-        if (_this2.options.linear) {
-          _this2._clickStepLinearListener = buildClickStepLinearListener(_this2.options);
-          trigger.addEventListener('click', _this2._clickStepLinearListener);
-        } else {
-          _this2._clickStepNonLinearListener = buildClickStepNonLinearListener(_this2.options);
-          trigger.addEventListener('click', _this2._clickStepNonLinearListener);
-        }
-      });
-    } // Public
-    ;
-
-    _proto.next = function next() {
-      var _this3 = this;
-
-      var nextStep = this._currentIndex + 1 <= this._steps.length - 1 ? this._currentIndex + 1 : this._steps.length - 1;
-      show(this._element, nextStep, this.options, function () {
-        _this3._currentIndex = nextStep;
-      });
-    };
-
-    _proto.previous = function previous() {
-      var _this4 = this;
-
-      var previousStep = this._currentIndex - 1 >= 0 ? this._currentIndex - 1 : 0;
-      show(this._element, previousStep, this.options, function () {
-        _this4._currentIndex = previousStep;
-      });
-    };
-
-    _proto.to = function to(stepNumber) {
-      var _this5 = this;
-
-      var tempIndex = stepNumber - 1;
-      var nextStep = tempIndex >= 0 && tempIndex < this._steps.length ? tempIndex : 0;
-      show(this._element, nextStep, this.options, function () {
-        _this5._currentIndex = nextStep;
-      });
-    };
-
-    _proto.reset = function reset() {
-      var _this6 = this;
-
-      show(this._element, 0, this.options, function () {
-        _this6._currentIndex = 0;
-      });
-    };
-
-    _proto.destroy = function destroy() {
-      var _this7 = this;
-
-      this._steps.forEach(function (step) {
-        var trigger = step.querySelector(_this7.options.selectors.trigger);
-
-        if (_this7.options.linear) {
-          trigger.removeEventListener('click', _this7._clickStepLinearListener);
-        } else {
-          trigger.removeEventListener('click', _this7._clickStepNonLinearListener);
-        }
-      });
-
-      this._element[customProperty] = undefined;
-      this._element = undefined;
-      this._currentIndex = undefined;
-      this._steps = undefined;
-      this._stepsContents = undefined;
-      this._clickStepLinearListener = undefined;
-      this._clickStepNonLinearListener = undefined;
-    };
-
-    return Stepper;
-  }();
-
-  return Stepper;
-
-}));
-//# sourceMappingURL=bs-stepper.js.map
 
 
 /***/ }),
@@ -99431,7 +99285,7 @@ var render = function() {
                         "a",
                         {
                           attrs: {
-                            href: booking.link_to_session,
+                            href: _vm.jitsiUrl + booking.link_to_session,
                             target: "_blank"
                           }
                         },
@@ -99614,19 +99468,17 @@ var render = function() {
     [
       _c("FullCalendar", { attrs: { options: _vm.calendarOptions } }),
       _vm._v(" "),
-      _vm.show_time_component
-        ? _c("TimeComponent", {
-            attrs: {
-              time_lists: _vm.getTimeLists,
-              selected_date: _vm.selected_date
-            },
-            on: { "select-time": _vm.selectTime }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "hidden", name: "schedule_id" },
-        domProps: { value: _vm.schedule_id }
+      _c("TimePsych", {
+        ref: "modal",
+        attrs: {
+          "selected-date": _vm.selected_date,
+          "time-lists": _vm.getTimeByDate,
+          "has-assessment": _vm.hasAssessment,
+          "is-firsttimer": _vm.isFirsttimer,
+          "self-harm": _vm.selfHarm,
+          "harm-other-people": _vm.harmOtherPeople,
+          participants: _vm.participants
+        }
       }),
       _vm._v(" "),
       _vm.show_actions
@@ -99653,6 +99505,139 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("ul", { staticClass: "list-group mt-3" }, [
+      _vm.hasAssessment === 1
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n\t\t\t Firstimer\n    \t    "),
+              _c("span", [_vm._v(_vm._s(_vm.checkFirstTimer))])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.hasAssessment === 1
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n    \t    Intent to self harm\n    \t    "),
+              _c("span", [_vm._v(_vm._s(_vm.checkSelfHarm))])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.hasAssessment === 1
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n    \t    Intent to harm other people\n    \t    "),
+              _c("span", [_vm._v(_vm._s(_vm.checkHarmOtherPeople))])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "li",
+        {
+          staticClass:
+            "list-group-item d-flex justify-content-between align-items-center"
+        },
+        [
+          _vm._v("\n\t  \t\tCounselee / Participants\n\t  \t\t"),
+          _c(
+            "ul",
+            { staticClass: "unstyled-list" },
+            _vm._l(_vm.participants, function(participant, index) {
+              return _c("li", { key: index }, [
+                _vm._v(
+                  "\n\t  \t\t\t\t" + _vm._s(participant.name) + "\n\t  \t\t\t"
+                )
+              ])
+            }),
+            0
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.getSelectedDate !== null
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n\t\t\tDate\n\t\t\t"),
+              _c("span", [_vm._v(_vm._s(_vm.getSelectedDate))])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.getSelectedTime !== null
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n\t\t\tTime\n\t\t\t"),
+              _c("span", [_vm._v(_vm._s(_vm.getSelectedTime))])
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.getSelectedPsychologist !== null
+        ? _c(
+            "li",
+            {
+              staticClass:
+                "list-group-item d-flex justify-content-between align-items-center"
+            },
+            [
+              _vm._v("\n\t\t\tPsychologist\n\t\t\t"),
+              _c("span", [_vm._v(_vm._s(_vm.getSelectedPsychologist))])
+            ]
+          )
+        : _vm._e()
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99932,6 +99917,291 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        id: "timePsych",
+        "data-backdrop": "static",
+        "data-keyboard": "false",
+        tabindex: "-1",
+        "aria-labelledby": "timePsychLabel",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog modal-lg" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                { staticClass: "col-md-6 border-right" },
+                [
+                  _c("h5", { staticClass: "card-title text-center mb-3" }, [
+                    _vm._v("Review Session Details")
+                  ]),
+                  _vm._v(" "),
+                  _c("ReviewBooking", {
+                    attrs: {
+                      "has-assessment": _vm.hasAssessment,
+                      "is-firsttimer": _vm.isFirsttimer,
+                      "self-harm": _vm.selfHarm,
+                      "harm-other-people": _vm.harmOtherPeople,
+                      participants: _vm.participants
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6" }, [
+                _c("input", {
+                  attrs: { type: "hidden", name: "selected_date" },
+                  domProps: { value: _vm.getSelectedDate }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "time_id" },
+                  domProps: { value: _vm.getSelectedTimeId }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "psychologist" },
+                  domProps: { value: _vm.getSelectedPsychologistId }
+                }),
+                _vm._v(" "),
+                _vm.show_time_lists
+                  ? _c(
+                      "div",
+                      { staticClass: "mb-3" },
+                      [
+                        _c(
+                          "h5",
+                          { staticClass: "card-title mb-3 border-bottom" },
+                          [_vm._v("Select Time")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.timeLists, function(time, index) {
+                          return _c(
+                            "div",
+                            {
+                              key: index,
+                              staticClass:
+                                "custom-control custom-radio mb-3 ml-3"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.selected_time,
+                                    expression: "selected_time"
+                                  }
+                                ],
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "radio",
+                                  id: "time-" + time.time_list.id
+                                },
+                                domProps: {
+                                  value: {
+                                    id: time.time_list.id,
+                                    name:
+                                      time.time_list.from +
+                                      " - " +
+                                      time.time_list.to
+                                  },
+                                  checked: _vm._q(_vm.selected_time, {
+                                    id: time.time_list.id,
+                                    name:
+                                      time.time_list.from +
+                                      " - " +
+                                      time.time_list.to
+                                  })
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.selected_time = {
+                                      id: time.time_list.id,
+                                      name:
+                                        time.time_list.from +
+                                        " - " +
+                                        time.time_list.to
+                                    }
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: { for: "time-" + time.time_list.id }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      time.time_list.from +
+                                        " - " +
+                                        time.time_list.to
+                                    )
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.show_psychologists
+                  ? _c(
+                      "div",
+                      { staticClass: "mb-3" },
+                      [
+                        _c(
+                          "h5",
+                          { staticClass: "card-title mb-3 border-bottom" },
+                          [_vm._v("Select Psychologist")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.allPsychologists, function(
+                          psychologist,
+                          index
+                        ) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass:
+                                "custom-control custom-radio mb-3 ml-3"
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.selected_psychologist,
+                                    expression: "selected_psychologist"
+                                  }
+                                ],
+                                staticClass: "custom-control-input",
+                                attrs: {
+                                  type: "radio",
+                                  id: "psychologist-" + psychologist.id
+                                },
+                                domProps: {
+                                  value: {
+                                    id: psychologist.id,
+                                    name: psychologist.name
+                                  },
+                                  checked: _vm._q(_vm.selected_psychologist, {
+                                    id: psychologist.id,
+                                    name: psychologist.name
+                                  })
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.selected_psychologist = {
+                                      id: psychologist.id,
+                                      name: psychologist.name
+                                    }
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "label",
+                                {
+                                  staticClass: "custom-control-label",
+                                  attrs: {
+                                    for: "psychologist-" + psychologist.id
+                                  }
+                                },
+                                [_vm._v(_vm._s(psychologist.name))]
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "submit", disabled: _vm.disabledSubmitBtn }
+              },
+              [
+                _c("i", { staticClass: "fa fa-check" }),
+                _vm._v(" "),
+                _c("span", [_vm._v("Submit Booking")])
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary waves-effect",
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: { click: _vm.cancelSubmit }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "timePsychLabel" } },
+        [_vm._v("Book A session")]
       )
     ])
   }
@@ -101026,137 +101296,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("YTD")])
       ])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "bs-stepper" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "bs-stepper-content" }, [
-        _c("div", { staticClass: "content", attrs: { id: "test-l-1" } }, [
-          _c("p", { staticClass: "text-center" }, [_vm._v("test 1")]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.next } },
-            [_vm._v("Next")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "content", attrs: { id: "test-l-2" } }, [
-          _c("p", { staticClass: "text-center" }, [_vm._v("test 2")]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.next } },
-            [_vm._v("Next")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "content", attrs: { id: "test-l-3" } }, [
-          _c("p", { staticClass: "text-center" }, [_vm._v("test 3")]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.next } },
-            [_vm._v("Next")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-primary", on: { click: _vm.previous } },
-            [_vm._v("Previous")]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bs-stepper-header" }, [
-      _c(
-        "div",
-        { staticClass: "step active", attrs: { "data-target": "#test-l-1" } },
-        [
-          _c(
-            "button",
-            { staticClass: "btn step-trigger", attrs: { type: "button" } },
-            [
-              _c("span", { staticClass: "bs-stepper-circle" }, [_vm._v("1")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "bs-stepper-label" }, [
-                _vm._v("First step")
-              ])
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "line" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "step", attrs: { "data-target": "#test-l-2" } },
-        [
-          _c(
-            "button",
-            { staticClass: "btn step-trigger", attrs: { type: "button" } },
-            [
-              _c("span", { staticClass: "bs-stepper-circle" }, [_vm._v("2")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "bs-stepper-label" }, [
-                _vm._v("Second step")
-              ])
-            ]
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "line" }),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "step", attrs: { "data-target": "#test-l-3" } },
-        [
-          _c(
-            "button",
-            { staticClass: "btn step-trigger", attrs: { type: "button" } },
-            [
-              _c("span", { staticClass: "bs-stepper-circle" }, [_vm._v("3")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "bs-stepper-label" }, [
-                _vm._v("Third step")
-              ])
-            ]
-          )
-        ]
-      )
     ])
   }
 ]
@@ -115026,7 +115165,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 Vue.prototype.$bus = new Vue();
 
- // import modal from 'vue-js-modal';
+
+window.EventBus = new Vue(); // import modal from 'vue-js-modal';
 // Vue.use(modal, { dialog: true, dynamic: true });
 
 /**
@@ -115042,7 +115182,9 @@ Vue.prototype.$bus = new Vue();
 Vue.component('calendar-page', __webpack_require__(/*! ./components/CalendarPage.vue */ "./resources/js/components/CalendarPage.vue")["default"]);
 Vue.component('bookings-calendar', __webpack_require__(/*! ./components/bookings/Calendar.vue */ "./resources/js/components/bookings/Calendar.vue")["default"]);
 Vue.component('booking-status', __webpack_require__(/*! ./components/bookings/BookingStatus */ "./resources/js/components/bookings/BookingStatus.vue")["default"]);
-Vue.component('bookings-lists', __webpack_require__(/*! ./components/bookings/BookingList.vue */ "./resources/js/components/bookings/BookingList.vue")["default"]); // Psychologist Schedules Component
+Vue.component('bookings-lists', __webpack_require__(/*! ./components/bookings/BookingList.vue */ "./resources/js/components/bookings/BookingList.vue")["default"]); // Review Bookings Component
+
+Vue.component('review-booking', __webpack_require__(/*! ./components/bookings/ReviewBooking.vue */ "./resources/js/components/bookings/ReviewBooking.vue")["default"]); // Psychologist Schedules Component
 
 Vue.component('schedules-component', __webpack_require__(/*! ./components/schedules/Main.vue */ "./resources/js/components/schedules/Main.vue")["default"]); // Progress Report Client Medication Component
 
@@ -115063,10 +115205,11 @@ Vue.component('video-call', __webpack_require__(/*! ./components/video-chat/Vide
  * This components are for dashboard / service utilization
  */
 
-Vue.component('service-utilization', __webpack_require__(/*! ./components/service-utilization/ServiceUtilization.vue */ "./resources/js/components/service-utilization/ServiceUtilization.vue")["default"]);
-Vue.component('client-lists', __webpack_require__(/*! ./components/service-utilization/ClientList.vue */ "./resources/js/components/service-utilization/ClientList.vue")["default"]);
+Vue.component('service-utilization', __webpack_require__(/*! ./components/service-utilization/ServiceUtilization.vue */ "./resources/js/components/service-utilization/ServiceUtilization.vue")["default"]); // Clients Lists
+
+Vue.component('client-lists', __webpack_require__(/*! ./components/service-utilization/ClientList.vue */ "./resources/js/components/service-utilization/ClientList.vue")["default"]); // Upload Avatar Component
+
 Vue.component('upload-avatar', __webpack_require__(/*! ./components/profile/UploadAvatar.vue */ "./resources/js/components/profile/UploadAvatar.vue")["default"]);
-Vue.component('bs-stepper', __webpack_require__(/*! ./components/stepper/BsStepper.vue */ "./resources/js/components/stepper/BsStepper.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -115705,6 +115848,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/bookings/ReviewBooking.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/bookings/ReviewBooking.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ReviewBooking.vue?vue&type=template&id=0d5115b7& */ "./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7&");
+/* harmony import */ var _ReviewBooking_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ReviewBooking.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ReviewBooking_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/bookings/ReviewBooking.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReviewBooking_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReviewBooking.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/ReviewBooking.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ReviewBooking_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ReviewBooking.vue?vue&type=template&id=0d5115b7& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ReviewBooking_vue_vue_type_template_id_0d5115b7___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/bookings/StatusNav.vue":
 /*!********************************************************!*\
   !*** ./resources/js/components/bookings/StatusNav.vue ***!
@@ -115957,6 +116169,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Booking_vue_vue_type_template_id_454f4cca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Booking_vue_vue_type_template_id_454f4cca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/TimePsych.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/modals/TimePsych.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TimePsych.vue?vue&type=template&id=3aa5b330& */ "./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330&");
+/* harmony import */ var _TimePsych_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TimePsych.vue?vue&type=script&lang=js& */ "./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TimePsych_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modals/TimePsych.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TimePsych_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./TimePsych.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/TimePsych.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TimePsych_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./TimePsych.vue?vue&type=template&id=3aa5b330& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/TimePsych.vue?vue&type=template&id=3aa5b330&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TimePsych_vue_vue_type_template_id_3aa5b330___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -116601,75 +116882,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/stepper/BsStepper.vue":
-/*!*******************************************************!*\
-  !*** ./resources/js/components/stepper/BsStepper.vue ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BsStepper.vue?vue&type=template&id=9fe648b2& */ "./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2&");
-/* harmony import */ var _BsStepper_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BsStepper.vue?vue&type=script&lang=js& */ "./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _BsStepper_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/stepper/BsStepper.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js&":
-/*!********************************************************************************!*\
-  !*** ./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BsStepper_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BsStepper.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stepper/BsStepper.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BsStepper_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2&":
-/*!**************************************************************************************!*\
-  !*** ./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2& ***!
-  \**************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BsStepper.vue?vue&type=template&id=9fe648b2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/stepper/BsStepper.vue?vue&type=template&id=9fe648b2&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BsStepper_vue_vue_type_template_id_9fe648b2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "./resources/js/components/video-chat/ChatComponent.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/components/video-chat/ChatComponent.vue ***!
@@ -117101,6 +117313,23 @@ var DEBOUNCE_DELAY_MS = 500;
 
 /***/ }),
 
+/***/ "./resources/js/constants/url.js":
+/*!***************************************!*\
+  !*** ./resources/js/constants/url.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var URLS = {
+  BASE: window.location.origin,
+  JITSI: "https://meet.jit.si/"
+};
+/* harmony default export */ __webpack_exports__["default"] = (URLS);
+
+/***/ }),
+
 /***/ "./resources/js/mixins/datetime.js":
 /*!*****************************************!*\
   !*** ./resources/js/mixins/datetime.js ***!
@@ -117169,6 +117398,41 @@ __webpack_require__.r(__webpack_exports__);
     getPercentage: function getPercentage(increase, original) {
       var decimal_number = increase / original * 100;
       return Math.round(decimal_number);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/sweet-alert.js":
+/*!********************************************!*\
+  !*** ./resources/js/mixins/sweet-alert.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    success: function success(message) {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+        position: 'center',
+        icon: 'success',
+        title: message,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    },
+    error: function error(text) {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: text
+      });
     }
   }
 });
@@ -117249,7 +117513,13 @@ var state = function state() {
     booking: {},
     bookings: [],
     booking_statuses: [],
-    actions: []
+    actions: [],
+    selected_date: null,
+    selected_time: null,
+    selected_time_id: null,
+    selected_psychologist_id: null,
+    selected_psychologist: null,
+    show_booking_review: false
   };
 };
 
@@ -117265,6 +117535,24 @@ var getters = {
   },
   getActions: function getActions(state) {
     return state.actions;
+  },
+  getSelectedDate: function getSelectedDate(state) {
+    return state.selected_date;
+  },
+  getSelectedTime: function getSelectedTime(state) {
+    return state.selected_time;
+  },
+  getSelectedTimeId: function getSelectedTimeId(state) {
+    return state.selected_time_id;
+  },
+  getSelectedPsychologistId: function getSelectedPsychologistId(state) {
+    return state.selected_psychologist_id;
+  },
+  getSelectedPsychologist: function getSelectedPsychologist(state) {
+    return state.selected_psychologist;
+  },
+  showBookingReview: function showBookingReview(state) {
+    return state.show_booking_review;
   }
 };
 var actions = {
@@ -117277,10 +117565,22 @@ var actions = {
         console.log(error);
         reject(error);
       });
-    }); // const book_now = await axios.post('/bookings/book', payload);
+    });
   },
-  updateStatus: function updateStatus(_ref, payload) {
+
+  /* Store Date, Time and Psychologist to session */
+  storeDateTime: function storeDateTime(_ref, payload) {
     var context = _ref.context;
+    return new Promise(function (resolve, reject) {
+      axios.post('/bookings/store/date-time', payload).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
+  },
+  updateStatus: function updateStatus(_ref2, payload) {
+    var context = _ref2.context;
     return new Promise(function (resolve, reject) {
       axios.post("/bookings/update-status/".concat(payload.id), payload).then(function (response) {
         resolve(response);
@@ -117289,14 +117589,14 @@ var actions = {
       });
     });
   },
-  getAllBookings: function getAllBookings(_ref2, payload) {
+  getAllBookings: function getAllBookings(_ref3, payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var commit, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              commit = _ref2.commit;
+              commit = _ref3.commit;
               _context.next = 3;
               return axios.get("/bookings/get-all-bookings", {
                 params: payload
@@ -117314,14 +117614,14 @@ var actions = {
       }, _callee);
     }))();
   },
-  getBookingStatuses: function getBookingStatuses(_ref3) {
+  getBookingStatuses: function getBookingStatuses(_ref4) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
       var commit, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              commit = _ref3.commit;
+              commit = _ref4.commit;
               _context2.next = 3;
               return axios.get('/bookings/status-summary');
 
@@ -117351,6 +117651,24 @@ var mutations = {
   },
   setActions: function setActions(state, actions) {
     return state.actions = actions;
+  },
+  setSelectedDate: function setSelectedDate(state, date) {
+    return state.selected_date = date;
+  },
+  setSelectedTime: function setSelectedTime(state, time) {
+    return state.selected_time = time;
+  },
+  setSelectedTimeId: function setSelectedTimeId(state, selected_time_id) {
+    return state.selected_time_id = selected_time_id;
+  },
+  setSelectedPsychologistId: function setSelectedPsychologistId(state, selected_psychologist_id) {
+    return state.selected_psychologist_id = selected_psychologist_id;
+  },
+  setSelectedPsychologist: function setSelectedPsychologist(state, psychologist) {
+    return state.selected_psychologist = psychologist;
+  },
+  setShowBookingReview: function setShowBookingReview(state, show_booking_review) {
+    return state.show_booking_review = show_booking_review;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -117708,12 +118026,12 @@ var state = function state() {
 };
 
 var getters = {
-  getAvailable: function getAvailable(state) {
+  allPsychologists: function allPsychologists(state) {
     return state.psychologists;
   }
 };
 var actions = {
-  availablePsychologist: function availablePsychologist(_ref, time) {
+  getPsychologists: function getPsychologists(_ref, payload) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var commit, response;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -117722,11 +118040,13 @@ var actions = {
             case 0:
               commit = _ref.commit;
               _context.next = 3;
-              return axios.get("/psychologist/available/".concat(time));
+              return axios.get("/psychologists-by-date-time", {
+                params: payload
+              });
 
             case 3:
               response = _context.sent;
-              commit('setPsychologist', response.data);
+              commit('setPsychologists', response.data);
 
             case 5:
             case "end":
@@ -117738,7 +118058,7 @@ var actions = {
   }
 };
 var mutations = {
-  setPsychologist: function setPsychologist(state, psychologists) {
+  setPsychologists: function setPsychologists(state, psychologists) {
     return state.psychologists = psychologists;
   }
 };
@@ -117771,7 +118091,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var state = function state() {
   return {
     schedules: [],
-    time_lists: []
+    time_lists: [],
+    time_by_date: []
   };
 };
 
@@ -117781,6 +118102,9 @@ var getters = {
   },
   getTimeLists: function getTimeLists(state) {
     return state.time_lists;
+  },
+  getTimeByDate: function getTimeByDate(state) {
+    return state.time_by_date;
   }
 };
 var actions = {
@@ -117797,9 +118121,8 @@ var actions = {
 
             case 3:
               response = _context.sent;
-              commit('commitSchedules', response.data);
 
-            case 5:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -117829,6 +118152,18 @@ var actions = {
         }
       }, _callee2);
     }))();
+  },
+  timeByDate: function timeByDate(_ref3, payload) {
+    var commit = _ref3.commit;
+    return new Promise(function (resolve, reject) {
+      axios.get('/time-by-date', {
+        params: payload
+      }).then(function (response) {
+        resolve(response);
+      })["catch"](function (error) {
+        reject(error);
+      });
+    });
   }
 };
 var mutations = {
@@ -117837,6 +118172,9 @@ var mutations = {
   },
   setTimeLists: function setTimeLists(state, time_lists) {
     return state.time_lists = time_lists;
+  },
+  setTimeByDate: function setTimeByDate(state, time_by_date) {
+    return state.time_by_date = time_by_date;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

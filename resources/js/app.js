@@ -13,6 +13,8 @@ Vue.prototype.$bus = new Vue();
 import store from './store'
 import moment from 'moment'
 
+window.EventBus = new Vue();
+
 // import modal from 'vue-js-modal';
 
 // Vue.use(modal, { dialog: true, dynamic: true });
@@ -35,6 +37,9 @@ Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue')
 Vue.component('booking-status', require('./components/bookings/BookingStatus').default);
 
 Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
+
+// Review Bookings Component
+Vue.component('review-booking', require('./components/bookings/ReviewBooking.vue').default);
 
 // Psychologist Schedules Component
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
@@ -65,11 +70,11 @@ Vue.component('video-call', require('./components/video-chat/VideoCall.vue').def
  */
 Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
 
+// Clients Lists
 Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 
+// Upload Avatar Component
 Vue.component('upload-avatar', require('./components/profile/UploadAvatar.vue').default);
-
-Vue.component('bs-stepper', require('./components/stepper/BsStepper.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

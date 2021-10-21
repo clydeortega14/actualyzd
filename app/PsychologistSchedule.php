@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class PsychologistSchedule extends Model
 {
     protected $fillable = [
-    	'psychologist', 'start', 'end'
+    	'psychologist', 'start', 'end', 'time_id', 'is_booked'
     ];
 
     public $timestamps = false;
+
+    public function timeList(){
+
+        return $this->belongsTo(TimeList::class, 'time_id');
+    }
 
     public function psych()
     {
@@ -27,5 +32,17 @@ class PsychologistSchedule extends Model
     public function fullStartDate()
     {
         return date('l, jS F Y', strtotime($this->start));
+    }
+
+    public function scopeWithStart($query){
+
+        $query->whereDate('start', request()->date);
+    }
+
+    public function scopeWithTime($query){
+        $query->where('time_id', request()->time_id);
+    }
+    public function scopeWithNotBooked($query){
+        $query->where('is_booked', false);
     }
 }

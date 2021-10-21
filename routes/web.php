@@ -41,7 +41,6 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');
 
-
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
 	// Client Subscription
@@ -141,6 +140,12 @@ Route::middleware('auth')->group(function(){
 	// Get onboarding questionnaires in ajax request
 	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
+	// Get available time by date
+	Route::get('time-by-date', 'SchedulesController@timeByDate');
+
+	// Get psychologists by date and time selected
+	Route::get('psychologists-by-date-time', 'SchedulesController@psychologistsByDateTime');
+
 	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
@@ -211,7 +216,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
-		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
+		Route::post('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
 
 		Route::post('confirm', 'BookingProcessController@bookingConfirm')->name('booking.confirm');
 

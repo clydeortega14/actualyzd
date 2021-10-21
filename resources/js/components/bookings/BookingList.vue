@@ -56,7 +56,7 @@
 							/>
 						</td>
 						<td>
-							<a :href="booking.link_to_session" target="_blank" v-if="booking.to_status.id === 1">
+							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="booking.to_status.id === 1">
 								<i class="fa fa-link"></i>
 							</a>
 							<span v-else class="badge badge-secondary">Link not available</span>
@@ -74,6 +74,7 @@
 	import BookingStatus from './BookingStatus.vue';
 	import StatusNav from './StatusNav.vue';
 	import DateTime from '../../mixins/datetime.js';
+	import DEFAULT_URL from '../../constants/url.js';
 
 	export default {
 		name: "BookingList",
@@ -90,6 +91,9 @@
 			baseUrl(){
 
 				return window.location.origin;
+			},
+			jitsiUrl(){
+				return process.env.MIX_JITSI_URL + '3123sda';
 			}
 		},
 		components: {

@@ -42,7 +42,9 @@ trait SchedulesTrait {
                 $query->whereDate('start', '>=', now()->toDateString());
             }
 
-        })->with(["psych"])->get();
+        })->where('is_booked', false)
+        ->with(["psych", "timeList"])
+        ->get();
 
         return $schedules;
 	}
@@ -86,5 +88,14 @@ trait SchedulesTrait {
             }
 
         })->where('is_booked', false);
+    }
+
+    public function pluckedAllTime(){
+
+        $current_time = now()->addHour(1)->toTimeString();
+
+        $time_lists = TimeList::whereTime('from', '>=', $current_time)->pluck('id');
+
+        return $time_lists;
     }
 }

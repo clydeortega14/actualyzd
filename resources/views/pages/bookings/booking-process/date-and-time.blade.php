@@ -12,7 +12,7 @@
 
 		<div class="row">
 			<div class="col-md-3">
-				<div class="row">
+				<div class="row mb-3">
 					<div class="col-md-12">
 
 						@if(auth()->user()->hasRole('superadmin'))
@@ -58,11 +58,11 @@
 						  	</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 
 			<div class="col-md-9">
-				{{ Breadcrumbs::render('booking.date.and.time') }}
 
 				<div class="card text-white bg-primary mb-3">
 					<div class="card-body text-center">
@@ -71,22 +71,20 @@
 					</div>
 				</div>
 
-				<form action="{{ route('booking.store.date-time') }}" method="GET">
-					<bookings-calendar></bookings-calendar>
+				<form action="{{ route('booking.confirm') }}" method="POST">
+					@csrf
+					<bookings-calendar
+						:has-assessment="{{ $has_assessment }}"
+						:is-firsttimer="{{ $is_firsttimer }}"
+						:self-harm="{{ $self_harm}}"
+						:harm-other-people="{{ $harm_other_people }}"
+						:participants="{{ $participants['participants'] }}">
+							
+					</bookings-calendar>
 				</form>
 
 			</div>
 		</div>
 	</div>
-	{{-- <div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-body">
-											</div>
-				</div>
-			</div>
-		</div>
-	</div> --}}
 
 @stop
