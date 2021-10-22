@@ -14,38 +14,23 @@
 			<div class="col-md-3">
 				<div class="row">
 					<div class="col-md-12">
+						
 						<div class="card text-white bg-primary mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Select session type, client and participants</h4>
-						    	<p class="card-text">Select session type, client and participants of the session</p>
+					  		<div class="card-body">
+						    	<h5 class="card-title text-center p-3">Select Session Type, Client and Participants</h5>
 						  	</div>
 						</div>
+						
 					</div>
 
 					<div class="col-md-12">
 						<div class="card mb-3">
 						  	<div class="card-body">
-						    	<h4 class="card-title">Choose date and time and psychologist</h4>
-						    	<p class="card-text">select available date, time and psychologist.</p>
+						    	<h5 class="card-title text-center p-3">Complete booking by selecting date, time and psychologist</h5>
 						  	</div>
 						</div>
 					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Review</h4>
-						    	<p class="card-text">Before the system will process your booking please review the session details.</p>
-						  	</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Complete</h4>
-						    	<p class="card-text">You have successfully booked a session.</p>
-						  	</div>
-						</div>
-					</div>
+
 				</div>
 			</div>
 			<div class="col-md-9">

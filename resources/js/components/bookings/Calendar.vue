@@ -3,12 +3,6 @@
 
 		<FullCalendar :options="calendarOptions" />
 
-		<!-- <TimeComponent 
-			v-if="show_time_component"
-			:time_lists="getTimeLists"
-			:selected_date="selected_date" 
-			@select-time="selectTime" /> -->
-
 		<!-- Modal For Selecting Time and Psychologist -->
 		<TimePsych ref="modal"
 			:selected-date="selected_date" 
@@ -126,14 +120,6 @@
 
 				
 			},
-			// handleEventClick(arg){
-
-			// 	this.schedule_id = arg.event.id;
-			// 	this.show_time_component = true;
-			// 	this.selected_date = arg.event.startStr;
-			// 	this.timeLists(this.schedule_id);
-				
-			// },
 			selectTime(time){
 
 				this.show_actions = true;

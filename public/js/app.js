@@ -16883,6 +16883,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -16977,6 +16979,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -16984,7 +16987,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: {
     sessionStatus: String,
     bookingId: Number,
-    bookingStatus: Number
+    bookingStatus: Number,
+    reschedule: Object,
+    cancelled: Object
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getActions"])),
   created: function created() {
@@ -17078,12 +17083,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 
@@ -17150,12 +17149,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(error);
       });
     },
-    // handleEventClick(arg){
-    // 	this.schedule_id = arg.event.id;
-    // 	this.show_time_component = true;
-    // 	this.selected_date = arg.event.startStr;
-    // 	this.timeLists(this.schedule_id);
-    // },
     selectTime: function selectTime(time) {
       this.show_actions = true;
     }
@@ -99272,7 +99265,9 @@ var render = function() {
                       attrs: {
                         "session-status": booking.to_status.name,
                         "booking-id": booking.id,
-                        "booking-status": booking.to_status.id
+                        "booking-status": booking.to_status.id,
+                        reschedule: booking.reschedule,
+                        cancelled: booking.cancelled
                       }
                     })
                   ],
@@ -99346,7 +99341,30 @@ var render = function() {
                   [_vm._v(_vm._s(_vm.sessionStatus))]
                 )
               ])
-            : _c("div", [_c("b", [_vm._v(_vm._s(_vm.sessionStatus))])])
+            : _c("div", [
+                _c(
+                  "span",
+                  {
+                    class:
+                      _vm.sessionStatus === "Cancelled" ? "text-danger" : ""
+                  },
+                  [_vm._v(_vm._s(_vm.sessionStatus))]
+                ),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v(" "),
+                _vm.cancelled !== null
+                  ? _c("span", [
+                      _vm._v(
+                        _vm._s(
+                          _vm.cancelled.reason_option_id === 5
+                            ? _vm.cancelled.others_specify
+                            : _vm.cancelled.reason_option.option_name
+                        )
+                      )
+                    ])
+                  : _vm._e()
+              ])
         ])
       : _c("div", [
           _c("div", { staticClass: "input-group" }, [

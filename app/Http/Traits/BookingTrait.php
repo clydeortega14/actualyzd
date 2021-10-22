@@ -50,7 +50,9 @@ trait BookingTrait {
             'toSchedule.psych', 
             'time',
             'sessionType',
-            'toStatus'
+            'toStatus',
+            'reschedule',
+            'cancelled.reasonOption'
         ])
         ->with(['toCounselee.progressReports' => function($query2){
             $query2->orderBy('created_at', 'desc');

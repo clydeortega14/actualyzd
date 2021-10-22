@@ -17,32 +17,15 @@
 					<div class="col-md-12">
 						<div class="card text-white bg-primary mb-3">
 						  	<div class="card-body">
-						    	<h4 class="card-title">Onboarding Questions</h4>
-						    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
+						    	<h5 class="card-title text-center p-3">Onboarding Questions</h5>
+						    	{{-- <p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p> --}}
 						  	</div>
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="card mb-3">
 						  	<div class="card-body">
-						    	<h4 class="card-title">Choose date and time and psychologist</h4>
-						    	<p class="card-text">select available date, time and psychologist.</p>
-						  	</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Review</h4>
-						    	<p class="card-text">Before the system will process your booking please review the session details.</p>
-						  	</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Complete</h4>
-						    	<p class="card-text">You have successfully booked a session.</p>
+						    	<h5 class="card-title text-center p-3">Complete the booking by selecting date, time and psychologist</h5>
 						  	</div>
 						</div>
 					</div>
@@ -69,84 +52,78 @@
 
 							{{-- <p class="text-center text-danger">NOTE: Please fill all the fields</p> --}}
 
-							<ul>
+							<ul class="list-unstyled">
+
 								{{-- First Timer / Repeater --}}
-								<ul>
+								<ul class="list-unstyled ml-4 mt-4">
+
 									{{-- First Timer / Repeater --}}
-									<li>
+									<li class="mb-3">
 										
-										<p class="lead">Are you a first timer or a repeater to this session?</p>
+										<h3 class="text-info">Are you a first timer or a repeater to this session?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="is_firsttimer" value="1" id="firstimer">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="1" id="firstimer" :checked="{{ session('assessment.is_firsttimer') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="firstimer">First Timer</label>
 											</div>
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="is_firsttimer" value="0" id="repeater">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="0" id="repeater" :checked="{{ session('assessment.is_firsttimer') == 0 ? '1' : '0' }}">
 												<label class="custom-control-label" for="repeater">Repeater</label>
 											</div>
 										</div>
 									</li>
 
 									{{-- Self Harm  --}}
-									<li>
-										
-										<p class="lead">I have plans to harm myself?</p>
-										
+									<li class="mb-3">
+										<h3 class="text-info">I have plans to harm myself?</h3>
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1">
+												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" :checked="{{ session('assessment.self_harm') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="1">Yes</label>
 											</div>
 										
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="self_harm" value="0" id="0">
+												<input type="radio" class="custom-control-input" name="self_harm" value="0" id="0" :checked="{{ session('assessment.self_harm') == 0 ? '1' : '0' }}">
 												<label class="custom-control-label" for="0">No</label>
 											</div>
 										</div>
-											
-										
-										
 									</li>
 
 									{{-- Harm Other People --}}
-									<li>
+									<li class="mb-3">
 										
-										<p class="lead">I have plans to harm other people?</p>
+										<h3 class="text-info">I have plans to harm other people?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="harm_other_people" value="1" id="yes-harm-other-people">
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="1" id="yes-harm-other-people" :checked="{{ session('assessment.harm_other_people') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="yes-harm-other-people">Yes</label>
 											</div>
 										
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="harm_other_people" value="0" id="no-harm-other-people">
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="0" id="no-harm-other-people" :checked="{{ session('assessment.harm_other_people') == 0 ? '1' : '0' }}" >
 												<label class="custom-control-label" for="no-harm-other-people">No</label>
 											</div>
 										</div>
-											
-										
-										
 									</li>
 								</ul>
 							
 
-	                        <ul>
+	                        <ul class="list-unstyled ml-4">
 	                        	@foreach($categories as $category)
-		                        	<li>
-		                        		<p class="lead">{{ $category->name }}<p>
+		                        	<li class="mb-3">
+		                        		<h3 class="text-info">{{ $category->name }}</h3>
 		                        		@include('pages.bookings.components.questionnaire')
 		                        	</li>
 	                        	@endforeach
 	                        </ul>
 
 	                        <div class="form-group">
-	                        	<button type="submit" class="btn btn-primary btn-block">Submit</button>
+	                        	<button type="submit" class="btn btn-primary btn-block">Proceed Next</button>
 	                        	<a href="#" class="btn btn-secondary btn-block">Cancel</a>
 	                        </div>
 	                    </form>
