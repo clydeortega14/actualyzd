@@ -66,6 +66,11 @@ class Booking extends Model
     {
         return $this->hasMany(AssessmentAnswer::class);
     }
+
+    public function cancelled(){
+        return $this->hasOne(CancelledBooking::class);
+    }
+
     public function reschedule()
     {
         return $this->hasOne(RescheduledBooking::class);

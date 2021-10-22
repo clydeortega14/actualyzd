@@ -6,7 +6,8 @@
 			</div>
 
 			<div v-else>
-				<b>{{ sessionStatus }}</b>
+				<span :class="sessionStatus === 'Cancelled' ? 'text-danger' : ''">{{ sessionStatus }}</span> <br>
+				<span v-if="cancelled !== null">{{ cancelled.reason_option_id === 5 ? cancelled.others_specify : cancelled.reason_option.option_name }}</span>
 			</div>
 		</div>
 		<div v-else>
@@ -40,7 +41,9 @@
 		props: {
 			sessionStatus: String,
 			bookingId: Number,
-			bookingStatus: Number
+			bookingStatus: Number,
+			reschedule: Object,
+			cancelled: Object
 		},
 		computed: {
 			...mapGetters(["getActions"])

@@ -115,11 +115,13 @@ class BookingProcessController extends Controller
         ]);
 
         session(['assessment' => [
-            'is_firsttimer' => $request->is_firsttimer == "1" ? true : false,
-            'self_harm' => $request->self_harm == "1" ? true : false,
-            'harm_other_people' => $request->harm_other_people == "1" ? true : false,
+            'is_firsttimer' => $request->is_firsttimer,
+            'self_harm' => $request->self_harm,
+            'harm_other_people' => $request->harm_other_people,
             'onboarding_answers' => $request->choice
         ]]);
+
+        // dd(session('assessment.onboarding_answers'));
 
         return redirect()->route('booking.date.and.time')->with('success', 'Assessment has been submitted, please select date and time avialble');
     }

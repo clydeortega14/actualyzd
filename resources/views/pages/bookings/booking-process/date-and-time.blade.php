@@ -16,45 +16,32 @@
 					<div class="col-md-12">
 
 						@if(auth()->user()->hasRole('superadmin'))
-							<div class="card mb-3">
-						  		<div class="card-body">
-							    	<h4 class="card-title">Select session type, client and participants</h4>
-							    	<p class="card-text">Select session type, client and participants of the session</p>
-							  	</div>
-							</div>
+							<a href="{{ route('booking.select.client.participants') }}">
+								<div class="card mb-3">
+							  		<div class="card-body">
+								    	<h5 class="card-title text-cente p-3">Select session type, client and participants</h5>
+								  	</div>
+								</div>
+							</a>
 						@else
 
-							<div class="card mb-3">
-							  	<div class="card-body">
-							    	<h4 class="card-title">Onboarding Questions</h4>
-							    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
-							  	</div>
-							</div>
+							<a href="{{ route('booking.onboarding') }}">
+								<div class="card mb-3">
+								  	<div class="card-body">
+								    	<h5 class="card-title text-center p-3">Onboarding Questions</h5>
+								  	</div>
+								</div>
+							</a>
 
 						@endif
+
 					</div>
+
+
 					<div class="col-md-12">
 						<div class="card text-white bg-primary mb-3">
 						  	<div class="card-body">
-						    	<h4 class="card-title">Choose date and time and psychologist</h4>
-						    	<p class="card-text">select available date, time and psychologist.</p>
-						  	</div>
-						</div>
-					</div>
-					
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Review</h4>
-						    	<p class="card-text">Before the system will process your booking please review the session details.</p>
-						  	</div>
-						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="card mb-3">
-						  	<div class="card-body">
-						    	<h4 class="card-title">Complete</h4>
-						    	<p class="card-text">You have successfully booked a session.</p>
+						    	<h5 class="card-title text-center p-3">Complete booking by selecting date, time and psychologist</h5>
 						  	</div>
 						</div>
 					</div>
@@ -63,6 +50,8 @@
 			</div>
 
 			<div class="col-md-9">
+
+				{{ Breadcrumbs::render('booking.date.and.time') }}
 
 				<div class="card text-white bg-primary mb-3">
 					<div class="card-body text-center">

@@ -52,7 +52,9 @@
 							<BookingStatus 
 								:session-status="booking.to_status.name" 
 								:booking-id="booking.id" 
-								:booking-status="booking.to_status.id" 
+								:booking-status="booking.to_status.id"
+								:reschedule="booking.reschedule"
+								:cancelled="booking.cancelled"
 							/>
 						</td>
 						<td>

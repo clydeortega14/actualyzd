@@ -2,7 +2,7 @@
 	@foreach($category->questionnaires as $questionnaire)
 		<li>
 			<input type="hidden" name="category_id[]" value="{{ $category->id }}">
-			<p>{{ $questionnaire->question}}</p>
+			<h5 class="text-gray-800">{{ $questionnaire->question}}</h5>
 
 			@php
 				$option = $questionnaire->toOption;
@@ -33,10 +33,13 @@
 							@endif
 						@endif
 
+						<p></p>
+
 						<div class="custom-control custom-radio mb-2">
 							<input class="custom-control-input" type="radio" name="choice[{{ $questionnaire->id }}]" 
 								id="choice[{{ $questionnaire->id }}][{{ $choice->value }}]" 
-								value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
+								value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}
+								:checked="{{ session('assessment.onboarding_answers')[$questionnaire->id] == $choice->value ? '1' : '0' }}">
 								
 							<label class="custom-control-label" for="choice[{{ $questionnaire->id }}][{{ $choice->value }}]">{{$choice->display_name }}</label>
 						</div>
