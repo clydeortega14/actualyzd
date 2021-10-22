@@ -62,11 +62,12 @@
 			isFirsttimer: Number,
 			selfHarm: Number,
 			harmOtherPeople: Number,
-			participants: Array
+			participants: Array,
 		},
 		computed:{
 
 			...mapGetters([
+				"getBooking",
 				"getTimeLists",
 				"getTimeByDate",
 				"getSelectedDate",

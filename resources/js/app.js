@@ -34,6 +34,9 @@ Vue.component('calendar-page', require('./components/CalendarPage.vue').default)
 
 Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue').default);
 
+// Reschedule Calendar Vue Component
+Vue.component('reschedule-calendar', require('./components/bookings/RescheduleCalendar.vue').default);
+
 Vue.component('booking-status', require('./components/bookings/BookingStatus').default);
 
 Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
