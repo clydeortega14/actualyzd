@@ -64,12 +64,12 @@
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="is_firsttimer" value="1" id="firstimer" :checked="{{ session('assessment.is_firsttimer') == 1 ? '1' : '0' }}">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="1" id="firstimer" :checked="{{ session()->has('assessment.is_firsttimer') && session()->has('assessment.is_firsttimer') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="firstimer">First Timer</label>
 											</div>
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="is_firsttimer" value="0" id="repeater" :checked="{{ session('assessment.is_firsttimer') == 0 ? '1' : '0' }}">
+												<input type="radio" class="custom-control-input" name="is_firsttimer" value="0" id="repeater" :checked="{{ session()->has('assessment.is_firsttimer') && session('assessment.is_firsttimer') == 0 ? '1' : '0' }}">
 												<label class="custom-control-label" for="repeater">Repeater</label>
 											</div>
 										</div>
@@ -80,13 +80,13 @@
 										<h3 class="text-info">I have plans to harm myself?</h3>
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" :checked="{{ session('assessment.self_harm') == 1 ? '1' : '0' }}">
+												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" :checked="{{ session()->has('assessment.self_harm') && session('assessment.self_harm') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="1">Yes</label>
 											</div>
 										
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="self_harm" value="0" id="0" :checked="{{ session('assessment.self_harm') == 0 ? '1' : '0' }}">
+												<input type="radio" class="custom-control-input" name="self_harm" value="0" id="0" :checked="{{ session()->has('assessment.self_harm') && session('assessment.self_harm') == 0 ? '1' : '0' }}">
 												<label class="custom-control-label" for="0">No</label>
 											</div>
 										</div>
@@ -99,13 +99,13 @@
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="harm_other_people" value="1" id="yes-harm-other-people" :checked="{{ session('assessment.harm_other_people') == 1 ? '1' : '0' }}">
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="1" id="yes-harm-other-people" :checked="{{ session()->has('assessment.harm_other_people') && session('assessment.harm_other_people') == 1 ? '1' : '0' }}">
 												<label class="custom-control-label" for="yes-harm-other-people">Yes</label>
 											</div>
 										
 
 											<div class="custom-control custom-radio mb-2">
-												<input type="radio" class="custom-control-input" name="harm_other_people" value="0" id="no-harm-other-people" :checked="{{ session('assessment.harm_other_people') == 0 ? '1' : '0' }}" >
+												<input type="radio" class="custom-control-input" name="harm_other_people" value="0" id="no-harm-other-people" :checked="{{ session()->has('assessment.harm_other_people') && session('assessment.harm_other_people') == 0 ? '1' : '0' }}" >
 												<label class="custom-control-label" for="no-harm-other-people">No</label>
 											</div>
 										</div>

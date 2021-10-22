@@ -245,6 +245,9 @@ class BookingProcessController extends Controller
         }
 
         DB::commit();
+
+        // flush the session
+        $request->session()->forget(['assessment', 'participants']);
         
         return redirect()->route(auth()->user()->hasRole('superadmin') ? 'home' : 'member.home')->with('success', 'Successfully booked a session');
     }
