@@ -39,7 +39,7 @@
 							<input class="custom-control-input" type="radio" name="choice[{{ $questionnaire->id }}]" 
 								id="choice[{{ $questionnaire->id }}][{{ $choice->value }}]" 
 								value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}
-								:checked="{{ session('assessment.onboarding_answers')[$questionnaire->id] == $choice->value ? '1' : '0' }}">
+								:checked="{{ session()->has('assessment.onboarding_answers') && session('assessment.onboarding_answers')[$questionnaire->id] == $choice->value ? '1' : '0' }}">
 								
 							<label class="custom-control-label" for="choice[{{ $questionnaire->id }}][{{ $choice->value }}]">{{$choice->display_name }}</label>
 						</div>
