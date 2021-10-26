@@ -8,10 +8,20 @@
 					</div>
 					<div class="modal-body">
 						<!-- Select Time and Psychologists Component -->
+						<div class="row">
+							<div class="col-md-6 border-right">
+								
+							</div>
 
-						<TimeLists />
+							<div class="col-md-6">
+								<TimeLists />
 
-						<Psychologists />
+								<div v-if="show_psychologists_component" >
+									<Psychologists />
+								</div>
+							</div>
+						</div>
+						
 
 					</div>
 				</div>
@@ -30,6 +40,18 @@
 
 	export default {
 		name: "Reschedule",
+		data(){
+			return {
+
+				show_psychologists_component: false
+			}
+		},
+		mounted(){
+
+			EventBus.$on('select-time', data => {
+				this.show_psychologists_component = true;
+			})
+		},
 		components: {
 			TimeLists,
 			Psychologists

@@ -60,20 +60,6 @@
 					</div>
 				</div>
 
-				<div class="card mb-3">
-					<div class="card-body">
-
-						<h5 class="card-title text-center">Recent Schedule</h5>
-
-						<ul class="list-group mt-3">
-							<li class="list-group-item d-flex justify-content-between align-items-center">
-								 Date
-					    	    <span>{{ session('booking')['toSchedule']['start'] }}</span>
-							</li>
-						</ul>
-					</div>
-				</div>
-
 				<form action="{{ route('booking.confirm') }}" method="POST">
 					@csrf
 					<bookings-calendar

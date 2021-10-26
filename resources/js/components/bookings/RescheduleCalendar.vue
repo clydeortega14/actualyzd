@@ -60,7 +60,10 @@
 							let element = this.$refs.rescheduleModal.$el;
 							$(element).modal('show')
 
-							this.$store.commit('setTimeByDate', data.data)
+							this.$store.commit('setSelectedDate', arg.dateStr);
+							this.$store.commit('setTimeByDate', data.data);
+
+							
 						}else{
 
 							Swal.fire('Oops!', 'Selected date has no schedule please select another date', 'error');

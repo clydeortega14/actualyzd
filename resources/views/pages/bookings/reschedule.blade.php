@@ -50,6 +50,14 @@
 			</div>
 
 			<div class="col-md-9">
+
+				<h3 class="mb-3">How ?</h3>
+				<ol class="mb-3 ml-3 border-bottom">
+					<li><p class="lead">Select a rescheduling date in the calendar below.</p></li>
+					<li><p class="lead">Upon clicking the date, a modal will shown that will request you to select the rescheduling time.</p></li>
+					<li><p class="lead">Then click submit.</p></li>
+				</ol>
+
 				<reschedule-calendar></reschedule-calendar>
 			</div>
 

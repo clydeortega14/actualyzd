@@ -17169,14 +17169,51 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Psychologists"
+  name: "Psychologists",
+  data: function data() {
+    return {
+      selected_psychologist: null
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allPsychologists', 'getSelectedDate'])),
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('select-time', function (data) {
+      _this.getPsychologists({
+        date: _this.getSelectedDate,
+        time_id: data.id
+      });
+    });
+  },
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"]))
 });
 
 /***/ }),
@@ -17250,6 +17287,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           if (data.data.length > 0) {
             var element = _this.$refs.rescheduleModal.$el;
             $(element).modal('show');
+
+            _this.$store.commit('setSelectedDate', arg.dateStr);
 
             _this.$store.commit('setTimeByDate', data.data);
           } else {
@@ -17476,6 +17515,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_datetime_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/datetime.js */ "./resources/js/mixins/datetime.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -17483,8 +17530,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "TimeLists"
+  name: "TimeLists",
+  mixins: [_mixins_datetime_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      selected_time: {}
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getTimeByDate"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["timeByDate"])),
+  watch: {
+    selected_time: function selected_time(value) {
+      EventBus.$emit('select-time', value);
+    }
+  }
 });
 
 /***/ }),
@@ -17707,10 +17775,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Reschedule",
+  data: function data() {
+    return {
+      show_psychologists_component: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('select-time', function (data) {
+      _this.show_psychologists_component = true;
+    });
+  },
   components: {
     TimeLists: _bookings_Timelists_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Psychologists: _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -99725,20 +99815,62 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
+        _vm._v("Select Psychologist")
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.allPsychologists, function(psychologist, index) {
+        return _c(
+          "div",
+          { staticClass: "custom-control custom-radio mb-3 ml-3" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selected_psychologist,
+                  expression: "selected_psychologist"
+                }
+              ],
+              staticClass: "custom-control-input",
+              attrs: { type: "radio", id: "psychologist-" + psychologist.id },
+              domProps: {
+                value: { id: psychologist.id, name: psychologist.name },
+                checked: _vm._q(_vm.selected_psychologist, {
+                  id: psychologist.id,
+                  name: psychologist.name
+                })
+              },
+              on: {
+                change: function($event) {
+                  _vm.selected_psychologist = {
+                    id: psychologist.id,
+                    name: psychologist.name
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "custom-control-label",
+                attrs: { for: "psychologist-" + psychologist.id }
+              },
+              [_vm._v(_vm._s(psychologist.name))]
+            )
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h5", { staticClass: "card-title mb-3" }, [
-        _vm._v("Select a prefered time")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -99979,20 +100111,73 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
+        _vm._v("Select Time")
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.getTimeByDate, function(time, index) {
+        return _c(
+          "div",
+          { key: index, staticClass: "custom-control custom-radio mb-3 ml-3" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selected_time,
+                  expression: "selected_time"
+                }
+              ],
+              staticClass: "custom-control-input",
+              attrs: { type: "radio", id: "time-" + time.time_list.id },
+              domProps: {
+                value: {
+                  id: time.time_list.id,
+                  name: time.time_list.from + " - " + time.time_list.to
+                },
+                checked: _vm._q(_vm.selected_time, {
+                  id: time.time_list.id,
+                  name: time.time_list.from + " - " + time.time_list.to
+                })
+              },
+              on: {
+                change: function($event) {
+                  _vm.selected_time = {
+                    id: time.time_list.id,
+                    name: time.time_list.from + " - " + time.time_list.to
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "custom-control-label",
+                attrs: { for: "time-" + time.time_list.id }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm.wholeTime(time.time_list.from) +
+                      " - " +
+                      _vm.wholeTime(time.time_list.to)
+                  )
+                )
+              ]
+            )
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("h5", { staticClass: "card-title mb-3" }, [
-        _vm._v("Select a prefered time")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -100258,12 +100443,24 @@ var render = function() {
         _c("div", { staticClass: "modal-content" }, [
           _vm._m(0),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "modal-body" },
-            [_c("TimeLists"), _vm._v(" "), _c("Psychologists")],
-            1
-          )
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6 border-right" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("TimeLists"),
+                  _vm._v(" "),
+                  _vm.show_psychologists_component
+                    ? _c("div", [_c("Psychologists")], 1)
+                    : _vm._e()
+                ],
+                1
+              )
+            ])
+          ])
         ])
       ])
     ]

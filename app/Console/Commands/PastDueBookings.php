@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Bookings\PastDue;
 
 class PastDueBookings extends Command
 {
@@ -25,9 +26,13 @@ class PastDueBookings extends Command
      *
      * @return void
      */
-    public function __construct()
+    protected $pastdue;
+
+    public function __construct(PastDue $pastdue)
     {
         parent::__construct();
+
+        $this->pastdue = $pastdue;
     }
 
     /**
@@ -38,5 +43,7 @@ class PastDueBookings extends Command
     public function handle()
     {
         // must send and email to each an every psychologist that hasn't completed / closed the session / booking;
+
+        $this->pastdue->bookings();
     }
 }
