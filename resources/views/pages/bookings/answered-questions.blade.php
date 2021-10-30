@@ -230,14 +230,14 @@
 						<div class="form-group row">
 							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Status</label>
 							<div class="col-sm-6">
-								<booking-status 
+								{{-- <booking-status 
 									:session-status="{{ $booking->toStatus->name }}"
 									:booking-id="{{ $booking->id }}"
 									:booking-status="{{ $booking->status }}"
 									:cancelled="{{ is_null($booking->cancelled) ? new stdClass() :  $booking->cancelled }}"
 									>
 										
-								</booking-status>
+								</booking-status> --}}
 							</div>
 						</div>
 
