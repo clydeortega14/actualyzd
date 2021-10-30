@@ -274,13 +274,19 @@ class BookingController extends Controller
     //     return redirect()->back()->with('success', 'No Show!');
     // }
 
-    // public function reschedule(Booking $booking)
-    // {
-    //     // $time_lists = $this->time_lists;
-    //     // $categories = $this->categories;
+    public function reschedule(Booking $booking)
+    {
 
-    //    $booking = $booking->with(['toSchedule'])->first();
+        $booking->load([
+            'toSchedule.psych', 
+            'time',
+            'sessionType',
+            'toStatus',
+            'reschedule',
+            'cancelled.reasonOption'
 
-    //     return view('pages.bookings.reschedule', compact('booking'));
-    // }
+       ]);
+
+        return view('pages.bookings.reschedule', compact('booking'));
+    }
 }

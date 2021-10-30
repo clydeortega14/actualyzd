@@ -55,6 +55,7 @@
 								:booking-status="booking.to_status.id"
 								:reschedule="booking.reschedule"
 								:cancelled="booking.cancelled"
+								:own-booking="booking"
 							/>
 						</td>
 						<td>

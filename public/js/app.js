@@ -16885,6 +16885,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -16989,9 +16990,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     bookingId: Number,
     bookingStatus: Number,
     reschedule: Object,
-    cancelled: Object
+    cancelled: Object,
+    ownBooking: Object
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getActions"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getActions", "getBooking"])),
   created: function created() {
     this.getBookingStatuses();
   },
@@ -17007,17 +17009,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
     },
     update: function update() {
+      var payload = {
+        id: this.bookingId,
+        status: this.status_option
+      };
+
       if (this.status_option === 2) {
         window.location.href = "".concat(window.location.origin, "/progress-reports/create-for-booking/").concat(this.bookingId);
       } else if (this.status_option === 4) {
         window.location.href = "".concat(window.location.origin, "/bookings/cancel/").concat(this.bookingId);
       } else if (this.status_option === 5) {
-        alert('feature not available for now, coming soon');
+        window.location.href = "".concat(window.location.origin, "/bookings/reschedule/").concat(this.bookingId);
       } else {
-        var payload = {
-          id: this.bookingId,
-          status: this.status_option
-        };
         this.updateStatus(payload).then(function (res) {
           if (res.data.success) {
             sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Success!', res.data.message, 'success');
@@ -17115,7 +17118,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     harmOtherPeople: Number,
     participants: Array
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapGetters"])(["getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_6__["mapGetters"])(["getBooking", "getTimeLists", "getTimeByDate", "getSelectedDate", "getSelectedTime", "getSelectedPsychologist"])),
   components: {
     TimeComponent: _TimeComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     TimePsych: _modals_TimePsych__WEBPACK_IMPORTED_MODULE_4__["default"]
@@ -17151,6 +17154,150 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     selectTime: function selectTime(time) {
       this.show_actions = true;
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Psychologists",
+  data: function data() {
+    return {
+      selected_psychologist: null
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allPsychologists', 'getSelectedDate'])),
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('select-time', function (data) {
+      _this.getPsychologists({
+        date: _this.getSelectedDate,
+        time_id: data.id
+      });
+    });
+  },
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"]))
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fullcalendar/vue */ "./node_modules/@fullcalendar/vue/dist/main.js");
+/* harmony import */ var _fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fullcalendar/daygrid */ "./node_modules/@fullcalendar/daygrid/main.js");
+/* harmony import */ var _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fullcalendar/interaction */ "./node_modules/@fullcalendar/interaction/main.js");
+/* harmony import */ var _modals_Reschedule_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../modals/Reschedule.vue */ "./resources/js/components/modals/Reschedule.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_5__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "RescheduleCalendar",
+  data: function data() {
+    return {
+      options: {
+        plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
+        initialView: 'dayGridMonth',
+        selectable: true,
+        dateClick: this.handleDateClick,
+        events: {
+          url: '/psychologist/schedules'
+        }
+      }
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])(["getTimeByDate"])),
+  components: {
+    Reschedule: _modals_Reschedule_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])(["timeByDate"])), {}, {
+    handleDateClick: function handleDateClick(arg) {
+      var _this = this;
+
+      this.timeByDate({
+        date: arg.dateStr
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data.success) {
+          if (data.data.length > 0) {
+            var element = _this.$refs.rescheduleModal.$el;
+            $(element).modal('show');
+
+            _this.$store.commit('setSelectedDate', arg.dateStr);
+
+            _this.$store.commit('setTimeByDate', data.data);
+          } else {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire('Oops!', 'Selected date has no schedule please select another date', 'error');
+          }
+        }
+      })["catch"](function (error) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a.fire('Oops!', error, 'error');
+      });
     }
   })
 });
@@ -17359,6 +17506,57 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_datetime_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/datetime.js */ "./resources/js/mixins/datetime.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TimeLists",
+  mixins: [_mixins_datetime_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  data: function data() {
+    return {
+      selected_time: {}
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getTimeByDate"])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["timeByDate"])),
+  watch: {
+    selected_time: function selected_time(value) {
+      EventBus.$emit('select-time', value);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/clients/ClientParticipant.vue?vue&type=script&lang=js& ***!
@@ -17536,6 +17734,76 @@ __webpack_require__.r(__webpack_exports__);
     selectATime: function selectATime(id) {
       console.log(id);
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _bookings_Timelists_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../bookings/Timelists.vue */ "./resources/js/components/bookings/Timelists.vue");
+/* harmony import */ var _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bookings/Psychologists.vue */ "./resources/js/components/bookings/Psychologists.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Reschedule",
+  data: function data() {
+    return {
+      show_psychologists_component: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('select-time', function (data) {
+      _this.show_psychologists_component = true;
+    });
+  },
+  components: {
+    TimeLists: _bookings_Timelists_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Psychologists: _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -99267,7 +99535,8 @@ var render = function() {
                         "booking-id": booking.id,
                         "booking-status": booking.to_status.id,
                         reschedule: booking.reschedule,
-                        cancelled: booking.cancelled
+                        cancelled: booking.cancelled,
+                        "own-booking": booking
                       }
                     })
                   ],
@@ -99531,6 +99800,115 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&":
+/*!*************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af& ***!
+  \*************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
+        _vm._v("Select Psychologist")
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.allPsychologists, function(psychologist, index) {
+        return _c(
+          "div",
+          { staticClass: "custom-control custom-radio mb-3 ml-3" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selected_psychologist,
+                  expression: "selected_psychologist"
+                }
+              ],
+              staticClass: "custom-control-input",
+              attrs: { type: "radio", id: "psychologist-" + psychologist.id },
+              domProps: {
+                value: { id: psychologist.id, name: psychologist.name },
+                checked: _vm._q(_vm.selected_psychologist, {
+                  id: psychologist.id,
+                  name: psychologist.name
+                })
+              },
+              on: {
+                change: function($event) {
+                  _vm.selected_psychologist = {
+                    id: psychologist.id,
+                    name: psychologist.name
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "custom-control-label",
+                attrs: { for: "psychologist-" + psychologist.id }
+              },
+              [_vm._v(_vm._s(psychologist.name))]
+            )
+          ]
+        )
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("FullCalendar", { attrs: { options: _vm.options } }),
+      _vm._v(" "),
+      _c("Reschedule", { ref: "rescheduleModal" })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7&":
 /*!*************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/ReviewBooking.vue?vue&type=template&id=0d5115b7& ***!
@@ -99710,6 +100088,94 @@ var render = function() {
       0
     )
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
+        _vm._v("Select Time")
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.getTimeByDate, function(time, index) {
+        return _c(
+          "div",
+          { key: index, staticClass: "custom-control custom-radio mb-3 ml-3" },
+          [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selected_time,
+                  expression: "selected_time"
+                }
+              ],
+              staticClass: "custom-control-input",
+              attrs: { type: "radio", id: "time-" + time.time_list.id },
+              domProps: {
+                value: {
+                  id: time.time_list.id,
+                  name: time.time_list.from + " - " + time.time_list.to
+                },
+                checked: _vm._q(_vm.selected_time, {
+                  id: time.time_list.id,
+                  name: time.time_list.from + " - " + time.time_list.to
+                })
+              },
+              on: {
+                change: function($event) {
+                  _vm.selected_time = {
+                    id: time.time_list.id,
+                    name: time.time_list.from + " - " + time.time_list.to
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "custom-control-label",
+                attrs: { for: "time-" + time.time_list.id }
+              },
+              [
+                _vm._v(
+                  _vm._s(
+                    _vm.wholeTime(time.time_list.from) +
+                      " - " +
+                      _vm.wholeTime(time.time_list.to)
+                  )
+                )
+              ]
+            )
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -99935,6 +100401,81 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        "data-backdrop": "static",
+        "data-keyboard": "false",
+        tabindex: "-1",
+        "aria-labelledby": "rescheduleLabel",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog modal-lg" }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6 border-right" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("TimeLists"),
+                  _vm._v(" "),
+                  _vm.show_psychologists_component
+                    ? _c("div", [_c("Psychologists")], 1)
+                    : _vm._e()
+                ],
+                1
+              )
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "rescheduleLabel" } },
+        [_vm._v("Please Select Time and Psychologist")]
       )
     ])
   }
@@ -100219,7 +100760,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "timePsychLabel" } },
-        [_vm._v("Book A session")]
+        [_vm._v("Select Date, Time and Psychologist")]
       )
     ])
   }
@@ -115198,7 +115739,9 @@ window.EventBus = new Vue(); // import modal from 'vue-js-modal';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('calendar-page', __webpack_require__(/*! ./components/CalendarPage.vue */ "./resources/js/components/CalendarPage.vue")["default"]);
-Vue.component('bookings-calendar', __webpack_require__(/*! ./components/bookings/Calendar.vue */ "./resources/js/components/bookings/Calendar.vue")["default"]);
+Vue.component('bookings-calendar', __webpack_require__(/*! ./components/bookings/Calendar.vue */ "./resources/js/components/bookings/Calendar.vue")["default"]); // Reschedule Calendar Vue Component
+
+Vue.component('reschedule-calendar', __webpack_require__(/*! ./components/bookings/RescheduleCalendar.vue */ "./resources/js/components/bookings/RescheduleCalendar.vue")["default"]);
 Vue.component('booking-status', __webpack_require__(/*! ./components/bookings/BookingStatus */ "./resources/js/components/bookings/BookingStatus.vue")["default"]);
 Vue.component('bookings-lists', __webpack_require__(/*! ./components/bookings/BookingList.vue */ "./resources/js/components/bookings/BookingList.vue")["default"]); // Review Bookings Component
 
@@ -115866,6 +116409,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/bookings/Psychologists.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/bookings/Psychologists.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=template&id=29d6e9af& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&");
+/* harmony import */ var _Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/bookings/Psychologists.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af& ***!
+  \*******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=template&id=29d6e9af& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/RescheduleCalendar.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/bookings/RescheduleCalendar.vue ***!
+  \*****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c& */ "./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c&");
+/* harmony import */ var _RescheduleCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RescheduleCalendar.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RescheduleCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/bookings/RescheduleCalendar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RescheduleCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./RescheduleCalendar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RescheduleCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c& ***!
+  \************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/RescheduleCalendar.vue?vue&type=template&id=7d1d1a7c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RescheduleCalendar_vue_vue_type_template_id_7d1d1a7c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/bookings/ReviewBooking.vue":
 /*!************************************************************!*\
   !*** ./resources/js/components/bookings/ReviewBooking.vue ***!
@@ -115999,6 +116680,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatusNav_vue_vue_type_template_id_81a00ab2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_StatusNav_vue_vue_type_template_id_81a00ab2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Timelists.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/bookings/Timelists.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Timelists.vue?vue&type=template&id=f85f4784& */ "./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784&");
+/* harmony import */ var _Timelists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Timelists.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Timelists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/bookings/Timelists.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Timelists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Timelists.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Timelists.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Timelists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Timelists.vue?vue&type=template&id=f85f4784& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Timelists.vue?vue&type=template&id=f85f4784&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Timelists_vue_vue_type_template_id_f85f4784___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -116187,6 +116937,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Booking_vue_vue_type_template_id_454f4cca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Booking_vue_vue_type_template_id_454f4cca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/Reschedule.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/modals/Reschedule.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Reschedule.vue?vue&type=template&id=af818010& */ "./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010&");
+/* harmony import */ var _Reschedule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Reschedule.vue?vue&type=script&lang=js& */ "./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Reschedule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modals/Reschedule.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reschedule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Reschedule.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/Reschedule.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Reschedule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Reschedule.vue?vue&type=template&id=af818010& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modals/Reschedule.vue?vue&type=template&id=af818010&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Reschedule_vue_vue_type_template_id_af818010___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

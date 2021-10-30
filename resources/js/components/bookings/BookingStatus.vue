@@ -43,10 +43,11 @@
 			bookingId: Number,
 			bookingStatus: Number,
 			reschedule: Object,
-			cancelled: Object
+			cancelled: Object,
+			ownBooking: Object
 		},
 		computed: {
-			...mapGetters(["getActions"])
+			...mapGetters(["getActions", "getBooking"])
 		},
 		created(){
 			this.getBookingStatuses()
@@ -65,6 +66,11 @@
 			},
 			update(){
 
+				let payload = {
+					id: this.bookingId,
+					status: this.status_option
+				}
+
 				if(this.status_option === 2){
 
 					window.location.href = `${window.location.origin}/progress-reports/create-for-booking/${this.bookingId}`;
@@ -75,14 +81,11 @@
 
 				}else if(this.status_option === 5){
 
-					alert('feature not available for now, coming soon');
+					window.location.href = `${window.location.origin}/bookings/reschedule/${this.bookingId}`;
 
 				}else{
 
-					let payload = {
-						id: this.bookingId,
-						status: this.status_option
-					}
+					
 					this.updateStatus(payload).then(res => {
 						if(res.data.success){
 							Swal.fire('Success!', res.data.message, 'success');

@@ -12,8 +12,8 @@ class MemberController extends Controller
 
     public function home()
     {
-        if(request()->session()->has('assessment') || request()->session()->has('booking_details')){
-            request()->session()->forget(['assessment', 'booking_details']);
+        if(request()->session()->has('assessment') || request()->session()->has('booking_details') || request()->session()->has('booking')){
+            request()->session()->forget(['assessment', 'booking_details', 'booking']);
         }
 
         $bookings =  $this->bookingsQuery();

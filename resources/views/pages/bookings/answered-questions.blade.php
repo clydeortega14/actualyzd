@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container-fluid">
-		<div class="row">
+	<div class="container">
+		<div class="row justify-content-center">
 			<div class="col-md-12">
 				@include('alerts.message')
-				{{ Breadcrumbs::render('booking.answered.questions', $booking) }}
+				{{-- {{ Breadcrumbs::render('booking.answered.questions', $booking) }} --}}
 			</div>
 
-			<div class="col-md-3">
+			{{-- <div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-header">Actions</div>
 					<div class="card-body">
@@ -76,10 +76,10 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> --}}
 			
 
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<div class="card mb-3">
 					<div class="card-header">
 						<div class="d-sm-flex justify-content-between">
@@ -146,27 +146,35 @@
 								<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
 							</div>
 						</div>
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
-							<div class="col-sm-6">
-								@if(count($booking->participants) > 0)
-									<ul class="mt-2">
-										@foreach($booking->participants as $participant)
-											<li>{{ $participant->name }}</li>
-										@endforeach
-									</ul>
-								@else
-									<span class="badge badge-secondary">Not Available</span>
-								@endif
-							</div>
-						</div>
 
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Psychologist</label>
-							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->toSchedule->psych->name }}" readonly class="form-control">
+						@if(auth()->user()->hasRole('psychologist'))
+							<div class="form-group row">
+								<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
+								<div class="col-sm-6">
+									@if(is_null($booking->counselee) && count($booking->participants) > 0)
+
+
+										{{-- <ul class="mt-2"> --}}
+											@foreach($booking->participants as $participant)
+											<input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control">
+												{{-- <li>{{ $participant->name }}</li> --}}
+											@endforeach
+										{{-- </ul> --}}
+									@else
+										<input type="text" name="participant" value="{{ $booking->toCounselee->name }}" readonly class="form-control">
+									@endif
+								</div>
 							</div>
-						</div>
+						@endif
+
+						@if(auth()->user()->hasRole('member'))
+							<div class="form-group row">
+								<label for="company" class="col-form-label col-sm-4 text-md-right">Psychologist</label>
+								<div class="col-sm-6">
+									<input type="text" value="{{ $booking->toSchedule->psych->name }}" readonly class="form-control">
+								</div>
+							</div>
+						@endif
 
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Type Of Session</label>
@@ -197,6 +205,42 @@
 								<input type="text" value="{{ $booking->toStatus->name }}" class="form-control" readonly>
 							</div>
 						</div>
+
+						<div class="form-group row">
+							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Firstimer / Repeater</label>
+							<div class="col-sm-6">
+								<input type="text" readonly value="{{ $booking->is_firstimer ? 'Firstimer' : 'Repeater' }}" class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Intent to self harm</label>
+							<div class="col-sm-6">
+								<input type="text" readonly value="{{ $booking->self_harm ? 'YES' : 'NO' }}" class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Intent to harm other people</label>
+							<div class="col-sm-6">
+								<input type="text" readonly value="{{ $booking->harm_other_people ? 'YES' : 'NO' }}" class="form-control">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Status</label>
+							<div class="col-sm-6">
+								{{-- <booking-status 
+									:session-status="{{ $booking->toStatus->name }}"
+									:booking-id="{{ $booking->id }}"
+									:booking-status="{{ $booking->status }}"
+									:cancelled="{{ is_null($booking->cancelled) ? new stdClass() :  $booking->cancelled }}"
+									>
+										
+								</booking-status> --}}
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
