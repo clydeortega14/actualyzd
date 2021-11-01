@@ -21,6 +21,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('photo', 'UsersController@uploadAvatar');
 });
 
+
+/*-- Reason Option Route -- */
+Route::get('get-reasons-lists', 'Api\ReasonController@index');
+
 // Chat Messages API
 Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
 

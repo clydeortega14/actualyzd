@@ -10,19 +10,31 @@
 						<!-- Select Time and Psychologists Component -->
 						<div class="row">
 							<div class="col-md-6 border-right">
-								
+								<!-- Review Booking Component -->
+								<RescheduleReview />
+
 							</div>
 
 							<div class="col-md-6">
+								<!-- Time Lists Component -->
 								<TimeLists />
 
-								<div v-if="show_psychologists_component" >
-									<Psychologists />
-								</div>
+								<!-- Psychologist Component -->
+								<Psychologists />
+
+								<!-- Reason For Rescheduling Component -->
+								<ReasonComponent />
+								
 							</div>
 						</div>
-						
+					</div>
 
+					<div class="modal-footer">
+						<button class="btn btn-primary" type="submit" :disabled="disabledSaveChanges">
+							<i class="fa fa-check"></i>
+							<span>Save Changes</span>
+						</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Cancel</button>
 					</div>
 				</div>
 				
@@ -37,24 +49,52 @@
 	
 	import TimeLists from '../bookings/Timelists.vue';
 	import Psychologists from '../bookings/Psychologists.vue';
+	import RescheduleReview from '../bookings/RescheduleReview.vue';
+	import ReasonComponent from '../bookings/ReasonComponent.vue';
+
+	import { mapGetters, mapActions } from 'vuex';
 
 	export default {
 		name: "Reschedule",
 		data(){
 			return {
 
-				show_psychologists_component: false
+				show_psychologists_component: false,
+				disabledSaveChanges: true
 			}
 		},
-		mounted(){
+		computed: {
 
-			EventBus.$on('select-time', data => {
-				this.show_psychologists_component = true;
+			...mapGetters([
+				// "getSelectedDate"
+			])
+		},
+		mounted(){
+			EventBus.$on('select-a-reason', (data) => {
+				console.log(data)
+
+				if(data.reason.id !== 5 || data.reason.name !== "Others"){
+
+					this.disabledSaveChanges = false;
+
+				}else if(data.others_specify.length > 10){
+
+					this.disabledSaveChanges = false;
+				}else{
+
+					this.disabledSaveChanges = true;
+				}
+
 			})
 		},
 		components: {
 			TimeLists,
-			Psychologists
+			Psychologists,
+			RescheduleReview,
+			ReasonComponent
+		},
+		methods: {
+			// ...mapActions(["getPsychologists"])
 		}
 	}
 </script>
