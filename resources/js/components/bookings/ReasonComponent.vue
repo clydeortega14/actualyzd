@@ -85,6 +85,8 @@
 			},
 			others_specify(value){
 
+				EventBus.$emit('enable-save-button', value)
+				
 				this.$store.commit('setSelectedReasonName', value)
 			}
 		}

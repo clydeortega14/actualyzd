@@ -17320,6 +17320,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     others_specify: function others_specify(value) {
+      EventBus.$emit('enable-save-button', value);
       this.$store.commit('setSelectedReasonName', value);
     }
   }
@@ -17989,15 +17990,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     EventBus.$on('select-a-reason', function (data) {
-      console.log(data);
-
-      if (data.reason.id !== 5 || data.reason.name !== "Others") {
-        _this.disabledSaveChanges = false;
-      } else if (data.others_specify.length > 10) {
-        _this.disabledSaveChanges = false;
-      } else {
-        _this.disabledSaveChanges = true;
-      }
+      _this.disabledSaveChanges = data.reason.id !== 5 || data.reason.name !== "Others" ? false : true;
+    });
+    EventBus.$on('enable-save-button', function (data) {
+      _this.disabledSaveChanges = data.length >= 10 ? false : true;
+    });
+    EventBus.$on('select-time', function (data) {
+      _this.disabledSaveChanges = true;
     });
   },
   components: {

@@ -8,7 +8,7 @@ class RescheduledBooking extends Model
 {
     protected $table = 'rescheduled_bookings';
 
-    protected $fillable = ['booking_id', 'updated_by', 'reason'];
+    protected $fillable = ['booking_id', 'updated_by', 'reason_option_id'];
 
     public function booking()
     {
@@ -18,5 +18,10 @@ class RescheduledBooking extends Model
     public function updatedBy()
     {
     	return $this->belongsTo(User::class);
+    }
+
+    public function reasonOption(){
+
+        return $this->belongsTo(ReasonOption::class, 'reason_option_id');
     }
 }

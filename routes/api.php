@@ -24,6 +24,14 @@ Route::middleware('auth:api')->group(function () {
 
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');
+    
+/*-- Booking Route Group -- */
+Route::prefix('booking')->group(function(){
+
+    /* -- Submit Reschedule Booking Route -- */
+    Route::post('reschedule', 'Api\BookingController@reschedule');
+
+});
 
 // Chat Messages API
 Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');

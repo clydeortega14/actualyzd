@@ -71,20 +71,19 @@
 		},
 		mounted(){
 			EventBus.$on('select-a-reason', (data) => {
-				console.log(data)
 
-				if(data.reason.id !== 5 || data.reason.name !== "Others"){
+				this.disabledSaveChanges = data.reason.id !== 5 || data.reason.name !== "Others" ? false : true
+			});
 
-					this.disabledSaveChanges = false;
+			EventBus.$on('enable-save-button', (data) => {
 
-				}else if(data.others_specify.length > 10){
+				this.disabledSaveChanges = data.length >= 10 ? false : true;
+			});
 
-					this.disabledSaveChanges = false;
-				}else{
 
-					this.disabledSaveChanges = true;
-				}
+			EventBus.$on('select-time', (data) => {
 
+				this.disabledSaveChanges = true;
 			})
 		},
 		components: {
