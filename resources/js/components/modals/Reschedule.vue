@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<button class="btn btn-primary" type="submit" :disabled="disabledSaveChanges">
+						<button class="btn btn-primary" type="submit" :disabled="disabledSaveChanges" @click="saveRescheduleBooking">
 							<i class="fa fa-check"></i>
 							<span>Save Changes</span>
 						</button>
@@ -52,6 +52,8 @@
 	import RescheduleReview from '../bookings/RescheduleReview.vue';
 	import ReasonComponent from '../bookings/ReasonComponent.vue';
 
+	import Swal from 'sweetalert2';
+
 	import { mapGetters, mapActions } from 'vuex';
 
 	export default {
@@ -66,7 +68,13 @@
 		computed: {
 
 			...mapGetters([
-				// "getSelectedDate"
+				"getBooking",
+				"getSelectedDate",
+				"getSelectedTimeId",
+				"getSelectedPsychologistId",
+				"getSelectedReasonID",
+				"getSelectedReasonName",
+				"getUserId"
 			])
 		},
 		mounted(){
@@ -93,7 +101,36 @@
 			ReasonComponent
 		},
 		methods: {
-			// ...mapActions(["getPsychologists"])
+			...mapActions(["rescheduleBooking"]),
+			saveRescheduleBooking(e){
+
+				e.preventDefault();
+
+				let payload = {
+
+					booking_id: this.getBooking.id,
+					date: this.getSelectedDate,
+					time_id: this.getSelectedTimeId,
+					psychologist_id: this.getSelectedPsychologistId,
+					reason_option_id: this.getSelectedReasonID,
+					updated_by: this.getUserId,
+					others_specify: this.getSelectedReasonName
+				}
+				
+				this.rescheduleBooking(payload)
+					.then(response => {
+
+						console.log(response)
+					})
+					.catch(error => {
+
+						// this means it is an validation error
+						if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
+
+							Swal.fire('Oops!', error.response.data.message, 'error')
+						}
+					})
+			}
 		}
 	}
 </script>

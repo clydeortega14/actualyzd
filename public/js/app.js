@@ -17384,6 +17384,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     Reschedule: _modals_Reschedule_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  props: {
+    booking: Object,
+    user: Object
+  },
+  mounted: function mounted() {
+    this.$store.commit('setBooking', this.booking);
+    this.$store.commit('setUserId', this.user.id);
+    this.$store.commit('setUserName', this.user.name);
+    this.$store.commit('setUserEmail', this.user.email);
+  },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])(["timeByDate"])), {}, {
     handleDateClick: function handleDateClick(arg) {
       var _this = this;
@@ -17917,7 +17927,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bookings/Psychologists.vue */ "./resources/js/components/bookings/Psychologists.vue");
 /* harmony import */ var _bookings_RescheduleReview_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/RescheduleReview.vue */ "./resources/js/components/bookings/RescheduleReview.vue");
 /* harmony import */ var _bookings_ReasonComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../bookings/ReasonComponent.vue */ "./resources/js/components/bookings/ReasonComponent.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -17976,6 +17988,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Reschedule",
   data: function data() {
@@ -17984,8 +17997,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       disabledSaveChanges: true
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])([// "getSelectedDate"
-  ])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapGetters"])(["getBooking", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologistId", "getSelectedReasonID", "getSelectedReasonName", "getUserId"])),
   mounted: function mounted() {
     var _this = this;
 
@@ -18005,8 +18017,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     RescheduleReview: _bookings_RescheduleReview_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
     ReasonComponent: _bookings_ReasonComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  methods: {// ...mapActions(["getPsychologists"])
-  }
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_5__["mapActions"])(["rescheduleBooking"])), {}, {
+    saveRescheduleBooking: function saveRescheduleBooking(e) {
+      e.preventDefault();
+      var payload = {
+        booking_id: this.getBooking.id,
+        date: this.getSelectedDate,
+        time_id: this.getSelectedTimeId,
+        psychologist_id: this.getSelectedPsychologistId,
+        reason_option_id: this.getSelectedReasonID,
+        updated_by: this.getUserId,
+        others_specify: this.getSelectedReasonName
+      };
+      this.rescheduleBooking(payload).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        // this means it is an validation error
+        if (error.response.status === 422 || !error.response.data.success || error.response.status === 403) {
+          sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire('Oops!', error.response.data.message, 'error');
+        }
+      });
+    }
+  })
 });
 
 /***/ }),
@@ -100879,7 +100911,8 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-primary",
-                attrs: { type: "submit", disabled: _vm.disabledSaveChanges }
+                attrs: { type: "submit", disabled: _vm.disabledSaveChanges },
+                on: { click: _vm.saveRescheduleBooking }
               },
               [
                 _c("i", { staticClass: "fa fa-check" }),
@@ -118873,6 +118906,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/chat-message.js */ "./resources/js/store/modules/chat-message.js");
 /* harmony import */ var _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/video-call.js */ "./resources/js/store/modules/video-call.js");
 /* harmony import */ var _modules_reasons_lists_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/reasons-lists.js */ "./resources/js/store/modules/reasons-lists.js");
+/* harmony import */ var _modules_user_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/user.js */ "./resources/js/store/modules/user.js");
+
 
 
 
@@ -118899,7 +118934,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     session_types: _modules_session_type_js__WEBPACK_IMPORTED_MODULE_9__["default"],
     chat_messages: _modules_chat_message_js__WEBPACK_IMPORTED_MODULE_10__["default"],
     video_call: _modules_video_call_js__WEBPACK_IMPORTED_MODULE_11__["default"],
-    reasons_lists: _modules_reasons_lists_js__WEBPACK_IMPORTED_MODULE_12__["default"]
+    reasons_lists: _modules_reasons_lists_js__WEBPACK_IMPORTED_MODULE_12__["default"],
+    user: _modules_user_js__WEBPACK_IMPORTED_MODULE_13__["default"]
   }
 }));
 
@@ -119051,6 +119087,16 @@ var actions = {
         }
       }, _callee2);
     }))();
+  },
+  rescheduleBooking: function rescheduleBooking(_ref5, payload) {
+    var context = _ref5.context;
+    return new Promise(function (resolve, reject) {
+      axios.post('/api/booking/reschedule', payload).then(function (response) {
+        return resolve(response);
+      })["catch"](function (error) {
+        return reject(error);
+      });
+    });
   }
 };
 var mutations = {
@@ -119884,6 +119930,56 @@ var actions = {
 var mutations = {
   setSessionTypes: function setSessionTypes(state, session_types) {
     return state.session_types = session_types;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state(),
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/user.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/user.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = function state() {
+  return {
+    user_id: null,
+    user_name: null,
+    user_email: null
+  };
+};
+
+var getters = {
+  getUserId: function getUserId(state) {
+    return state.user_id;
+  },
+  getUserName: function getUserName(state) {
+    return state.user_name;
+  },
+  getUserEmail: function getUserEmail(state) {
+    return state.user_email;
+  }
+};
+var actions = {//
+};
+var mutations = {
+  setUserId: function setUserId(state, user_id) {
+    return state.user_id = user_id;
+  },
+  setUserName: function setUserName(state, user_name) {
+    return state.user_name = user_name;
+  },
+  setUserEmail: function setUserEmail(state, user_email) {
+    return state.user_email = user_email;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

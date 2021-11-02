@@ -27,10 +27,9 @@ Route::get('get-reasons-lists', 'Api\ReasonController@index');
     
 /*-- Booking Route Group -- */
 Route::prefix('booking')->group(function(){
-
+    
     /* -- Submit Reschedule Booking Route -- */
     Route::post('reschedule', 'Api\BookingController@reschedule');
-
 });
 
 // Chat Messages API

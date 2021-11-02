@@ -24,4 +24,9 @@ class RescheduledBooking extends Model
 
         return $this->belongsTo(ReasonOption::class, 'reason_option_id');
     }
+
+    public function othersSpecify(){
+
+        return $this->hasOne(SpecifyOtherReason::class);
+    }
 }

@@ -11,6 +11,7 @@ import session_types from './modules/session-type.js';
 import chat_messages from './modules/chat-message.js';
 import video_call from './modules/video-call.js';
 import reasons_lists from './modules/reasons-lists.js';
+import user from './modules/user.js';
 
 Vue.use(Vuex)
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
 		session_types,
 		chat_messages,
 		video_call,
-		reasons_lists
+		reasons_lists,
+		user
 	}
 })

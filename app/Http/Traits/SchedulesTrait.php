@@ -98,4 +98,25 @@ trait SchedulesTrait {
 
         return $time_lists;
     }
+
+    protected function findSchedule(array $data){
+
+        return PsychologistSchedule::where([
+
+            ['start', $data['date'] ],
+            ['time_id', $data['time_id'] ],
+            ['psychologist', $data['psychologist_id'] ]
+
+        ])->first();
+    }
+
+    protected function isScheduleBooked($schedule){
+
+        if($schedule->is_booked){
+
+            return true;
+        }
+
+        return false;
+    }
 }
