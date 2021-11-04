@@ -1,6 +1,6 @@
 body {
     font-family: 'Poppins', sans-serif;
-    background: #fafafa;
+    /*background: #F0F3F4;*/
 }
 
 p {
@@ -39,7 +39,7 @@ a[data-toggle="collapse"] {
 #content {
 
     width: 100%;
-    background-color: #F0F3F4 ;
+    background-color: #F0F3F4;
 }
 
 /* Styling Sidebars */
