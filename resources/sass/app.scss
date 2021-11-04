@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
 // Variables
 @import 'variables';
@@ -7,9 +7,9 @@
 $fa-font-path: "../webfonts";
 
 // Bootstrap
-@import "~bootswatch/dist/minty/variables";
+//@import "~bootswatch/dist/minty/variables";
 @import '~bootstrap/scss/bootstrap';
-@import "~bootswatch/dist/minty/bootswatch";
+//@import "~bootswatch/dist/minty/bootswatch";
 
 // Bs Stepper
 @import "~bs-stepper/dist/css/bs-stepper.min.css";
@@ -20,3 +20,7 @@ $fa-font-path: "../webfonts";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
+
+
+// SideBar
+@import "../css/sidebar.css";
