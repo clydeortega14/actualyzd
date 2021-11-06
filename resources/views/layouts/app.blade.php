@@ -76,12 +76,18 @@
             <div class="wrapper">
                 <!-- SideBar -->
                 <nav id="sidebar">
-                    <div class="sidebar-header">
+                    {{-- <div class="sidebar-header">
                         <h3>{{ config('app.name', 'Laravel') }}</h3>
+                    </div> --}}
+
+                    <div id="container">
+                        <div id="name">
+                            {{ auth()->user()->name[0] }}
+                        </div>
                     </div>
 
                     <ul class="list-unstyled components">
-                        <p>Hi, {{ auth()->user()->name }}!</p>
+                        <p class="text-center">Hi, {{ auth()->user()->name }}!</p>
                         <li class="active">
                             <a href="{{ route('service.utilization.dashboard') }}">
                                 <i class="fa fa-home"></i>

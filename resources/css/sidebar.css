@@ -89,6 +89,23 @@ ul ul a {
     background: #6d7fcc;
 }
 
+#container {
+    width: 100px;
+    height: 100px;
+    margin: auto; 
+    margin-top: 20px;
+    border-radius: 100px;
+    background: #6d7fcc;
+
+}
+#name {
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 28px;
+  line-height: 100px;
+}
+
 
 /* Media Query */
 @media (max-width: 768px) {
