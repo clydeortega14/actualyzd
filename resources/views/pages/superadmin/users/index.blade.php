@@ -3,14 +3,13 @@
 
 @section('content')
 
-
 	<div class="container-fluid">
-		<h1 class="h3 mb-3 text-gray-800">Users</h1>
-		<hr>
-		<a href="{{ route('home') }}" class="btn btn-info mb-3">
-			<i class="fa fa-arrow-left"></i>
-			<span>Return Back</span>
-		</a>
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<h3 class="text-gray-800">Users</h3>
+			</div>
+		</div>
+
 		@if(count($errors) > 0)
 			<div class="alert alert-danger">
 				Uploud Validation Error <br><br>
@@ -31,7 +30,7 @@
 			</div>
 		@endif
 
-		<div class="row">
+		<div class="row mb-3">
 			<div class="col-sm-12">
 				<div class="card mb-4">
 					<div class="card-header py-2">

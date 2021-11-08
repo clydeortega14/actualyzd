@@ -6,17 +6,12 @@
 	<div class="container-fluid">
 		<div class="row mb-3">
 			<div class="col-md-12">
-				<h4>Service Utilization Dashboard</h4>
-				<hr>
+				<h3>Service Utilization Dashboard</h3>
+				
+			</div>
+		</div>
 
-			</div>
-			<div class="col-md-12 mb-3">
-				<a href="{{ route('home') }}" class="btn btn-info">
-					<i class="fa fa-arrow-left"></i>
-					<span>Return Back</span>
-				</a>
-			</div>
-			
+		<div class="row mb-3">
 			@if(auth()->user()->hasRole('superadmin'))
 
 				<div class="col-md-3">
