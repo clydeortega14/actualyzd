@@ -1,77 +1,73 @@
-@extends('admin-layouts.master')
-
-
-@section('title', 'Psychologists')
+@extends('layouts.app')
 
 
 @section('content')
 	
 	<div class="container-fluid">
 		<div class="block-header">
-	        <h2>PSYCHOLOGISTS LISTS</h2>
+	        <h3>Manage Psychologists</h3>
 	    </div>
 
-	    <div class="row clearfix">
+	    <div class="row clearfix" id="#main">
 	    	<div class="col-12">
 	    		<div class="card">
-	    			<div class="header">
-	    				<h2></h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+	    			<div class="card-header">
+	    				All Psychologists
+                        <a href="" class="btn btn-primary float-right">
+                            <i class="fa fa-plus"></i>
+                            <span>Create New Psychologist</span>
+                        </a>
 	    			</div>
 
-	    			<div class="body" id="main">
+	    			<div class="card-body">
 	    				<div class="table-responsive">
-                            <table class="table table-hover table-striped table-bordered basic-datatable">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ $psychologists->links() }}
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" name="search" class="form-control" placeholder="Seach Member...">
+                                </div>
+                            </div>
+                            <table class="table mt-3">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>Contact</th>
                                         <th>Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($psychologists as $psychologist)
+                                            @php
+                                                $isActive = $psychologist->is_active;
+                                            @endphp
                                         <tr>
                                             <td>
-                                            	<div class="user-info">
-                                                	<div class="image">
-                                                		<img src="{{ $psychologist->my_avatar }}" height="48" width="48" class="img-circle">
-                                                	</div>
-                                            	</div>
+                                                <a href="{{ route('user.profile', auth()->user()->id) }}">
+                                                  <img src="{{ is_null($psychologist->avatar) || !file_exists(public_path().'/storage/'.$psychologist->avatar) ? '/images/profile.png' : asset('storage/'.$psychologist->avatar) }}" height="48" width="48" class="img-circle">
+                                                </a>
                                             </td>
-                                            <td>{{ $psychologist->full_name }}</td>
+                                            <td>{{ $psychologist->name }}</td>
                                             <td>{{ $psychologist->email }}</td>
-                                            <td>{{ $psychologist->contact_number }}</td>
                                             <td>
-                                                <span class="label bg-red">Inactive</span>
+                                                
+                                                <span class="badge {{ $isActive ? 'badge-success' : 'badge-danger' }}">
+                                                    {{ $isActive ? 'Active' : 'Inactive' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-primary btn-xs">
-                                                    <i class="material-icons">info</i>
-                                                </a> |
-
-                                                <a href="#" class="btn btn-info btn-xs activate-button">
-                                                    <i class="material-icons">visibility</i>
+                                                <a href="#" class="btn btn-sm {{ $isActive ? 'btn-danger' : 'btn-success' }} activate-button">
+                                                    <i class="fa {{ $isActive ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            
                         </div>
 	    			</div>
 	    		</div>
@@ -104,6 +100,8 @@
                     _this = this;
 
                     this.$activateBtn.click(function(e){
+                        alert('test')
+                        e.preventDefault()
 
                         _this.sweet_alert.confirmDialog()
                             .then((result) => {

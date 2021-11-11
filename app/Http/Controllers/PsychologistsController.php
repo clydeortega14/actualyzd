@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Psychologist;
 use App\Http\Traits\BookingTrait;
 use App\Http\Traits\BookingSchedulesTrait;
+use App\User;
 
 class PsychologistsController extends Controller
 {
@@ -48,7 +49,7 @@ class PsychologistsController extends Controller
     public function index()
     {
 
-        $psychologists = Psychologist::with('user')->get();
+        $psychologists = User::withRole('psychologist')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('pages.superadmin.psychologists.index', compact('psychologists'));
     }

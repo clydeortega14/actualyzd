@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Booking;
 use App\Http\Traits\BookingTrait;
+use App\User;
 
 class MemberController extends Controller
 {
     use BookingTrait;
+
+    public function index(){
+
+        $members = User::withRole('member')->latest()->paginate(10);
+
+        return view('pages.superadmin.members.index', compact('members'));
+    }
 
     public function home()
     {
