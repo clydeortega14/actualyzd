@@ -174,6 +174,7 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('member')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');
+		Route::get('lists', 'MemberController@index')->name('member.lists');
 	});
 
 	/* Client Prefix */
