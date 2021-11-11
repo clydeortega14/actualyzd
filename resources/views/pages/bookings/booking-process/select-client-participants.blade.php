@@ -4,13 +4,15 @@
 	
 	<div class="container-fluid">
 		
-		<h1>Book a session</h1>
-		<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
-			<i class="fa fa-arrow-left"></i>
-			<span>Back to Home</span>
-		</a>
 
-		<div class="row">
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<h3>Book a session</h3>
+				{{ Breadcrumbs::render('booking.select.client.participants') }}
+			</div>
+		</div>
+
+		<div class="row mb-3">
 			<div class="col-md-3">
 				<div class="row">
 					<div class="col-md-12">
@@ -34,14 +36,6 @@
 				</div>
 			</div>
 			<div class="col-md-9">
-				{{ Breadcrumbs::render('booking.select.client.participants') }}
-
-				<div class="card text-white bg-primary mb-3">
-				  	<div class="card-body text-center">
-				    	<h4 class="card-title">Select session type, client and participants</h4>
-				    	<p class="card-text">Select session type, client and participants of the session</p>
-				  	</div>
-				</div>
 
 				<div class="card mb-3">
 	                	<div class="card-body">

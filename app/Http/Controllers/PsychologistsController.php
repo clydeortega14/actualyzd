@@ -13,6 +13,10 @@ class PsychologistsController extends Controller
 
     public function home()
     {
+        $plucked_schedules = auth()->user()->schedules()->whereDate('start', '>=', now()->toDateString())->pluck('id');
+
+        $upcoming_sessions = $this->bookingsQuery();
+        
         $unclosed_bookings = $this->unClosedBookings()
                                 ->whereIn('schedule', $this->pluckPastdueSchedules())
                                 ->where(function($query){
@@ -22,7 +26,7 @@ class PsychologistsController extends Controller
                                 })->whereNotNull('counselee')
                                 ->get();
 
-        return view('pages.psychologists.main', compact('unclosed_bookings'));
+        return view('pages.psychologists.main', compact('unclosed_bookings', 'upcoming_sessions'));
     }
     public function bookings()
     {

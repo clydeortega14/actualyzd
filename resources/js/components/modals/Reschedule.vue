@@ -10,19 +10,31 @@
 						<!-- Select Time and Psychologists Component -->
 						<div class="row">
 							<div class="col-md-6 border-right">
-								
+								<!-- Review Booking Component -->
+								<RescheduleReview />
+
 							</div>
 
 							<div class="col-md-6">
+								<!-- Time Lists Component -->
 								<TimeLists />
 
-								<div v-if="show_psychologists_component" >
-									<Psychologists />
-								</div>
+								<!-- Psychologist Component -->
+								<Psychologists />
+
+								<!-- Reason For Rescheduling Component -->
+								<ReasonComponent />
+								
 							</div>
 						</div>
-						
+					</div>
 
+					<div class="modal-footer">
+						<button class="btn btn-primary" type="submit" :disabled="disabledSaveChanges" @click="saveRescheduleBooking">
+							<i class="fa fa-check"></i>
+							<span>Save Changes</span>
+						</button>
+						<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Cancel</button>
 					</div>
 				</div>
 				
@@ -37,24 +49,88 @@
 	
 	import TimeLists from '../bookings/Timelists.vue';
 	import Psychologists from '../bookings/Psychologists.vue';
+	import RescheduleReview from '../bookings/RescheduleReview.vue';
+	import ReasonComponent from '../bookings/ReasonComponent.vue';
+
+	import Swal from 'sweetalert2';
+
+	import { mapGetters, mapActions } from 'vuex';
 
 	export default {
 		name: "Reschedule",
 		data(){
 			return {
 
-				show_psychologists_component: false
+				show_psychologists_component: false,
+				disabledSaveChanges: true
 			}
 		},
-		mounted(){
+		computed: {
 
-			EventBus.$on('select-time', data => {
-				this.show_psychologists_component = true;
+			...mapGetters([
+				"getBooking",
+				"getSelectedDate",
+				"getSelectedTimeId",
+				"getSelectedPsychologistId",
+				"getSelectedReasonID",
+				"getSelectedReasonName",
+				"getUserId"
+			])
+		},
+		mounted(){
+			EventBus.$on('select-a-reason', (data) => {
+
+				this.disabledSaveChanges = data.reason.id !== 5 || data.reason.name !== "Others" ? false : true
+			});
+
+			EventBus.$on('enable-save-button', (data) => {
+
+				this.disabledSaveChanges = data.length >= 10 ? false : true;
+			});
+
+
+			EventBus.$on('select-time', (data) => {
+
+				this.disabledSaveChanges = true;
 			})
 		},
 		components: {
 			TimeLists,
-			Psychologists
+			Psychologists,
+			RescheduleReview,
+			ReasonComponent
+		},
+		methods: {
+			...mapActions(["rescheduleBooking"]),
+			saveRescheduleBooking(e){
+
+				e.preventDefault();
+
+				let payload = {
+
+					booking_id: this.getBooking.id,
+					date: this.getSelectedDate,
+					time_id: this.getSelectedTimeId,
+					psychologist_id: this.getSelectedPsychologistId,
+					reason_option_id: this.getSelectedReasonID,
+					updated_by: this.getUserId,
+					others_specify: this.getSelectedReasonName
+				}
+				
+				this.rescheduleBooking(payload)
+					.then(response => {
+
+						console.log(response)
+					})
+					.catch(error => {
+
+						// this means it is an validation error
+						if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
+
+							Swal.fire('Oops!', error.response.data.message, 'error')
+						}
+					})
+			}
 		}
 	}
 </script>

@@ -43,6 +43,18 @@
 		components: {
 			Reschedule
 		},
+		props: {
+			booking: Object,
+			user: Object
+		},
+		mounted(){
+
+			this.$store.commit('setBooking', this.booking);
+
+			this.$store.commit('setUserId', this.user.id);
+			this.$store.commit('setUserName', this.user.name);
+			this.$store.commit('setUserEmail', this.user.email);
+		},
 		methods: {
 			...mapActions(["timeByDate"]),
 			handleDateClick(arg){

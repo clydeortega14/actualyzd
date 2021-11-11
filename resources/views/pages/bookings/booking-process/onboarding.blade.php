@@ -3,14 +3,15 @@
 @section('content')
 
 	<div class="container-fluid">
-		<h1>Book a session</h1>
-		<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
-			<i class="fa fa-arrow-left"></i>
-			<span>Back to Home</span>
-		</a>
 
 		
-		<div class="row">
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<h3>Book a session</h3>	
+				{{ Breadcrumbs::render('booking.onboarding') }}
+			</div>
+		</div>
+		<div class="row mb-3">
 			<div class="col-md-3">
 				
 				<div class="row">
@@ -35,14 +36,14 @@
 			</div>
 
 			<div class="col-md-9">
-				{{ Breadcrumbs::render('booking.onboarding') }}
+				
 
-				<div class="card text-white bg-primary mb-3">
+				{{-- <div class="card text-white bg-primary mb-3">
 					<div class="card-body text-center">
 						<h4 class="card-title">Onboarding Questions</h4>
 						<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern</p>
 					</div>
-				</div>
+				</div> --}}
 				<div class="card mb-3">
 					{{-- <div class="card-header">Onboarding Questions</div> --}}
 					<div class="card-body">
@@ -60,7 +61,7 @@
 									{{-- First Timer / Repeater --}}
 									<li class="mb-3">
 										
-										<h3 class="text-info">Are you a first timer or a repeater to this session?</h3>
+										<h3 class="text-primary">Are you a first timer or a repeater to this session?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
@@ -77,7 +78,7 @@
 
 									{{-- Self Harm  --}}
 									<li class="mb-3">
-										<h3 class="text-info">I have plans to harm myself?</h3>
+										<h3 class="text-primary">I have plans to harm myself?</h3>
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
 												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" :checked="{{ session()->has('assessment.self_harm') && session('assessment.self_harm') == 1 ? '1' : '0' }}">
@@ -95,7 +96,7 @@
 									{{-- Harm Other People --}}
 									<li class="mb-3">
 										
-										<h3 class="text-info">I have plans to harm other people?</h3>
+										<h3 class="text-primary">I have plans to harm other people?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
@@ -116,7 +117,7 @@
 	                        <ul class="list-unstyled ml-4">
 	                        	@foreach($categories as $category)
 		                        	<li class="mb-3">
-		                        		<h3 class="text-info">{{ $category->name }}</h3>
+		                        		<h3 class="text-primary">{{ $category->name }}</h3>
 		                        		@include('pages.bookings.components.questionnaire')
 		                        	</li>
 	                        	@endforeach
@@ -124,7 +125,7 @@
 
 	                        <div class="form-group">
 	                        	<button type="submit" class="btn btn-primary btn-block">Proceed Next</button>
-	                        	<a href="#" class="btn btn-secondary btn-block">Cancel</a>
+	                        	<a href="#" class="btn btn-danger btn-block">Cancel</a>
 	                        </div>
 	                    </form>
 					</div>

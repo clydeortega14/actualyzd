@@ -86,6 +86,15 @@ const actions = {
 		const response = await axios.get('/bookings/status-summary');
 		commit('setBookingStatuses', response.data.by_status_with_total);
 		commit('setActions', response.data.actions)
+	},
+	rescheduleBooking({ context }, payload){
+
+		return new Promise((resolve, reject) => {
+
+			axios.post('/api/booking/reschedule', payload)
+				.then(response => resolve(response))
+				.catch(error => reject(error))
+		})
 	}
 }
 

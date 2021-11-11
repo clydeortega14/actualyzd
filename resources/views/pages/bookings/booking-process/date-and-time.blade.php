@@ -4,13 +4,15 @@
 	
 
 	<div class="container-fluid">
-		<h1>Book a session</h1>
-		<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
-			<i class="fa fa-arrow-left"></i>
-			<span>Back to Home</span>
-		</a>
+		<div class="row mb-3">
+			<div class="col-md-12">
+				<h3>Book a session</h3>
+				{{ Breadcrumbs::render('booking.date.and.time') }}
+			</div>
+		</div>
 
-		<div class="row">
+		<div class="row mb-3">
+			
 			<div class="col-md-3">
 				<div class="row mb-3">
 					<div class="col-md-12">
@@ -50,15 +52,6 @@
 			</div>
 
 			<div class="col-md-9">
-
-				{{ Breadcrumbs::render('booking.date.and.time') }}
-
-				<div class="card text-white bg-primary mb-3">
-					<div class="card-body text-center">
-						<h4 class="card-title">Choose date and time and psychologist</h4>
-						<p class="card-text">select available date, time and psychologist.</p>
-					</div>
-				</div>
 
 				<form action="{{ route('booking.confirm') }}" method="POST">
 					@csrf

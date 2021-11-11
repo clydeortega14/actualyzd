@@ -5,11 +5,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="text-gray-500 mb-3">Bookings</h1>
-				<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
-		            <i class="fa fa-arrow-left"></i>
-		            <span>Return Back</span>
-	            </a>
+				<h3 class="text-gray-500 mb-3">Bookings</h3>
 			</div>
 			<div class="col-md-12">
 				<div class="card">

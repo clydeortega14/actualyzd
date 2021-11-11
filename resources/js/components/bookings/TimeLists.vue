@@ -4,7 +4,7 @@
 		<div class="custom-control custom-radio mb-3 ml-3" v-for="(time, index) in getTimeByDate" :key="index">
 			<input type="radio" class="custom-control-input" 
 				:id="`time-${time.time_list.id}`" 
-				:value="{ id: time.time_list.id, name: `${time.time_list.from} - ${time.time_list.to}`}" 
+				:value="{ id: time.time_list.id, name: `${wholeTime(time.time_list.from)} - ${wholeTime(time.time_list.to)}`}" 
 				v-model="selected_time">
 			<label class="custom-control-label" :for="`time-${time.time_list.id}`">{{ `${wholeTime(time.time_list.from)} - ${wholeTime(time.time_list.to)}` }}</label>
 		</div>
@@ -34,9 +34,14 @@
 		watch:{
 
 			selected_time(value){
+				
+				if(!_.isNil(value)){
 
-				EventBus.$emit('select-time', value);
+					EventBus.$emit('select-time', value);
 
+					this.$store.commit('setSelectedTimeId', value.id);
+					this.$store.commit('setSelectedTime', value.name);
+				}
 			}
 		}
 	}
