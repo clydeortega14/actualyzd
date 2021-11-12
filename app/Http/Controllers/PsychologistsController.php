@@ -7,10 +7,11 @@ use App\Psychologist;
 use App\Http\Traits\BookingTrait;
 use App\Http\Traits\BookingSchedulesTrait;
 use App\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class PsychologistsController extends Controller
 {
-    use BookingTrait, BookingSchedulesTrait;
+    use BookingTrait, BookingSchedulesTrait, RegistersUsers;
 
     public function home()
     {
@@ -72,7 +73,14 @@ class PsychologistsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validateUser($request->all())->validate();
+
+        $user = $this->createUser($request->all());
+
+        // add psychologist role to user
+        $user->roles()->attach(2);
+
+        return redirect()->route('psychologists.index')->with('success', 'Successfully created!');
     }
 
     /**
@@ -106,7 +114,14 @@ class PsychologistsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if($request->has('status')){
+
+            $user->update(['is_active' => !$user->is_active]);
+        }
+
+        return redirect()->route('psychologists.index')->with('success', 'Status Updated!');
     }
 
     /**

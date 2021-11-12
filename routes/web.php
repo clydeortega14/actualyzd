@@ -163,6 +163,9 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('delete-schedule', 'SchedulesController@delete')->name('psychologist.delete.schedule');
 
+		// create new psychologists post request
+		Route::post('store', 'PsychologistsController@store')->name('psychologist.store');
+
 		// Ajax
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
@@ -175,6 +178,8 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');
 		Route::get('lists', 'MemberController@index')->name('member.lists');
+		Route::post('member.store', 'MemberController@store')->name('member.store');
+		Route::put('update/{user}', 'MemberController@update')->name('member.update');
 	});
 
 	/* Client Prefix */

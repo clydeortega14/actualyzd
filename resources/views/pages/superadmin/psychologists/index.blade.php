@@ -10,13 +10,19 @@
 
 	    <div class="row clearfix" id="#main">
 	    	<div class="col-12">
+
+                @include('alerts.message')
+
 	    		<div class="card">
 	    			<div class="card-header">
 	    				All Psychologists
-                        <a href="" class="btn btn-primary float-right">
+                        <a href="#" class="btn btn-primary float-right" data-toggle="modal" data-target="#create-new-psychologist">
                             <i class="fa fa-plus"></i>
                             <span>Create New Psychologist</span>
+
                         </a>
+
+                        @include('pages.superadmin.psychologists.modals.create')
 	    			</div>
 
 	    			<div class="card-body">
@@ -59,9 +65,15 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-sm {{ $isActive ? 'btn-danger' : 'btn-success' }} activate-button">
+                                                <a href="#" class="btn btn-sm {{ $isActive ? 'btn-danger' : 'btn-success' }} activate-button"
+                                                    onclick="event.preventDefault(); document.getElementById('update-psychologist-form-{{ $psychologist->id }}').submit();">
                                                     <i class="fa {{ $isActive ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                                                 </a>
+                                                <form id="update-psychologist-form-{{ $psychologist->id }}" action="{{ route('psychologists.update', $psychologist->id) }}" method="POST" style="display: none;">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="status">
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
