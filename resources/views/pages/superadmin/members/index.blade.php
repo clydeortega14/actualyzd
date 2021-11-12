@@ -44,7 +44,7 @@
 										<th>Name</th>
 										<th>Email</th>
 										<th>Status</th>
-										<th>Create At</th>
+										<th>Created At</th>
 										<th></th>
 									</tr>
 								</thead>

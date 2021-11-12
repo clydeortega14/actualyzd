@@ -27,7 +27,7 @@
                 <li class="{{ Route::is('member.home') ? 'active' : '' }}">
                     <a href="{{ route('member.home') }}">
                         <i class="fa fa-home"></i>
-                        <span>Home</span>
+                        <span class="ml-3">Home</span>
                     </a>
                 </li>
             @endif
@@ -36,7 +36,7 @@
                 <li class="{{ Route::is('service.utilization.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('service.utilization.dashboard') }}">
                         <i class="fa fa-home"></i>
-                        <span>Dashboard</span>
+                        <span class="ml-3">Dashboard</span>
                     </a>
                 </li>
 
@@ -52,7 +52,7 @@
                 <li class="{{ Route::is('bookings.index') ? 'active' : '' }}">
                     <a href="{{ route('bookings.index') }}">
                         <i class="fa fa-calendar"></i>
-                        <span>Sessions</span>
+                        <span class="ml-3">Sessions</span>
                     </a>
                 </li>
             @endif
@@ -61,7 +61,16 @@
                 <li class="{{ Route::is('schedules.index') ? 'active' : '' }}">
                     <a href="{{ route('schedules.index') }}">
                         <i class="fa fa-calendar"></i>
-                        <span>Schedules</span>
+                        <span class="ml-3">Schedules</span>
+                    </a>
+                </li>
+            @endif
+
+            @if($user->hasRole(['admin', 'superadmin']))
+                <li class="{{ Route::is('member.lists') ? 'active' : '' }}">
+                    <a href="{{ route('member.lists') }}">
+                        <i class="fa fa-address-card"></i>
+                        <span class="ml-3">Members</span>
                     </a>
                 </li>
             @endif
@@ -70,34 +79,29 @@
                 <li class="{{ Route::is('clients.index') ? 'active' : '' }}">
                     <a href="{{ route('clients.index') }}">
                         <i class="fa fa-address-card"></i>
-                        <span>Clients</span>
+                        <span class="ml-3">Clients</span>
                     </a>
                 </li>
 
                 <li class="{{ Route::is('psychologists.index') ? 'active' : '' }}">
                     <a href="{{ route('psychologists.index') }}">
                         <i class="fa fa-address-card"></i>
-                        <span>Psychologists</span>
+                        <span class="ml-3">Psychologists</span>
                     </a>
                 </li>
 
-                <li class="{{ Route::is('member.lists') ? 'active' : '' }}">
-                    <a href="{{ route('member.lists') }}">
-                        <i class="fa fa-address-card"></i>
-                        <span>Members</span>
-                    </a>
-                </li>
+            
 
                 <li class="{{ \Request::is('set-up/*') ? 'active' : '' }}">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fa fa-cogs"></i>
-                        <span>Settings</span>
+                        <span class="ml-3">Settings</span>
                     </a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
                             <a href="{{ route('packages.index') }}">
                                 <i class="fa fa-box-open"></i>
-                                <span>Packages</span>
+                                <span class="ml-3">Packages</span>
                             </a>
                         </li>
                         {{-- <li>
@@ -120,13 +124,13 @@
                         <li>
                             <a href="{{ route('assessments') }}">
                                 <i class="fa fa-clipboard-list"></i>
-                                <span>Assessments</span>
+                                <span class="ml-3">Assessments</span>
                             </a>
                         </li>
                         <li>
                             <a href="#">
                                 <i class="fa fa-fw fa-clock"></i>
-                                <span>Time lists</span>
+                                <span class="ml-3">Time lists</span>
                             </a>
                         </li>
                     </ul>
@@ -137,7 +141,7 @@
             <li class="{{ \Request::is('progress-reports/*') || Route::is('progress.report') ? 'active' : '' }}">
                 <a href="{{ route('progress.report') }}">
                     <i class="fa fa-list-alt"></i>
-                    <span>Progress Reports</span>
+                    <span class="ml-3">Progress Reports</span>
                 </a>
             </li>
             @endif

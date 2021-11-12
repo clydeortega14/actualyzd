@@ -16,7 +16,14 @@ class MemberController extends Controller
     public function index(){
 
         $clients = Client::where('is_active', true)->get(['id', 'name']);
-        $members = User::withRole('member')->latest()->paginate(10);
+        $members = User::where(function($query){
+
+            if(auth()->user()->hasRole('admin')){
+
+                $query->where('client_id', auth()->user()->client_id);
+            }
+
+        })->withRole('member')->latest()->paginate(10);
 
         return view('pages.superadmin.members.index', compact('members', 'clients'));
     }
