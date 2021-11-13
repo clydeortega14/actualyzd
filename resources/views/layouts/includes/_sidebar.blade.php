@@ -30,6 +30,23 @@
                         <span class="ml-3">Home</span>
                     </a>
                 </li>
+
+                <li class="{{ Route::is('user.profile.edit', auth()->user()->id) ? 'active' : '' }}">
+                    <a href="{{ route('user.profile.edit', auth()->user()->id) }}">
+                        <i class="fa fa-home"></i>
+                        <span class="ml-3">Account Settings</span>
+                    </a>
+                </li>
+            @endif
+
+            @if($user->hasRole('psychologist'))
+
+                <li class="{{ Route::is('psychologist.home') ? 'active' : '' }}">
+                    <a href="{{ route('psychologist.home') }}">
+                        <i class="fa fa-home"></i>
+                        <span class="ml-3">Home</span>
+                    </a>
+                </li>
             @endif
 
             @if($user->hasRole(['superadmin', 'admin']))
@@ -52,7 +69,7 @@
                 <li class="{{ Route::is('bookings.index') ? 'active' : '' }}">
                     <a href="{{ route('bookings.index') }}">
                         <i class="fa fa-calendar"></i>
-                        <span class="ml-3">Sessions</span>
+                        <span class="ml-3">Bookings</span>
                     </a>
                 </li>
             @endif

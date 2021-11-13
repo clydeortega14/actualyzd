@@ -44,8 +44,6 @@ trait BookingTrait {
             $this->queryByStatus($query, $query);
         });
 
-        
-
         $allBookings = $bookings->with([
             'toSchedule.psych', 
             'time',
@@ -57,8 +55,7 @@ trait BookingTrait {
         ->with(['toCounselee.progressReports' => function($query2){
             $query2->orderBy('created_at', 'desc');
 
-        }])
-        ->get();
+        }])->latest()->paginate(10);
 
         return $allBookings;
 	}
@@ -73,8 +70,6 @@ trait BookingTrait {
     public function countByStatus($status)
     {
         $bookings = Booking::query();
-
-        $bookings->whereNotNull('counselee');
 
         $this->queryByRole($bookings);
 

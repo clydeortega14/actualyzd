@@ -26,7 +26,8 @@
               @method('PUT')
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" id="name" aria-describedby="nameError" placeholder="Enter name" value="{{ old('name') ?? $user->name }}" required>
+                {{-- <input type="text" class="form-control" name="name" id="name" aria-describedby="nameError" placeholder="Enter name" value="{{ old('name') ?? $user->name }}" required> --}}
+                <input type="text" class="form-control" name="fullname" id="fullname" aria-describedby="usernameError" placeholder="Enter username" value="{{ old('fullname') ?? $user->name }}" required>
 
                 @error('name')
                   <small id="nameError" class="form-text text-danger">{{ $message }}</small>

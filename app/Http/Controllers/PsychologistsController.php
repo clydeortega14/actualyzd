@@ -8,6 +8,7 @@ use App\Http\Traits\BookingTrait;
 use App\Http\Traits\BookingSchedulesTrait;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Booking;
 
 class PsychologistsController extends Controller
 {
@@ -18,17 +19,16 @@ class PsychologistsController extends Controller
         $plucked_schedules = auth()->user()->schedules()->whereDate('start', '>=', now()->toDateString())->pluck('id');
 
         $upcoming_sessions = $this->bookingsQuery();
-        
-        $unclosed_bookings = $this->unClosedBookings()
-                                ->whereIn('schedule', $this->pluckPastdueSchedules())
-                                ->where(function($query){
-                                    if(auth()->user()->hasRole('psychologist')){
-                                        $query->whereIn('schedule', auth()->user()->schedules->pluck('id'));
-                                    }
-                                })->whereNotNull('counselee')
-                                ->get();
 
-        return view('pages.psychologists.main', compact('unclosed_bookings', 'upcoming_sessions'));
+        $completed_sessions = $this->countByStatus(4);
+        
+        $unclosed_bookings = $this->psychSessions(1)
+                                ->whereIn('schedule', $this->pluckPastdueSchedules())
+                                ->whereNotNull('counselee')
+                                ->latest()
+                                ->paginate(10);
+
+        return view('pages.psychologists.main', compact('unclosed_bookings', 'upcoming_sessions', 'completed_sessions'));
     }
     public function bookings()
     {
@@ -40,6 +40,17 @@ class PsychologistsController extends Controller
     public function schedules()
     {
         return view('pages.psychologists.schedule');
+    }
+
+    protected function psychSessions($status){
+
+        return Booking::where('status', $status)
+            ->where(function($query){
+            if(auth()->user()->hasRole('psychologist')){
+                $query->whereIn('schedule', auth()->user()->schedules->pluck('id'));
+            }
+        });
+        
     }
 
     /**
