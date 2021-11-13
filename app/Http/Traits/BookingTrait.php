@@ -36,8 +36,10 @@ trait BookingTrait {
 
         // query bookings according to auth user role
         $this->queryByRole($bookings);
+
         // query bookings accoirding to status
         $this->queryByStatus($bookings, $bookings);
+
         // with participants
         $this->withParticipants($bookings)
         ->where(function($query){
@@ -71,27 +73,56 @@ trait BookingTrait {
     {
         $bookings = Booking::query();
 
+        if(!auth()->user()->hasRole('superadmin')){
+
+            $bookings->whereNotNull('counselee');
+        }
+
         $this->queryByRole($bookings);
 
-        $bookings->where('status', $status)
-        ->where(function($query) use ($bookings, $status){
-            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
-            if($status == 1){
-                $query->where('status', $status)->whereIn('schedule', $schedules_id);
-            }else{
-                $query->where('status', $status);
-            }
-        });
+        $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
 
-        $this->withParticipants($bookings)
-        ->where(function($query) use ($bookings, $status){
-            $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
-            if($status == 1){
-                $query->where('status', $status)->whereIn('schedule', $schedules_id);
-            }else{
-                $query->where('status', $status);
-            }
-        });
+        if($status == 1){
+
+            $this->withLatestBooking($bookings, $status);
+
+        }else{
+            
+            $bookings->withStatus($status);
+        }
+
+
+        // ->where(function($query) use ($bookings, $status){
+        //     $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+
+        //     if($status == 1){
+
+        //          $this->withLatestBooking($query, $status);
+
+        //     }else{
+                
+        //         $query->withStatus($status);
+        //     }
+
+        //     $this->withLatestBooking($query, $status);
+        // });
+
+        // $this->withParticipants($bookings)
+        // ->where(function($query) use ($bookings, $status){
+
+        //     $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+
+        //     if($status == 1){
+
+        //          $this->withLatestBooking($query, $status);
+
+        //     }else{
+                
+        //         $query->withStatus($status);
+        //     }
+
+        //     $this->withLatestBooking($query, $status);
+        // });
 
         return $bookings->count();
     }
@@ -131,24 +162,25 @@ trait BookingTrait {
         }
     }
 
-    public function queryByStatus($query, $bookings)
+    public function queryByStatus($query)
     {
-        $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
+        $schedules_id = $this->bookingSchedulesQuery()->pluck('id');
+
         if(request()->has('status')){
             
             if(request('status') == 1){
 
-                $query->where('status', 1)->whereIn('schedule', $schedules_id);
+                $this->withLatestBooking($query, 1);
 
             }else{
 
-                $query->where('status', request('status'));
+                $query->withStatus(request('status'));
 
             }
             
         }else{
             // get upcoming sessions
-            $query->where('status', 1)->whereIn('schedule', $schedules_id);
+            $this->withLatestBooking($query, 1);
         }
     }
 
@@ -184,16 +216,16 @@ trait BookingTrait {
 
     public function bookingStatuses()
     {
-        $bookings = BookingStatus::get(['id', 'name', 'class']);
+        $statuses = BookingStatus::get(['id', 'name', 'class']);
 
         $by_status_with_total = [];
 
-        foreach($bookings as $booking){
+        foreach($statuses as $status){
             $by_status_with_total[] = [
-                'id' => $booking->id,
-                'name' => $booking->name,
-                'total' => $this->countByStatus($booking->id),
-                'class' => $booking->class
+                'id' => $status->id,
+                'name' => $status->name,
+                'total' => $this->countByStatus($status->id),
+                'class' => $status->class
             ];
         }
 
@@ -223,5 +255,16 @@ trait BookingTrait {
         }
 
         return $statuses;
+    }
+
+
+    protected function queryBooking()
+    {
+        return Booking::query();
+    }
+
+    protected function withLatestBooking($query, $status)
+    {
+        return $query->withStatus($status)->whereIn('schedule', $this->bookingSchedulesQuery()->pluck('id'));
     }
 }

@@ -12,6 +12,26 @@
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    
+    <style>
+      .ac-upload input[type=file] {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        opacity: 0;
+      }
+
+      .ac-avatar {
+        max-width: 100%;
+        max-height: 320px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+      }
+    </style>
+    
+
     @yield('custom_styles')
 </head>
 <body>

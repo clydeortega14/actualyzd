@@ -13,11 +13,11 @@
                 </div>
             </div>
         @else
-            <div class="d-flex justify-content-center align-items-center">
+            {{-- <div class="d-flex justify-content-center align-items-center"> --}}
                 <a href="{{ route('user.profile', auth()->user()->id) }}">
-                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" class="rounded-circle mt-3" width="150" height="150">
+                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" class="mt-3 img-fluid rounded-circke mx-auto d-block ac-avatar">
                 </a>
-            </div>
+            {{-- </div> --}}
         @endif
 
         <ul class="list-unstyled components">
@@ -65,7 +65,7 @@
                 </li> --}}
             @endif
 
-            @if($user->hasRole(['superadmin', 'psychologist']))
+            @if($user->hasRole(['superadmin']))
                 <li class="{{ Route::is('bookings.index') ? 'active' : '' }}">
                     <a href="{{ route('bookings.index') }}">
                         <i class="fa fa-calendar"></i>
