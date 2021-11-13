@@ -119054,7 +119054,8 @@ var actions = {
 
             case 3:
               response = _context.sent;
-              commit('setAllBookings', response.data);
+              // console.log(response.data);
+              commit('setAllBookings', response.data.data);
 
             case 5:
             case "end":

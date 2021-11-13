@@ -233,14 +233,14 @@ class UsersController extends Controller
     public function updateProfile(Request $request, User $user)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'max:255'],
+            'fullname' => ['required', 'max:255'],
             'username' => ['required', 'unique:users,username,' . $user->id, 'max:255'],
             'email' => ['required', 'unique:users,email,' . $user->id],
         ]);
 
         if ($validator->fails()) return redirect('profile/' . $user->id . '/edit')->withErrors($validator)->withInput();
 
-        $user->name = $request->name;
+        $user->name = $request->fullname;
         $user->username = $request->username;
         $user->email = $request->email;
 
