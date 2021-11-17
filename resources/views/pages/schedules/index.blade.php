@@ -54,8 +54,6 @@
 		      	dayMaxEvents: true, // allow "more" link when too many events
 		      	events: schedules,
 		      	select(arg){
-		      		alert('test')
-		      		console.log(arg)
 		      		handleSelect(arg)
 		      	}
 			}
@@ -100,7 +98,7 @@
         	}).done(data => {
         		console.log(data)
             	handleTimeList(data);
-            	handleSchedulesTable(data);
+            	// handleSchedulesTable(data);
         	})
 		}
 
@@ -111,8 +109,11 @@
 			$schedules_time_lists.empty();
 			data.time_lists.forEach((time, index) => {
 				let checked;
-              	let sched = data.schedules.find(schedule => schedule.time === time.id);
-	            if(sched !== undefined) checked = 'checked';
+				if(data.schedules !== null){
+
+					let sched = data.schedules.find(schedule => schedule.time === time.id);
+	            	if(sched !== undefined) checked = 'checked';
+				}
 	            $schedules_time_lists.append(schedulesTimeListTemp(time, checked));
 			})
 		}

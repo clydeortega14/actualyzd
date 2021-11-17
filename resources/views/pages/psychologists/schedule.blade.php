@@ -6,20 +6,20 @@
 
 @section('content')
 	
-	<div class="container">
+	<div class="container-fluid">
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card">
+      <div id="calendar"></div>
+				{{-- <div class="card">
 					<div class="card-body">
-            <div id="calendar"></div>
-            @include('pages.schedules.modals.create-schedule')
 					</div>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</div>
 	
+@include('pages.schedules.modals.create-schedule')
 @endsection
 @section('js_scripts')
 
@@ -37,11 +37,11 @@
 
                   let calendarOptions = {
 
-                        headerToolbar: {
-                          left: 'prev,next today',
-                          center: 'title',
-                          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                      },
+                      //   headerToolbar: {
+                      //     left: 'prev,next today',
+                      //     center: 'title',
+                      //     right: 'dayGridMonth'
+                      // },
                         editable: true,
                         navLinks:  true,
                         selectable:  true,

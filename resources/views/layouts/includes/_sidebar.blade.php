@@ -75,8 +75,8 @@
             @endif
 
             @if($user->hasRole(['psychologist', 'superadmin']))
-                <li class="{{ Route::is('schedules.index') ? 'active' : '' }}">
-                    <a href="{{ route('schedules.index') }}">
+                <li class="{{ Route::is('psychologist.schedules.page') ? 'active' : '' }}">
+                    <a href="{{ route('psychologist.schedules.page') }}">
                         <i class="fa fa-calendar"></i>
                         <span class="ml-3">Schedules</span>
                     </a>

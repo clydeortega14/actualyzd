@@ -18499,11 +18499,20 @@ __webpack_require__.r(__webpack_exports__);
     return {
       options: {
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_1__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_2__["default"]],
-        initialView: 'dayGridMonth',
+        initialView: 'dayGridWeek',
         editable: true,
         selectable: true,
         navLinks: true,
-        select: this.handleSelect
+        select: this.handleSelect,
+        events: [{
+          title: 'event 1',
+          start: '2021-11-17 14:30:00',
+          end: '2021-11-17 15:30:00',
+          allDay: false
+        }, {
+          title: 'event 2',
+          date: '2021-11-17'
+        }]
       }
     };
   },
@@ -119054,7 +119063,6 @@ var actions = {
 
             case 3:
               response = _context.sent;
-              // console.log(response.data);
               commit('setAllBookings', response.data.data);
 
             case 5:

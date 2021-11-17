@@ -9,6 +9,7 @@ use App\Http\Traits\BookingSchedulesTrait;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Booking;
+use App\Schedules\Schedule;
 
 class PsychologistsController extends Controller
 {
@@ -50,9 +51,11 @@ class PsychologistsController extends Controller
         return view('pages.psychologists.bookings', compact('bookings', 'upcoming'));
     }
 
-    public function schedules()
+    public function schedules(Schedule $schedule)
     {
-        return view('pages.psychologists.schedule');
+        $user = auth()->user();
+        $schedules = $schedule->query($user)->get();
+        return view('pages.psychologists.schedule', compact('schedules'));
     }
 
     protected function psychSessions($status){
