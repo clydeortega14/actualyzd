@@ -74,9 +74,9 @@ class SchedulesController extends Controller
     {
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
-            ->where('start', $request->start)
-            ->with(['timeSchedules', 'psych'])
-            ->first();
+            ->whereDate('start', $request->start)
+            ->with(['timeList', 'psych', 'booking'])
+            ->get();
 
         $time_lists = TimeList::get();
 
