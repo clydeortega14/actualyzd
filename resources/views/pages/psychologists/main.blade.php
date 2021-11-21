@@ -10,8 +10,8 @@
 		</div>
 
 		<div class="row mb-3">
-			<div class="col-md-4 grid-margin stretch-card">
-	            <div class="card">
+			<div class="col-md-3 grid-margin stretch-card">
+	            <div class="card mb-3">
 	                <div class="card-body">
 	                    <p class="card-title text-md-center text-xl-left">Upcoming sessions</p>
 	                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -20,9 +20,8 @@
 	                    </div>  
 	                </div>
 	            </div>
-	        </div>
-	        <div class="col-md-4 grid-margin stretch-card">
-	            <div class="card">
+
+	            <div class="card mb-3">
 	                <div class="card-body">
 	                    <p class="card-title text-md-center text-xl-left">Completed Sessions</p>
 	                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
@@ -31,23 +30,40 @@
 	                    </div>  
 	                </div>
 	            </div>
-	        </div>
 
-	        <div class="col-md-4 grid-margin stretch-card">
-	            <div class="card">
+	            <div class="card mb-3">
+	                <div class="card-body">
+	                    <p class="card-title text-md-center text-xl-left">Cancelled</p>
+	                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+	                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ $cancelled_bookings }}</h3>
+	                        <i class="fa fa-exclamation-circle fa-2x pr-3"></i>
+	                    </div>  
+	                </div>
+	            </div>
+
+	            <div class="card mb-3">
+	                <div class="card-body">
+	                    <p class="card-title text-md-center text-xl-left">No Show</p>
+	                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+	                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ $no_show }}</h3>
+	                        <i class="fa fa-thumbs-down fa-2x pr-3"></i>
+	                    </div>  
+	                </div>
+	            </div>
+
+	            <div class="card mb-3">
 	                <div class="card-body">
 	                    <p class="card-title text-md-center text-xl-left">Unclose Sessions</p>
 	                    <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-	                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ count($unclosed_bookings) }}</h3>
+	                        <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ $rescheduled }}</h3>
 	                        <i class="fa fa-times fa-2x pr-3"></i>
 	                    </div>  
 	                </div>
 	            </div>
-	        </div>
-	    </div>
 
-	    <div class="row mb-3">
-	    	<div class="col-md-12">
+	        </div>
+
+	        <div class="col-md-9">
 	    		<div class="card mb-3">
 	    			<div class="card-header">
 	    				Sessions
@@ -80,9 +96,8 @@
 						<bookings-lists role="{{ $role }}"></bookings-lists>
 	    			</div>
 	    		</div>
-	    	</div>
-			<div class="col-md-12">
-				<div class="card mb-3">
+
+	    		<div class="card mb-3">
 					<div class="card-header">
 						Unclose Sessions
 					</div>
@@ -138,8 +153,8 @@
 					@endif
 					</div>
 				</div>
-			</div>
-		</div>
+	    	</div>
+	    </div>
 	</div>
 
 @endsection

@@ -110,4 +110,8 @@ class Booking extends Model
             $query->where('client_id', request('client'));
         }
     }
+    public function scopeWithStatus($query, $status)
+    {
+        $query->where('status', $status);
+    }
 }

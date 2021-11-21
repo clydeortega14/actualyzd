@@ -1,4 +1,4 @@
-<ul class="navbar-nav bg-gradient-info sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
@@ -12,7 +12,7 @@
 <hr class="sidebar-divider my-0">
 
 <!-- Nav Item - Dashboard -->
-<li class="nav-item active">
+<li class="nav-item">
     <a class="nav-link" href="{{ route('home') }}">
         <i class="fas fa-home"></i>
         <span>Home</span></a>
@@ -24,6 +24,24 @@
             <span>Members</span>
         </a>
     </li>
+@endif
+
+@if(auth()->user()->hasRole('psychologist'))
+    
+    <li class="nav-item {{ Route::is('psychologist.schedules.page') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('psychologist.schedules.page') }}">
+            <i class="fas fa-fw fa-calendar"></i>
+            <span>Schedules</span>
+        </a>
+    </li>
+
+    <li class="nav-item {{ \Request::is('progress-reports/*') || Route::is('progress.report') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('progress.report') }}">
+            <i class="fas fa-fw fa-book"></i>
+            <span>Progress Reports</span>
+        </a>
+    </li>
+
 @endif
 
 @if(auth()->user()->hasRole('superadmin'))

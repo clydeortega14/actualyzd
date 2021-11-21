@@ -17,7 +17,7 @@ class SchedulesController extends Controller
 
     public function index()
     {   
-    	return view('pages.schedules.index');
+    	return view('pages.psychologists.schedule');
     }
     public function show()
     {
@@ -74,9 +74,9 @@ class SchedulesController extends Controller
     {
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
-            ->where('start', $request->start)
-            ->with(['timeSchedules', 'psych'])
-            ->first();
+            ->whereDate('start', $request->start)
+            ->with(['timeList', 'psych', 'booking'])
+            ->get();
 
         $time_lists = TimeList::get();
 

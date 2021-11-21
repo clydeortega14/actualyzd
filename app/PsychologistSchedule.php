@@ -12,6 +12,11 @@ class PsychologistSchedule extends Model
 
     public $timestamps = false;
 
+    public function booking()
+    {
+        return $this->hasOne(Booking::class, 'schedule');
+    }
+
     public function timeList(){
 
         return $this->belongsTo(TimeList::class, 'time_id');

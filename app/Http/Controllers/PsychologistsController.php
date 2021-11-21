@@ -9,6 +9,7 @@ use App\Http\Traits\BookingSchedulesTrait;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Booking;
+use App\Schedules\Schedule;
 
 class PsychologistsController extends Controller
 {
@@ -20,7 +21,13 @@ class PsychologistsController extends Controller
 
         $upcoming_sessions = $this->bookingsQuery();
 
-        $completed_sessions = $this->countByStatus(4);
+        $completed_sessions = $this->countByStatus(2);
+
+        $cancelled_bookings = $this->countByStatus(4);
+
+        $no_show = $this->countByStatus(3);
+
+        $rescheduled = $this->countByStatus(5);
         
         $unclosed_bookings = $this->psychSessions(1)
                                 ->whereIn('schedule', $this->pluckPastdueSchedules())
@@ -28,7 +35,14 @@ class PsychologistsController extends Controller
                                 ->latest()
                                 ->paginate(10);
 
-        return view('pages.psychologists.main', compact('unclosed_bookings', 'upcoming_sessions', 'completed_sessions'));
+        return view('pages.psychologists.main', compact(
+            'unclosed_bookings', 
+            'upcoming_sessions', 
+            'completed_sessions', 
+            'cancelled_bookings',
+            'no_show',
+            'rescheduled'
+        ));
     }
     public function bookings()
     {
@@ -37,9 +51,11 @@ class PsychologistsController extends Controller
         return view('pages.psychologists.bookings', compact('bookings', 'upcoming'));
     }
 
-    public function schedules()
+    public function schedules(Schedule $schedule)
     {
-        return view('pages.psychologists.schedule');
+        $user = auth()->user();
+        $schedules = $schedule->query($user)->get();
+        return view('pages.psychologists.schedule', compact('schedules'));
     }
 
     protected function psychSessions($status){

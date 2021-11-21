@@ -6,20 +6,20 @@
 
 @section('content')
 	
-	<div class="container">
+	<div class="container-fluid">
 
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card">
+      <div id="calendar"></div>
+				{{-- <div class="card">
 					<div class="card-body">
-            <div id="calendar"></div>
-            @include('pages.schedules.modals.create-schedule')
 					</div>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 	</div>
 	
+@include('pages.schedules.modals.create-schedule')
 @endsection
 @section('js_scripts')
 
@@ -37,11 +37,11 @@
 
                   let calendarOptions = {
 
-                        headerToolbar: {
-                          left: 'prev,next today',
-                          center: 'title',
-                          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-                      },
+                      //   headerToolbar: {
+                      //     left: 'prev,next today',
+                      //     center: 'title',
+                      //     right: 'dayGridMonth'
+                      // },
                         editable: true,
                         navLinks:  true,
                         selectable:  true,
@@ -73,13 +73,13 @@
                       }
                 }).done(data => {
                       handleTimeList(data);
-                      // handleSchedulesTable(data);
+                      handleSchedulesTable(data);
                 })
             }
 
             function handleTimeList(data)
             {
-                  let time_schedules = data.schedules !== null ? data.schedules.time_schedules : [];
+                  let time_schedules = data.schedules;
                   let $schedules_time_lists = $('#schedules-time-lists');
 
                   $schedules_time_lists.empty();
@@ -92,10 +92,10 @@
                     let disabled;
 
                     // find time schedules time that equals to time lists id
-                    let sched = time_schedules.find(time_sched => time_sched.time == time.id);
+                    let sched = time_schedules.findIndex(time_sched => time_sched.time_id == time.id);
                     
                     // if found schedule is not equal to undefined
-                    if(sched !== undefined) {
+                    if(sched !== -1) {
                       // assinged to checked
                       checked = 'checked';
 
@@ -144,15 +144,21 @@
                 return `
                   <tr>
                       <td>
-                        ${ date_parser.convertTime(schedule.to_time.from) } - ${ date_parser.convertTime(schedule.to_time.to) }
-                      </td>
-                      <td>${schedule.book_with === null ? 'N/A' : schedule.book_with.name}</td>
-                      <td>
-                        <span class="${schedule.status.class}">${schedule.status.status}</span>
+                        ${ date_parser.convertTime(schedule.time_list.from) } - ${ date_parser.convertTime(schedule.time_list.to) }
                       </td>
                       <td>
-                        <a href="#" class="btn btn-warning btn-xs">Reschedule</a> |
-                        <a href="#" class="btn btn-danger btn-xs">Cancel</a>
+                        <span class="badge ${schedule.is_booked ? 'badge-primary' : 'badge-success'}">${schedule.is_booked ? 'Booked' : 'Available'}</span>
+                      </td>
+                      <td>`
+                      if(schedule.is_booked || schedule.booking !== null){
+                        `
+                          <a href="#" class="btn btn-primary btn-sm">
+                            <i class="fa fa-eye"></i>
+                            <span>view booking</span>
+                          </a>
+                        `
+                      }
+                      ` 
                       </td>
                   </tr>
                   `
