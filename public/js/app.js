@@ -16886,6 +16886,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -16996,6 +17002,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getActions", "getBooking"])),
   created: function created() {
     this.getBookingStatuses();
+    console.log(this.cancelled);
   },
   data: function data() {
     return {
@@ -99657,7 +99664,9 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Status")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Link to session")])
+              _c("th", [_vm._v("Link to session")]),
+              _vm._v(" "),
+              _c("th")
             ])
           ]),
           _vm._v(" "),
@@ -99801,6 +99810,22 @@ var render = function() {
                     : _c("span", { staticClass: "badge badge-secondary" }, [
                         _vm._v("Link not available")
                       ])
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href:
+                          _vm.baseUrl + "/bookings/session/" + booking.room_id,
+                        target: "_blank",
+                        "data-toggle": "tooltip",
+                        title: "view session"
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-eye" })]
+                  )
                 ])
               ])
             }),

@@ -14,6 +14,7 @@
 						<th>Psychologist</th>
 						<th>Status</th>
 						<th>Link to session</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -63,6 +64,11 @@
 								<i class="fa fa-link"></i>
 							</a>
 							<span v-else class="badge badge-secondary">Link not available</span>
+						</td>
+						<td>
+							<a :href="`${baseUrl}/bookings/session/${booking.room_id}`" target="_blank" data-toggle="tooltip" title="view session">
+								<i class="fa fa-eye"></i>
+							</a>
 						</td>
 					</tr>
 				</tbody>

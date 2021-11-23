@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'jitsi_url' => env('JITSI_URL', 'https://meet.jit.si/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -27,7 +27,7 @@
         max-width: 100%;
         max-height: 320px;
         border-radius: 50%;
-        border: 5px solid #fff;
+        border: 5px solid #D5D5D5;
       }
     </style>
     
