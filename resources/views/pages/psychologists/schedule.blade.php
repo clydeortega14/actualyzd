@@ -99,8 +99,10 @@
                       // assinged to checked
                       checked = 'checked';
 
+                      let findBookedSchedule = time_schedules.find(time_sched => time_sched.time_id === time.id)
+
                       // check if shed has already a booking
-                      if(sched.is_booked){
+                      if(findBookedSchedule.is_booked){
                         // assign to disabled
                         disabled = 'disabled';
                       }

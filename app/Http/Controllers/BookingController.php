@@ -21,6 +21,7 @@ use App\Client;
 use App\Events\BookingActivity;
 use App\ReasonOption;
 use App\CancelledBooking;
+use App\BookingStatus;
 
 class BookingController extends Controller
 {
@@ -168,11 +169,26 @@ class BookingController extends Controller
 
     /*  End For Participants Methods */
 
-    public function getAssessment(Booking $booking)
+    public function getAssessment($room_id)
     {
+        $booking = Booking::where('room_id', $room_id)->first();
         $categories = $this->categories;
         $followup_sessions = FollowupSession::get(['id', 'name']);
-        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions'));
+        $session_statuses = BookingStatus::where(function($query){
+
+            $user = auth()->user();
+            if($user->hasRole('psychologist')){
+                $query->whereIn('id', [2,3,4,5]);
+            }
+
+            if($user->hasRole('member')){
+
+                $query->whereIn('id', [4]);
+            }
+
+        })->get(['id', 'name']);
+
+        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions', 'session_statuses'));
     }
 
     public function updateToCancel(Booking $booking, Request $request)

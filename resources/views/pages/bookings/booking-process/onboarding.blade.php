@@ -12,14 +12,14 @@
 			</div>
 		</div>
 		<div class="row mb-3">
-			<div class="col-md-3">
+			{{-- <div class="col-md-3">
 				
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card text-white bg-primary mb-3">
 						  	<div class="card-body">
 						    	<h5 class="card-title text-center p-3">Onboarding Questions</h5>
-						    	{{-- <p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p> --}}
+						    	<p class="card-text">By answering the onboarding questions, it helps the psychologist to determine what is your main concern.</p>
 						  	</div>
 						</div>
 					</div>
@@ -33,9 +33,9 @@
 				</div>
 
 
-			</div>
+			</div> --}}
 
-			<div class="col-md-9">
+			<div class="col-md-12">
 				
 
 				{{-- <div class="card text-white bg-primary mb-3">

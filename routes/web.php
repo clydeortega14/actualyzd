@@ -212,7 +212,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
 
-		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status');
+		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status')->middleware('check-booking-status');
 
 
 		/* Booking Process Actions */
@@ -235,7 +235,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
-		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
+		Route::get('session/{room_id}', 'BookingController@getAssessment')->name('booking.answered.questions');
 
 		// Actions
 		Route::post('book', 'BookingController@bookNow')->name('book.now');

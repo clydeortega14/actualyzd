@@ -51,6 +51,8 @@
 		},
 		created(){
 			this.getBookingStatuses()
+
+			console.log(this.cancelled);
 		},
 		data(){
 			return {
