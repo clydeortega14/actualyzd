@@ -13,7 +13,7 @@
 
 		<div class="row mb-3">
 			
-			<div class="col-md-3">
+			{{-- <div class="col-md-3">
 				<div class="row mb-3">
 					<div class="col-md-12">
 
@@ -49,9 +49,9 @@
 					</div>
 
 				</div>
-			</div>
+			</div> --}}
 
-			<div class="col-md-9">
+			<div class="col-md-12">
 
 				<form action="{{ route('booking.confirm') }}" method="POST">
 					@csrf

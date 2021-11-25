@@ -212,7 +212,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
 
-		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status');
+		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status')->middleware('check-booking-status');
 
 
 		/* Booking Process Actions */

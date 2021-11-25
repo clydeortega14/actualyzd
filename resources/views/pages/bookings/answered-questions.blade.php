@@ -155,29 +155,26 @@
 						<div class="form-group row">
 							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Status</label>
 							@if($booking->status == 1)
+								
 								<div class="col-sm-6">
-
+									<form action="{{ route('booking.update.status', $booking->id) }}" method="POST">
 									
-									<div class="input-group mb-3">
-										<select name="status" class="form-control">
-											<option value="" disabled selected>{{ $booking->toStatus->name }}</option>
-											@foreach($session_statuses as $status)
-												<option value="{{$status->id}}">{{ $status->name}}</option>
-											@endforeach
-										</select>
-										<div class="input-group-append">
-											<button class="btn btn-outline-primary">
-												<i class="fa fa-check"></i>
-											</button>
-											<button class="btn btn-outline-secondary">
-												<i class="fa fa-times"></i>
-											</button>
+										@csrf
+										<input type="hidden" name="booking_id" value="{{ $booking->id }}">
+										<div class="input-group mb-3">
+											<select name="status" class="form-control">
+												<option value="" disabled selected>{{ $booking->toStatus->name }}</option>
+												@foreach($session_statuses as $status)
+													<option value="{{$status->id}}">{{ $status->name}}</option>
+												@endforeach
+											</select>
+											<div class="input-group-append">
+												<button type="submit" class="btn btn-outline-primary">
+													<i class="fa fa-check"></i>
+												</button>
+											</div>
 										</div>
-									</div>
-
-										
-
-									
+									</form>
 								</div>
 							@else
 								<div class="col-sm-3">

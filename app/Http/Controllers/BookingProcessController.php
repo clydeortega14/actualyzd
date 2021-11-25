@@ -254,12 +254,17 @@ class BookingProcessController extends Controller
 
     public function updateBookingStatus(Request $request, $id)
     {
-
         $booking = Booking::where('id', $id)->update(['status' => $request->status ]);
 
         if($booking){
 
-            return response()->json(['success' => true, 'message' => 'Successfully updated!', 'data' => [] ], 200);
+            if($request->ajax()){
+
+                return response()->json(['success' => true, 'message' => 'Successfully updated!', 'data' => [] ], 200);
+            }
+
+            return redirect()->back()->with('success', 'Session has been updated');
+
         }
     }
 }
