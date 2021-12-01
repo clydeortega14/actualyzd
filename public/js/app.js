@@ -16807,6 +16807,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _StatusNav_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StatusNav.vue */ "./resources/js/components/bookings/StatusNav.vue");
 /* harmony import */ var _mixins_datetime_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/datetime.js */ "./resources/js/mixins/datetime.js");
 /* harmony import */ var _constants_url_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../constants/url.js */ "./resources/js/constants/url.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_5__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16892,6 +16894,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -16904,6 +16913,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     role: String,
     userAvatar: String
   },
+  data: function data() {
+    return {
+      show_link: false
+    };
+  },
   created: function created() {
     this.getAllBookings();
   },
@@ -16912,7 +16926,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return window.location.origin;
     },
     jitsiUrl: function jitsiUrl() {
-      return "https://meet.jit.si/" + '3123sda';
+      return "https://meet.jit.si/";
     }
   }),
   components: {
@@ -16930,6 +16944,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     oldReportLink: function oldReportLink(booking_id) {
       return "".concat(this.baseUrl, "/progress-reports/create-for-booking/").concat(booking_id);
+    },
+    currentTime: function currentTime(booking) {
+      var mins_before = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.from).subtract(30, 'minutes').format('HH:mm');
+      var current_time = moment__WEBPACK_IMPORTED_MODULE_5___default()().format('HH:mm');
+      var time_from = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.from).format('HH:mm');
+      var time_to = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.to).format('HH:mm');
+      var current_date = moment__WEBPACK_IMPORTED_MODULE_5___default()().format('YYYY-MM-DD');
+      var booking_date = booking.to_schedule.start;
+
+      if (booking.to_status.id === 1 && current_date < booking_date) {
+        return 'upcoming';
+      }
+
+      if (booking.to_status !== 1 && current_date > booking_date) {
+        return 'passed';
+      }
+
+      if (booking.to_status.id === 1 && current_date === booking_date) {
+        if (current_time.toString() >= mins_before.toString) {
+          return 'show_link';
+        } else if (current_time.toString() > time_from.toString() || current_time.toString() > time_to.toString()) {
+          return 'passed';
+        } else {
+          return 'upcoming';
+        }
+      }
     }
   })
 });
@@ -99796,7 +99836,7 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("td", [
-                  booking.to_status.id === 1
+                  _vm.currentTime(booking) === "show_link"
                     ? _c(
                         "a",
                         {
@@ -99807,9 +99847,15 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "fa fa-link" })]
                       )
-                    : _c("span", { staticClass: "badge badge-secondary" }, [
-                        _vm._v("Link not available")
+                    : _vm.currentTime(booking) === "upcoming"
+                    ? _c("span", [
+                        _c("small", [
+                          _vm._v(
+                            "Link to session will be generated 30 minutes before the designated schedule"
+                          )
+                        ])
                       ])
+                    : _c("span", [_c("small", [_vm._v("Link not available")])])
                 ]),
                 _vm._v(" "),
                 _c("td", [

@@ -60,10 +60,16 @@
 							/>
 						</td>
 						<td>
-							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="booking.to_status.id === 1">
+							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="currentTime(booking) === 'show_link'">
 								<i class="fa fa-link"></i>
 							</a>
-							<span v-else class="badge badge-secondary">Link not available</span>
+							<span v-else-if="currentTime(booking) === 'upcoming'">
+								<small>Link to session will be generated 30 minutes before the designated schedule</small>
+							</span>
+
+							<span v-else>
+								<small>Link not available</small>
+							</span>
 						</td>
 						<td>
 							<a :href="`${baseUrl}/bookings/session/${booking.room_id}`" target="_blank" data-toggle="tooltip" title="view session">
@@ -84,6 +90,7 @@
 	import StatusNav from './StatusNav.vue';
 	import DateTime from '../../mixins/datetime.js';
 	import DEFAULT_URL from '../../constants/url.js';
+	import moment from 'moment';
 
 	export default {
 		name: "BookingList",
@@ -91,6 +98,13 @@
 		props: {
 			role: String,
 			userAvatar: String
+		},
+		data(){
+
+			return {
+
+				show_link: false
+			}
 		},
 		created(){
 			this.getAllBookings();
@@ -102,7 +116,7 @@
 				return window.location.origin;
 			},
 			jitsiUrl(){
-				return process.env.MIX_JITSI_URL + '3123sda';
+				return process.env.MIX_JITSI_URL;
 			}
 		},
 		components: {
@@ -121,6 +135,44 @@
 			oldReportLink(booking_id){
 
 				return `${this.baseUrl}/progress-reports/create-for-booking/${booking_id}`
+			},
+			currentTime(booking){
+
+				let mins_before = moment(booking.to_schedule.start+' '+booking.time.from).subtract(30, 'minutes').format('HH:mm');
+
+				let current_time = moment().format('HH:mm');
+				let time_from = moment(booking.to_schedule.start+' '+booking.time.from).format('HH:mm')
+				let time_to = moment(booking.to_schedule.start+' '+booking.time.to).format('HH:mm')
+
+
+				let current_date = moment().format('YYYY-MM-DD');
+				let booking_date = booking.to_schedule.start;
+
+				if(booking.to_status.id === 1 && current_date < booking_date){
+
+					return 'upcoming';
+				}
+
+				if(booking.to_status !== 1 && current_date > booking_date){
+
+					return 'passed';
+				}
+
+				if(booking.to_status.id === 1 && current_date === booking_date){
+
+					if(current_time.toString() >= mins_before.toString){
+
+						return 'show_link';
+
+					}else if(current_time.toString() > time_from.toString() || current_time.toString() > time_to.toString()){
+
+						return 'passed';
+
+					}else{
+
+						return 'upcoming';
+					}
+				}
 			}
 		}
 	}
