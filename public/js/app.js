@@ -17273,9 +17273,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])),
   watch: {
     selected_psychologist: function selected_psychologist(value) {
-      this.$store.commit('setSelectedPsychologistId', value.id);
-      this.$store.commit('setSelectedPsychologist', value.name);
-      EventBus.$emit('select-psychologist', value);
+      if (!_.isNil(value)) {
+        this.$store.commit('setSelectedPsychologistId', value.id);
+        this.$store.commit('setSelectedPsychologist', value.name);
+        EventBus.$emit('select-psychologist', value);
+      }
     }
   }
 });
@@ -17754,6 +17756,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17761,20 +17768,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mixins: [_mixins_datetime_js__WEBPACK_IMPORTED_MODULE_1__["default"]],
   data: function data() {
     return {
-      selected_time: {}
+      selected_time: null,
+      btnClass: 'btn-outline-primary'
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getTimeByDate"])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["timeByDate"])),
-  watch: {
-    selected_time: function selected_time(value) {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getTimeByDate", "getSelectedTimeId"])),
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["timeByDate"])), {}, {
+    selectTime: function selectTime(value) {
       if (!_.isNil(value)) {
-        EventBus.$emit('select-time', value);
+        this.selected_time;
         this.$store.commit('setSelectedTimeId', value.id);
         this.$store.commit('setSelectedTime', value.name);
+        EventBus.$emit('select-time', value);
       }
     }
-  }
+  })
 });
 
 /***/ }),
@@ -18099,8 +18107,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bookings/ReviewBooking.vue */ "./resources/js/components/bookings/ReviewBooking.vue");
+/* harmony import */ var _bookings_Timelists_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../bookings/Timelists.vue */ "./resources/js/components/bookings/Timelists.vue");
+/* harmony import */ var _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../bookings/Psychologists.vue */ "./resources/js/components/bookings/Psychologists.vue");
+/* harmony import */ var _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../bookings/ReviewBooking.vue */ "./resources/js/components/bookings/ReviewBooking.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -18192,6 +18202,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -18205,6 +18221,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       disabledSubmitBtn: true
     };
   },
+  mounted: function mounted() {
+    var _this = this;
+
+    EventBus.$on('select-time', function (data) {
+      _this.disabledSubmitBtn = !_.isNil(_this.getSelectedPsychologistId) ? false : true;
+    });
+    EventBus.$on('select-psychologist', function (data) {
+      _this.disabledSubmitBtn = !_.isNil(data) ? false : true;
+    });
+  },
   props: {
     timeLists: Array,
     selectedDate: String,
@@ -18215,14 +18241,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     participants: Array
   },
   components: {
-    ReviewBooking: _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    TimeLists: _bookings_Timelists_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Psychologists: _bookings_Psychologists_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ReviewBooking: _bookings_ReviewBooking_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["allPsychologists", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologistId", "getSelectedPsychologist"])), {}, {
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(["allPsychologists", "getSelectedDate", "getSelectedTimeId", "getSelectedPsychologistId", "getSelectedPsychologist"])), {}, {
     selectedPsychologist: function selectedPsychologist() {
       return this.$store.state.selected_psychologist;
     }
   }),
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])(["getPsychologists"])), {}, {
     cancelSubmit: function cancelSubmit() {
       this.show_psychologists = false;
       this.selected_time = null;
@@ -18233,36 +18261,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.$store.commit('setSelectedPsychologist', null);
       this.disabledSubmitBtn = true;
     }
-  }),
-  watch: {
-    selected_time: function selected_time(value) {
-      if (!_.isNil(value)) {
-        this.show_psychologists = true;
-
-        if (this.selected_psychologist !== null && this.show_psychologists) {
-          this.selected_psychologist = null;
-          this.$store.commit('setSelectedPsychologistId', null);
-          this.$store.commit('setSelectedPsychologist', null);
-        }
-
-        this.getPsychologists({
-          date: this.selectedDate,
-          time_id: value.id
-        });
-        this.$store.commit('setSelectedTimeId', value.id);
-        this.$store.commit('setSelectedTime', value.name);
-      }
-    },
-    selected_psychologist: function selected_psychologist(value) {
-      if (!_.isNil(value)) {
-        this.$store.commit('setSelectedPsychologistId', value.id);
-        this.$store.commit('setSelectedPsychologist', value.name);
-        this.disabledSubmitBtn = false;
-      } else {
-        this.disabledSubmitBtn = true;
-      }
-    }
-  }
+  })
 });
 
 /***/ }),
@@ -100623,6 +100622,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "mb-3" },
     [
       _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
         _vm._v("Select Time")
@@ -100630,64 +100630,35 @@ var render = function() {
       _vm._v(" "),
       _vm._l(_vm.getTimeByDate, function(time, index) {
         return _c(
-          "div",
-          { key: index, staticClass: "custom-control custom-radio mb-3 ml-3" },
-          [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.selected_time,
-                  expression: "selected_time"
-                }
-              ],
-              staticClass: "custom-control-input",
-              attrs: { type: "radio", id: "time-" + time.time_list.id },
-              domProps: {
-                value: {
-                  id: time.time_list.id,
-                  name:
-                    _vm.wholeTime(time.time_list.from) +
-                    " - " +
-                    _vm.wholeTime(time.time_list.to)
-                },
-                checked: _vm._q(_vm.selected_time, {
+          "button",
+          {
+            key: index,
+            staticClass: "btn btn-outline-primary mb-2 ml-2",
+            class: {
+              "btn-primary": _vm.getSelectedTimeId === time.time_list.id
+            },
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                _vm.selectTime({
                   id: time.time_list.id,
                   name:
                     _vm.wholeTime(time.time_list.from) +
                     " - " +
                     _vm.wholeTime(time.time_list.to)
                 })
-              },
-              on: {
-                change: function($event) {
-                  _vm.selected_time = {
-                    id: time.time_list.id,
-                    name:
-                      _vm.wholeTime(time.time_list.from) +
-                      " - " +
-                      _vm.wholeTime(time.time_list.to)
-                  }
-                }
               }
-            }),
-            _vm._v(" "),
-            _c(
-              "label",
-              {
-                staticClass: "custom-control-label",
-                attrs: { for: "time-" + time.time_list.id }
-              },
-              [
-                _vm._v(
-                  _vm._s(
-                    _vm.wholeTime(time.time_list.from) +
-                      " - " +
-                      _vm.wholeTime(time.time_list.to)
-                  )
-                )
-              ]
+            }
+          },
+          [
+            _vm._v(
+              "\n\t\t\t" +
+                _vm._s(
+                  _vm.wholeTime(time.time_list.from) +
+                    " - " +
+                    _vm.wholeTime(time.time_list.to)
+                ) +
+                "\n\t\t"
             )
           ]
         )
@@ -101091,183 +101062,31 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("input", {
-                  attrs: { type: "hidden", name: "selected_date" },
-                  domProps: { value: _vm.getSelectedDate }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "time_id" },
-                  domProps: { value: _vm.getSelectedTimeId }
-                }),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: { type: "hidden", name: "psychologist" },
-                  domProps: { value: _vm.getSelectedPsychologistId }
-                }),
-                _vm._v(" "),
-                _vm.show_time_lists
-                  ? _c(
-                      "div",
-                      { staticClass: "mb-3" },
-                      [
-                        _c(
-                          "h5",
-                          { staticClass: "card-title mb-3 border-bottom" },
-                          [_vm._v("Select Time")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.timeLists, function(time, index) {
-                          return _c(
-                            "div",
-                            {
-                              key: index,
-                              staticClass:
-                                "custom-control custom-radio mb-3 ml-3"
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.selected_time,
-                                    expression: "selected_time"
-                                  }
-                                ],
-                                staticClass: "custom-control-input",
-                                attrs: {
-                                  type: "radio",
-                                  id: "time-" + time.time_list.id
-                                },
-                                domProps: {
-                                  value: {
-                                    id: time.time_list.id,
-                                    name:
-                                      time.time_list.from +
-                                      " - " +
-                                      time.time_list.to
-                                  },
-                                  checked: _vm._q(_vm.selected_time, {
-                                    id: time.time_list.id,
-                                    name:
-                                      time.time_list.from +
-                                      " - " +
-                                      time.time_list.to
-                                  })
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.selected_time = {
-                                      id: time.time_list.id,
-                                      name:
-                                        time.time_list.from +
-                                        " - " +
-                                        time.time_list.to
-                                    }
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "custom-control-label",
-                                  attrs: { for: "time-" + time.time_list.id }
-                                },
-                                [
-                                  _vm._v(
-                                    _vm._s(
-                                      time.time_list.from +
-                                        " - " +
-                                        time.time_list.to
-                                    )
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.show_psychologists
-                  ? _c(
-                      "div",
-                      { staticClass: "mb-3" },
-                      [
-                        _c(
-                          "h5",
-                          { staticClass: "card-title mb-3 border-bottom" },
-                          [_vm._v("Select Psychologist")]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.allPsychologists, function(
-                          psychologist,
-                          index
-                        ) {
-                          return _c(
-                            "div",
-                            {
-                              staticClass:
-                                "custom-control custom-radio mb-3 ml-3"
-                            },
-                            [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.selected_psychologist,
-                                    expression: "selected_psychologist"
-                                  }
-                                ],
-                                staticClass: "custom-control-input",
-                                attrs: {
-                                  type: "radio",
-                                  id: "psychologist-" + psychologist.id
-                                },
-                                domProps: {
-                                  value: {
-                                    id: psychologist.id,
-                                    name: psychologist.name
-                                  },
-                                  checked: _vm._q(_vm.selected_psychologist, {
-                                    id: psychologist.id,
-                                    name: psychologist.name
-                                  })
-                                },
-                                on: {
-                                  change: function($event) {
-                                    _vm.selected_psychologist = {
-                                      id: psychologist.id,
-                                      name: psychologist.name
-                                    }
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "label",
-                                {
-                                  staticClass: "custom-control-label",
-                                  attrs: {
-                                    for: "psychologist-" + psychologist.id
-                                  }
-                                },
-                                [_vm._v(_vm._s(psychologist.name))]
-                              )
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    )
-                  : _vm._e()
-              ])
+              _c(
+                "div",
+                { staticClass: "col-md-6" },
+                [
+                  _c("input", {
+                    attrs: { type: "hidden", name: "selected_date" },
+                    domProps: { value: _vm.getSelectedDate }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "hidden", name: "time_id" },
+                    domProps: { value: _vm.getSelectedTimeId }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "hidden", name: "psychologist" },
+                    domProps: { value: _vm.getSelectedPsychologistId }
+                  }),
+                  _vm._v(" "),
+                  _c("TimeLists"),
+                  _vm._v(" "),
+                  _c("Psychologists")
+                ],
+                1
+              )
             ])
           ]),
           _vm._v(" "),

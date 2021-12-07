@@ -60,10 +60,16 @@
 
 			selected_psychologist(value){
 
-				this.$store.commit('setSelectedPsychologistId', value.id);
-				this.$store.commit('setSelectedPsychologist', value.name);
+				if(!_.isNil(value)){
 
-				EventBus.$emit('select-psychologist', value);
+					this.$store.commit('setSelectedPsychologistId', value.id);
+					this.$store.commit('setSelectedPsychologist', value.name);
+
+					EventBus.$emit('select-psychologist', value);
+
+				}
+
+				
 			}
 		}
 	}
