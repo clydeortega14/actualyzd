@@ -17239,6 +17239,64 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Psychologists",
@@ -17248,7 +17306,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       show_psychologist_component: false
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allPsychologists', 'getSelectedDate', 'getSelectedPsychologist'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['allPsychologists', 'getSelectedDate', 'getSelectedPsychologist', 'getSelectedPsychologistId'])),
   mounted: function mounted() {
     var _this = this;
 
@@ -17270,16 +17328,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     });
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])),
-  watch: {
-    selected_psychologist: function selected_psychologist(value) {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["getPsychologists"])), {}, {
+    selectPsychologist: function selectPsychologist(value) {
       if (!_.isNil(value)) {
         this.$store.commit('setSelectedPsychologistId', value.id);
         this.$store.commit('setSelectedPsychologist', value.name);
         EventBus.$emit('select-psychologist', value);
       }
     }
-  }
+  })
 });
 
 /***/ }),
@@ -18117,35 +18174,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -40233,6 +40261,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.roman[data-v-efd00768] {\n\n\tlist-style-type: upper-roman;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.psych-name[data-v-29d6e9af] {\n\n\tdisplay: inline-block;\n}\n.psych-container[data-v-29d6e9af] {\n\n\tborder-style: double;\n\tborder-color: #7386D5;\n\tborder-radius: 5px;\n\tpadding: 8px;\n\tcursor: pointer;\n}\n.psych-container a[data-v-29d6e9af] {\n\n\tcolor: #7386D5;\n}\n.psych-container[data-v-29d6e9af]:hover {\n\n\tbackground-color: #7386D5;\n\tborder-style: double;\n\tborder-color: #fff;\n\tcolor: #fff;\n}\n.psych-container:hover a[data-v-29d6e9af] {\n\tcolor: #fff;\n}\n.psych-container:hover img[data-v-29d6e9af] {\n\tborder: 2px solid #fff;\n}\n.selected[data-v-29d6e9af] {\n\n\tbackground-color: #7386D5;\n\tborder-style: double;\n\tborder-color: #fff;\n\tcolor: #fff;\n}\n.selected a[data-v-29d6e9af] {\n\n\tcolor: #fff;\n}\n.selected img[data-v-29d6e9af] {\n\tborder: 2px solid #fff;\n}\n\n", ""]);
 
 // exports
 
@@ -94039,6 +94086,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/progress-reports/ReportAssignee.vue?vue&type=style&index=0&id=04b1be38&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/progress-reports/ReportAssignee.vue?vue&type=style&index=0&id=04b1be38&scoped=true&lang=css& ***!
@@ -100113,10 +100190,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af& ***!
-  \*************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -100129,66 +100206,70 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.show_psychologist_component
-    ? _c(
-        "div",
-        [
-          _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
-            _vm._v("Select Psychologist")
-          ]),
-          _vm._v(" "),
+    ? _c("div", [
+        _c("h5", { staticClass: "card-title mb-3 border-bottom" }, [
+          _vm._v("Select Psychologist")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "row" },
           _vm._l(_vm.allPsychologists, function(psychologist, index) {
-            return _c(
-              "div",
-              { staticClass: "custom-control custom-radio mb-3 ml-3" },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.selected_psychologist,
-                      expression: "selected_psychologist"
-                    }
-                  ],
-                  staticClass: "custom-control-input",
-                  attrs: {
-                    type: "radio",
-                    id: "psychologist-" + psychologist.id
-                  },
-                  domProps: {
-                    value: { id: psychologist.id, name: psychologist.name },
-                    checked: _vm._q(_vm.selected_psychologist, {
-                      id: psychologist.id,
-                      name: psychologist.name
-                    })
+            return _c("div", { staticClass: "col-md-12" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "psych-container",
+                  class: {
+                    selected: _vm.getSelectedPsychologistId === psychologist.id
                   },
                   on: {
-                    change: function($event) {
-                      _vm.selected_psychologist = {
+                    click: function($event) {
+                      return _vm.selectPsychologist({
                         id: psychologist.id,
                         name: psychologist.name
-                      }
+                      })
                     }
                   }
-                }),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    staticClass: "custom-control-label",
-                    attrs: { for: "psychologist-" + psychologist.id }
-                  },
-                  [_vm._v(_vm._s(psychologist.name))]
-                )
-              ]
-            )
-          })
-        ],
-        2
-      )
+                },
+                [
+                  _c("img", {
+                    staticClass: "mr-3 rounded-circle",
+                    attrs: {
+                      src: "/images/profile.png",
+                      alt: "Profile",
+                      height: "65",
+                      width: "65"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "psych-name" }, [
+                    _vm._v(
+                      "\n\t\t\t\t\t" +
+                        _vm._s(psychologist.name) +
+                        "\n\t\t\t\t\t"
+                    ),
+                    _vm._m(0, true)
+                  ])
+                ]
+              )
+            ])
+          }),
+          0
+        )
+      ])
     : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "ml-3 float-right", attrs: { href: "#" } }, [
+      _c("i", { staticClass: "fa fa-eye" })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -116786,9 +116867,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=template&id=29d6e9af& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&");
+/* harmony import */ var _Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true&");
 /* harmony import */ var _Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=script&lang=js& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& */ "./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -116796,13 +116879,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Psychologists_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "29d6e9af",
   null
   
 )
@@ -116828,19 +116911,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af& ***!
-  \*******************************************************************************************/
+/***/ "./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&":
+/*!*********************************************************************************************************************!*\
+  !*** ./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=style&index=0&id=29d6e9af&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_style_index_0_id_29d6e9af_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true& ***!
+  \*******************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=template&id=29d6e9af& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/bookings/Psychologists.vue?vue&type=template&id=29d6e9af&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Psychologists_vue_vue_type_template_id_29d6e9af_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
