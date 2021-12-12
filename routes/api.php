@@ -20,3 +20,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:api')->group(function () {
     Route::post('photo', 'UsersController@uploadAvatar');
 });
+
+
+/*-- Reason Option Route -- */
+Route::get('get-reasons-lists', 'Api\ReasonController@index');
+    
+/*-- Booking Route Group -- */
+Route::prefix('booking')->group(function(){
+    
+    /* -- Submit Reschedule Booking Route -- */
+    Route::post('reschedule', 'Api\BookingController@reschedule');
+});
+
+// Chat Messages API
+Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
+
+Route::post('chat-message', 'Api\ChatMessageController@store');

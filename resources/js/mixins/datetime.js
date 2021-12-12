@@ -4,7 +4,7 @@ export default {
 	methods: {
 		wholeDate(date)
 		{
-			return moment(date).format('LLLL');
+			return moment(date).format('LL');
 		},
 		wholeTime(time)
 		{

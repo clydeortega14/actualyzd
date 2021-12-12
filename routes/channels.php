@@ -14,3 +14,20 @@
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+
+// Chat Messages Channel
+Broadcast::channel('new-message.{room_id}', function($room_id){
+    return true;
+});
+
+
+// Video Call Channel
+Broadcast::channel('video-call.{room_id}', function($user, $room_id){
+    return [
+
+        'id' => $user->id,
+        'name' => $user->name
+
+    ];
+});

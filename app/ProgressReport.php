@@ -10,6 +10,7 @@ class ProgressReport extends Model
     protected $fillable = 
     	[
     		'booking_id',
+            'counselee',
     		'main_concern',
     		'has_prescription',
     		'initial_assessment',
@@ -21,6 +22,11 @@ class ProgressReport extends Model
     public function booking()
     {
     	return $this->belongsTo(Booking::class, 'booking_id');
+    }
+
+    public function toCounselee()
+    {
+        return $this->belongsTo(User::class, 'counselee');
     }
 
     public function followupSession()

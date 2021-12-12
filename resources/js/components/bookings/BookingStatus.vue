@@ -6,7 +6,8 @@
 			</div>
 
 			<div v-else>
-				<b>{{ sessionStatus }}</b>
+				<span :class="sessionStatus === 'Cancelled' ? 'text-danger' : ''">{{ sessionStatus }}</span> <br>
+				<span v-if="cancelled !== null">{{ cancelled.reason_option_id === 5 ? cancelled.others_specify : cancelled.reason_option.option_name }}</span>
 			</div>
 		</div>
 		<div v-else>
@@ -18,7 +19,7 @@
 			    	:value="status.id">{{ status.name }}</option>
 			  </select>
 			  <div class="input-group-append">
-			    <button class="btn btn-outline-primary" type="submit">
+			    <button class="btn btn-outline-primary" type="submit" @click.prevent="update">
 			    	<i class="fa fa-check"></i>
 			    </button>
 			    <button class="btn btn-outline-secondary" type="button" @click.prevent="cancel">
@@ -32,6 +33,7 @@
 
 <script>
 
+	import Swal from 'sweetalert2';
 	import { mapGetters, mapActions } from 'vuex';
 	
 	export default {
@@ -39,13 +41,18 @@
 		props: {
 			sessionStatus: String,
 			bookingId: Number,
-			bookingStatus: Number
+			bookingStatus: Number,
+			reschedule: Object,
+			cancelled: Object,
+			ownBooking: Object
 		},
 		computed: {
-			...mapGetters(["getActions"])
+			...mapGetters(["getActions", "getBooking"])
 		},
 		created(){
 			this.getBookingStatuses()
+
+			console.log(this.cancelled);
 		},
 		data(){
 			return {
@@ -60,18 +67,36 @@
 				this.status_option = this.bookingStatus === 1 ? null : this.bookingStatus;
 			},
 			update(){
+
 				let payload = {
 					id: this.bookingId,
 					status: this.status_option
 				}
-				this.updateStatus(payload).then(res => {
-					if(res.status){
 
-						location.reload();
-					}
-				}).catch(error => {
-					console.log(error)
-				})
+				if(this.status_option === 2){
+
+					window.location.href = `${window.location.origin}/progress-reports/create-for-booking/${this.bookingId}`;
+
+				}else if(this.status_option === 4){
+
+					window.location.href = `${window.location.origin}/bookings/cancel/${this.bookingId}`;
+
+				}else if(this.status_option === 5){
+
+					window.location.href = `${window.location.origin}/bookings/reschedule/${this.bookingId}`;
+
+				}else{
+
+					
+					this.updateStatus(payload).then(res => {
+						if(res.data.success){
+							Swal.fire('Success!', res.data.message, 'success');
+							location.reload();
+						}
+					}).catch(error => {
+						console.log(error)
+					})
+				}
 			},
 			cancel(){
 				this.editMode = false;

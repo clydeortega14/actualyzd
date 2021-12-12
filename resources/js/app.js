@@ -13,6 +13,8 @@ Vue.prototype.$bus = new Vue();
 import store from './store'
 import moment from 'moment'
 
+window.EventBus = new Vue();
+
 // import modal from 'vue-js-modal';
 
 // Vue.use(modal, { dialog: true, dynamic: true });
@@ -32,28 +34,49 @@ Vue.component('calendar-page', require('./components/CalendarPage.vue').default)
 
 Vue.component('bookings-calendar', require('./components/bookings/Calendar.vue').default);
 
+// Reschedule Calendar Vue Component
+Vue.component('reschedule-calendar', require('./components/bookings/RescheduleCalendar.vue').default);
+
 Vue.component('booking-status', require('./components/bookings/BookingStatus').default);
 
 Vue.component('bookings-lists', require('./components/bookings/BookingList.vue').default);
 
+// Review Bookings Component
+Vue.component('review-booking', require('./components/bookings/ReviewBooking.vue').default);
+
+// Psychologist Schedules Component
 Vue.component('schedules-component', require('./components/schedules/Main.vue').default);
 
 // Progress Report Client Medication Component
 Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
+
 // Report Assignee Vue Component
 Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
 //Client Participants Form Component
 Vue.component('client-participants', require('./components/bookings/clients/ClientParticipant.vue').default);
 
+// Video Chat Component
+Vue.component('chat-component', require('./components/video-chat/ChatComponent.vue').default);
+
+// Chat Messages Components
+Vue.component('chat-messages', require('./components/video-chat/ChatMessages.vue').default);
+
+// Chat Footer Component
+Vue.component('chat-footer', require('./components/video-chat/ChatFooter').default);
+
+// Video Call
+Vue.component('video-call', require('./components/video-chat/VideoCall.vue').default);
+
 /**
  * This components are for dashboard / service utilization
  */
 Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
 
+// Clients Lists
 Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 
-
+// Upload Avatar Component
 Vue.component('upload-avatar', require('./components/profile/UploadAvatar.vue').default);
 
 /**

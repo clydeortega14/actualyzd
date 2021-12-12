@@ -28,4 +28,8 @@ class TimeList extends Model
     {
         return date("g:i a", strtotime($date));
     }
+    public function getTimeAccessAttribute($date){
+
+        return \Carbon\Carbon::parse($date);
+    }
 }

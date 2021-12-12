@@ -19,6 +19,9 @@ use App\User;
 use App\SessionParticipant;
 use App\Client;
 use App\Events\BookingActivity;
+use App\ReasonOption;
+use App\CancelledBooking;
+use App\BookingStatus;
 
 class BookingController extends Controller
 {
@@ -42,7 +45,9 @@ class BookingController extends Controller
     }
     public function cancel(Booking $booking)
     {
-        return view('pages.bookings.cancel', compact('booking'));
+        $reason_options = ReasonOption::get();
+
+        return view('pages.bookings.cancel', compact('booking', 'reason_options'));
     }
     public function bookNow(Request $request)
     {
@@ -164,59 +169,61 @@ class BookingController extends Controller
 
     /*  End For Participants Methods */
 
-    public function getAssessment(Booking $booking)
+    public function getAssessment($room_id)
     {
+        $booking = Booking::where('room_id', $room_id)->first();
         $categories = $this->categories;
         $followup_sessions = FollowupSession::get(['id', 'name']);
-        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions'));
+        $session_statuses = BookingStatus::where(function($query){
+
+            $user = auth()->user();
+            if($user->hasRole('psychologist')){
+                $query->whereIn('id', [2,3,4,5]);
+            }
+
+            if($user->hasRole('member')){
+
+                $query->whereIn('id', [4]);
+            }
+
+        })->get(['id', 'name']);
+
+        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions', 'session_statuses'));
     }
 
     public function updateToCancel(Booking $booking, Request $request)
     {
+        // validate reason must be required
+        $request->validate([
+
+            'reason' => ['required_without_all'] 
+        ]);
+
+        // if reason is others, must specify other reason why he /she cancel the booking
+        if($request->reason == 5){
+
+            $request->validate([
+
+                'others_specify' => ['required']
+            ]);
+        }
+
         //Update booking status to cancelled
         $booking->update(['status' => 4]);
 
         // store reason for cancelling in the database
-        $reason = $this->storeReason($booking, $request);
+        $cancelled_booking = CancelledBooking::create([
 
-        // update the schedule to available again
-        $booking->toSchedule->update(['status' => 1 ]);
+            'booking_id' => $booking->id,
+            'cancelled_by' => auth()->user()->id,
+            'reason_option_id' => $request->reason
+
+        ] + ['others_specify' => $request->has('others_specify') ? $request->others_specify : null]);
+
+        // update the time schedule to available again
+        $booking->toSchedule->timeSchedules()->where('time', $booking->time_id)->update(['is_booked' => false]);
 
         return redirect()->route('home')->with('success', 'Session has been cancelled');
-    }
-
-    public function complete(Booking $booking)
-    {
-        // update booking status to complete
-        $booking->update(['status' => 2 ]);
-
-        if(!$booking){
-            return redirect()->back()->with('error', 'There was an error during completing this session');
-        }
-
-        return redirect()->back()->with('success', 'Session has been completed');
-    }
-
-    public function noShow(Booking $booking)
-    {
-        // update status to no show
-        $booking->update(['status' => 3 ]);
-
-        if(!$booking){
-            return redirect()->back()->with('error', 'Oops! There was an error');
-        }
-
-        return redirect()->back()->with('success', 'No Show!');
-    }
-
-    public function reschedule(Booking $booking)
-    {
-        // $time_lists = $this->time_lists;
-        // $categories = $this->categories;
-
-       $booking = $booking->with(['toSchedule'])->first();
-
-        return view('pages.bookings.reschedule', compact('booking'));
     }
     public function reschedBooking(Booking $booking, Request $request)
     {
@@ -250,10 +257,52 @@ class BookingController extends Controller
 
     protected function storeReason($booking, $request)
     {
+
         return RescheduledBooking::create([
             'booking_id' => $booking->id, 
             'updated_by' => auth()->user()->id, 
             'reason' => $request->reason 
         ]);
+    }
+
+
+    // public function complete(Booking $booking)
+    // {
+    //     // update booking status to complete
+    //     $booking->update(['status' => 2 ]);
+
+    //     if(!$booking){
+    //         return redirect()->back()->with('error', 'There was an error during completing this session');
+    //     }
+
+    //     return redirect()->back()->with('success', 'Session has been completed');
+    // }
+
+    // public function noShow(Booking $booking)
+    // {
+    //     // update status to no show
+    //     $booking->update(['status' => 3 ]);
+
+    //     if(!$booking){
+    //         return redirect()->back()->with('error', 'Oops! There was an error');
+    //     }
+
+    //     return redirect()->back()->with('success', 'No Show!');
+    // }
+
+    public function reschedule(Booking $booking)
+    {
+
+        $booking->load([
+            'toSchedule.psych', 
+            'time',
+            'sessionType',
+            'toStatus',
+            'reschedule',
+            'cancelled.reasonOption'
+
+       ]);
+
+        return view('pages.bookings.reschedule', compact('booking'));
     }
 }

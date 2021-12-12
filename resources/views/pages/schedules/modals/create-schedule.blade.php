@@ -36,9 +36,8 @@
                                     <thead>
                                         <tr>
                                             <th>Time</th>
-                                            <th>Book With</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 

@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<FullCalendar :options="options" />
+		<FullCalendar ref="fullCalendar" :options="options" />
 
-		<TimeSchedule v-if="showModal" @close="showModal = false"/>
+		<TimeSchedule ref="show_time_modal" />
 	</div>
 </template>
 
@@ -22,16 +22,17 @@
 
 				options: {
 					plugins: [ dayGridPlugin, interactionPlugin ],
-					initialView: 'dayGridMonth',
+					initialView: 'dayGridWeek',
 					editable: true,
 					selectable: true,
 					navLinks: true,
-					select(arg){
-						console.log(arg)
-						$('#create-schedule').modal('show');
-					}
+					select: this.handleSelect,
+					events: [
+
+						{ title: 'event 1', start: '2021-11-17 14:30:00', end: '2021-11-17 15:30:00', allDay: false },
+          				{ title: 'event 2', date: '2021-11-17' }
+					]
 				},
-				showModal: true
 			}
 		},
 		components: {
@@ -41,7 +42,8 @@
 		methods: {
 
 			handleSelect(argument){
-				console.log(argument)
+				let element = this.$refs.show_time_modal.$el;
+				$(element).modal('show');
 			}
 
 		}
