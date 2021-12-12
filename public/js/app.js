@@ -16899,7 +16899,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -16947,9 +16946,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     currentTime: function currentTime(booking) {
       var mins_before = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.from).subtract(30, 'minutes').format('HH:mm');
-      var current_time = moment__WEBPACK_IMPORTED_MODULE_5___default()().format('HH:mm');
-      var time_from = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.from).format('HH:mm');
-      var time_to = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.to).format('HH:mm');
+      var format = 'hh:mm:ss';
+      var current_time = moment__WEBPACK_IMPORTED_MODULE_5___default()();
+      var time_from = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.from).format(format);
+      var time_to = moment__WEBPACK_IMPORTED_MODULE_5___default()(booking.to_schedule.start + ' ' + booking.time.to).format(format);
+      console.log([current_time, time_from, time_to]);
       var current_date = moment__WEBPACK_IMPORTED_MODULE_5___default()().format('YYYY-MM-DD');
       var booking_date = booking.to_schedule.start;
 
@@ -16962,7 +16963,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (booking.to_status.id === 1 && current_date === booking_date) {
-        if (current_time.toString() >= mins_before.toString) {
+        if (current_time.isBetween(time_from, time_to)) {
           return 'show_link';
         } else if (current_time.toString() > time_from.toString() || current_time.toString() > time_to.toString()) {
           return 'passed';
@@ -17042,7 +17043,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(["getActions", "getBooking"])),
   created: function created() {
     this.getBookingStatuses();
-    console.log(this.cancelled);
   },
   data: function data() {
     return {
@@ -17073,8 +17073,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire('Success!', res.data.message, 'success');
             location.reload();
           }
-        })["catch"](function (error) {
-          console.log(error);
+        })["catch"](function (error) {// console.log(error)
         });
       }
     },
@@ -17311,7 +17310,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _this = this;
 
     EventBus.$on('select-time', function (data) {
-      if (_this.selected_psychologist !== null && _this.show_psychologist_component) {
+      if (_this.getSelectedPsychologistId !== null && _this.show_psychologist_component) {
         _this.show_psychologist_component = false;
         _this.selected_psychologist = null;
 
@@ -99780,9 +99779,7 @@ var render = function() {
               _vm._v(" "),
               _c("th", [_vm._v("Status")]),
               _vm._v(" "),
-              _c("th", [_vm._v("Link to session")]),
-              _vm._v(" "),
-              _c("th")
+              _c("th", [_vm._v("Link to session")])
             ])
           ]),
           _vm._v(" "),
@@ -99932,22 +99929,6 @@ var render = function() {
                         ])
                       ])
                     : _c("span", [_c("small", [_vm._v("Link not available")])])
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "a",
-                    {
-                      attrs: {
-                        href:
-                          _vm.baseUrl + "/bookings/session/" + booking.room_id,
-                        target: "_blank",
-                        "data-toggle": "tooltip",
-                        title: "view session"
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-eye" })]
-                  )
                 ])
               ])
             }),

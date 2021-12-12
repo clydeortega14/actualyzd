@@ -91,7 +91,7 @@
 
 			EventBus.$on('select-time', data => {
 
-				if(this.selected_psychologist !== null && this.show_psychologist_component){
+				if(this.getSelectedPsychologistId !== null && this.show_psychologist_component){
 
 					this.show_psychologist_component = false;
 					this.selected_psychologist = null;

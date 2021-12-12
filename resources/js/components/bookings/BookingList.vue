@@ -14,7 +14,6 @@
 						<th>Psychologist</th>
 						<th>Status</th>
 						<th>Link to session</th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -71,11 +70,11 @@
 								<small>Link not available</small>
 							</span>
 						</td>
-						<td>
+						<!-- <td>
 							<a :href="`${baseUrl}/bookings/session/${booking.room_id}`" target="_blank" data-toggle="tooltip" title="view session">
 								<i class="fa fa-eye"></i>
 							</a>
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -139,10 +138,13 @@
 			currentTime(booking){
 
 				let mins_before = moment(booking.to_schedule.start+' '+booking.time.from).subtract(30, 'minutes').format('HH:mm');
+				let format = 'hh:mm:ss';
 
-				let current_time = moment().format('HH:mm');
-				let time_from = moment(booking.to_schedule.start+' '+booking.time.from).format('HH:mm')
-				let time_to = moment(booking.to_schedule.start+' '+booking.time.to).format('HH:mm')
+				let current_time = moment();
+				let time_from = moment(booking.to_schedule.start+' '+booking.time.from).format(format)
+				let time_to = moment(booking.to_schedule.start+' '+booking.time.to).format(format)
+
+				console.log([current_time, time_from, time_to])
 
 
 				let current_date = moment().format('YYYY-MM-DD');
@@ -160,7 +162,7 @@
 
 				if(booking.to_status.id === 1 && current_date === booking_date){
 
-					if(current_time.toString() >= mins_before.toString){
+					if(current_time.isBetween(time_from, time_to)){
 
 						return 'show_link';
 
