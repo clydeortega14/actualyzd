@@ -140,7 +140,6 @@
 			          		</div>
 			          		<div class="tab-pane" id="onboarding-questions" role="tabpanel" aria-labelledby="onboarding-questions-tab">
 			          			@if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1)
-									
 									<ol type="I">
 										@foreach($categories as $category)
 		                                    <li>

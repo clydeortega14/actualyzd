@@ -64,7 +64,8 @@ class User extends Authenticatable
     }
     public function bookings()
     {
-        return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
+        // return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
+        return $this->hasMany('App\Booking', 'booked_by', 'id');
     }
 
     public function activities()

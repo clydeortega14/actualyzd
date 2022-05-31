@@ -46,7 +46,7 @@
 			                      <a class="nav-link active" id="reports-tab" data-toggle="tab" href="#reports" role="tab" aria-controls="reports" aria-selected="false">Progress Reports</a>
 			                </li>
 			                <li class="nav-item" role="presentation">
-			                      <a class="nav-link" id="onboarding-questions-tab" data-toggle="tab" href="#onboarding-questions" role="tab" aria-controls="onboarding-questions" aria-selected="true">Onboarding Questions</a>
+			                      <a class="nav-link" id="onboarding-questions-tab" data-toggle="tab" href="#onboarding-questions" role="tab" aria-controls="onboarding-questions" aria-selected="true">Assessments</a>
 			                </li>
 			          	</ul>
 
@@ -157,9 +157,36 @@
 			                  </form>
 			          		</div>
 			          		<div class="tab-pane" id="onboarding-questions" role="tabpanel" aria-labelledby="onboarding-questions-tab">
-			          			{{-- @if(auth()->user()->hasRole('psychologist') && $booking->session_type_id == 1) --}}
-			          			<ul>
-									{{-- First Timer / Repeater --}}
+
+			          				<ul>
+			          					@if(count($booking->bookedBy->bookings) > 0)
+				          					@foreach($booking->bookedBy->bookings()->groupBy('created_at')->orderBy('created_at', 'desc')->get() as $booking_date )
+						          				<li>
+						          					<h5 class="mb-3">{{ $booking_date->whole_date }}</h5>
+
+						          					@if(count($booking_date->assessmentAnswers) > 0)
+
+						          						@php
+						          							$assessment_answers = $booking_date->assessmentAnswers()->where('answer', 'like', '%yes%')->get();
+						          						@endphp
+
+							          					<ul class="list-group mb-3 ml-3">
+							          					  	@foreach($assessment_answers as $answers)
+														  		<li class="list-group-item d-flex justify-content-between align-items-center">
+														    		{{ $answers->questionnaire->question }}
+														    		<span></span>
+														  		</li>
+															@endforeach
+														</ul>
+													@endif
+						          				</li>
+				          					@endforeach
+			          					@endif
+			          				</ul>
+
+			          			
+			          			{{-- <ul>
+									
 									<li>
 										<div class="mb-3">
 											<h5>Are you a first timer or a repeater to this session?</h5>
@@ -178,7 +205,7 @@
 										</div>
 									</li>
 
-									{{-- Self Harm  --}}
+									
 									<li>
 										<div class="mb-3">
 											<h5>I have plans to harm myself?</h5>
@@ -211,9 +238,9 @@
 	                                    	@include('pages.bookings.components.questionnaire')
 	                                    </li>
 									@endforeach
-								</ul>
+								</ul> --}}
 									
-								{{-- @endif --}}
+								
 			          		</div>
 			          	</div>
 					</div>
