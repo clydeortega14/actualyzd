@@ -16899,6 +16899,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -99921,13 +99923,22 @@ var render = function() {
                         [_c("i", { staticClass: "fa fa-link" })]
                       )
                     : _vm.currentTime(booking) === "upcoming"
-                    ? _c("span", [
-                        _c("small", [
-                          _vm._v(
-                            "Link to session will be generated 30 minutes before the designated schedule"
-                          )
-                        ])
-                      ])
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: _vm.jitsiUrl + booking.link_to_session,
+                            target: "_blank"
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "fa fa-link" }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "ml-2" }, [
+                            _vm._v("Link To Session")
+                          ])
+                        ]
+                      )
                     : _c("span", [_c("small", [_vm._v("Link not available")])])
                 ])
               ])

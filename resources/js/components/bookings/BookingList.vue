@@ -62,9 +62,11 @@
 							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="currentTime(booking) === 'show_link'">
 								<i class="fa fa-link"></i>
 							</a>
-							<span v-else-if="currentTime(booking) === 'upcoming'">
-								<small>Link to session will be generated 30 minutes before the designated schedule</small>
-							</span>
+
+							<a :href="jitsiUrl+booking.link_to_session" v-else-if="currentTime(booking) === 'upcoming'" target="_blank">
+								<i class="fa fa-link"></i>
+								<span class="ml-2">Link To Session</span>
+							</a>
 
 							<span v-else>
 								<small>Link not available</small>
