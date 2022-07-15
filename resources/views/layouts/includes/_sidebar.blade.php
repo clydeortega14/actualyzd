@@ -152,6 +152,14 @@
                         </li>
                     </ul>
                 </li>
+
+
+                <li class="{{ \Request::is('FAQs/*') ? 'active' : '' }}">
+                    <a href="{{ route('faqs.index') }}">
+                        <i class="fa fa-address-card"></i>
+                        <span class="ml-3">FAQ's</span>
+                    </a>
+                </li>
             @endif
 
             @if($user->hasRole(['superadmin', 'psychologist']))

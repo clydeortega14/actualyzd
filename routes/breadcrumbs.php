@@ -101,5 +101,22 @@ Breadcrumbs::for('bookings.cancel', function($trail, $booking){
 
 	$trail->parent('home', route('home'));
 	$trail->push('Booking canceling', route('bookings.cancel', $booking));
+});
+
+
+/* -- Frequently Ask Questions Breadcrumbs -- */
+
+// FAQs Index
+Breadcrumbs::for('faqs.index', function($trail){
+
+	$trail->push('Lists', route('faqs.index'));
+
+});
+
+// FAQs Create
+Breadcrumbs::for('faqs.create', function($trail){
+
+	$trail->parent('faqs.index', route('faqs.index'));
+	$trail->push('FAQ Create', route('faqs.create'));
 
 });

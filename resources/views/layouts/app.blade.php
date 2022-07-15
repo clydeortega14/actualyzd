@@ -59,6 +59,15 @@
                         @guest
 
                         @else
+
+                            <li class="mr-3">
+                                <a href="#" data-toggle="modal" data-target="#help-modal">
+                                   <i class="fas fa-question-circle fa-lg"></i>
+                                </a>
+
+                                <!-- Help Modal -->
+                                @include('layouts.includes.modals.help-modal')
+                            </li>
                             
                             <li>
                                 <a href="{{ route('logout') }}"
