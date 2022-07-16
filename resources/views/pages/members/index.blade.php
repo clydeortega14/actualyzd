@@ -5,8 +5,11 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-md-12 mb-3 d-flex justify-content-between">
-				<h3 class="text-gray">Home Page</h3 class="text-gray">
-				
+				<h3 class="text-gray">Home Page</h3>
+				<a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
+                    <i class="fa fa-calendar"></i>
+                    <span>Book A Session</span>
+                </a>
 			</div>
 
 			<div class="col-xl-3 col-md-6 mb-4">
@@ -86,14 +89,7 @@
             	</div> --}}
 
             	<div class="card mb-3">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-end">
-                            <a href="{{ route('booking.onboarding') }}" class="btn btn-primary">
-                                <i class="fa fa-calendar"></i>
-                                <span>Book A Session</span>
-                            </a>
-                        </div>
-                    </div>
+                    
             		<div class="card-body">
 
                         @if(session()->has('error'))

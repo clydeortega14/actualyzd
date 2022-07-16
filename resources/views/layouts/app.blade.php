@@ -24,7 +24,10 @@
       }
 
       .ac-avatar {
-        max-width: 100%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 70%;
         max-height: 320px;
         border-radius: 50%;
         border: 5px solid #D5D5D5;
@@ -61,12 +64,11 @@
                         @else
 
                             <li class="mr-3">
-                                <a href="#" data-toggle="modal" data-target="#help-modal">
-                                   <i class="fas fa-question-circle fa-lg"></i>
-                                </a>
+                                <faq-icon></faq-icon>
 
+                                <faq-modal></faq-modal>
                                 <!-- Help Modal -->
-                                @include('layouts.includes.modals.help-modal')
+                                {{-- @include('layouts.includes.modals.help-modal') --}}
                             </li>
                             
                             <li>
@@ -114,6 +116,8 @@
 
     <!-- js compiled assets -->
     <script defer src="{{ asset('js/app.js') }}"></script>
+
+
     @stack('scripts')
 </body>
 </html>

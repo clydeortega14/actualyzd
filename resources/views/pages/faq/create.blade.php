@@ -6,6 +6,17 @@
 		<h1 class="h3 mb-3 text-gray-800">FAQ's</h1>
 		{{ Breadcrumbs::render() }}
 
+		<button type="button" class="btn btn-primary btn-block mr-2">
+			<i class="fa fa-check"></i>
+			<span>Submit</span>
+		</button>
+
+		<button type="button" class="btn btn-secondary btn-block mb-2">
+			<i class="fa fa-times"></i>
+			<span>Cancel</span>
+		</button>
+
+		
 
 		<div class="row">
 			<div class="col-md-4">

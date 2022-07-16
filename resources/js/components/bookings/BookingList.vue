@@ -146,8 +146,6 @@
 				let time_from = moment(booking.to_schedule.start+' '+booking.time.from).format(format)
 				let time_to = moment(booking.to_schedule.start+' '+booking.time.to).format(format)
 
-				console.log([current_time, time_from, time_to])
-
 
 				let current_date = moment().format('YYYY-MM-DD');
 				let booking_date = booking.to_schedule.start;

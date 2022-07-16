@@ -15,7 +15,7 @@
         @else
             {{-- <div class="d-flex justify-content-center align-items-center"> --}}
                 <a href="{{ route('user.profile', auth()->user()->id) }}">
-                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" class="mt-3 img-fluid rounded-circke mx-auto d-block ac-avatar">
+                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" class="mt-3 rounded-circle ac-avatar">
                 </a>
             {{-- </div> --}}
         @endif
