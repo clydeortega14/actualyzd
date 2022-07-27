@@ -94,6 +94,15 @@ Vue.component('faq-lists', require('./components/faq/faq-lists.vue').default);
 // FAQ Steps
 Vue.component('faq-steps', require('./components/faq/faq-steps.vue').default);
 
+// FAQ Setup Steps
+Vue.component('faq-setup-steps', require('./components/faq/setups/step-lists.vue').default);
+
+// FAQ Setup Add Step
+Vue.component('faq-setup-addstep', require('./components/faq/setups/add-step.vue').default);
+
+// FAQ Setup Buttons
+Vue.component('faq-setup-buttons', require('./components/faq/setups/buttons.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

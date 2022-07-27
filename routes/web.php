@@ -137,7 +137,9 @@ Route::middleware('auth')->group(function(){
 		// Create FAQ
 		Route::get('/create', 'FAQController@create')->name('faqs.create');
 
-
+		// Store FAQ
+		Route::post('store/faq', 'FAQController@store')->name('faqs.store');
+		
 	});
 
 	// Schedules

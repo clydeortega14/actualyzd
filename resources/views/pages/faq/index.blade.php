@@ -28,20 +28,22 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>10</td>
-								<td>How to book a session</td>
-								<td>Steps on how to book a session</td>
-								<td>4</td>
-								<td align="right">
-									<a href="#" class="btn btn-info btn-sm">
-										<i class="fa fa-eye"></i>
-									</a>
-									<a href="#" class="btn btn-secondary btn-sm">
-										<i class="fa fa-edit"></i>
-									</a>
-								</td>
-							</tr>
+							@foreach($faqs as $faq)
+								<tr>
+									<td>{{ $faq->id }}</td>
+									<td>{{ $faq->title }}</td>
+									<td>{{ $faq->description }}</td>
+									<td>{{ count($faq->steps) }}</td>
+									<td align="right">
+										<a href="#" class="btn btn-info btn-sm">
+											<i class="fa fa-eye"></i>
+										</a>
+										<a href="#" class="btn btn-secondary btn-sm">
+											<i class="fa fa-edit"></i>
+										</a>
+									</td>
+								</tr>
+							@endforeach
 						</tbody>
 					</table>
 				</div>
