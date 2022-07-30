@@ -26,7 +26,6 @@ class FAQController extends Controller
             'title' => ['required']
         ]);
 
-
         DB::beginTransaction();
 
         try {
@@ -37,7 +36,8 @@ class FAQController extends Controller
                 'description' => $request->description
             ]);
 
-            if($faq && count($request->steps['description']) > 0){
+
+            if($request->has('steps') && count($request->steps['description']) > 0){
 
                 foreach($request->steps['description'] as $index => $step_desc){
 
@@ -47,9 +47,14 @@ class FAQController extends Controller
                         'link' => $request->steps['link'][$index]
                     ]);
                 }
+            }else{
+
+
+                return redirect()->back()->with('error', 'must add atleast 2 steps');
             }
             
         } catch (Exception $e) {
+
             DB::rollback();
 
             return redirect()->back()->with('error', $e->getMessage());
@@ -60,5 +65,19 @@ class FAQController extends Controller
 
         return redirect()->back()->with('success', 'Successfully Submitted!');
         
+    }
+
+    public function getAllFaqs()
+    {
+        $faqs = Faq::with(['steps'])->get();
+
+        return response()->json($faqs);
+    }
+
+    public function getFaqSteps(Faq $faq)
+    {
+        $faq->load(['steps']);
+
+        return response()->json($faq);
     }
 }

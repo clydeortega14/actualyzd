@@ -6,6 +6,23 @@
 		<h1 class="h3 mb-3 text-gray-800">FAQ's</h1>
 		{{ Breadcrumbs::render() }}
 
+
+		@if(session()->has('error'))
+
+			<div class="alert alert-danger" role="alert">
+				{{ session('error') }}
+			</div>
+
+		@endif
+
+		@if(session()->has('success'))
+
+			<div class="alert alert-success" role="alert">
+				{{ session('success') }}
+			</div>
+
+		@endif
+
 		<form action="{{ route('faqs.store') }}" method="POST">
 			@csrf
 			<div class="row">
