@@ -10,9 +10,11 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
+
+
 		        <div class="form-group">
 		          <label>Step Description</label>
-		          <textarea type="text" name="step_desc"  v-model="step_description" class="form-control" required></textarea>
+		          <textarea type="hidden" name="step_desc"  v-model="step_description" class="form-control" required></textarea>
 		        </div>
 		        <div class="form-group">
 		          <label>Link To Description</label>
@@ -47,12 +49,21 @@
 				link: ''
 			}
 		},
+
+		created(){
+			EventBus.$on('edit-step', (data) => {
+
+				$('#add-step').modal('show');
+
+				this.step_description = data.description;
+				this.link = data.link;
+			})
+		},
 		methods: {
 
 			submitStep(){
 
 				EventBus.$emit('submit-step', {
-
 					description: this.step_description,
 					link: this.link
 				});

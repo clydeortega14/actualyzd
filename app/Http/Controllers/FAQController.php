@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Faq;
+use App\FaqStep;
 use DB;
 
 class FAQController extends Controller
@@ -20,6 +21,13 @@ class FAQController extends Controller
         return view('pages.faq.create');
     }
 
+    public function edit(Faq $faq)
+    {
+        $faq->load(['steps']);
+        
+        return view('pages.faq.create', compact('faq'));
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -30,28 +38,57 @@ class FAQController extends Controller
 
         try {
 
+            
+            $faq_id = $request->faq_id;
 
-            $faq = Faq::firstOrCreate([
-                'title' => $request->title,
-                'description' => $request->description
-            ]);
+            if($faq_id != null || $faq_id != ''){
 
+                // update
+                $faq = Faq::findOrFail($faq_id);
+                $faq->title = $request->title;
+                $faq->description = $request->description;
+                $faq->save();
+
+            }else{
+
+                 $faq = Faq::firstOrCreate([
+                    'title' => $request->title,
+                    'description' => $request->description
+                ]);
+            }
+
+            
+            $step_id = $request->step_id;
 
             if($request->has('steps') && count($request->steps['description']) > 0){
 
                 foreach($request->steps['description'] as $index => $step_desc){
 
-                     $faq->steps()->firstOrCreate([
+                    if($step_id != null || $step_id != ''){
+                        
+                        // update
+                        $faq_step = FaqStep::findOrFail($step_id);
+                        $faq_step->description = $step_desc;
+                        $faq_step->link = $request->steps['link'][$index];
+                        $faq_step->save();
 
-                        'description' => $step_desc,
-                        'link' => $request->steps['link'][$index]
-                    ]);
+                    }else{
+
+                        $faq->steps()->firstOrCreate([
+
+                            'description' => $step_desc,
+                            'link' => $request->steps['link'][$index]
+                        ]);
+
+                    }
+                     
                 }
             }else{
 
-
                 return redirect()->back()->with('error', 'must add atleast 2 steps');
             }
+
+            DB::commit();
             
         } catch (Exception $e) {
 
@@ -59,9 +96,6 @@ class FAQController extends Controller
 
             return redirect()->back()->with('error', $e->getMessage());
         }
-
-
-        DB::commit();
 
         return redirect()->back()->with('success', 'Successfully Submitted!');
         
@@ -79,5 +113,14 @@ class FAQController extends Controller
         $faq->load(['steps']);
 
         return response()->json($faq);
+    }
+
+    public function search(Request $request)
+    {
+        $value = $request->search_item;
+
+        $faqs = Faq::query()->where('title', 'LIKE', "%{$value}%")->with(['steps'])->get();
+
+        return response()->json($faqs);
     }
 }

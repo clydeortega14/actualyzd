@@ -12,13 +12,16 @@
 		      <div class="modal-body">
 
 		      	<!-- Search FAQ Component -->
-		        <faq-search></faq-search>
+		        <faq-search v-on:search-faq="searchFaq"></faq-search>
 
 		        <!-- List of FAQ's Component -->
-		        <faq-lists :selected-question="selected_question"
+		        <faq-lists 
 
-		        	v-on:selecting-question="Questionselected"
-		        	v-if="!selected_question"></faq-lists>
+		        	v-if="!selected_question"
+		        	:selected-question="selected_question"
+		        	:faqs="faq_lists"
+
+		        /></faq-lists>
 
 
 		        <!-- FAQ Steps / Procedures Component-->
@@ -26,7 +29,12 @@
 
 		       		v-if="selected_question"
 
-		       		v-on:return-back="returnBack"></faq-steps>
+		       		@return-back="returnBack"
+		       		:faq-question="question"
+		       		:faq-desc="description"
+		       		:faq-steps="steps"
+
+		       	/></faq-steps>
 
 		        
 		      </div>
@@ -46,18 +54,58 @@
 
 			return {
 
-				selected_question: false
+				selected_question: false,
+				question: '',
+				description: '',
+				steps: [],
+				faq_lists: []
 			}
+		},
+		created(){
+
+
+			this.getListFaqs();
+
+			EventBus.$on('selecting-question', (data) => {
+
+				this.selected_question = !this.selected_question;
+
+				this.question = data.title;
+				this.description = data.description;
+				this.steps = data.steps;
+			});
 		},
 		methods: {
 
-			Questionselected(){
+			getListFaqs(){
 
-				this.selected_question = !this.selected_question;
-			},
+		        this.$store.dispatch('allFaqs').then(response => {
+
+		          this.faq_lists = response.data
+
+		        }).catch(error => console.log(error))
+		     },
+
 			returnBack(){
 
 				this.selected_question = false;
+			},
+			searchFaq(value){
+
+				axios.get('/FAQs/search/faq', {
+					params: {
+
+						search_item: value
+
+					}
+				}).then(response => {
+
+					this.faq_lists = response.data
+
+				}).catch(error => {
+
+					console.log(error)
+				})
 			}
 		}
 	}

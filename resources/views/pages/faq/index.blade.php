@@ -35,10 +35,7 @@
 									<td>{{ $faq->description }}</td>
 									<td>{{ count($faq->steps) }}</td>
 									<td align="right">
-										<a href="#" class="btn btn-info btn-sm">
-											<i class="fa fa-eye"></i>
-										</a>
-										<a href="#" class="btn btn-secondary btn-sm">
+										<a href="{{ route('faqs.edit', $faq->id) }}" class="btn btn-secondary btn-sm">
 											<i class="fa fa-edit"></i>
 										</a>
 									</td>

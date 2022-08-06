@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<div v-if="steps.length > 0">
+
+		<input type="hidden" name="step_id" v-model="step_id">
+
+		<div v-if="faq_steps_lists.length > 0">
 			<div class="table-responsive">
 				<table class="table">
 					<thead>
@@ -11,16 +14,25 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(step, index) in steps" :key="index">
+						<tr v-for="(step, index) in faq_steps_lists" :key="index">
 							<td>
 								{{ step.description }}
 								<input type="hidden" name="steps[description][]" :value="step.description">
 							</td>
 							<td>
-								<a :href="step.link" target="_blank">{{ step.link }}</a>
+								<div v-if="step.link != null">
+									<a :href="step.link" target="_blank">Click Me!</a>
+								</div>
 								<input type="hidden" name="steps[link][]" :value="step.link">
 							</td>
-							<td></td>
+							<td>
+								<a href="#" class="mr-2" @click.prevent="editStep(step)">
+									<i class="fas fa-edit"></i>
+								</a> 
+								<a href="#">
+									<i class="fas fa-trash"></i>
+								</a> 
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -40,11 +52,15 @@
 
 	export default {
 		name: "StepLists",
-		data() {
-
+		data(){
 			return {
-				steps: []
+				step_id: null,
+				faq_steps_lists: []
 			}
+		},
+		props: {
+
+			faqId: String
 		},
 		computed: {
 
@@ -52,21 +68,46 @@
 		},
 		created(){
 
-			// this.steps = [
-			// 	{description: 'Click Book A Session button in the upper right corner of your homepage', link: 'http://localhost:8000/book'},
-			// 	{description: 'Click Book A Session button', link: ''},
-			// 	{description: 'Answer the onboarding questions.', link: ''},
-			// ];
-
-			// console.log(this.getFaqSteps)
-
-
 			EventBus.$on('submit-step', (data) => {
 
-				this.steps.push(data);
-				
+				if(this.step_id != null){
+
+					let index = this.faq_steps_lists.findIndex(faq_step => faq_step.id == this.step_id);
+
+					if(index > -1){
+
+						this.faq_steps_lists.splice(index, 1, data);
+					}
+				}else{
+
+					this.faq_steps_lists.push(data);
+
+				}
+
 			});
+
+
+			if(this.faqId != ''){
+
+				this.getFaqById(this.faqId);
+			}
 		},
+		methods: {
+
+			getFaqById(faq_id){
+
+				axios.get(`/FAQs/get/faq/steps/${faq_id}`)
+				.then(response => {
+					this.faq_steps_lists = response.data.steps;
+				})
+				.catch(error => console.log(error))
+			},
+			editStep(step){
+
+				this.step_id = step.id;
+				EventBus.$emit('edit-step', step);
+			}
+		}
 
 	}
 </script>

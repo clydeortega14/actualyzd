@@ -120,3 +120,10 @@ Breadcrumbs::for('faqs.create', function($trail){
 	$trail->push('FAQ Create', route('faqs.create'));
 
 });
+
+
+Breadcrumbs::for('faqs.edit', function ($trail, $faq) {
+
+	$trail->parent('faqs.index', route('faqs.index'));
+    $trail->push('Edit', route('faqs.edit', $faq));
+});

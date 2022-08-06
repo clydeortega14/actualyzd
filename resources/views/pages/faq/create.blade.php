@@ -4,23 +4,23 @@
 	
 	<div class="container-fluid">
 		<h1 class="h3 mb-3 text-gray-800">FAQ's</h1>
-		{{ Breadcrumbs::render() }}
 
+		@if(isset($faq))
+			{{ Breadcrumbs::render('faqs.edit', $faq->id) }}
+		@else
+			{{ Breadcrumbs::render() }}
+		@endif
 
 		@if(session()->has('error'))
-
 			<div class="alert alert-danger" role="alert">
 				{{ session('error') }}
 			</div>
-
 		@endif
 
 		@if(session()->has('success'))
-
 			<div class="alert alert-success" role="alert">
 				{{ session('success') }}
 			</div>
-
 		@endif
 
 		<form action="{{ route('faqs.store') }}" method="POST">
@@ -32,13 +32,16 @@
 							FAQ Information
 						</div>
 						<div class="card-body">
+
+							<input type="hidden" name="faq_id" value="{{ isset($faq) ? $faq->id : null }}">
+
 							<div class="form-group">
 								<label>Title</label>
-								<input type="text" name="title" class="form-control" required>
+								<input type="text" name="title" class="form-control" value="{{ isset($faq) ? $faq->title : old('title') }}" required>
 							</div>
 							<div class="form-group">
 								<label>Description</label>
-								<input type="text" name="description" class="form-control">
+								<input type="text" name="description" class="form-control" value="{{ isset($faq) ? $faq->description : old('description') }}">
 							</div>
 						</div>
 					</div>
@@ -54,16 +57,13 @@
 									<span>Add New Step</span>
 								</button>
 							</div>
-
-							
-								<!-- FAQ Step Modal -->
-								{{-- @include('pages.faq.modals.step') --}}
 						</div>
 
 						<div class="card-body">
 
 							<!-- Step Lists Component -->
-							<faq-setup-steps></faq-setup-steps>
+							<faq-setup-steps faq-id="{{ isset($faq) ? $faq->id : '' }}"></faq-setup-steps>
+
 						</div>
 
 						<div class="card-footer">

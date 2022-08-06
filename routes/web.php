@@ -140,11 +140,17 @@ Route::middleware('auth')->group(function(){
 		// Store FAQ
 		Route::post('store/faq', 'FAQController@store')->name('faqs.store');
 
+		// Edit FAQ
+		Route::get('edit/{faq}', 'FAQController@edit')->name('faqs.edit');
+
 		// Get All Faq AJAX Request
 		Route::get('get/faqs', 'FAQController@getAllFaqs');
 
 		// Get FAQ Steps AJAX Request
 		Route::get('get/faq/steps/{faq}', 'FAQController@getFaqSteps');
+
+		// Search FAQ
+		Route::get('search/faq', 'FAQController@search');
 		
 	});
 
