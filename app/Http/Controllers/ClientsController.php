@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Client;
 use App\Package;
 use App\ClientSubscription;
+use Illuminate\Support\Facades\Validator;
 
 class ClientsController extends Controller
 {
@@ -39,7 +40,36 @@ class ClientsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $this->validator($request->all())->validate();
+
+        $client = $this->storeClient($request->all());
+
+        return redirect()->back()->with('success', 'New Client Has Been Added!');
+    }
+
+
+    public function validator(array $data){
+
+        return Validator::make($data, [
+
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:clients'],
+            'no_of_employees' => ['required'],
+            'address' => ['required', 'string', 'max:255'],
+            'contact' => ['required']
+        ]);
+    }
+
+
+    public function storeClient(array $data)
+    {
+        return Client::firstOrCreate([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'number_of_employees' => $data['no_of_employees'],
+            'postal_address' => $data['address'],
+            'contact_number' => $data['contact']
+        ]);
     }
 
     /**
