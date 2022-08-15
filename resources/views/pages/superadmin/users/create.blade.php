@@ -41,7 +41,7 @@
 												<select type="combobox" name="client_id" class="form-control">
 													<option disabled selected> - Choose Client / Company - </option>
 													@foreach($clients as $client)
-														<option value="{{ $client->id }}" {{ $isUser && $user->client_id == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
+														<option value="{{ $client->id }}" {{ (isset($user) ? $user->client_id : 0) == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
 													@endforeach
 												</select>
 											</div>
@@ -86,7 +86,7 @@
 									<div class="form-group">
 										<button type="submit"  class="btn btn-primary">Submit</button>
 										<!-- <button type="button" id="submit" data-toggle="modal" data-target="#remind-users"  class="btn btn-primary" >Submit</button> -->
-										<a href="{{ url('users') }}" class="btn btn-danger">Cancel</a>
+										<a href="{{ url('clients/'.$client->id.'/edit') }}" class="btn btn-danger">Cancel</a>
 									</div>
 
 

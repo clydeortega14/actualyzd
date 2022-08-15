@@ -4,6 +4,12 @@
 
 	<div class="container-fluid">
 
+		<div class="row clearfix mb-3">
+	    	<div class="col-12">
+                <h3 class="mb-3 text-gray-800">Client Profile</h3>
+            </div>
+        </div>
+
 		<div class="row clearfix">
 			<div class="col-md-4 border-right">
 				<div class="card mb-3">
@@ -95,7 +101,14 @@
 										</thead>
 
 										<tbody>
-											@foreach($client->users as $user)
+											@foreach($client->users()->whereHas('roles', function($query){
+												if(auth()->user()->hasRole('superadmin')){
+													$query->whereIn('name', ['member', 'admin']);
+												}else if(auth()->user()->hasRole('admin')){
+
+													$query->where('name', 'member');
+												}
+											})->with(['roles'])->get() as $user)
 												@php
 													$active = $user->is_active;
 												@endphp

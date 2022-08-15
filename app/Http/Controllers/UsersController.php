@@ -111,7 +111,8 @@ class UsersController extends Controller
 
         DB::commit();
 
-        return redirect()->route('users.index')->with('success', 'New users has been added');
+        return redirect()->route('clients.edit', $user->client_id)->with('success', 'New users has been added');
+        
     }
 
     /**

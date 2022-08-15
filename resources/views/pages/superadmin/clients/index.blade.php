@@ -59,10 +59,7 @@
                                                 <span class="label {{ $active ? 'badge badge-success' : 'badge badge-danger' }}">{{ $active ? 'Active' : 'Inactive' }}</span>
                                             </td>
                                             <td align="right">
-                                                <a href="{{ route('client.users.index', $client->id) }}" class="btn btn-info btn-sm">
-                                                    <i class="fa fa-users"></i>
-                                                </a> 
-                                                @if(auth()->user()->hasRole('superadmin'))|
+                                                @if(auth()->user()->hasRole('superadmin'))
                                                     <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
                                                         <i class="fa fa-edit"></i>
                                                     </a> |
