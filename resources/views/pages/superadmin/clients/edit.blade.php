@@ -159,18 +159,20 @@
 										@csrf
 
 										<input type="hidden" name="client_id" value="{{ $client->id}}"> 
-											<div class="d-flex justify-content-end">
-												<div>
-													<button type="submit" class="btn btn-success btn-sm">
-														<i class="fa fa-plus"></i>
-													</button>
-													<a href="#" class="btn btn-danger btn-sm">
-														<i class="fa fa-times"></i>
-													</a>
-												</div>
-											</div>
+											
 											<div class="row">
 												@if(is_null($client->subscription))
+
+													<div class="d-flex justify-content-end">
+														<div>
+															<button type="submit" class="btn btn-success btn-sm">
+																<i class="fa fa-plus"></i>
+															</button>
+															<a href="#" class="btn btn-danger btn-sm">
+																<i class="fa fa-times"></i>
+															</a>
+														</div>
+													</div>
 													
 													@foreach($packages as $package)
 														<div class="col-md-4">
@@ -216,18 +218,18 @@
 																	</div>
 																	<div>
 																		<label>Expires At: </label> 
-																		<a href="">{{ $client->subscription->wholeDate() }}</a>
+																		<b>{{ $client->subscription->wholeDate() }}</b>
 																	</div>
 																</div>
 															</div>
 															<div class="card-body">
 																<div class="row justify-content-center">
-																		<ul>
-																			@foreach($package->services as $service)
-																				<li>{{ $service->limit.' '.$service->sessionType->name}}</li>
-																			@endforeach
-																		</ul>
-																	</div>
+																	<ul>
+																		@foreach($package->services as $service)
+																			<li>{{ $service->limit.' '.$service->sessionType->name}}</li>
+																		@endforeach
+																	</ul>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -241,7 +243,7 @@
 											</div>
 										</div>
 									@endif
-													</div>
+								</div>
 							</div>
 						</div>
 					</div>
