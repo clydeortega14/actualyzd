@@ -72,6 +72,8 @@
                             start: arg.startStr
                       }
                 }).done(data => {
+
+                      console.log(data)
                       handleTimeList(data);
                       handleSchedulesTable(data);
                 })
@@ -112,6 +114,11 @@
                   })
             }
 
+            function readOnlyCheckbox()
+            {
+              return false
+            }
+
             function handleSchedulesTable(data)
             {
                   let $schedules_table_body = $('#schedules-table');
@@ -124,20 +131,25 @@
             function schedulesTimeListTemp(time, checked, disabled)
             {
                 return `
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} />
-                    <label for="time${time.id}">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</label>
-                  </div>
-                </div>
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} class="form-check-input" />
+                        <label for="time${time.id}" class="form-check-label"></label>
+                      </div>
+                    </td>
+                    <td align="right">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</td>
+                  </td>
+                  
+                
                 `
             }
             function counselingTimeListTemp(time)
             {
                 return `
-                  <div class="form-group">
-                    <input type="radio" id="counseling${time.id}" name="time" value="${time.id}" class="with-gap" />
-                    <label for="counseling${time.id}">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</label>
+                  <div class="form-check mb-3">
+                    <input type="radio" id="counseling${time.id}" name="time" value="${time.id}" class="form-check-input" />
+                    <label for="counseling${time.id}" class="form-check-label">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</label>
                   </div>
                 `
             }
@@ -145,13 +157,17 @@
             {
                 return `
                   <tr>
-                      <td>
+                      <td style="width: 30%;">
                         ${ date_parser.convertTime(schedule.time_list.from) } - ${ date_parser.convertTime(schedule.time_list.to) }
                       </td>
-                      <td>
-                        <span class="badge ${schedule.is_booked ? 'badge-primary' : 'badge-success'}">${schedule.is_booked ? 'Booked' : 'Available'}</span>
+                      <td style="width: 10%;">
+                        <span class="badge ${schedule.is_booked ? 'badge-primary' : 'badge-success'}">${schedule.is_booked ? schedule.booking.to_status.name : 'Available'}</span>
                       </td>
-                      <td>`
+                      <td style="width: 20%;">
+                        ${ schedule.booking != null ? schedule.booking.session_type.name : ''}
+                      </td>
+                      <td>${ schedule.booking != null && schedule.booking.counselee != null ? schedule.booking.to_counselee.name : ''}</td>
+                      <td style="width: 20%;">`
                       if(schedule.is_booked || schedule.booking !== null){
                         `
                           <a href="#" class="btn btn-primary btn-sm">

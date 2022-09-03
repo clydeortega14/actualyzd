@@ -14,9 +14,16 @@
 
 
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
                             <h3>Time Lists</h3>
-                            <div class="row" id="schedules-time-lists">
+
+                            <table class="table">
+                                <tbody id="schedules-time-lists">
+                                    
+                                </tbody>
+                            </table>
+
+                            <div >
                                 {{-- @foreach($time_lists as $time)
                                     <div class="col-sm-3">
                                       <div class="form-group">
@@ -28,7 +35,7 @@
                             </div>
                             <hr>
                         </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                             
                             <div class="table-responsive">
                                 <h3>Schedule Details</h3>
@@ -37,6 +44,8 @@
                                         <tr>
                                             <th>Time</th>
                                             <th>Status</th>
+                                            <th>Type</th>
+                                            <th>Participant/s</th>
                                             <th></th>
                                         </tr>
                                     </thead>
