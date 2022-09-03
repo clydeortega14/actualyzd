@@ -80,11 +80,11 @@
 												<i class="fa fa-plus"></i>
 												<span>Create User</span>
 											</a>
-											<a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#import-users">
+											{{-- <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#import-users">
 												<i class="fa fa-upload"></i>
 												<span>Import Users</span>
 											</a>
-											@include('pages.superadmin.users.modals.import-users')
+											@include('pages.superadmin.users.modals.import-users') --}}
 										</div>
 									</div>
 									<table class="table table-hover" width="100%" cellspacing="0">

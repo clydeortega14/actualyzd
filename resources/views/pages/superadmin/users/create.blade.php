@@ -86,7 +86,7 @@
 									<div class="form-group">
 										<button type="submit"  class="btn btn-primary">Submit</button>
 										<!-- <button type="button" id="submit" data-toggle="modal" data-target="#remind-users"  class="btn btn-primary" >Submit</button> -->
-										<a href="{{ url('clients/'.$client->id.'/edit') }}" class="btn btn-danger">Cancel</a>
+										<a href="#" class="btn btn-danger">Cancel</a>
 									</div>
 
 
