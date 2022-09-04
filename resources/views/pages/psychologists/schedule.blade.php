@@ -53,7 +53,76 @@
                   }
 
                   custom_calendar.render(calendarOptions);
-            })
+            });
+
+            const arr_schedule_time = [];
+
+
+            $(function(){
+
+              const token = $('meta[name="csrf-token"]').attr('content');
+              let $start_date_input = $('input[name="start_date"]');
+              let $end_date_input = $('input[name="end_date"]');
+
+              $(document).on('click', '.check-time', function(e){
+
+                let time_id = e.target.value;
+                let index = arr_schedule_time.findIndex(sched_time => sched_time == time_id);
+
+                if(e.target.checked){
+        
+                  if(index > -1){
+
+                    // console.log('found')
+
+                  }else{
+
+                    // console.log('not found')
+                    // add time_id to array of time
+                    arr_schedule_time.push(parseInt(time_id));
+                  }
+                  // console.log(index)
+
+                }else{
+
+                  arr_schedule_time.splice(index, 1);
+                }
+
+              });
+
+
+
+              $('#schedule-form').on('submit', function(e){
+
+                e.preventDefault();
+
+                $.ajax({
+
+                  url: '/psychologist/schedule',
+                  method: 'POST',
+                  data: {
+                    _token: token,
+                    start_date: $start_date_input.val(),
+                    end_date: $end_date_input.val(),
+                    time_lists: arr_schedule_time
+                  },
+                  success: function(response){
+
+                    Swal.fire('Success!', response, 'success');
+                    $('#create-schedule').modal('hide');
+
+                  },
+                  error: function(err){
+                    Swal.fire('Oops!', 'Something went wrong!', 'error');
+                  }
+
+                })
+
+
+              });
+
+
+            });
 
             function handleSelect(arg)
             {
@@ -73,11 +142,14 @@
                       }
                 }).done(data => {
 
-                      console.log(data)
                       handleTimeList(data);
                       handleSchedulesTable(data);
+
+                      console.log(arr_schedule_time)
                 })
             }
+
+
 
             function handleTimeList(data)
             {
@@ -125,7 +197,8 @@
                   $schedules_table_body.empty()
                   data.schedules.forEach((schedule, index) => {
                     $schedules_table_body.append(scheduleDetailsTemp(schedule));
-                  })
+                    arr_schedule_time.push(schedule.time_id);
+                  });
             }
 
             function schedulesTimeListTemp(time, checked, disabled)
@@ -134,7 +207,7 @@
                   <tr>
                     <td>
                       <div class="form-check">
-                        <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} class="form-check-input" />
+                        <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} class="form-check-input check-time" />
                         <label for="time${time.id}" class="form-check-label"></label>
                       </div>
                     </td>

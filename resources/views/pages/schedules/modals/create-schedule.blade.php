@@ -5,7 +5,8 @@
                 <h4 class="modal-title" id="create-schedule-modal-label">Create / Update Schedule</h4>
                 <hr>
             </div>
-            <form action="{{ route('psychologist.store.schedule') }}" method="POST">
+
+            <form action="{{ route('psychologist.store.schedule') }}" method="POST" id="schedule-form">
                 @csrf
                 <div class="modal-body">
 
@@ -16,27 +17,11 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
                             <h3>Time Lists</h3>
-
                             <table class="table">
-                                <tbody id="schedules-time-lists">
-                                    
-                                </tbody>
+                                <tbody id="schedules-time-lists"></tbody>
                             </table>
-
-                            <div >
-                                {{-- @foreach($time_lists as $time)
-                                    <div class="col-sm-3">
-                                      <div class="form-group">
-                                        <input type="checkbox" name="time_lists[]" value="{{ $time->id }}" class="time-lists" rel="{{ $time->id }}"/>
-                                        <label for="">{{ $time->parseTimeFrom().'-'.$time->parseTimeTo() }}</label>
-                                      </div>
-                                    </div>
-                                @endforeach --}}
-                            </div>
-                            <hr>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                            
                             <div class="table-responsive">
                                 <h3>Schedule Details</h3>
                                 <table class="table table-bordered table-hover">
@@ -49,11 +34,9 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-
                                     <tbody id="schedules-table"></tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -62,6 +45,7 @@
                     <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
