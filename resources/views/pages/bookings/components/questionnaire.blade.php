@@ -2,7 +2,7 @@
 	@foreach($category->questionnaires as $questionnaire)
 		<li>
 			<input type="hidden" name="category_id[]" value="{{ $category->id }}">
-			<p>{{ $questionnaire->question}}</p>
+			<h5 class="text-gray-800">{{ $questionnaire->question}}</h5>
 
 			@php
 				$option = $questionnaire->toOption;
@@ -24,7 +24,15 @@
 							@if(!is_null($answer) && $answer->answer == $choice->value)
 								@php
 									$checked = 'checked';
+									$disabled = 'disabled';
 								@endphp
+							@elseif(session()->has('assessment.onboarding_answers') && session('assessment.onboarding_answers')[$questionaire->id] == $choice->value)
+
+								@php
+									$checked = 'checked';
+									$disabled = 'disabled';
+								@endphp
+
 							@else
 
 								@php
@@ -33,9 +41,14 @@
 							@endif
 						@endif
 
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="choice[{{ $questionnaire->id }}]" id="mc-one-never" value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
-							<label class="form-check-label" for="mc-one-never">{{$choice->display_name }}</label>
+						<p></p>
+
+						<div class="custom-control custom-radio mb-2">
+							<input class="custom-control-input" type="radio" name="choice[{{ $questionnaire->id }}]" 
+								id="choice[{{ $questionnaire->id }}][{{ $choice->value }}]" 
+								value="{{ $choice->value }}" {{ auth()->user()->hasRole('member') ? 'required' : '' }} {{ $checked }} {{ $disabled }}>
+								
+							<label class="custom-control-label" for="choice[{{ $questionnaire->id }}][{{ $choice->value }}]">{{$choice->display_name }}</label>
 						</div>
 					@endforeach
 				@else

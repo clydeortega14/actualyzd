@@ -35,11 +35,39 @@ Breadcrumbs::for('home', function ($trail) {
     $trail->push('Home', route('home'));
 });
 
-// Link to onboarding questions
-Breadcrumbs::for('booking.answered.questions', function($trail, $booking){
+// breadcrumb for selecting session type, client and participants
+Breadcrumbs::for('booking.select.client.participants', function($trail){
 	$trail->parent('home');
-	$trail->push('On Boarding Questions', route('booking.answered.questions', $booking));
+	$trail->push('select session type, client and participants', route('booking.select.client.participants'));
+});
 
+// Link to onboarding questions
+Breadcrumbs::for('booking.onboarding', function($trail){
+	$trail->parent('home');
+	$trail->push('Onboarding Questions', route('booking.onboarding'));
+
+});
+
+// link to choose date, time, psychologist
+Breadcrumbs::for('booking.date.and.time', function($trail){
+
+	$trail->parent('booking.onboarding');
+	$trail->push('Chose date, time and psychologist', route('booking.date.and.time'));
+
+});
+
+// review booking
+Breadcrumbs::for('booking.review.details', function($trail){
+
+	$trail->parent('booking.date.and.time');
+	$trail->push('Review', route('booking.review.details'));
+});
+
+// Breadcrumb for success booked a session
+Breadcrumbs::for('booking.success.page', function($trail){
+
+	$trail->parent('home');
+	$trail->push('Complete', route('booking.success.page'));
 });
 
 Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
@@ -49,19 +77,29 @@ Breadcrumbs::for('booking.reschedule', function ($trail, $booking) {
 
 // Psychologist booking breadcrumbs
 Breadcrumbs::for('psychologist.bookings', function($trail){
-	$trail->push('Bookings Home', route('psychologist.bookings'));
+	$trail->parent('home');
+	$trail->push('Bookings', route('psychologist.bookings'));
 });
 
 Breadcrumbs::for('progress.report', function($trail){
-	$trail->push('Home', route('progress.report'));
+	$trail->parent('home');
+	$trail->push('Progress Reports', route('progress.report'));
 });
 
 Breadcrumbs::for('progress.report.create-for-booking', function($trail, $booking){
 	$trail->parent('progress.report', route('progress.report'));
-	$trail->push('Progress Report', route('progress.report.create-for-booking', $booking));
+	$trail->push('View report', route('progress.report.create-for-booking', $booking));
 });
 
 Breadcrumbs::for('progress-reports.edit', function($trail, $booking){
 	$trail->parent('progress.report', route('progress.report'));
 	$trail->push('Progress Report', route('progress-reports.edit', $booking));
+});
+
+// Reason for canceling
+Breadcrumbs::for('bookings.cancel', function($trail, $booking){
+
+	$trail->parent('home', route('home'));
+	$trail->push('Booking canceling', route('bookings.cancel', $booking));
+
 });

@@ -5,21 +5,23 @@ const state = () => ({
 
 const getters = {
 
-	getAvailable: state => state.psychologists
+	allPsychologists: state => state.psychologists
 }
 
 const actions = {
 
-	async availablePsychologist({ commit }, time)
+	async getPsychologists({ commit }, payload)
 	{
-		const response = await axios.get(`/psychologist/available/${time}`);
-		commit('setPsychologist', response.data)
+		const response = await axios.get(`/psychologists-by-date-time`, {
+			params: payload
+		});
+		commit('setPsychologists', response.data)
 	}
 }
 
 const mutations = {
 
-	setPsychologist: (state, psychologists) => (state.psychologists = psychologists)
+	setPsychologists: (state, psychologists) => (state.psychologists = psychologists)
 }
 
 

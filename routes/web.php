@@ -41,7 +41,6 @@ Route::middleware('auth')->group(function(){
 
 	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');
 
-
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
 	// Client Subscription
@@ -141,6 +140,12 @@ Route::middleware('auth')->group(function(){
 	// Get onboarding questionnaires in ajax request
 	Route::get('onboarding-questions', 'AssessmentCategoryController@questionnaires');
 
+	// Get available time by date
+	Route::get('time-by-date', 'SchedulesController@timeByDate');
+
+	// Get psychologists by date and time selected
+	Route::get('psychologists-by-date-time', 'SchedulesController@psychologistsByDateTime');
+
 	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
@@ -158,6 +163,9 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('delete-schedule', 'SchedulesController@delete')->name('psychologist.delete.schedule');
 
+		// create new psychologists post request
+		Route::post('store', 'PsychologistsController@store')->name('psychologist.store');
+
 		// Ajax
 		Route::get('time-schedules', 'SchedulesController@timeSchedule')->name('psychologist.time.schedule');
 
@@ -169,6 +177,9 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('member')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');
+		Route::get('lists', 'MemberController@index')->name('member.lists');
+		Route::post('member.store', 'MemberController@store')->name('member.store');
+		Route::put('update/{user}', 'MemberController@update')->name('member.update');
 	});
 
 	/* Client Prefix */
@@ -202,7 +213,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('success-page', 'BookingProcessController@successPage')->name('booking.success.page');
 
-		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status');
+		Route::post('update-status/{id}', 'BookingProcessController@updateBookingStatus')->name('booking.update.status')->middleware('check-booking-status');
 
 
 		/* Booking Process Actions */
@@ -212,7 +223,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('store/onboarding-questions', 'BookingProcessController@storeOnboardingQuestions')->name('booking.store.onboarding.question');
 
-		Route::get('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
+		Route::post('store/date-time', 'BookingProcessController@storeDateTime')->name('booking.store.date-time');
 
 		Route::post('confirm', 'BookingProcessController@bookingConfirm')->name('booking.confirm');
 
@@ -225,7 +236,7 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('reschedule/{booking}', 'BookingController@reschedule')->name('booking.reschedule');
 
-		Route::get('answered-questions/{booking}', 'BookingController@getAssessment')->name('booking.answered.questions');
+		Route::get('session/{room_id}', 'BookingController@getAssessment')->name('booking.answered.questions');
 
 		// Actions
 		Route::post('book', 'BookingController@bookNow')->name('book.now');
@@ -247,6 +258,13 @@ Route::middleware('auth')->group(function(){
 
 		Route::get('status-summary', 'BookingController@bookingStatuses');
 	});
+
+	/* Video Chat Route*/
+	Route::get('video-chat/{room_id}', 'VideoChatController@index');
+
+	Route::post('video-chat', 'VideoChatController@store')->name('video-chat.store');
+
+	Route::get('broadcast/call/{room_id}', 'VideoChatController@broadcastCall');
 
 
 	/*-- Progress Reports --*/

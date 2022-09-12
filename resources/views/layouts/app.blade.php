@@ -12,12 +12,34 @@
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    @stack('custom_styles')
+    
+    <style>
+      .ac-upload input[type=file] {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        opacity: 0;
+      }
+
+      .ac-avatar {
+        max-width: 100%;
+        max-height: 320px;
+        border-radius: 50%;
+        border: 5px solid #D5D5D5;
+      }
+    </style>
+    
+
+    @yield('custom_styles')
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
-            
+            @php
+                $user = auth()->user();
+            @endphp
+            <nav class="navbar navbar-expand-md shadow-sm">
                 <a class="navbar-brand pr-4 pl-4" href="{{ auth()->user() ? url('/home') : url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
@@ -38,8 +60,17 @@
 
                         @else
                             
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li>
+                                <a href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="far fa-arrow-alt-circle-right"></i>
+                                    <span class="ml-2">{{ __('Logout') }}</span>
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                                {{-- <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -49,26 +80,27 @@
                                         <span class="ml-2">Profile</span>
                                     </a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="far fa-arrow-alt-circle-right"></i>
-                                        <span class="ml-2">{{ __('Logout') }}</span>
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
+                                    
+                                </div> --}}
                             </li>
                         @endguest
                     </ul>
                 </div>
-            
-        </nav>
+            </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            @guest
+                <main class="py-4">
+                    @yield('content')
+                </main>
+            @endguest
+        
+
+            @auth
+                @include('layouts.includes._sidebar')
+            @endauth
+        
+            
+        
     </div>
 
     <!-- js compiled assets -->

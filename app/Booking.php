@@ -9,6 +9,7 @@ class Booking extends Model
     protected $table = 'bookings';
     protected $fillable = 
         [
+            'room_id',
             'schedule', 
             'time_id',
             'client_id',
@@ -17,6 +18,7 @@ class Booking extends Model
             'session_type_id',
             'is_firstimer',
             'self_harm',
+            'harm_other_people',
             'status',
             'link_to_session',
             'main_concern'
@@ -64,6 +66,11 @@ class Booking extends Model
     {
         return $this->hasMany(AssessmentAnswer::class);
     }
+
+    public function cancelled(){
+        return $this->hasOne(CancelledBooking::class);
+    }
+
     public function reschedule()
     {
         return $this->hasOne(RescheduledBooking::class);
@@ -79,6 +86,10 @@ class Booking extends Model
     public function mainConcern()
     {
         return $this->belongsTo(AssessmentCategory::class, 'main_concern');
+    }
+    public function chats()
+    {
+        return $this->hasMany(ChatMessage::class);
     }
 
     public function scopeWithClient($query)
@@ -98,5 +109,9 @@ class Booking extends Model
             // query where client is request request client 
             $query->where('client_id', request('client'));
         }
+    }
+    public function scopeWithStatus($query, $status)
+    {
+        $query->where('status', $status);
     }
 }

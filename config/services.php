@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // jitsi service
+    'meetjitsi' => [
+        'jit_url' => env('JITSI_URL')
+    ],
+
 ];

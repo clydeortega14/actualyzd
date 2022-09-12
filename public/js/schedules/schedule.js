@@ -20,10 +20,10 @@ class Schedule {
 			            start: object.start,
 			            end: object.end,
 			            display: 'background',
-			            color: 'green'
+			            color: '#6fbf7f'
 			        }
 				})
-			
+				// console.log(unique_schedules)
 			});
 
 			// return schedule

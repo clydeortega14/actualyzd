@@ -5,9 +5,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
+                <h3>Bookings</h3>
 				{{ Breadcrumbs::render('psychologist.bookings') }}
 			</div>
-            <div class="col-md-12 mb-3">
+            {{-- <div class="col-md-12 mb-3">
                 @if(auth()->user()->hasRole('psychologist'))
                     @php
                         $route = route('psychologist.home');
@@ -26,9 +27,9 @@
                     <i class="fa fa-arrow-left"></i>
                     <span>Return Back</span>
                 </a>
-            </div>
+            </div> --}}
 			<div class="col-md-12">
-				<div class="card mb-3">
+				{{-- <div class="card mb-3">
 					<div class="card-body">
 						@if(!is_null($upcoming))
                             <div class="d-flex justify-content-between mb-3 mr-3 ml-3">
@@ -61,11 +62,34 @@
             				
             		    </h5>
 					</div>
-				</div>
+				</div> --}}
 
 				<div class="card mb-3">
 					<div class="card-body">
-						<bookings-lists></bookings-lists>
+                        @php
+                            $user = auth()->user();
+                            $user_avatar = $user->avatar;
+                        @endphp
+
+                        @if($user->hasRole('member'))
+                            @php
+                                $role = 'member';
+                            @endphp
+                        @elseif($user->hasRole('psychologist'))
+                            @php
+                                $role = 'psychologist';
+                            @endphp
+                        @elseif($user->hasRole('admin'))
+                            @php
+                                $role = 'admin';
+                            @endphp
+                        @elseif($user->hasRole('superadmin'))
+                            @php
+                                $role = 'superadmin';
+                            @endphp
+                        @endif
+
+						<bookings-lists role="{{ $role }}"></bookings-lists>
 					</div>
 				</div>
 			</div>

@@ -71,4 +71,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class, 'user_id', 'id');
     }
+    public function progressReports()
+    {
+        return $this->hasMany(ProgressReport::class, 'counselee', 'id');
+    }
 }

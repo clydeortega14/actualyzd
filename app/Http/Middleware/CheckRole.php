@@ -27,6 +27,11 @@ class CheckRole
             return redirect()->route('member.home');
         }
 
+        if($user->hasRole(['superadmin', 'admin'])){
+
+            return redirect()->route('service.utilization.dashboard');
+        }
+
         
         return $next($request);
     }
