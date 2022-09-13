@@ -126,10 +126,19 @@
 
             function handleSelect(arg)
             {
+              let parsedClickDate = date_parser.parseDate(arg.start);
+              let parsedCurrentDate = date_parser.parseDate(new Date());
+
+              if(parsedClickDate < parsedCurrentDate){ 
+
+                Swal.fire('Oops!', 'this date is not available', 'warning');
+               
+              }else{
+
                 $('#create-schedule').modal('show');
                 $('.start-date').val(arg.startStr);
                 $('input[name="end_date"]').val(arg.endStr);
-                $('#create-schedule-modal-label').text(arg.startStr)
+                $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start))
                 $('#psychologist-available').empty();
                 let dom_list = $('.time-lists');
 
@@ -144,9 +153,9 @@
 
                       handleTimeList(data);
                       handleSchedulesTable(data);
-
-                      console.log(arr_schedule_time)
-                })
+                });
+              }
+                
             }
 
 
@@ -167,6 +176,8 @@
 
                     // find time schedules time that equals to time lists id
                     let sched = time_schedules.findIndex(time_sched => time_sched.time_id == time.id);
+
+                    
                     
                     // if found schedule is not equal to undefined
                     if(sched !== -1) {
@@ -181,6 +192,7 @@
                         disabled = 'disabled';
                       }
                     }
+
 
                     $schedules_time_lists.append(schedulesTimeListTemp(time, checked, disabled));
                   })
@@ -213,8 +225,6 @@
                     </td>
                     <td align="right">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</td>
                   </td>
-                  
-                
                 `
             }
             function counselingTimeListTemp(time)

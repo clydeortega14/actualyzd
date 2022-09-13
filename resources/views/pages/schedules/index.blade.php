@@ -54,6 +54,7 @@
 		      	dayMaxEvents: true, // allow "more" link when too many events
 		      	events: schedules,
 		      	select(arg){
+		      		console.log(parseTime(new Date()))
 		      		handleSelect(arg)
 		      	}
 			}
@@ -96,7 +97,7 @@
         			start: arg.startStr
         		}
         	}).done(data => {
-        		console.log(data)
+        		
             	handleTimeList(data);
             	// handleSchedulesTable(data);
         	})
@@ -140,7 +141,7 @@
 		}
 		function counselingTimeListTemp(time)
 		{
-			console.log(time)
+			
 		    return `
 		      <div class="form-group">
 		        <input type="radio" id="counseling${time.id}" name="time" value="${time.id}" class="with-gap" />

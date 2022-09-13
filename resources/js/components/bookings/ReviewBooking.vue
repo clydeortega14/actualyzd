@@ -25,7 +25,7 @@
 
 		  	<li class="list-group-item d-flex justify-content-between align-items-center" v-if="getSelectedDate !== null">
 				Date
-				<span>{{ getSelectedDate }}</span>
+				<span>{{ wholeDate(getSelectedDate) }}</span>
 			</li>
 
 			<li class="list-group-item d-flex justify-content-between align-items-center" v-if="getSelectedTime !== null">
@@ -83,10 +83,11 @@
 
 	import { mapGetters, mapActions } from 'vuex';
 	import SweetAlert from '../../mixins/sweet-alert.js'
+	import DateTime from '../../mixins/datetime.js';
 	
 	export default {
 		name: "ReviewBooking",
-		mixins: [ SweetAlert ],
+		mixins: [ SweetAlert, DateTime ],
 		props: {
 			hasAssessment: Number,
 			isFirsttimer: Number,
