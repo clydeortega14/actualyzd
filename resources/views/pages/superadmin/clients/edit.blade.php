@@ -7,40 +7,43 @@
 		<div class="row clearfix">
 			<div class="col-md-4 border-right">
 				<div class="card mb-3">
-					<div class="card-header">Client Details</div>
+					<div class="card-header">Client Details
+					
+					</div>
 					<div class="card-body">
-						<form action="#" method="POST">
-							@csrf
+							<form action="{{ route('update.client') }}" method="POST" enctype="multipart/form-data">
+									@csrf
 
-							@if(isset($client))
+							{{-- @if(isset($client))
 								@method('PUT')
-							@endif
+							@endif --}}
 
-
+								<input type="text" hidden name="id" value="{{ $client->id }}">
 							<div class="form-group">
 	                            <label for="company-name">Company Name</label>
-	                        	<input type="text" name="name" id="company-name" class="form-control @error('name') error @enderror " value="{{ $client->name }}" readonly>
+	                        	<input type="text" name="name" id="company-name" class="form-control @error('name') error @enderror " value="{{ $client->name }}" >
 		                    </div>
 
 		                    <div class="form-group">
 		                        <label for="company-email">Company Email</label>
-		                        <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror" value="{{ $client->email }}" readonly>
+		                        <input type="text" name="email" id="company-email" class="form-control @error('email') error @enderror" value="{{ $client->email }}" >
 		                    </div>
 
 		                    <div class="form-group">
 		                    	<label for="no-of-employees">No. of employees</label>
-		                    	<input type="number" name="no_of_employees" id="no-of-employees" class="form-control @error('no_of_employees') error @enderror" value="{{ $client->number_of_employees }}" readonly>
+		                    	<input type="number" name="no_of_employees" id="no-of-employees" class="form-control @error('no_of_employees') error @enderror" value="{{ $client->users->count() }}" readonly>
 		                    </div>
 
 		                    <div class="form-group">
 		                    	<label for="contact-number">Contact Number</label>
-		                    	<input type="text" name="contact_number" id="contact-number" class="form-control @error('contact_number') error @enderror" value="{{ $client->contact_number }}" readonly>
+		                    	<input type="text" name="contact_number" id="contact-number" class="form-control @error('contact_number') error @enderror" value="{{ $client->contact_number }}" >
 		                    </div>
 
 		                    <div class="form-group">
 		                        <label for="company-address">Company Address</label>
-		                        <textarea class="form-control no-resize  @error('address') error @enderror" rows="4" name="address" id="company-address" readonly>{{ $client->postal_address }}</textarea>
+		                        <textarea class="form-control no-resize  @error('address') error @enderror" rows="4" name="address" id="company-address" >{{ $client->postal_address }}</textarea>
 		                    </div>
+							<button type="submit" class="btn btn-block btn-sm btn-primary" >Update</button>
 	                    </form>
 					</div>
 				</div>
@@ -144,5 +147,17 @@
 			</div>
 		</div>
 	</div>
-
+<script>
+    $(document).ready(function(){
+        $('form input[type="text"]').prop("disabled", true);
+        // $(".agree").click(function(){
+        //     if($(this).prop("checked") == true){
+        //         $('form input[type="submit"]').prop("disabled", false);
+        //     }
+        //     else if($(this).prop("checked") == false){
+        //         $('form input[type="submit"]').prop("disabled", true);
+        //     }
+        // });
+    });
+</script>
 @endsection

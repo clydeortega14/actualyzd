@@ -117,13 +117,7 @@ class CompanyInfoController extends Controller
         $contact_number = $request->contact_number;
         $postal_address = $request->postal_address;
         $number_of_employees = $request->number_of_employees;
-       
 
-        
-        
-
-
-        
         $client = Client::find($request->client_id);
         $client->name = $company_name;
         $client->email = $email;

@@ -9,6 +9,8 @@ use DB;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\Roles\RoleTrait;
 use App\Client;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\URL;
 
 class ClientUserController extends Controller
 {
@@ -25,6 +27,16 @@ class ClientUserController extends Controller
      */
     public function index(Client $client)
     {
+       
+        if($client->is_active == 1)
+        {
+            $users = $client->users()->with(['roles'])->get();
+            $clients = Client::get(['id', 'name','is_active']);
+            return view('pages.superadmin.users.index', compact('users', 'client'));
+        }
+        else{
+            return redirect()->back()->with('error','YOU CLIENT IS NOT ALLOWED TO CREATE AND IMPORT USER . PLEASE ACTIVATE FIRST! THANK YOU.');
+        }
         // $users = User::where(function($query){
 
         //     if(auth()->user()){
@@ -38,11 +50,10 @@ class ClientUserController extends Controller
 
         // })->with(['roles'])->get();
 
-        $users = $client->users()->with(['roles'])->get();
+        // dd($users);
 
-        $clients = Client::get(['id', 'name']);
 
-        return view('pages.superadmin.users.index', compact('users', 'client'));
+      
     }
 
     /**
@@ -100,6 +111,58 @@ class ClientUserController extends Controller
 
         DB::commit();
         return redirect()->back('pages.superadmin.client.users.index')->with('success', 'New users has been added');
+    }
+    public function addClients(Request $request)
+    {
+        
+        $request->validate([
+
+            'client_name' => ['required', 'string', 'max:255'],
+            'Email' => ['required', 'string', 'email', 'max:255'],
+            'contact_number' => ['required', 'string', 'max:255'],
+            'postal_address' => ['required', 'string', 'max:255'],
+        ]);
+
+        $addClient = Client::create([
+            'name'         => $request->client_name,
+            'email'        => $request->Email,
+            'contact_number'  => $request->contact_number,
+            'postal_address'  => $request->postal_address,
+            'is_active'         => 1,
+            'number_of_employees'         => 0,
+        ]);
+
+        return redirect()->back()->with('success', 'New Client has been added');
+
+        
+        
+    }
+    public function updateClients(Request $request)
+    {
+       
+        $request->validate([
+
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'contact_number' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+
+        $name = $request->name;
+        $email = $request->email;
+        $no_emplo = $request->no_of_employees;
+        $contact_number = $request->contact_number;
+        $address = $request->address;
+
+        $update_client = Client::find($request->id);
+        $update_client->name = $name;
+        $update_client->email = $email;
+        $update_client->number_of_employees = $no_emplo;
+        $update_client->contact_number = $contact_number;
+        $update_client->postal_address = $address;
+        $update_client->save();
+
+        return redirect('/clients')->with('success', 'Client has been Updated');
     }
     public function store_employee(Request $request)
     {

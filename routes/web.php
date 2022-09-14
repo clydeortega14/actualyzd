@@ -190,6 +190,8 @@ Route::middleware('auth')->group(function(){
 		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
 
 		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');
+		Route::post('users/add/clients', 'ClientUserController@addClients')->name('add.client');
+		Route::post('users/update/', 'ClientUserController@updateClients')->name('update.client');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
 		Route::post('user/store', 'ClientUserController@store_employee')->name('client.user_employee.store');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
