@@ -16,6 +16,6 @@ class AssessmentAnswer extends Model
 
     public function questionnaire()
     {
-    	return $this->belongsTo('App\AssessmentQuestionnaire', 'questionnaire_id');
+    	return $this->belongsTo('App\AssessmentQuestionnaire', 'questionnaire_id', 'id');
     }
 }

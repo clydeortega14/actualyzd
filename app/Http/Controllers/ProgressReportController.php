@@ -42,7 +42,12 @@ class ProgressReportController extends Controller
         $edit_mode = $this->editMode;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $categories = AssessmentCategory::has('questionnaires')->with('questionnaires')->get(['id', 'name']);
-        return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode'));
+
+        $answered_questions = $booking->assessmentAnswers()->where('answer', 'like', '%yes%')->get();
+
+        $booking->load(['assessmentAnswers']);
+
+        return view('pages.progress-reports.create', compact('booking', 'followup_sessions', 'categories', 'edit_mode', 'answered_questions'));
     }
 
     public function show(Booking $booking)

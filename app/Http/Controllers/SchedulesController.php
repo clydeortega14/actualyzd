@@ -46,13 +46,23 @@ class SchedulesController extends Controller
     {
         $dates = $this->betweenDates($request->start_date, $request->end_date);
 
-        // Delete all schedules related to current psychologist and the date in the calendar selected
-        PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->delete();
+        $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->pluck('time_id')->toArray();
 
         // Check if there are selected time
         if($request->has('time_lists')){
+
+            $results = array_diff($schedules, $request->time_lists);
+
+            $to_removes_scheds = PsychologistSchedule::where([
+                    ['psychologist', $this->user()->id],
+                    ['start', $request->start_date]
+                ])
+                ->whereIn('time_id', $results)
+                ->delete();
+
             // loop time lists array
             foreach($dates as $d){
+
                 // loop time lists array
                 foreach($request->time_lists as $key => $time)
                 {
@@ -66,6 +76,11 @@ class SchedulesController extends Controller
                 }
             }
         }
+
+        if($request->ajax()){
+
+            return response()->json('Successfully Created Schedule');
+        }
         
         return redirect()->back();
     }
@@ -75,10 +90,23 @@ class SchedulesController extends Controller
         // GET User schedule according to date selected
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
             ->whereDate('start', $request->start)
-            ->with(['timeList', 'psych', 'booking'])
-            ->get();
+            ->with([
+                'timeList', 
+                'psych', 
+                'booking.toStatus', 
+                'booking.sessionType', 
+                'booking.toCounselee'
+            ])->get();
 
-        $time_lists = TimeList::get();
+        $time_lists = TimeList::with(['schedules' => function($query) use ($request){
+
+            $query->where('psychologist', auth()->user()->id)
+            ->where('start', $request->date)
+            ->where('is_booked', false);
+
+        }])
+        ->orderBy('from', 'asc')
+        ->get();
 
         return response()->json([
             'schedules' => $schedules, 

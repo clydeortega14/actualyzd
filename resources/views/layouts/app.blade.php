@@ -24,7 +24,10 @@
       }
 
       .ac-avatar {
-        max-width: 100%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 70%;
         max-height: 320px;
         border-radius: 50%;
         border: 5px solid #D5D5D5;
@@ -41,7 +44,8 @@
             @endphp
             <nav class="navbar navbar-expand-md shadow-sm">
                 <a class="navbar-brand pr-4 pl-4" href="{{ auth()->user() ? url('/home') : url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
+                    <img src="{{ asset('/images/logo-01.png') }}" class="mx-auto d-block" width="60" height="60">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -59,6 +63,14 @@
                         @guest
 
                         @else
+
+                            <li class="mr-3">
+                                <faq-icon></faq-icon>
+
+                                <faq-modal></faq-modal>
+                                <!-- Help Modal -->
+                                {{-- @include('layouts.includes.modals.help-modal') --}}
+                            </li>
                             
                             <li>
                                 <a href="{{ route('logout') }}"
@@ -105,6 +117,8 @@
 
     <!-- js compiled assets -->
     <script defer src="{{ asset('js/app.js') }}"></script>
+
+
     @stack('scripts')
 </body>
 </html>

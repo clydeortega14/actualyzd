@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use App\Notifications\CustomResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -64,7 +65,8 @@ class User extends Authenticatable
     }
     public function bookings()
     {
-        return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
+        // return $this->belongsToMany('App\Booking', 'session_participants', 'participant', 'booking_id');
+        return $this->hasMany('App\Booking', 'booked_by', 'id');
     }
 
     public function activities()
@@ -74,5 +76,16 @@ class User extends Authenticatable
     public function progressReports()
     {
         return $this->hasMany(ProgressReport::class, 'counselee', 'id');
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomResetPasswordNotification($token));
     }
 }
