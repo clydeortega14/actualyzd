@@ -77,55 +77,55 @@
 							
 							
 							<form method="POST" action="{{route('update.comapany_info')}}" enctype="multipart/form-data" style="display: none;" id="edit_info">
-							@csrf
-							<input type="text" name="client_id" hidden="" value="{{ $company_info->id }}">
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe me-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Company Name</h6>
-									<input type="text" name="company_name" class="form-control" value="{{ $company_info->name }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email </h6>
-									<input type="text" name="email" class="form-control" value="{{ $company_info->email }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</h6>
-									<input type="text" name="contact_number" class="form-control" value="{{ $company_info->contact_number }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
-									<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
-									
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-								<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
-									
-									
-								</li>
-								
-								
-						
-								<!-- <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
-								>
-									
-										<h6   class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+								@csrf
+								<input type="text" name="client_id" hidden="" value="{{ $company_info->id }}">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe me-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Company Name</h6>
+										<input type="text" name="company_name" class="form-control" value="{{ $company_info->name }}" style="width: 359px;border-style: groove;">
 										
-										<img   src="{{asset('storage/'.$company_info->logo )}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
-										<input   type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email </h6>
+										<input type="text" name="email" class="form-control" value="{{ $company_info->email }}" style="width: 359px;border-style: groove;">
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</h6>
+										<input type="text" name="contact_number" class="form-control" value="{{ $company_info->contact_number }}" style="width: 359px;border-style: groove;">
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
+										<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
+										
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
+										<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
+										
+										
+									</li>
 									
 									
-								</li> -->
-							</ul>
-							<br>
-							<br>
-								<a class="btn btn-danger"id="cancel" style="margin-right: 12px;width: 155px;margin-left: 736px;">CANCEL</a>
-								<button type="submit" class="btn btn-primary" style="width: 149px;">UPDATE</button> 
-								
+							
+									<!-- <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
+									>
+										
+											<h6   class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+											
+											<img   src="{{asset('storage/'.$company_info->logo )}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
+											<input   type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
+										
+										
+									</li> -->
+								</ul>
+								<br>
+								<br>
+									<a class="btn btn-danger"id="cancel" style="margin-right: 12px;width: 155px;margin-left: 736px;">CANCEL</a>
+									<button type="submit" class="btn btn-primary" style="width: 149px;">UPDATE</button> 
+									
 							
 
 							</form>
