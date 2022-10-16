@@ -119,6 +119,7 @@
     <script defer src="{{ asset('js/app.js') }}"></script>
 
 
+    @yield('js_scripts')
     @stack('scripts')
 </body>
 </html>

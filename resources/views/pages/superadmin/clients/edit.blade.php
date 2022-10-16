@@ -2,11 +2,12 @@
 
 @section('content')
 
-	<div class="container-fluid">
+	<div class="container-fluid" id="app">
 
 		<div class="row clearfix mb-3">
 	    	<div class="col-12">
                 <h3 class="mb-3 text-gray-800">Client Profile</h3>
+				
             </div>
         </div>
 
@@ -85,71 +86,82 @@
 												<span>Import Users</span>
 											</a>
 											@include('pages.superadmin.users.modals.import-users') --}}
+											
+											
+										</div>
+										
+									</div>
+									
+									<div class="container">
+										<div class="row">
+											<div class="col-sm" style="display: flex;">
+												
+													<input class="form-control" id="search" name="search" type="search" placeholder="Search..">
+													
+													<!-- <select class="form-select" aria-label="Default select example" >
+														<option selected>Choose Status</option>
+														<option value="1">Active</option>
+														<option value="0">Deactivate</option>
+														
+													</select> -->
+												
+												
+											</div>
+											
+											
 										</div>
 									</div>
-									<table class="table table-hover" width="100%" cellspacing="0">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Name</th>
-												<th>Email</th>
-												<th>Username</th>
-												<th>Status</th>
-												<th>Role</th>
-												<th>Actions</th>
-											</tr>
-										</thead>
-
-										<tbody>
-											@foreach($client->users()->whereHas('roles', function($query){
-												if(auth()->user()->hasRole('superadmin')){
-													$query->whereIn('name', ['member', 'admin']);
-												}else if(auth()->user()->hasRole('admin')){
-
-													$query->where('name', 'member');
-												}
-											})->with(['roles'])->get() as $user)
-												@php
-													$active = $user->is_active;
-												@endphp
-												<tr data-client-id="{{ $user->client_id }}" class="user">
-													<td><img src="{{ asset('sb-admin/img/undraw_profile.svg') }}" alt="{{ $user->name }}" height="45" width="45"class="text-center"></td>
-													<td>{{ $user->name }}</td>
-													<td>{{ $user->email }}</td>
-													<td>{{ $user->username }}</td>
-													<td>
-														<span class="{{ $active ? 'badge badge-success' : 'badge badge-danger' }}">
-															{{ $active ? 'Active' : 'Inactive' }}
-														</span>
-													</td>
-													<td>
-														@if(count($user->roles) > 0)
-															@foreach($user->roles as $role)
-																<span class="{{ $role->class }}">{{ $role->name }}</span>
-															@endforeach
-														@else
-															<span class="badge badge-danger">Not Available</span>
-														@endif
-													</td>
-													<td>
-														<a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">
-															<i class="fa fa-edit"></i>
-														</a> | 
-														<!-- <a href="#" data-toggle="modal" data-target="#delete-users-{{ $user->id}}" id="logo"  class="btn btn-secondary btn-sm">
-																	<i class="fa fa-trash"></i>
-														</a> | -->
-														<a href="#" class="btn btn-{{ $user->is_active ? 'secondary' : 'primary' }} btn-sm"
-															data-toggle="modal" data-target="#update-status-{{ $user->id}}">
-															<i class="fa fa-eye"></i>
-														</a>
-														@include('pages.superadmin.clients.users.modals.update-status')
-														@include('pages.modals.delete-users')
-													</td>
+									<br>
+									
+									<input type="text" hidden="" id="client" name="client" value="{{ $client->id }}">
+									<div class="table-data">
+										<table class="table" id="myTable" >
+											<thead>
+												<tr>
+													
+													<th>Name</th>
+													<th>Email</th>
+													<th>Status</th>
+													<th>Actions</th>
+													
 												</tr>
+											</thead>
+											<tbody >
+											
+												 @foreach($users as $user)
+													<tr>
+														
+														<td>{{ $user->name }}</td>
+														<td>{{ $user->email }}</td>
+														<td>
+															<span class="{{ $user->is_active ? 'badge badge-primary' : 'badge badge-secondary'}}">
+																{{ $user->is_active ? 'Active' : 'Inactive' }}
+															</span>
+														</td>
+														<td>
+															<a href="#" class="btn btn-{{ $user->is_active ? 'secondary' : 'primary' }} btn-sm"
+																data-toggle="modal" data-target="#update-status-{{ $user->id}}">
+																<i class="fa fa-eye"></i>
+															</a> |
 
-											@endforeach
-										</tbody>
-									</table>
+															@include('pages.superadmin.clients.users.modals.update-status')
+
+															<a href="#" class="btn btn-secondary btn-sm">
+																<i class="fa fa-trash"></i>
+															</a>
+														</td>
+													</tr>
+												@endforeach  
+												</tbody>
+												
+											
+										</table>
+									{!!$users->links()!!}
+									</div>
+
+									
+					
+									
 								</div>
 							</div>
 							<div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
@@ -253,3 +265,92 @@
 	</div>
 
 @endsection
+@section('js_scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	
+$(document).ready(function(){
+	//pagination
+	$(document).on('click', '.pagination a', function(e){
+       e.preventDefault();
+	   let page = $(this).attr('href').split('page=')[1]
+	   
+	   users(page);
+    });
+
+	function users(page){
+		var cl = $("input[name='client']").val();
+		$.ajax({
+			url:"/pagination/pagination-data?page="+page,
+			data:{page:page, cl : cl},
+			success:function(data){
+				$('.table-data').html(data);
+			}
+		})
+	}
+
+	//search
+	$(document).on('keyup',function(e){
+		e.preventDefault();
+		let search_Clientuser = $('#search').val();
+		var cl = $("input[name='client']").val();
+
+		
+		$.ajax({
+            url:"{{ route('search.UserClient') }}",
+            method:'GET',
+            data:{search_Clientuser:search_Clientuser,cl : cl},
+            
+            success:function(res)
+            {
+
+                $('.table-data').html(res);
+				if(res.status == 'nothing_found'){
+					$('.table-data').html('<span class="text-danger">'+'Nothing Found'+'</span>');
+				}
+            }
+        })
+    });
+
+	// fetch_customer_data();
+	
+	
+	// function fetch_customer_data(query = '')
+    // {
+	// 	var cl = $("input[name='client']").val();
+		
+		
+    //     $.ajax({
+    //         url:"{{ route('search') }}",
+    //         method:'GET',
+    //         data:{query:query, cl : cl},
+    //         dataType:'json',
+    //         success:function(data)
+    //         {
+    //             $('tbody').html(data.table_data);
+    //             $('#pag').html(data.table_data);
+    //             $('#total_records').text(data.total_data);
+    //         }
+    //     })
+    // }
+
+	// $(document).on('keyup', '#search', function(){
+    //     var query = $(this).val();
+    //     fetch_customer_data(query);
+    // });
+//   $("#search").on("keyup", function() {
+//     $value = $(this).val();
+// 	$.ajax({
+// 		type:'get',
+// 		url:'{{URL::to('search')}}',
+// 		data:{'search':$value},
+
+// 		success:function(data){
+// 			console.log(data);
+// 			$('#content').html(data);
+// 		}
+// 	});
+//   });
+});
+</script>
+@stop

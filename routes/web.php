@@ -47,6 +47,9 @@ Route::middleware('auth')->group(function(){
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
 	// Client Users Route
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');
+	Route::get('/search', 'ClientsController@mysearch')->name('search');
+	Route::get('/pagination/pagination-data', 'ClientsController@pagination');
+	Route::get('/search-userClient', 'ClientsController@searchUserclients')->name('search.UserClient');
 
 	Route::get('clients-with-users', 'ClientsController@clientsWithUsers');
 

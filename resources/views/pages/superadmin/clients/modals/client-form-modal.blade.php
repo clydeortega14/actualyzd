@@ -33,10 +33,10 @@
 	            		</div>
 	            	</div>
 
-	            	<div class="form-group row">
+	            	<div class="form-group row" hidden="">
 	            		<label class="col-form-label col-sm-4 text-md-right">No. Of Employees</label>
 	            		<div class="col-sm-6">
-	            			<input type="number" name="no_of_employees" class="form-control" value="{{ old('no_of_employees') }}">
+	            			<input type="number" name="no_of_employees" class="form-control" value="0"  >
 	            		</div>
 	            	</div>
 

@@ -5,7 +5,7 @@
 
 @section('content')
 
-	<div class="container-fluid">
+	<div class="container-fluid" id="app">
 	    <!-- Clients widgets -->
 	    <div class="row clearfix mb-3">
 	    	<div class="col-12">
@@ -30,8 +30,9 @@
                         </div>
                     </div>
 	    			<div class="card-body">
-                        
+                    <!-- <clientlist-user> </clientlist-user> -->
 	    				<div class="table-responsive">
+                       
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -74,7 +75,9 @@
                                         
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table>  
+                            {{ $clients->links() }}
+
                         </div>
 	    			</div>
 	    		</div>
