@@ -17,7 +17,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
+        
         $clients = Client::get();
+       
 
         return view('pages.superadmin.clients.index', compact('clients'));
     }
@@ -94,6 +96,7 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
+       
         $client = Client::findOrFail($id);
         $packages = Package::has('services')->with(['services'])->get();
 

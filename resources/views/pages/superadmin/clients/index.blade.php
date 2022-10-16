@@ -29,6 +29,21 @@
                             @include('pages.superadmin.clients.modals.client-form-modal')
                         </div>
                     </div>
+                <div class="card-header py-2">
+						<div class="d-sm-flex justify-content-between p-3">
+							<div>Client Lists</div>
+							<div>
+								<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#create_client">
+									<i class="fa fa-plus"></i>
+									<span>Create Client</span>
+								</a>
+								
+								@include('pages.superadmin.clients.users.modals.create-client')
+								@include('pages.superadmin.users.modals.import-users')
+							</div>
+						</div>
+					</div>
+                  
 	    			<div class="card-body">
                     <!-- <clientlist-user> </clientlist-user> -->
 	    				<div class="table-responsive">
@@ -51,6 +66,7 @@
                                             <td>{{ $client->name }}</td>
                                             <td>{{ $client->email }}</td>
                                             <td>{{ $client->postal_address }}</td>
+                                            <td>{{ $client->users->count() }}</td>
                                             <td>{{ $client->contact_number }}</td>
                                             <td>{{ $client->number_of_employees }}</td>
                                             <td>

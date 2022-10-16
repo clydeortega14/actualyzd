@@ -227,6 +227,10 @@ Route::middleware('auth')->group(function(){
 
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
 
+		Route::post('users/add/clients', 'ClientUserController@addClients')->name('add.client');
+		Route::post('users/update/', 'ClientUserController@updateClients')->name('update.client');
+		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
+		Route::post('user/store', 'ClientUserController@store_employee')->name('client.user_employee.store');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
 
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');

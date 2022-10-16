@@ -77,55 +77,55 @@
 							
 							
 							<form method="POST" action="{{route('update.comapany_info')}}" enctype="multipart/form-data" style="display: none;" id="edit_info">
-							@csrf
-							<input type="text" name="client_id" hidden="" value="{{ $company_info->id }}">
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe me-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Company Name</h6>
-									<input type="text" name="company_name" class="form-control" value="{{ $company_info->name }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email </h6>
-									<input type="text" name="email" class="form-control" value="{{ $company_info->email }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</h6>
-									<input type="text" name="contact_number" class="form-control" value="{{ $company_info->contact_number }}" style="width: 359px;border-style: groove;">
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
-									<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
-									
-									
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-								<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
-									<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
-									
-									
-								</li>
-								
-								
-						
-								<!-- <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
-								>
-									
-										<h6   class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+								@csrf
+								<input type="text" name="client_id" hidden="" value="{{ $company_info->id }}">
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe me-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Company Name</h6>
+										<input type="text" name="company_name" class="form-control" value="{{ $company_info->name }}" style="width: 359px;border-style: groove;">
 										
-										<img   src="{{asset('storage/'.$company_info->logo )}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
-										<input   type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> Email </h6>
+										<input type="text" name="email" class="form-control" value="{{ $company_info->email }}" style="width: 359px;border-style: groove;">
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Phone</h6>
+										<input type="text" name="contact_number" class="form-control" value="{{ $company_info->contact_number }}" style="width: 359px;border-style: groove;">
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+										<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Address</h6>
+										<input type="text" name="postal_address" class="form-control" value="{{ $company_info->postal_address }}" style="width: 359px;border-style: groove;">
+										
+										
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Number of Employees</h6>
+										<input type="text" name="number_of_employees" class="form-control" value="{{ $company_info->number_of_employees }}" style="width: 359px;border-style: groove;">
+										
+										
+									</li>
 									
 									
-								</li> -->
-							</ul>
-							<br>
-							<br>
-								<a class="btn btn-danger"id="cancel" style="margin-right: 12px;width: 155px;margin-left: 736px;">CANCEL</a>
-								<button type="submit" class="btn btn-primary" style="width: 149px;">UPDATE</button> 
-								
+							
+									<!-- <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"  
+									>
+										
+											<h6   class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> Company Logo</h6>
+											
+											<img   src="{{asset('storage/'.$company_info->logo )}}" id="previewImg" alt="profile image" style="max-width:130px;margin-top:20px;">
+											<input   type="file" name="file" class="form-control"  onchange="previewFile(this)"  style="width: 359px;border-style: groove;" >
+										
+										
+									</li> -->
+								</ul>
+								<br>
+								<br>
+									<a class="btn btn-danger"id="cancel" style="margin-right: 12px;width: 155px;margin-left: 736px;">CANCEL</a>
+									<button type="submit" class="btn btn-primary" style="width: 149px;">UPDATE</button> 
+									
 							
 
 							</form>
@@ -160,6 +160,122 @@
 							</div>
 							</div>
 							<!-- Modal -->
+							<!-- Modal create -->
+							<div class="modal fade bd-example-modal-lg" id="create-users" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+								<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">New Users</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+								<form action="{{ route('client.user_employee.store') }}" method="POST">
+									@csrf
+									
+									<div class="row justify-content-between">
+										<div class="col-sm-5">
+											
+											<div class="form-group">
+												<label>Name <small class="text-danger">*</small></label>
+												<input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ old('name') }}" required>
+											</div>
+
+											<div class="form-group">
+												<label>Email<small class="text-danger">*</small></label>
+												<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ old('email') }}" required>
+											</div>
+
+											<div class="form-group">
+												<label>Username<small class="text-danger">*</small></label>
+												<input type="text" name="username" class="form-control" placeholder="UserName" value="{{ old('username') }}" required>
+											</div>
+
+											<div class="form-group">
+												<label>Password<small class="text-danger">*</small></label>
+												<input type="password" name="password" class="form-control" value="" placeholder="********" required>
+											</div>
+
+											<div class="form-group">
+												<label>Confirm Password<small class="text-danger">*</small></label>
+												<input type="password" name="password_confirmation" class="form-control" placeholder="********" required>
+											</div>
+
+											<div class="form-group d-flex ">
+												<a href="{{ url('client/users') }}" class="btn btn-danger mr-2">Cancel</a>
+												<button type="submit" class="btn btn-primary">Submit</button>
+											</div>
+
+
+											
+										</div>
+
+										<div class="col-sm-7">
+											
+											<h3>Roles</h3>
+											<div class="table-responsive">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th></th>
+															<th>Role</th>
+															<th>Permissions</th>
+														</tr>
+													</thead>
+
+													<tbody>
+														@foreach($roles as $role)
+														<tr>
+															<td>
+																<!-- for default checked  -->
+																@if(isset($isUser))
+																	@php
+																		$checked = '';
+																	@endphp
+																	@if(count($user->roles) > 0)
+																		@foreach($user->roles as $user_role)
+																			@if($user_role->id == $role->id)
+																				@php
+																					$checked = 'checked';
+																				@endphp
+																			@endif
+																		@endforeach
+
+																		<input type="radio" name="roles[]" value="{{ $role->id }}" {{ $checked }}>
+																	@else
+																		<input type="radio" name="roles[]" value="{{ $role->id }}">
+																	@endif
+																@endif
+																<!-- end for default checked -->
+
+																<input type="radio" name="roles[]" value="{{ $role->id }}">
+																
+															</td>
+															<td>{{ $role->display_name }}</td>
+															<td>
+																@if(count($role->permissions) > 0)
+																	@foreach($role->permissions as $permission)
+																		<span class="{{ $permission->class }}">{{ $permission->name }}</span>
+																	@endforeach
+																@else
+																<span class="badge badge-danger">no permissions available</span>
+																@endif
+															</td>
+														</tr>
+														@endforeach
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</form>
+								</div>
+								
+								</div>
+							</div>
+							</div>
+							<!-- Modal create -->
 							
 
 							<!-- Modal update_logo -->
@@ -198,7 +314,7 @@
 									<div class="d-sm-flex justify-content-between p-3">
 										<div>List of Company Users</div>
 										<div>
-											<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm">
+											<a href="#" data-toggle="modal" data-target="#create-users" class="btn btn-primary btn-sm">
 												<i class="fa fa-plus"></i>
 												<span>Create User</span>
 											</a>
