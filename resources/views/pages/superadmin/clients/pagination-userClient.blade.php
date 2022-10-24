@@ -9,9 +9,10 @@
             
         </tr>
     </thead>
+    
     <tbody >
     
-        @foreach($users as $user)
+            @foreach($users as $user)
             <tr>
                 
                 <td>{{ $user->name }}</td>
@@ -34,9 +35,10 @@
                     </a>
                 </td>
             </tr>
-        @endforeach 
-        </tbody>
+        @endforeach  
+        </tbody> 
+    
         
     
 </table>
-{{$users->links()}}
+    {!! $users->render() !!} 

@@ -14,13 +14,10 @@
 		<div class="row clearfix">
 			<div class="col-md-4 border-right">
 				<div class="card mb-3">
-<<<<<<< HEAD
 					{{-- <div class="card-header">Client Details</div> --}}
-=======
 					<div class="card-header">Client Details
 					
 					</div>
->>>>>>> 3490ad6697b760ffa8b9838fdb515faf829ee6af
 					<div class="card-body">
 							<form action="{{ route('update.client') }}" method="POST" enctype="multipart/form-data">
 									@csrf
@@ -101,11 +98,12 @@
 									
 									<div class="container">
 										<div class="row">
-											<div class="col-sm" style="display: flex;">
-												
-													<input class="form-control" id="search" name="search" type="search" placeholder="Search..">
+										
+											<div class="col-md" style="display: flex;">
+											
+											<input type="text" name="search" id="search" class="form-control" placeholder="Search Client User Data" />
 													
-													<!-- <select class="form-select" aria-label="Default select example" >
+													<!-- <select class="form-select " aria-label="Default select example" >
 														<option selected>Choose Status</option>
 														<option value="1">Active</option>
 														<option value="0">Deactivate</option>
@@ -121,6 +119,7 @@
 									<br>
 									
 									<input type="text" hidden="" id="client" name="client" value="{{ $client->id }}">
+									
 									<div class="table-data">
 										<table class="table" id="myTable" >
 											<thead>
@@ -133,6 +132,7 @@
 													
 												</tr>
 											</thead>
+											
 											<tbody >
 											
 												 @foreach($users as $user)
@@ -159,11 +159,12 @@
 														</td>
 													</tr>
 												@endforeach  
-												</tbody>
+												</tbody> 
+											
 												
 											
 										</table>
-									{!!$users->links()!!}
+										 {!! $users->render() !!} 
 									</div>
 
 									
@@ -270,38 +271,20 @@
 			</div>
 		</div>
 	</div>
-<<<<<<< HEAD
 
-@endsection
+@stop
 @section('js_scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 	
 $(document).ready(function(){
-	//pagination
-	$(document).on('click', '.pagination a', function(e){
-       e.preventDefault();
-	   let page = $(this).attr('href').split('page=')[1]
-	   
-	   users(page);
-    });
-
-	function users(page){
-		var cl = $("input[name='client']").val();
-		$.ajax({
-			url:"/pagination/pagination-data?page="+page,
-			data:{page:page, cl : cl},
-			success:function(data){
-				$('.table-data').html(data);
-			}
-		})
-	}
-
 	//search
 	$(document).on('keyup',function(e){
 		e.preventDefault();
 		let search_Clientuser = $('#search').val();
+		
 		var cl = $("input[name='client']").val();
+		
 
 		
 		$.ajax({
@@ -311,58 +294,16 @@ $(document).ready(function(){
             
             success:function(res)
             {
-
+				
                 $('.table-data').html(res);
 				if(res.status == 'nothing_found'){
-					$('.table-data').html('<span class="text-danger">'+'Nothing Found'+'</span>');
+					$('.table-data').html('<span class="text-danger">'+'Client User Not Found'+'</span>');
 				}
             }
         })
     });
-
-	// fetch_customer_data();
-	
-	
-	// function fetch_customer_data(query = '')
-    // {
-	// 	var cl = $("input[name='client']").val();
-		
-		
-    //     $.ajax({
-    //         url:"{{ route('search') }}",
-    //         method:'GET',
-    //         data:{query:query, cl : cl},
-    //         dataType:'json',
-    //         success:function(data)
-    //         {
-    //             $('tbody').html(data.table_data);
-    //             $('#pag').html(data.table_data);
-    //             $('#total_records').text(data.total_data);
-    //         }
-    //     })
-    // }
-
-	// $(document).on('keyup', '#search', function(){
-    //     var query = $(this).val();
-    //     fetch_customer_data(query);
-    // });
-//   $("#search").on("keyup", function() {
-//     $value = $(this).val();
-// 	$.ajax({
-// 		type:'get',
-// 		url:'{{URL::to('search')}}',
-// 		data:{'search':$value},
-
-// 		success:function(data){
-// 			console.log(data);
-// 			$('#content').html(data);
-// 		}
-// 	});
-//   });
 });
 </script>
-@stop
-=======
 <script>
     $(document).ready(function(){
         $('form input[type="text"]').prop("disabled", true);
@@ -376,5 +317,5 @@ $(document).ready(function(){
         // });
     });
 </script>
-@endsection
->>>>>>> 3490ad6697b760ffa8b9838fdb515faf829ee6af
+@stop
+

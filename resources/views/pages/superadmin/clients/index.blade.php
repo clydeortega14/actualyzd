@@ -66,7 +66,7 @@
                                             <td>{{ $client->name }}</td>
                                             <td>{{ $client->email }}</td>
                                             <td>{{ $client->postal_address }}</td>
-                                            <td>{{ $client->users->count() }}</td>
+                                            
                                             <td>{{ $client->contact_number }}</td>
                                             <td>{{ $client->number_of_employees }}</td>
                                             <td>
@@ -92,7 +92,7 @@
                                     @endforeach
                                 </tbody>
                             </table>  
-                            {{ $clients->links() }}
+                            
 
                         </div>
 	    			</div>

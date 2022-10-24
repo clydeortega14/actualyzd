@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Client;
+use App\User;
 use App\Package;
 use App\ClientSubscription;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class ClientsController extends Controller
 {
@@ -96,11 +98,29 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-       
+     
         $client = Client::findOrFail($id);
-        $packages = Package::has('services')->with(['services'])->get();
 
-        return view('pages.superadmin.clients.edit', compact('client', 'packages'));
+        if($client->is_active == 0){
+            return redirect()->back()->with('error', 'This Client is not Activated Yet!. Please Activate first before you go to your Informations.');
+        }else{
+            
+        
+            // $users = $client->users()->get();
+            $users = DB::table('users')
+            ->where('client_id', 1)
+            ->orderBy('id', 'desc')
+            
+            ->paginate(3);
+
+           
+            
+           
+            $packages = Package::has('services')->with(['services'])->get();
+            
+            return view('pages.superadmin.clients.edit', compact('client', 'packages','users'));
+        }
+        
     }
 
     /**
@@ -175,4 +195,24 @@ class ClientsController extends Controller
 
         return response()->json($client_users);
     }
+    public function searchUserclients(Request $request)
+    {
+       
+        $users = User::where('name', 'like', '%'.$request->search_Clientuser.'%')
+        ->where('client_id',$request->cl)
+        ->orderBy('id', 'desc')
+        ->paginate(4);
+
+        if($users->count() >=1)
+        {
+            return view('pages.superadmin.clients.pagination-userClient', compact('users'))->render();
+        }else{
+            return response()->json([
+                'status'=>'nothing_found'
+            ]);
+        }
+
+        
+    }
+   
 }
