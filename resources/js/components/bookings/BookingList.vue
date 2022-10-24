@@ -1,6 +1,10 @@
 <template>
 	<div>
 		<StatusNav @filter-by-status="filterStatus" />
+
+		<!-- Filter and Search Booking -->
+		<FilSearchComponent />
+
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -88,6 +92,7 @@
 	
 	import { mapGetters, mapActions } from 'vuex'
 	import BookingStatus from './BookingStatus.vue';
+	import FilSearchComponent from './FilSearchComponent.vue';
 	import StatusNav from './StatusNav.vue';
 	import DateTime from '../../mixins/datetime.js';
 	import DEFAULT_URL from '../../constants/url.js';
@@ -122,7 +127,8 @@
 		},
 		components: {
 			BookingStatus,
-			StatusNav
+			StatusNav,
+			FilSearchComponent
 		},
 		methods: {
 			...mapActions(["getAllBookings"]),
