@@ -79,6 +79,30 @@ Vue.component('client-lists', require('./components/service-utilization/ClientLi
 // Upload Avatar Component
 Vue.component('upload-avatar', require('./components/profile/UploadAvatar.vue').default);
 
+// FAQ
+Vue.component('faq-icon', require('./components/faq/icon.vue').default);
+
+// FAQ Modal
+Vue.component('faq-modal', require('./components/faq/help-modal.vue').default);
+
+// FAQ Search
+Vue.component('faq-search', require('./components/faq/faq-search.vue').default);
+
+// FAQ Lists
+Vue.component('faq-lists', require('./components/faq/faq-lists.vue').default);
+
+// FAQ Steps
+Vue.component('faq-steps', require('./components/faq/faq-steps.vue').default);
+
+// FAQ Setup Steps
+Vue.component('faq-setup-steps', require('./components/faq/setups/step-lists.vue').default);
+
+// FAQ Setup Add Step
+Vue.component('faq-setup-addstep', require('./components/faq/setups/add-step.vue').default);
+
+// FAQ Setup Buttons
+Vue.component('faq-setup-buttons', require('./components/faq/setups/buttons.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

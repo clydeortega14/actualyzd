@@ -92,6 +92,11 @@ class Booking extends Model
         return $this->hasMany(ChatMessage::class);
     }
 
+    public function getWholeDateAttribute()
+    {
+        return date('m/d/Y', strtotime($this->created_at));
+    }
+
     public function scopeWithClient($query)
     {
         $user = auth()->user();

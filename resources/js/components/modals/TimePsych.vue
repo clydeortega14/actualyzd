@@ -35,36 +35,11 @@
 							<!-- Hidden input for psychologist that will be pass in the request -->
 							<input type="hidden" name="psychologist" :value="getSelectedPsychologistId">
 
+							<!-- Time Lists Component -->
+							<TimeLists />
 
-
-							<div v-if="show_time_lists" class="mb-3">
-								<h5 class="card-title mb-3 border-bottom">Select Time</h5>
-								<div class="custom-control custom-radio mb-3 ml-3" v-for="(time, index) in timeLists" :key="index">
-									<input type="radio" class="custom-control-input" 
-										:id="`time-${time.time_list.id}`" 
-										:value="{ id: time.time_list.id, name: `${time.time_list.from} - ${time.time_list.to}`}" 
-										v-model="selected_time">
-									<label class="custom-control-label" :for="`time-${time.time_list.id}`">{{ `${time.time_list.from} - ${time.time_list.to}` }}</label>
-								</div>
-							</div>
-
-							<div v-if="show_psychologists" class="mb-3">
-
-								<h5 class="card-title mb-3 border-bottom">Select Psychologist</h5>
-
-								<div class="custom-control custom-radio mb-3 ml-3" v-for="(psychologist, index) in allPsychologists">
-
-									
-
-									<input type="radio" class="custom-control-input" 
-										:id="`psychologist-${psychologist.id}`"
-										:value="{ id: psychologist.id, name: psychologist.name }"
-										v-model="selected_psychologist">
-
-									<label class="custom-control-label" :for="`psychologist-${psychologist.id}`">{{ psychologist.name }}</label>
-								</div>
-
-							</div>
+							<!-- Psychologist Component -->
+							<Psychologists />
 
 						</div>
 					</div>
@@ -85,8 +60,10 @@
 
 <script>
 	
+	import TimeLists from '../bookings/Timelists.vue';
+	import Psychologists from '../bookings/Psychologists.vue';
+	import ReviewBooking from '../bookings/ReviewBooking.vue';
 	import { mapGetters, mapActions } from 'vuex';
-	import ReviewBooking from '../bookings/ReviewBooking.vue'
 
 	export default {
 		name: "TimePsych",
@@ -101,6 +78,19 @@
 				disabledSubmitBtn: true
 			}
 		},
+		mounted(){
+
+			EventBus.$on('select-time', data => {
+
+				this.disabledSubmitBtn = !_.isNil(this.getSelectedPsychologistId) ? false : true;
+			})
+
+
+			EventBus.$on('select-psychologist', data => {
+
+				this.disabledSubmitBtn = !_.isNil(data) ? false : true;	
+			})
+		},
 		props: {
 			timeLists: Array,
 			selectedDate: String,
@@ -111,7 +101,8 @@
 			participants: Array
 		},
 		components: {
-
+			TimeLists,
+			Psychologists,
 			ReviewBooking
 		},
 		computed: {
@@ -145,46 +136,6 @@
 
 				this.disabledSubmitBtn = true;
 
-			}
-		},
-		watch: {
-
-			selected_time(value){
-
-				if(!_.isNil(value)){
-
-					this.show_psychologists = true;
-
-					if(this.selected_psychologist !== null && this.show_psychologists){
-
-						this.selected_psychologist = null;
-						this.$store.commit('setSelectedPsychologistId', null);
-						this.$store.commit('setSelectedPsychologist', null);
-
-					}
-
-					this.getPsychologists({
-						date: this.selectedDate,
-						time_id: value.id
-					});
-
-					this.$store.commit('setSelectedTimeId', value.id);
-					this.$store.commit('setSelectedTime', value.name);
-				}
-
-				
-			},
-			selected_psychologist(value){
-				if(!_.isNil(value)){
-					this.$store.commit('setSelectedPsychologistId', value.id);
-					this.$store.commit('setSelectedPsychologist', value.name);
-					this.disabledSubmitBtn = false;
-
-				}else{
-
-					this.disabledSubmitBtn = true
-				}
-				
 			}
 		}
 	}

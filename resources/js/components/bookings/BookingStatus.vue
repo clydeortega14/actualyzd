@@ -51,8 +51,6 @@
 		},
 		created(){
 			this.getBookingStatuses()
-
-			console.log(this.cancelled);
 		},
 		data(){
 			return {
@@ -94,7 +92,7 @@
 							location.reload();
 						}
 					}).catch(error => {
-						console.log(error)
+						// console.log(error)
 					})
 				}
 			},

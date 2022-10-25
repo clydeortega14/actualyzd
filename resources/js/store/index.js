@@ -12,6 +12,7 @@ import chat_messages from './modules/chat-message.js';
 import video_call from './modules/video-call.js';
 import reasons_lists from './modules/reasons-lists.js';
 import user from './modules/user.js';
+import faq from './modules/faq.js';
 
 Vue.use(Vuex)
 
@@ -29,6 +30,7 @@ export default new Vuex.Store({
 		chat_messages,
 		video_call,
 		reasons_lists,
-		user
+		user,
+		faq
 	}
 })

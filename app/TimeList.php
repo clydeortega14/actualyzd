@@ -12,7 +12,7 @@ class TimeList extends Model
 
     public function schedules(){
 
-        return $this->hasMany(PsychologistSchedule::class, 'time');
+        return $this->hasMany(PsychologistSchedule::class, 'time_id');
     }
     public function parseTimeFrom()
     {

@@ -5,7 +5,7 @@
 
 @section('content')
 
-	<div class="container-fluid">
+	<div class="container-fluid" id="app">
 	    <!-- Clients widgets -->
 	    <div class="row clearfix mb-3">
 	    	<div class="col-12">
@@ -17,6 +17,18 @@
             <div class="col-md-12">
                 @include('alerts.message')
 	    		<div class="card mb-3">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            Client Lists
+                            
+                            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#new-client">
+                                <i class="fa fa-plus"></i>
+                                <span>Create New Client</span>
+                            </a>
+
+                            @include('pages.superadmin.clients.modals.client-form-modal')
+                        </div>
+                    </div>
                 <div class="card-header py-2">
 						<div class="d-sm-flex justify-content-between p-3">
 							<div>Client Lists</div>
@@ -33,19 +45,19 @@
 					</div>
                   
 	    			<div class="card-body">
-                        
+                    <!-- <clientlist-user> </clientlist-user> -->
 	    				<div class="table-responsive">
+                       
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>No. of employees</th>
+                                        <th>Address</th>
                                         <th>Contact</th>
+                                        <th>No. of employees</th>
                                         <th>Status</th>
-                                        <th>expires_at</th>
-                                        <th>Actions</th>
+                                        <th style="text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,26 +65,18 @@
                                         <tr>
                                             <td>{{ $client->name }}</td>
                                             <td>{{ $client->email }}</td>
-                                            <td>{{ $client->users->count() }}</td>
+                                            <td>{{ $client->postal_address }}</td>
+                                            
                                             <td>{{ $client->contact_number }}</td>
+                                            <td>{{ $client->number_of_employees }}</td>
                                             <td>
                                                 @php
                                                     $active = $client->is_active;
                                                 @endphp
                                                 <span class="label {{ $active ? 'badge badge-success' : 'badge badge-danger' }}">{{ $active ? 'Active' : 'Inactive' }}</span>
                                             </td>
-                                            <td>
-                                                @if(!is_null($client->subscription))
-                                                <span class="badge badge-secondary">{{ $client->subscription->wholeDate() }}</span>
-                                                @else
-                                                    <span>N/A</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('client.users.index', $client->id) }}" class="btn btn-info btn-sm">
-                                                    <i class="fa fa-users"></i>
-                                                </a> 
-                                                @if(auth()->user()->hasRole('superadmin'))|
+                                            <td align="right">
+                                                @if(auth()->user()->hasRole('superadmin'))
                                                     <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
                                                         <i class="fa fa-edit"></i>
                                                     </a> |
@@ -87,7 +91,9 @@
                                         
                                     @endforeach
                                 </tbody>
-                            </table>
+                            </table>  
+                            
+
                         </div>
 	    			</div>
 	    		</div>

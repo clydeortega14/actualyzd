@@ -9,6 +9,6 @@ export default {
 		wholeTime(time)
 		{
 			return moment(time, "HH:mm:ss").format('LT');
-		},
+		}
 	}
 }

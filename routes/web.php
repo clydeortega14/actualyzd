@@ -47,7 +47,10 @@ Route::middleware('auth')->group(function(){
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
 	// Client Users Route
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');
-
+	//Client User Search
+	Route::get('/search-userClient', 'ClientsController@searchUserclients')->name('search.UserClient');
+	
+	
 	Route::get('clients-with-users', 'ClientsController@clientsWithUsers');
 
 	Route::get('session-types', 'SessionTypeController@allSessions');
@@ -128,6 +131,32 @@ Route::middleware('auth')->group(function(){
 		Route::post('package/service', 'PackageController@storeService')->name('package.service');
 	});
 
+	// FAQ's
+	Route::prefix('FAQs')->group(function(){
+
+		// Lists of all FAQ's
+		Route::get('/', 'FAQController@index')->name('faqs.index');
+
+		// Create FAQ
+		Route::get('/create', 'FAQController@create')->name('faqs.create');
+
+		// Store FAQ
+		Route::post('store/faq', 'FAQController@store')->name('faqs.store');
+
+		// Edit FAQ
+		Route::get('edit/{faq}', 'FAQController@edit')->name('faqs.edit');
+
+		// Get All Faq AJAX Request
+		Route::get('get/faqs', 'FAQController@getAllFaqs');
+
+		// Get FAQ Steps AJAX Request
+		Route::get('get/faq/steps/{faq}', 'FAQController@getFaqSteps');
+
+		// Search FAQ
+		Route::get('search/faq', 'FAQController@search');
+		
+	});
+
 	// Schedules
 	Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
@@ -177,8 +206,11 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('member')->group(function(){
 
 		Route::get('/', 'MemberController@home')->name('member.home');
+
 		Route::get('lists', 'MemberController@index')->name('member.lists');
+
 		Route::post('member.store', 'MemberController@store')->name('member.store');
+
 		Route::put('update/{user}', 'MemberController@update')->name('member.update');
 	});
 
@@ -186,16 +218,23 @@ Route::middleware('auth')->group(function(){
 	Route::prefix('client')->group(function() {
 
 		Route::put('user/update-status/{user}', 'ClientUserController@updateStatus')->name('client.user.update.status');
+
 		Route::get('user/delete-data/{user}', 'ClientUserController@deleteData')->name('client.user.delete.info');
+
 		Route::get('user/create/{client}', 'ClientUserController@create')->name('client.user.create');
 
 		Route::get('users/{client}', 'ClientUserController@index')->name('client.users.index');
+
+		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
+
 		Route::post('users/add/clients', 'ClientUserController@addClients')->name('add.client');
 		Route::post('users/update/', 'ClientUserController@updateClients')->name('update.client');
 		Route::post('user/store', 'ClientUserController@store')->name('client.user.store');
 		Route::post('user/store', 'ClientUserController@store_employee')->name('client.user_employee.store');
 		Route::get('user/edit/{id}', 'ClientUserController@edit');
+
 		Route::post('user/update/{id}', 'ClientUserController@update')->name('client.user.update');
+
 		Route::delete('user/delete/{id}', 'ClientUserController@destroy');
 	});
 

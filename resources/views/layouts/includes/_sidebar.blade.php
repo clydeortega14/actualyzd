@@ -15,7 +15,7 @@
         @else
             {{-- <div class="d-flex justify-content-center align-items-center"> --}}
                 <a href="{{ route('user.profile', auth()->user()->id) }}">
-                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" class="mt-3 img-fluid rounded-circke mx-auto d-block ac-avatar">
+                    <img src="{{ file_exists(public_path('storage/'.auth()->user()->avatar)) ? asset('storage/'.auth()->user()->avatar) : '/images/profile.png' }}" class="mt-3 rounded-circle ac-avatar">
                 </a>
             {{-- </div> --}}
         @endif
@@ -83,11 +83,11 @@
                 </li>
             @endif
 
-            @if($user->hasRole(['admin', 'superadmin']))
-                <li class="{{ Route::is('member.lists') ? 'active' : '' }}">
-                    <a href="{{ route('member.lists') }}">
+            @if($user->hasRole(['admin']))
+                <li class="{{ Route::has('clients.*') ? 'active' : '' }}">
+                    <a href="{{ route('clients.edit', auth()->user()->client_id) }}">
                         <i class="fa fa-address-card"></i>
-                        <span class="ml-3">Members</span>
+                        <span class="ml-3">Company Profile</span>
                     </a>
                 </li>
             @endif
@@ -151,6 +151,14 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+
+
+                <li class="{{ \Request::is('FAQs/*') ? 'active' : '' }}">
+                    <a href="{{ route('faqs.index') }}">
+                        <i class="fa fa-address-card"></i>
+                        <span class="ml-3">FAQ's</span>
+                    </a>
                 </li>
             @endif
 

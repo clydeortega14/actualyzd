@@ -34,6 +34,8 @@ trait BookingTrait {
             $bookings->whereNotNull('counselee');
         }
 
+
+
         // query bookings according to auth user role
         $this->queryByRole($bookings);
         
@@ -82,9 +84,10 @@ trait BookingTrait {
 
         $schedules_id = $this->bookingSchedulesQuery($bookings)->pluck('id');
 
-        if($status == 1){
+        if($status == null){
 
-            $this->withLatestBooking($bookings, $status);
+            $query->whereIn('status', [1, 5]);
+            // $this->withLatestBooking($bookings, $status);
 
         }else{
             
@@ -170,7 +173,8 @@ trait BookingTrait {
             
             if(request('status') == 1){
 
-                $this->withLatestBooking($query, 1);
+                $query->whereIn('status', [1, 5]);
+                // $this->withLatestBooking($query, 1);
 
             }else{
 
@@ -179,8 +183,13 @@ trait BookingTrait {
             }
             
         }else{
+
             // get upcoming sessions
-            $this->withLatestBooking($query, 1);
+            $query->whereIn('status', [1, 5]);
+                // ->whereIn('schedule', $this->bookingSchedulesQuery()->pluck('id'));
+
+
+            // $this->withLatestBooking($query, 1);
         }
     }
 
@@ -216,14 +225,14 @@ trait BookingTrait {
 
     public function bookingStatuses()
     {
-        $statuses = BookingStatus::get(['id', 'name', 'class']);
+        $statuses = BookingStatus::whereIn('id', [1,2,3,4])->get(['id', 'name', 'class']);
 
         $by_status_with_total = [];
 
         foreach($statuses as $status){
             $by_status_with_total[] = [
                 'id' => $status->id,
-                'name' => $status->name,
+                'name' => $status->name == 'Booked' ? 'Bookings' : $status->name,
                 'total' => $this->countByStatus($status->id),
                 'class' => $status->class
             ];

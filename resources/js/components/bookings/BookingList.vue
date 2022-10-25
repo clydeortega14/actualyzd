@@ -1,6 +1,10 @@
 <template>
 	<div>
 		<StatusNav @filter-by-status="filterStatus" />
+
+		<!-- Filter and Search Booking -->
+		<FilSearchComponent />
+
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -14,7 +18,6 @@
 						<th>Psychologist</th>
 						<th>Status</th>
 						<th>Link to session</th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,16 +63,24 @@
 							/>
 						</td>
 						<td>
-							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="booking.to_status.id === 1">
+							<a :href="jitsiUrl+booking.link_to_session" target="_blank" v-if="currentTime(booking) === 'show_link'">
 								<i class="fa fa-link"></i>
 							</a>
-							<span v-else class="badge badge-secondary">Link not available</span>
+
+							<a :href="jitsiUrl+booking.link_to_session" v-else-if="currentTime(booking) === 'upcoming'" target="_blank">
+								<i class="fa fa-link"></i>
+								<span class="ml-2">Link To Session</span>
+							</a>
+
+							<span v-else>
+								<small>Link not available</small>
+							</span>
 						</td>
-						<td>
+						<!-- <td>
 							<a :href="`${baseUrl}/bookings/session/${booking.room_id}`" target="_blank" data-toggle="tooltip" title="view session">
 								<i class="fa fa-eye"></i>
 							</a>
-						</td>
+						</td> -->
 					</tr>
 				</tbody>
 			</table>
@@ -81,9 +92,11 @@
 	
 	import { mapGetters, mapActions } from 'vuex'
 	import BookingStatus from './BookingStatus.vue';
+	import FilSearchComponent from './FilSearchComponent.vue';
 	import StatusNav from './StatusNav.vue';
 	import DateTime from '../../mixins/datetime.js';
 	import DEFAULT_URL from '../../constants/url.js';
+	import moment from 'moment';
 
 	export default {
 		name: "BookingList",
@@ -91,6 +104,13 @@
 		props: {
 			role: String,
 			userAvatar: String
+		},
+		data(){
+
+			return {
+
+				show_link: false
+			}
 		},
 		created(){
 			this.getAllBookings();
@@ -102,12 +122,13 @@
 				return window.location.origin;
 			},
 			jitsiUrl(){
-				return process.env.MIX_JITSI_URL + '3123sda';
+				return process.env.MIX_JITSI_URL;
 			}
 		},
 		components: {
 			BookingStatus,
-			StatusNav
+			StatusNav,
+			FilSearchComponent
 		},
 		methods: {
 			...mapActions(["getAllBookings"]),
@@ -121,6 +142,45 @@
 			oldReportLink(booking_id){
 
 				return `${this.baseUrl}/progress-reports/create-for-booking/${booking_id}`
+			},
+			currentTime(booking){
+
+				let mins_before = moment(booking.to_schedule.start+' '+booking.time.from).subtract(30, 'minutes').format('HH:mm');
+				let format = 'hh:mm:ss';
+
+				let current_time = moment();
+				let time_from = moment(booking.to_schedule.start+' '+booking.time.from).format(format)
+				let time_to = moment(booking.to_schedule.start+' '+booking.time.to).format(format)
+
+
+				let current_date = moment().format('YYYY-MM-DD');
+				let booking_date = booking.to_schedule.start;
+
+				if(booking.to_status.id === 1 && current_date < booking_date){
+
+					return 'upcoming';
+				}
+
+				if(booking.to_status !== 1 && current_date > booking_date){
+
+					return 'passed';
+				}
+
+				if(booking.to_status.id === 1 && current_date === booking_date){
+
+					if(current_time.isBetween(time_from, time_to)){
+
+						return 'show_link';
+
+					}else if(current_time.toString() > time_from.toString() || current_time.toString() > time_to.toString()){
+
+						return 'passed';
+
+					}else{
+
+						return 'upcoming';
+					}
+				}
 			}
 		}
 	}
