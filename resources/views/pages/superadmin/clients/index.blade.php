@@ -46,8 +46,22 @@
                   
 	    			<div class="card-body">
                     <!-- <clientlist-user> </clientlist-user> -->
-	    				<div class="table-responsive">
-                       
+                    <div class="col-md" style="display: flex;">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Search Client " />
+                    <select class="form-select " id="status" aria-label="Default select example"  style="background-color: #7386d5;color: white;text-align: center;margin-left: 10px;">
+                        <option selected >Choose Status</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                        
+                    </select>
+                        
+                        
+                    </div>
+                    
+                    <br>
+                    
+	    				<div class="table-data">
+                        
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -90,8 +104,10 @@
                                         </tr>
                                         
                                     @endforeach
+                                   
                                 </tbody>
                             </table>  
+                            {!! $clients->render() !!} 
                             
 
                         </div>
@@ -103,3 +119,53 @@
 	</div>
 
 @endsection
+
+@section('js_scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	
+$(document).ready(function(){
+	//search
+	$(document).on('keyup',function(e){
+		e.preventDefault();
+		let search_Client = $('#search').val();
+		$.ajax({
+            url:"{{ route('search.Client') }}",
+            method:'GET',
+            data:{search_Client:search_Client},
+            
+            success:function(res)
+            {
+				
+                $('.table-data').html(res);
+				if(res.status == 'nothing_found'){
+					$('.table-data').html('<span class="text-danger">'+'Client User Not Found'+'</span>');
+				}
+            }
+        })
+    });
+    //status
+	$(document).on('change',function(e){
+		e.preventDefault();
+		let status = $('#status').val();
+       
+		$.ajax({
+            url:"{{ route('filter.status.Client') }}",
+            method:'GET',
+            data:{status:status},
+            
+            success:function(res)
+            {
+				
+                $('.table-data').html(res);
+				if(res.status == 'nothing_found'){
+					$('.table-data').html('<span class="text-danger">'+'Client User Not Found'+'</span>');
+				}
+            }
+        })
+    });
+});
+</script>
+
+@stop
+

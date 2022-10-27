@@ -20,7 +20,7 @@ class ClientsController extends Controller
     public function index()
     {
         
-        $clients = Client::get();
+        $clients = Client::paginate(4);
        
 
         return view('pages.superadmin.clients.index', compact('clients'));
@@ -108,7 +108,7 @@ class ClientsController extends Controller
         
             // $users = $client->users()->get();
             $users = DB::table('users')
-            ->where('client_id', 1)
+            ->where('client_id', $client->id)
             ->orderBy('id', 'desc')
             
             ->paginate(3);
@@ -214,5 +214,44 @@ class ClientsController extends Controller
 
         
     }
+    public function searchclients(Request $request)
+    {
+        
+       
+        $clients = Client::where('name', 'like', '%'.$request->search_Client.'%')
+        ->orderBy('id', 'desc')
+        ->paginate(4);
+        
+       
+
+        if($clients->count() >=1)
+        {
+            return view('pages.superadmin.clients.pagination-Client', compact('clients'))->render();
+        }else{
+            return response()->json([
+                'status'=>'nothing_found'
+            ]);
+        }
+
+        
+    }
+    public function filterStatusclients(Request $request)
+    {
+       
+        $clients = Client::where('is_active', $request->status)
+        ->orderBy('id', 'desc')
+        ->paginate(4);
+       
+
+        if($clients->count() >=1)
+        {
+            return view('pages.superadmin.clients.pagination-Client', compact('clients'))->render();
+        }else{
+            return response()->json([
+                'status'=>'nothing_found'
+            ]);
+        }
+    }
+   
    
 }

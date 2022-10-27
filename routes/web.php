@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function(){
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');
 	//Client User Search
 	Route::get('/search-userClient', 'ClientsController@searchUserclients')->name('search.UserClient');
+	Route::get('/search.Client', 'ClientsController@searchclients')->name('search.Client');
+	Route::get('/filter-status.Client', 'ClientsController@filterStatusclients')->name('filter.status.Client');
 	
 	
 	Route::get('clients-with-users', 'ClientsController@clientsWithUsers');
