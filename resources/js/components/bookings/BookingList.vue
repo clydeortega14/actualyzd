@@ -1,3 +1,11 @@
+<style scoped>
+	
+	.highlighted {
+
+		background-color: yellow;
+	}
+</style>
+
 <template>
 	<div>
 		<StatusNav @filter-by-status="filterStatus" />

@@ -167,8 +167,10 @@
 
                   $schedules_time_lists.empty();
 
+                    console.log(data)
                   // iterate time_list to be displayed
                   data.time_lists.forEach((time, index) => {
+
 
                     // declared local variables for checked and disabled
                     let checked;
@@ -195,7 +197,7 @@
 
 
                     $schedules_time_lists.append(schedulesTimeListTemp(time, checked, disabled));
-                  })
+                  });
             }
 
             function readOnlyCheckbox()
@@ -223,7 +225,7 @@
                         <label for="time${time.id}" class="form-check-label"></label>
                       </div>
                     </td>
-                    <td align="right">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</td>
+                    <td align="right">${ time.from } - ${ time.to }</td>
                   </td>
                 `
             }
@@ -241,7 +243,7 @@
                 return `
                   <tr>
                       <td style="width: 30%;">
-                        ${ date_parser.convertTime(schedule.time_list.from) } - ${ date_parser.convertTime(schedule.time_list.to) }
+                        ${ schedule.time_list.from } - ${ schedule.time_list.to }
                       </td>
                       <td style="width: 10%;">
                         <span class="badge ${schedule.is_booked ? 'badge-primary' : 'badge-success'}">${schedule.is_booked ? schedule.booking.to_status.name : 'Available'}</span>

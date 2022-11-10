@@ -145,7 +145,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{{ route('time-lists.index') }}">
                                 <i class="fa fa-fw fa-clock"></i>
                                 <span class="ml-3">Time lists</span>
                             </a>

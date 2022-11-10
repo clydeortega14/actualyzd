@@ -61,7 +61,7 @@
 									{{-- First Timer / Repeater --}}
 									<li class="mb-3">
 										
-										<h3 class="text-primary">Are you a first timer or a repeater to this session?</h3>
+										<h3 class="text-primary">Is this your first time to book a session?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
@@ -78,7 +78,7 @@
 
 									{{-- Self Harm  --}}
 									<li class="mb-3">
-										<h3 class="text-primary">I have plans to harm myself?</h3>
+										<h3 class="text-primary">Have you experienced any plans of self harm?</h3>
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
 												<input type="radio" class="custom-control-input" name="self_harm" value="1" id="1" :checked="{{ session()->has('assessment.self_harm') && session('assessment.self_harm') == 1 ? '1' : '0' }}">
@@ -96,7 +96,7 @@
 									{{-- Harm Other People --}}
 									<li class="mb-3">
 										
-										<h3 class="text-primary">I have plans to harm other people?</h3>
+										<h3 class="text-primary">Do you have plans of harming others?</h3>
 										
 										<div class="ml-5">
 											<div class="custom-control custom-radio mb-2">
