@@ -306,7 +306,7 @@ $(document).ready(function(){
 </script>
 <script>
     $(document).ready(function(){
-        $('form input[type="text"]').prop("disabled", true);
+        // $('form input[type="text"]').prop("disabled", true);
         // $(".agree").click(function(){
         //     if($(this).prop("checked") == true){
         //         $('form input[type="submit"]').prop("disabled", false);
