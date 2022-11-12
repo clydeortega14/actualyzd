@@ -101,7 +101,7 @@
 										
 											<div class="col-md" style="display: flex;">
 											
-											<input type="text" name="search" id="search" class="form-control" placeholder="Search Client User Data" />
+												<input type="text" name="search" id="search" class="form-control" placeholder="Search Client User Data" />
 													
 													<!-- <select class="form-select " aria-label="Default select example" >
 														<option selected>Choose Status</option>

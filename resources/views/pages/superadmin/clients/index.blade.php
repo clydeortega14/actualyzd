@@ -19,18 +19,27 @@
 	    		<div class="card mb-3">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            Client Lists
-                            
-                            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#new-client">
+                            <!-- Client Lists -->
+                            <div>Client Lists</div>
+                            <!-- <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#new-client">
                                 <i class="fa fa-plus"></i>
                                 <span>Create New Client</span>
-                            </a>
+                            </a> -->
+                            <div>
+								<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#create_client">
+									<i class="fa fa-plus"></i>
+									<span>Create Client</span>
+								</a>
+								
+								@include('pages.superadmin.clients.users.modals.create-client')
+								@include('pages.superadmin.users.modals.import-users')
+							</div>
 
-                            @include('pages.superadmin.clients.modals.client-form-modal')
+                             {{-- @include('pages.superadmin.clients.modals.client-form-modal')  --}}
                         </div>
                     </div>
-                <div class="card-header py-2">
-						<div class="d-sm-flex justify-content-between p-3">
+                    {{--<div class="card-header py-2">
+						 <div class="d-sm-flex justify-content-between p-3">
 							<div>Client Lists</div>
 							<div>
 								<a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#create_client">
@@ -41,8 +50,8 @@
 								@include('pages.superadmin.clients.users.modals.create-client')
 								@include('pages.superadmin.users.modals.import-users')
 							</div>
-						</div>
-					</div>
+						</div> 
+					</div>--}}
                   
 	    			<div class="card-body">
                     <!-- <clientlist-user> </clientlist-user> -->
