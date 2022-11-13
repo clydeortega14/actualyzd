@@ -14,7 +14,7 @@ class TimeListsController extends Controller
      */
     public function index()
     {
-        $timelists = TimeList::get();
+        $timelists = TimeList::orderBy('from', 'asc')->get();
         return view('pages.superadmin.timelists.index', compact('timelists'));
     }
 

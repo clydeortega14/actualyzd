@@ -66,6 +66,8 @@
 			},
 			update(){
 
+				// console.log(this.status_option)
+
 				let payload = {
 					id: this.bookingId,
 					status: this.status_option
@@ -84,15 +86,15 @@
 					window.location.href = `${window.location.origin}/bookings/reschedule/${this.bookingId}`;
 
 				}else{
-
 					
 					this.updateStatus(payload).then(res => {
+
 						if(res.data.success){
 							Swal.fire('Success!', res.data.message, 'success');
 							location.reload();
 						}
 					}).catch(error => {
-						// console.log(error)
+						Swal.fire('Oops!', error.message, 'error');
 					})
 				}
 			},
