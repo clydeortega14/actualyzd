@@ -138,7 +138,7 @@
                 $('#create-schedule').modal('show');
                 $('.start-date').val(arg.startStr);
                 $('input[name="end_date"]').val(arg.endStr);
-                $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start))
+                $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start) + ' Schedules')
                 $('#psychologist-available').empty();
                 let dom_list = $('.time-lists');
 
@@ -152,13 +152,11 @@
                 }).done(data => {
 
                       handleTimeList(data);
-                      handleSchedulesTable(data);
+                      // handleSchedulesTable(data);
                 });
               }
                 
             }
-
-
 
             function handleTimeList(data)
             {
@@ -219,13 +217,19 @@
             {
                 return `
                   <tr>
-                    <td>
+                    <td with="30%">
                       <div class="form-check">
                         <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} class="form-check-input check-time" />
-                        <label for="time${time.id}" class="form-check-label"></label>
+                        <label for="time${time.id}" class="form-check-label">${ time.from } - ${ time.to }</label>
                       </div>
                     </td>
-                    <td align="right">${ time.from } - ${ time.to }</td>
+                    <td>${
+                      time.schedules.length > 0 && time.schedules[0].booking !== null ? time.schedules[0].booking.session_type.name : ''
+                    }</td>
+                    <td>
+                      <span class="${time.schedules.length > 0 && time.schedules[0].booking !== null ? time.schedules[0].booking.to_status.class : '' }">${ time.schedules.length > 0 && time.schedules[0].booking ? time.schedules[0].booking.to_status.name  : '' }</span>
+                    </td>
+                    <td>${ time.schedules.length > 0 && time.schedules[0].booking !== null &&  time.schedules[0].booking.counselee != null ?  time.schedules[0].booking.to_counselee.name : '' }</td>
                   </td>
                 `
             }

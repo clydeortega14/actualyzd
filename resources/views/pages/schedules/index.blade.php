@@ -60,7 +60,7 @@
 			}
 
 			custom_calendar.render(calendarOptions);
-		})
+		});
 
 		function getSchedules()
 		{
@@ -97,6 +97,8 @@
         			start: arg.startStr
         		}
         	}).done(data => {
+
+        		console.log(data)
         		
             	handleTimeList(data);
             	// handleSchedulesTable(data);
@@ -131,12 +133,15 @@
 		function schedulesTimeListTemp(time, checked)
 		{
 		    return `
-		    <div class="col-sm-3">
-		      <div class="form-group">
-		        <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} />
-		        <label for="time${time.id}">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</label>
-		      </div>
-		    </div>
+		    	<tr>
+		    		<td style="with: 10%;">
+		    			<input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} />
+		    		</td>
+		    		<td width="30%">${ date_parser.convertTime(time.from) } - ${ date_parser.convertTime(time.to) }</td>
+		    		<td>test</td>
+		    		<td></td>
+		    		<td></td>
+		    	</tr>
 		    `
 		}
 		function counselingTimeListTemp(time)

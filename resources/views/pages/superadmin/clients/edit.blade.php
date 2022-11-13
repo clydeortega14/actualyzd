@@ -217,8 +217,8 @@
 																		{{ $package->name.' - '.$package->formattedPrice().' Pesos for '.$package->no_of_months.' Months' }}
 																	</div>
 																	<div>
-																		<label>Expires At: </label> 
-																		<b>{{ $client->subscription->wholeDate() }}</b>
+																		<label>Start: <b>{{ date('F j, Y', strtotime($client->subscription->created_at)) }}</b></label> <br />
+																		<label>Expires At: <b>{{ $client->subscription->wholeDate() }}</b></label> 
 																	</div>
 																</div>
 															</div>
