@@ -6,7 +6,7 @@
                 <hr>
             </div>
 
-            <form action="{{ route('psychologist.store.schedule') }}" method="POST" id="schedule-form">
+            <form action="{{ route('psychologist.store.schedule') }}" method="POST">
                 @csrf
                 <div class="modal-body">
 
@@ -15,13 +15,24 @@
 
 
                     <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="border-right: 1px solid gray;">
+                        <div class="col-12">
                             <h3>Time Lists</h3>
                             <table class="table">
-                                <tbody id="schedules-time-lists"></tbody>
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Time</th>
+                                        <th width="20%">Session Type</th>
+                                        <th width="20%">Status</th>
+                                        <th width="20%">Participant/s</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="schedules-time-lists">
+                                    
+                                </tbody>
                             </table>
                         </div>
-                        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+
+                        {{-- <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                             <div class="table-responsive">
                                 <h3>Schedule Details</h3>
                                 <table class="table table-bordered table-hover">
@@ -37,7 +48,7 @@
                                     <tbody id="schedules-table"></tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">

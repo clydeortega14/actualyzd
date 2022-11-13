@@ -91,25 +91,29 @@ class SchedulesController extends Controller
         $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
             ->whereDate('start', $request->start)
             ->with([
-                'timeList', 
+                'timeList' => function($query){
+                    $query->orderBy('from', 'asc');
+                }, 
                 'psych', 
                 'booking.toStatus', 
                 'booking.sessionType', 
                 'booking.toCounselee'
-            ])->get();
+            ])
+
+            ->get();
 
         $time_lists = TimeList::with(['schedules' => function($query) use ($request){
 
             $query->where('psychologist', auth()->user()->id)
-            ->where('start', $request->date)
+            ->where('start', $request->start)
             ->where('is_booked', false);
 
-        }])
+        }, 'schedules.psych', 'schedules.booking.sessionType', 'schedules.booking.toStatus', 'schedules.booking.toCounselee'])
         ->orderBy('from', 'asc')
         ->get();
 
         return response()->json([
-            'schedules' => $schedules, 
+            'schedules' => $schedules,
             'time_lists' => $time_lists,
         ]);
     }
