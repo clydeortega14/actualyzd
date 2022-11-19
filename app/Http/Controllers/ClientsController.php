@@ -241,16 +241,10 @@ class ClientsController extends Controller
         $clients = Client::where('is_active', $request->status)
         ->orderBy('id', 'desc')
         ->paginate(4);
-       
+        
+        return view('pages.superadmin.clients.pagination-Client', compact('clients'))->render();
 
-        if($clients->count() >=1)
-        {
-            return view('pages.superadmin.clients.pagination-Client', compact('clients'))->render();
-        }else{
-            return response()->json([
-                'status'=>'nothing_found'
-            ]);
-        }
+       
     }
    
    

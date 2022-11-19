@@ -101,7 +101,7 @@
 										
 											<div class="col-md" style="display: flex;">
 											
-											<input type="text" name="search" id="search" class="form-control" placeholder="Search Client User Data" />
+												<input type="text" name="search" id="search" class="form-control" placeholder="Search Client User Data" />
 													
 													<!-- <select class="form-select " aria-label="Default select example" >
 														<option selected>Choose Status</option>
@@ -306,7 +306,7 @@ $(document).ready(function(){
 </script>
 <script>
     $(document).ready(function(){
-        $('form input[type="text"]').prop("disabled", true);
+        // $('form input[type="text"]').prop("disabled", true);
         // $(".agree").click(function(){
         //     if($(this).prop("checked") == true){
         //         $('form input[type="submit"]').prop("disabled", false);
