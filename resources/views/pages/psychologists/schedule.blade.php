@@ -165,7 +165,6 @@
 
                   $schedules_time_lists.empty();
 
-                    console.log(data)
                   // iterate time_list to be displayed
                   data.time_lists.forEach((time, index) => {
 
@@ -200,7 +199,7 @@
 
             function readOnlyCheckbox()
             {
-              return false
+              return false;
             }
 
             function handleSchedulesTable(data)
@@ -215,6 +214,7 @@
 
             function schedulesTimeListTemp(time, checked, disabled)
             {
+                $(document).find('.check-time').attr('readonly', true);
                 return `
                   <tr>
                     <td with="30%">
