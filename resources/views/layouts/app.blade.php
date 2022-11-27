@@ -44,8 +44,8 @@
             @endphp
             <nav class="navbar navbar-expand-md shadow-sm">
                 <a class="navbar-brand pr-4 pl-4" href="{{ auth()->user() ? url('/home') : url('/') }}">
-                    {{-- {{ config('app.name', 'Laravel') }} --}}
-                    <img src="{{ asset('/images/logo-01.png') }}" class="mx-auto d-block" width="60" height="60">
+                    {{ config('app.name', 'Laravel') }}
+                    {{-- <img src="{{ asset('/images/logo-01.png') }}" class="mx-auto d-block" width="60" height="60"> --}}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

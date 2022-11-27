@@ -9,7 +9,6 @@
             <div id="container">
                 <div id="name">
                     {{ auth()->user()->name[0] }}
-
                 </div>
             </div>
         @else

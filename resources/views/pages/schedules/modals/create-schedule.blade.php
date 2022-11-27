@@ -15,26 +15,13 @@
 
 
                     <div class="row">
-                        <div class="col-12">
-                            <h3>Time Lists</h3>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th width="30%">Time</th>
-                                        <th width="20%">Session Type</th>
-                                        <th width="20%">Status</th>
-                                        <th width="20%">Participant/s</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="schedules-time-lists">
-                                    
-                                </tbody>
-                            </table>
+                        <div class="col-md-3">
+                            <h3 class="mb-3">Time lists</h3>
+                            <div id="schedules-time-lists"></div>
                         </div>
-
-                        {{-- <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="col-md-9">
                             <div class="table-responsive">
-                                <h3>Schedule Details</h3>
+                                <h3 class="mb-3">Schedule Details</h3>
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -48,7 +35,7 @@
                                     <tbody id="schedules-table"></tbody>
                                 </table>
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

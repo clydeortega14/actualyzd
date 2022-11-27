@@ -46,19 +46,19 @@ class SchedulesController extends Controller
     {
         $dates = $this->betweenDates($request->start_date, $request->end_date);
 
-        $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->pluck('time_id')->toArray();
+        // $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->pluck('time_id')->toArray();
 
         // Check if there are selected time
         if($request->has('time_lists')){
 
-            $results = array_diff($schedules, $request->time_lists);
+            // $results = array_diff($schedules, $request->time_lists);
 
-            $to_removes_scheds = PsychologistSchedule::where([
-                    ['psychologist', $this->user()->id],
-                    ['start', $request->start_date]
-                ])
-                ->whereIn('time_id', $results)
-                ->delete();
+            // $to_removes_scheds = PsychologistSchedule::where([
+            //         ['psychologist', $this->user()->id],
+            //         ['start', $request->start_date]
+            //     ])
+            //     ->whereIn('time_id', $results)
+            //     ->delete();
 
             // loop time lists array
             foreach($dates as $d){
@@ -85,6 +85,13 @@ class SchedulesController extends Controller
         return redirect()->back();
     }
 
+    public function removeSchedule(PsychologistSchedule $schedule)
+    {
+        $schedule->delete();
+
+        return response()->json(['success' => true, 'message' => 'Successfully Removed!', 'data' => [] ], 200);
+    }
+
     public function timeSchedule(Request $request)
     {
         // GET User schedule according to date selected
@@ -102,13 +109,12 @@ class SchedulesController extends Controller
 
             ->get();
 
-        $time_lists = TimeList::with(['schedules' => function($query) use ($request){
+        $time_lists = TimeList::whereDoesntHave('schedules', function($query) use ($request) {
 
             $query->where('psychologist', auth()->user()->id)
             ->where('start', $request->start)
             ->where('is_booked', false);
-
-        }, 'schedules.psych', 'schedules.booking.sessionType', 'schedules.booking.toStatus', 'schedules.booking.toCounselee'])
+        })
         ->orderBy('from', 'asc')
         ->get();
 

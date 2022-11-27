@@ -10,11 +10,15 @@
 
 		<div class="row">
 			<div class="col-md-12">
-      <div id="calendar"></div>
-				{{-- <div class="card">
-					<div class="card-body">
-					</div>
-				</div> --}}
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <h3 class="text-gray-800 mb-3">Manage Schedules</h3>
+          </div>
+        </div>
+        
+        <div id="calendar"></div>
+
 			</div>
 		</div>
 	</div>
@@ -37,11 +41,11 @@
 
                   let calendarOptions = {
 
-                      //   headerToolbar: {
-                      //     left: 'prev,next today',
-                      //     center: 'title',
-                      //     right: 'dayGridMonth'
-                      // },
+                        headerToolbar: {
+                          left: 'dayGridMonth',
+                          center: 'title',
+                          right: 'prev,next today'
+                      },
                         editable: true,
                         navLinks:  true,
                         selectable:  true,
@@ -90,8 +94,6 @@
 
               });
 
-
-
               $('#schedule-form').on('submit', function(e){
 
                 e.preventDefault();
@@ -122,6 +124,59 @@
               });
 
 
+              // Remove Schedule Event
+              $(document).on('click', '.btn-del-sched', function(e){
+
+                e.preventDefault();
+
+                let schedule = $(this).data('schedule');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to retreived this schedule!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+
+                      custom_ajax.request({
+
+                        url: `/schedule/remove/${schedule}`,
+                        method: 'POST',
+                        data: {}
+
+                      }).then(response => {
+
+                        if(response.success){
+
+                          Swal.fire(
+                            'Removed!',
+                            response.message,
+                            'success'
+                          )
+
+                          $(this).closest('tr').remove();
+                          
+                        }else{
+
+                          Swal.fire(
+                            'Oops!',
+                            'Something Went Wrong!',
+                            'error'
+                          )
+                        }
+                      });
+                      
+                    }
+                });
+
+              });
+
+
             });
 
             function handleSelect(arg)
@@ -138,7 +193,7 @@
                 $('#create-schedule').modal('show');
                 $('.start-date').val(arg.startStr);
                 $('input[name="end_date"]').val(arg.endStr);
-                $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start) + ' Schedules')
+                $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start))
                 $('#psychologist-available').empty();
                 let dom_list = $('.time-lists');
 
@@ -152,7 +207,7 @@
                 }).done(data => {
 
                       handleTimeList(data);
-                      // handleSchedulesTable(data);
+                      handleSchedulesTable(data);
                 });
               }
                 
@@ -160,6 +215,7 @@
 
             function handleTimeList(data)
             {
+
                   let time_schedules = data.schedules;
                   let $schedules_time_lists = $('#schedules-time-lists');
 
@@ -175,8 +231,6 @@
 
                     // find time schedules time that equals to time lists id
                     let sched = time_schedules.findIndex(time_sched => time_sched.time_id == time.id);
-
-                    
                     
                     // if found schedule is not equal to undefined
                     if(sched !== -1) {
@@ -214,23 +268,15 @@
 
             function schedulesTimeListTemp(time, checked, disabled)
             {
-                $(document).find('.check-time').attr('readonly', true);
+
                 return `
-                  <tr>
-                    <td with="30%">
-                      <div class="form-check">
-                        <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" ${checked} ${disabled} class="form-check-input check-time" />
-                        <label for="time${time.id}" class="form-check-label">${ time.from } - ${ time.to }</label>
-                      </div>
-                    </td>
-                    <td>${
-                      time.schedules.length > 0 && time.schedules[0].booking !== null ? time.schedules[0].booking.session_type.name : ''
-                    }</td>
-                    <td>
-                      <span class="${time.schedules.length > 0 && time.schedules[0].booking !== null ? time.schedules[0].booking.to_status.class : '' }">${ time.schedules.length > 0 && time.schedules[0].booking ? time.schedules[0].booking.to_status.name  : '' }</span>
-                    </td>
-                    <td>${ time.schedules.length > 0 && time.schedules[0].booking !== null &&  time.schedules[0].booking.counselee != null ?  time.schedules[0].booking.to_counselee.name : '' }</td>
-                  </td>
+
+                  <div class="form-check mb-3">
+                    <input type="checkbox" id="time${time.id}" name="time_lists[]" value="${time.id}" class="form-check-input check-time" ${checked} ${disabled} />
+                    <label for="time${time.id}" class="form-check-label">${ time.from } - ${ time.to }</label>
+                  </div>
+
+                  
                 `
             }
             function counselingTimeListTemp(time)
@@ -256,16 +302,15 @@
                         ${ schedule.booking != null ? schedule.booking.session_type.name : ''}
                       </td>
                       <td>${ schedule.booking != null && schedule.booking.counselee != null ? schedule.booking.to_counselee.name : ''}</td>
-                      <td style="width: 20%;">`
-                      if(schedule.is_booked || schedule.booking !== null){
-                        `
-                          <a href="#" class="btn btn-primary btn-sm">
-                            <i class="fa fa-eye"></i>
-                            <span>view booking</span>
-                          </a>
-                        `
-                      }
-                      ` 
+                      <td style="width: 20%;" align="right">
+                      
+                        <a href="#" class="btn btn-primary btn-sm" disabled>
+                          <i class="fa fa-eye"></i>
+                        </a>
+                        
+                        <button type="button" class="btn btn-danger btn-sm btn-del-sched" data-schedule="${schedule.id}">
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                   </tr>
                   `
