@@ -160,6 +160,9 @@ Route::middleware('auth')->group(function(){
 	// Show Schedule
 	Route::get('show-schedule', 'SchedulesController@show')->name('schedule.show');
 
+	// Delete Schedule
+	Route::post('schedule/remove/{schedule}', 'SchedulesController@removeSchedule')->name('schedule.remove');
+
 	// Get time by date selected in calendar
 	Route::get('time-by-schedule/{schedule}', 'SchedulesController@getTimeBySchedule');
 
