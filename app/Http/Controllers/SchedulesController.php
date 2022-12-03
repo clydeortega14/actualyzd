@@ -44,14 +44,13 @@ class SchedulesController extends Controller
     }
     public function storeSchedule(Request $request)
     {
-        $dates = $this->betweenDates($request->start_date, $request->end_date);
-
-        // $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)->where('start', $request->start_date)->pluck('time_id')->toArray();
 
         // Check if there are selected time
         if($request->has('time_lists')){
 
-            // loop time lists array
+            $dates = $this->betweenDates($request->start_date, $request->end_date);
+
+            // loop dates
             foreach($dates as $d){
 
                 // loop time lists array
