@@ -26,8 +26,8 @@
                                 @if(auth()->user()->hasRole('superadmin'))
                                     <div class="form-group">
                                         <label>By Psychologists</label>
-                                        <select class="custom-select" id="select-psychologist">
-                                            <option disabled selected> select psychologist</option>
+                                        <select name="psychologist" class="form-control" id="select-psychologist" required>
+                                            <option value="" disabled selected> select psychologist</option>
                                             @foreach($psychologists as $psych)
                                                 <option value="{{ $psych->id }}">{{ $psych->name }}</option>
                                             @endforeach

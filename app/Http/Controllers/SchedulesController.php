@@ -68,7 +68,7 @@ class SchedulesController extends Controller
                 {
                     // store time schedules
                     PsychologistSchedule::firstOrCreate([
-                        'psychologist' => auth()->user()->id,
+                        'psychologist' => $request->has('psychologist') ? $request->psychologist : auth()->user()->id,
                         'start' => $d,
                         'end' => $d,
                         'time_id' => $time
