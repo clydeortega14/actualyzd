@@ -68,7 +68,7 @@ class SchedulesController extends Controller
                 {
                     // store time schedules
                     PsychologistSchedule::firstOrCreate([
-                        'psychologist' => auth()->user()->id,
+                        'psychologist' => $request->has('psychologist') ? $request->psychologist : auth()->user()->id,
                         'start' => $d,
                         'end' => $d,
                         'time_id' => $time
@@ -95,8 +95,18 @@ class SchedulesController extends Controller
     public function timeSchedule(Request $request)
     {
         // GET User schedule according to date selected
-        $schedules = PsychologistSchedule::where('psychologist', $this->user()->id)
-            ->whereDate('start', $request->start)
+        $schedules = PsychologistSchedule::where(function($query) use ($request){
+
+            if(auth()->user()->hasRole('psychologist')){
+                $query->where('psychologist', $this->user()->id);
+            }else{
+
+                $query->where('psychologist', $request->psychologist);
+
+            }
+
+
+        })->whereDate('start', $request->start)
             ->with([
                 'timeList' => function($query){
                     $query->orderBy('from', 'asc');
@@ -111,8 +121,12 @@ class SchedulesController extends Controller
 
         $time_lists = TimeList::whereDoesntHave('schedules', function($query) use ($request) {
 
-            $query->where('psychologist', auth()->user()->id)
-            ->where('start', $request->start)
+            $query->where(function($query2){
+
+                if(auth()->user()->hasRole('psychologist')){
+                    $query2->where('psychologist', auth()->user()->id);
+                }
+            })->where('start', $request->start)
             ->where('is_booked', false);
         })
         ->orderBy('from', 'asc')

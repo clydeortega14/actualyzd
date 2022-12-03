@@ -16,8 +16,13 @@
             <h3 class="text-gray-800 mb-3">Manage Schedules</h3>
           </div>
         </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <div id="calendar"></div>
+          </div>
+        </div>
         
-        <div id="calendar"></div>
 
 			</div>
 		</div>
@@ -60,6 +65,7 @@
             });
 
             const arr_schedule_time = [];
+            var data_schedules = [];
 
 
             $(function(){
@@ -160,6 +166,7 @@
                           )
 
                           $(this).closest('tr').remove();
+
                           
                         }else{
 
@@ -177,12 +184,35 @@
               });
 
 
+              // filter by psychologists event
+              $(document).change('#select-psychologist', function(e){
+
+                let value = e.target.value;
+
+                custom_ajax.asyncAwait({
+                      url: '/psychologist/time-schedules',
+                      method: 'GET',
+                      async: false,
+                      data: {
+                            start: $('.start-date').val(),
+                            psychologist: value
+                      }
+                }).done(data => {
+
+                      $('#schedules-table').empty();
+                      loopSchedules(data.schedules, $('#schedules-table'));
+                      
+                });
+              });
+
             });
 
             function handleSelect(arg)
             {
               let parsedClickDate = date_parser.parseDate(arg.start);
               let parsedCurrentDate = date_parser.parseDate(new Date());
+
+              let $select_psychologist = $('#select-psychologist');
 
               if(parsedClickDate < parsedCurrentDate){ 
 
@@ -195,6 +225,9 @@
                 $('input[name="end_date"]').val(arg.endStr);
                 $('#create-schedule-modal-label').text(date_parser.formatDate(arg.start))
                 $('#psychologist-available').empty();
+
+
+
                 let dom_list = $('.time-lists');
 
                 custom_ajax.asyncAwait({
@@ -202,7 +235,8 @@
                       method: 'GET',
                       async: false,
                       data: {
-                            start: arg.startStr
+                            start: arg.startStr,
+                            psychologist: $select_psychologist.find('option:selected').val()
                       }
                 }).done(data => {
 
@@ -256,14 +290,31 @@
               return false;
             }
 
+            function loopSchedules(schedules, element)
+            {
+              schedules.forEach((schedule, index) => {
+
+                $(element).append(scheduleDetailsTemp(schedule));
+
+                arr_schedule_time.push(schedule.time_id);
+              })
+            }
+
             function handleSchedulesTable(data)
             {
                   let $schedules_table_body = $('#schedules-table');
-                  $schedules_table_body.empty()
-                  data.schedules.forEach((schedule, index) => {
-                    $schedules_table_body.append(scheduleDetailsTemp(schedule));
-                    arr_schedule_time.push(schedule.time_id);
-                  });
+
+                  $schedules_table_body.empty();
+
+                  loopSchedules(data.schedules, $schedules_table_body)
+
+                  // data.schedules.forEach((schedule, index) => {
+
+                  //   $schedules_table_body.append(scheduleDetailsTemp(schedule));
+
+                  //   arr_schedule_time.push(schedule.time_id);
+
+                  // });
             }
 
             function schedulesTimeListTemp(time, checked, disabled)

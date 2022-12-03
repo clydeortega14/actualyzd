@@ -22,6 +22,19 @@
                         <div class="col-md-9">
                             <div class="table-responsive">
                                 <h3 class="mb-3">Schedule Details</h3>
+
+                                @if(auth()->user()->hasRole('superadmin'))
+                                    <div class="form-group">
+                                        <label>By Psychologists</label>
+                                        <select name="psychologist" class="form-control" id="select-psychologist" required>
+                                            <option value="" disabled selected> select psychologist</option>
+                                            @foreach($psychologists as $psych)
+                                                <option value="{{ $psych->id }}">{{ $psych->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
                                 <table class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
@@ -34,6 +47,8 @@
                                     </thead>
                                     <tbody id="schedules-table"></tbody>
                                 </table>
+
+                               
                             </div>
                         </div>
                     </div>
