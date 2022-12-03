@@ -6,11 +6,13 @@
         </div> --}}
 
         @if(is_null(auth()->user()->avatar))
-            <div id="container">
-                <div id="name">
-                    {{ auth()->user()->name[0] }}
+            <a href="{{ route('user.profile', auth()->user()->id) }}">
+                <div id="container">
+                    <div id="name">
+                        {{ auth()->user()->name[0] }}
+                    </div>
                 </div>
-            </div>
+            </a>
         @else
             {{-- <div class="d-flex justify-content-center align-items-center"> --}}
                 <a href="{{ route('user.profile', auth()->user()->id) }}">
