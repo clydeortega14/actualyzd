@@ -51,28 +51,22 @@ class SchedulesController extends Controller
         // Check if there are selected time
         if($request->has('time_lists')){
 
-            // $results = array_diff($schedules, $request->time_lists);
-
-            // $to_removes_scheds = PsychologistSchedule::where([
-            //         ['psychologist', $this->user()->id],
-            //         ['start', $request->start_date]
-            //     ])
-            //     ->whereIn('time_id', $results)
-            //     ->delete();
-
             // loop time lists array
             foreach($dates as $d){
 
                 // loop time lists array
                 foreach($request->time_lists as $key => $time)
                 {
-                    // store time schedules
-                    PsychologistSchedule::firstOrCreate([
-                        'psychologist' => $request->has('psychologist') ? $request->psychologist : auth()->user()->id,
-                        'start' => $d,
-                        'end' => $d,
-                        'time_id' => $time
-                    ]);
+                    $data = [
+                            'psychologist' => $request->has('psychologist') ? $request->psychologist : auth()->user()->id,
+                            'start' => $d,
+                            'end' => $d,
+                            'time_id' => $time
+                        ];
+
+                    $schedule = PsychologistSchedule::firstOrNew($data, $data);
+
+                    $schedule->save();
                 }
             }
         }
@@ -119,18 +113,31 @@ class SchedulesController extends Controller
 
             ->get();
 
-        $time_lists = TimeList::whereDoesntHave('schedules', function($query) use ($request) {
+        $time_list_query = TimeList::Query();
 
-            $query->where(function($query2){
+        if(auth()->user()->hasRole('psychologist')){
 
-                if(auth()->user()->hasRole('psychologist')){
-                    $query2->where('psychologist', auth()->user()->id);
-                }
-            })->where('start', $request->start)
-            ->where('is_booked', false);
-        })
-        ->orderBy('from', 'asc')
-        ->get();
+            $time_list_query->whereDoesntHave('schedules', function($query) use ($request) {
+
+                    $query->where('psychologist', auth()->user()->id)
+                        ->where('start', $request->start)->where('is_booked', false);
+                });
+        }
+
+        $time_lists = $time_list_query->orderBy('from', 'asc')->get();
+
+        // $time_lists = TimeList::whereDoesntHave('schedules', function($query) use ($request) {
+
+        //     $query->where(function($query2){
+
+        //         if(auth()->user()->hasRole('psychologist')){
+        //             $query2->where('psychologist', auth()->user()->id);
+        //         }
+        //     })->where('start', $request->start)
+        //     ->where('is_booked', false);
+        // })
+        // ->orderBy('from', 'asc')
+        // ->get();
 
         return response()->json([
             'schedules' => $schedules,

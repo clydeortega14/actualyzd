@@ -83,15 +83,11 @@
         
                   if(index > -1){
 
-                    // console.log('found')
-
                   }else{
 
-                    // console.log('not found')
                     // add time_id to array of time
                     arr_schedule_time.push(parseInt(time_id));
                   }
-                  // console.log(index)
 
                 }else{
 
@@ -185,7 +181,7 @@
 
 
               // filter by psychologists event
-              $(document).change('#select-psychologist', function(e){
+              $(document).on('change', '#select-psychologist', function(e){
 
                 let value = e.target.value;
 
