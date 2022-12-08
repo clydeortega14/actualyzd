@@ -7,9 +7,11 @@ use DateTime;
 use App\PsychologistSchedule;
 use App\TimeList;
 use App\TimeSchedule;
+use App\Booking;
 use App\Http\Traits\CarbonTrait;
 use App\Http\Traits\SchedulesTrait;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class SchedulesController extends Controller
 {
@@ -185,7 +187,7 @@ class SchedulesController extends Controller
 
         if($this->validateTimeBySchedule($request->all())->fails()){
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'message' => 'Validation error',
                 'data' => $this->validateTimeBySchedule($request->all())->errors()->all(),
             ]);
@@ -194,7 +196,7 @@ class SchedulesController extends Controller
         if($request->date < now()->toDateString()){
 
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'message' => '',
                 'data' => []
             ]);
@@ -203,23 +205,46 @@ class SchedulesController extends Controller
         // pluck time list by id
         $plucked_time_id = $this->pluckedAllTime();
 
-        $schedules = PsychologistSchedule::withStart()->where(function($query) use ($plucked_time_id, $request){
 
-                            // if selected date is equal to current date
-                            if($request->date == now()->toDateString()){
+        $user_existing_booking = Booking::withUser(auth()->user()->id)->withStatus(1)->pluck('time_id');
 
-                                // must filter time_id to be display 
-                                // make the time advance to 1 hour from the current time
-                                $query->whereIn('time_id', $plucked_time_id);
-                            }
+        $schedules = DB::table('psychologist_schedules')
+                    ->join('users', 'psychologist_schedules.psychologist', '=', 'users.id')
+                    ->join('time_lists', 'psychologist_schedules.time_id', '=', 'time_lists.id')
+                    ->select(
+                        'psychologist_schedules.id as schedule_id',
+                        'start', 
+                        'end', 
+                        'time_lists.id as time_id',
+                        'time_lists.from as time_from',
+                        'time_lists.to as time_to',
+                        'is_booked',
+                        'users.id as psychologist_id',
+                        'users.name as psychologist_name',
+                    )
+                    ->where('start', $request->date)
+                    ->where('is_booked', false)
+                    ->whereNotIn('time_lists.id', $user_existing_booking)
+                    ->get()
+                    ->unique(['time_id']);
 
-                        })
-                        ->withNotBooked()
-                        ->with(['timeList'])
-                        ->get()
-                        ->unique(['time_id'])
-                        ->values()
-                        ->all();
+        // $schedules = PsychologistSchedule::withStart()->where(function($query) use ($plucked_time_id, $request){
+
+        //                     // if selected date is equal to current date
+        //                     if($request->date == now()->toDateString()){
+
+        //                         // must filter time_id to be display 
+        //                         // make the time advance to 1 hour from the current time
+        //                         $query->whereIn('time_id', $plucked_time_id);
+        //                     }
+
+        //                 })
+        //                 ->withNotBooked()
+        //                 ->with(['timeList'])
+        //                 ->get()
+        //                 ->unique(['time_id'])
+        //                 ->values()
+        //                 ->all();
 
         return response()->json([
             'success' => true,

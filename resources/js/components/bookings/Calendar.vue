@@ -92,7 +92,6 @@
 					date: arg.dateStr
 				}).then(response => {
 					let data = response.data
-
 					if(data.success){
 
 						// check length of data
