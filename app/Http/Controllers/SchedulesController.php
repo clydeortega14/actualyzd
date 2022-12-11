@@ -7,9 +7,11 @@ use DateTime;
 use App\PsychologistSchedule;
 use App\TimeList;
 use App\TimeSchedule;
+use App\Booking;
 use App\Http\Traits\CarbonTrait;
 use App\Http\Traits\SchedulesTrait;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class SchedulesController extends Controller
 {
@@ -185,7 +187,7 @@ class SchedulesController extends Controller
 
         if($this->validateTimeBySchedule($request->all())->fails()){
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'message' => 'Validation error',
                 'data' => $this->validateTimeBySchedule($request->all())->errors()->all(),
             ]);
@@ -194,37 +196,28 @@ class SchedulesController extends Controller
         if($request->date < now()->toDateString()){
 
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'message' => '',
                 'data' => []
             ]);
         }
 
-        // pluck time list by id
-        $plucked_time_id = $this->pluckedAllTime();
+        $used_schedules = PsychologistSchedule::where('start', $request->date)->where('is_booked', true)->pluck('time_id');
 
-        $schedules = PsychologistSchedule::withStart()->where(function($query) use ($plucked_time_id, $request){
-
-                            // if selected date is equal to current date
-                            if($request->date == now()->toDateString()){
-
-                                // must filter time_id to be display 
-                                // make the time advance to 1 hour from the current time
-                                $query->whereIn('time_id', $plucked_time_id);
-                            }
-
-                        })
-                        ->withNotBooked()
-                        ->with(['timeList'])
-                        ->get()
-                        ->unique(['time_id'])
-                        ->values()
-                        ->all();
+        $time_lists = TimeList::has('schedules')
+                            ->select(
+                                'time_lists.from as time_from',
+                                'time_lists.to as time_to',
+                                'time_lists.id as time_id'
+                            )
+                            ->whereNotIn('id', $used_schedules)
+                            ->orderBy('from', 'asc')
+                            ->get();
 
         return response()->json([
             'success' => true,
             'message' => '',
-            'data' => $schedules
+            'data' => $time_lists
         ]);
     }
 

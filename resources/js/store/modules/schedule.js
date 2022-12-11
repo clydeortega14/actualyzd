@@ -30,6 +30,7 @@ const actions = {
 				params: payload
 			})
 			.then(response => {
+				
 				resolve(response)
 			})
 			.catch(error => {

@@ -119,4 +119,9 @@ class Booking extends Model
     {
         $query->where('status', $status);
     }
+
+    public function scopeWithUser($query, $user)
+    {
+        $query->where('counselee', $user);
+    }
 }

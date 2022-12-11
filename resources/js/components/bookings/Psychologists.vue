@@ -61,9 +61,9 @@
 					<img src="/images/profile.png" alt="Profile" class="mr-3 rounded-circle" height="65" width="65">
 					<div class="psych-name">
 						{{ psychologist.name }}
-						<a href="#" class="ml-3 float-right">
+						<!-- <a href="#" class="ml-3 float-right">
 							<i class="fa fa-eye"></i>
-						</a>
+						</a> -->
 					</div>
 				</div>
 
