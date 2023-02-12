@@ -120,15 +120,40 @@
 				this.rescheduleBooking(payload)
 					.then(response => {
 
-						console.log(response)
+						if(response.status === 200){
+
+							let data = response.data.data;
+
+							if(response.data.success){
+
+								Swal.fire('Success!', response.data.message, 'success');
+
+							}else{
+
+								Swal.fire('Oops!', response.data.message, 'warning');
+							}
+						}
+						// console.log(response)
 					})
 					.catch(error => {
 
-						// this means it is an validation error
-						if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
+						console.log()
 
-							Swal.fire('Oops!', error.response.data.message, 'error')
+						if(error.response.status === 403 || error.response.status === 422){
+
+							let data = error.response.data;
+
+							if(!data.success){
+
+								Swal.fire('Oops!', data.message, 'error')
+							}
 						}
+
+						// this means it is an validation error
+						// if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
+
+						
+						// }
 					})
 			}
 		}

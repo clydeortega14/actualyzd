@@ -8,10 +8,12 @@
 
 <template>
 	<div>
-		<StatusNav @filter-by-status="filterStatus" />
 
 		<!-- Filter and Search Booking -->
 		<FilSearchComponent />
+
+		<!-- Filter By Status -->
+		<StatusNav @filter-by-status="filterStatus" />
 
 		<div class="table-responsive">
 			<table class="table">
@@ -31,8 +33,7 @@
 				<tbody>
 					<tr v-for="booking in allBookings" :key="booking.id">
 						<td>
-							<b>Date: </b><span>{{ `${wholeDate(booking.to_schedule.start)}` }}</span> <br>
-							<b>Time: </b><span>{{ `${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`}}</span>
+							{{ wholeDate(booking.to_schedule.start)+' @ '+`${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`  }}
 						</td>
 						<td>{{ booking.session_type.name }}</td>
 						<td v-if="role !== 'member'">

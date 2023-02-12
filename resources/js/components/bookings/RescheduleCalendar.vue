@@ -65,7 +65,6 @@
 
 					let data = response.data
 
-
 					if(data.success){
 
 						if(data.data.length > 0){
