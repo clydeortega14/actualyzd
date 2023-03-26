@@ -137,8 +137,6 @@
 					})
 					.catch(error => {
 
-						console.log()
-
 						if(error.response.status === 403 || error.response.status === 422){
 
 							let data = error.response.data;

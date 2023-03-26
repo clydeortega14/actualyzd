@@ -188,7 +188,9 @@ class BookingController extends Controller
 
         })->get(['id', 'name']);
 
-        return view('pages.bookings.answered-questions', compact('booking', 'categories', 'followup_sessions', 'session_statuses'));
+        return view('pages.bookings.answered-questions', compact(
+            'booking', 'categories', 'followup_sessions', 'session_statuses'
+        ));
     }
 
     public function updateToCancel(Booking $booking, Request $request)

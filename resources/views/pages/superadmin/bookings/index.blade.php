@@ -5,7 +5,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<h3 class="text-gray-500 mb-3">Bookings</h3>
+				<h3 class="text-gray-500 mb-3">Sessions</h3>
 			</div>
 			<div class="col-md-12">
 				<div class="card">
