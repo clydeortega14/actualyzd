@@ -27,7 +27,6 @@ trait BookingTrait {
 
 	public function bookingsQuery()
 	{
-<<<<<<< HEAD
         $bookings = Booking::query();
 
         if(!auth()->user()->hasRole('superadmin')){
@@ -48,9 +47,9 @@ trait BookingTrait {
         ->where(function($query){
             $this->queryByStatus($query, $query);
         });
-=======
+
         $bookings = $this->conditionQuery();
->>>>>>> clyde
+
 
         $allBookings = $bookings->with([
             'toSchedule.psych', 
