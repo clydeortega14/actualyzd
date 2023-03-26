@@ -97,7 +97,7 @@
 	    			</div>
 	    		</div>
 
-	    		<div class="card mb-3">
+	    		{{-- <div class="card mb-3">
 					<div class="card-header">
 						Unclose Sessions
 					</div>
@@ -152,7 +152,7 @@
 						</div>
 					@endif
 					</div>
-				</div>
+				</div> --}}
 	    	</div>
 	    </div>
 	</div>

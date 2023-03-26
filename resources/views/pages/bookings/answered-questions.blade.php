@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
 				<h3 class="mb-3">Session Details</h3>
@@ -10,7 +10,7 @@
 				{{-- {{ Breadcrumbs::render('booking.answered.questions', $booking) }} --}}
 			</div>
 
-			<div class="col-md-8">
+			<div class="col-md-12">
 				<div class="card mb-3">
 					<div class="card-header">
 						<div class="d-sm-flex justify-content-between">
@@ -53,6 +53,24 @@
 									@endif
 								@endif
 							</div>
+
+							<div>
+								<booking-status 
+									session-status="{{ $booking->toStatus->name }}" 
+									:booking-id="{{ $booking->id }}"
+									:booking-status="{{ $booking->toStatus->id }}"
+									@if(!is_null($booking->reschedule ))
+										:reschedule="{{ $booking->reschedule }}"
+									@endif
+									
+									:cancelled="{{ $booking }}"
+									
+									:own-booking="{{ $booking->load(['cancelled', 'reschedule', 'toStatus']) }}"
+									>
+										
+								</booking-status>
+
+							</div>
 						</div>	
 					</div>
 					<div class="card-body">
@@ -61,45 +79,67 @@
 							<img src="{{ (is_null($booking->toCounselee) && is_null($booking->toCounselee->avatar)) ? '/images/user.png' : asset('storage/'.$booking->toCounselee->avatar) }}" alt="{{ $booking->toCounselee->name }}" class="mx-auto d-block rounded-circle img-fluid ac-avatar">
 						</div> --}}
 
+						@if(auth()->user()->hasRole('psychologist') || auth()->user()->hasRole('superadmin'))
+							<div class="form-group row">
+								<label for="company" class="col-form-label col-sm-4 text-md-right"></label>
+								<div class="col-sm-6">
+									<h4>Participants</h4>
+
+									@if(is_null($booking->counselee) && count($booking->participants) > 0)
+
+
+										<ul class="mt-2 list-unstyled">
+											@foreach($booking->participants as $participant)
+												{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
+												<li class="mb-2">{{ $participant->name }}
+													@foreach($participant->roles as $p_role)
+													<small class="mt-0 ml-2">{{ $p_role->name }}</small>
+													@endforeach
+												</li>
+											@endforeach
+										</ul>
+									@else
+										{{-- <a href="#" data-toggle="tooltip" title="{{ $booking->toCounselee->name }}">
+											<img src="{{ is_null($booking->toCounselee) && is_null($booking->toCounselee->avatar) ? '/images/user.png' : asset('storage/'.$booking->toCounselee->avatar) }}" alt="{{ $booking->toCounselee->name }}" class="rounded-circle ac-avatar" width="75" height="75">
+										</a> --}}
+										<div class="form-group row">
+											<label class="col-form-label col-sm-4 text-md-right"></label>
+											<div class="col-sm-6">
+												<span class="mb-2">{{ $booking->toCounselee->name }} 
+													@foreach($booking->toCounselee->roles as $counsel_role)
+														<small class="ml-2 mt-0">{{ $counsel_role->name }}</small>
+													@endforeach
+												</span>
+												
+											</div>
+										</div>
+									@endif
+								</div>
+							</div>
+						@endif
+
+						@if(auth()->user()->hasRole('member') || auth()->user()->hasRole('superadmin'))
+
+							
+							<div class="form-group row">
+								<label class="col-form-label col-sm-4 text-md-right"></label>
+								<div class="col-sm-6">
+									<span class="mb-2">{{ $booking->toSchedule->psych->name }} 
+										@foreach($booking->toSchedule->psych->roles as $psych_role)
+											<small class="ml-2 mt-0">{{ $psych_role->name }}</small>
+										@endforeach
+									</span>
+									
+								</div>
+							</div>
+						@endif
+
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
 							<div class="col-sm-6">
 								<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
 							</div>
 						</div>
-
-						@if(auth()->user()->hasRole('psychologist'))
-							<div class="form-group row">
-								<label for="company" class="col-form-label col-sm-4 text-md-right">Counselee</label>
-								<div class="col-sm-6">
-									@if(is_null($booking->counselee) && count($booking->participants) > 0)
-
-
-										{{-- <ul class="mt-2"> --}}
-											@foreach($booking->participants as $participant)
-											<input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control">
-												{{-- <li>{{ $participant->name }}</li> --}}
-											@endforeach
-										{{-- </ul> --}}
-									@else
-										<a href="#" data-toggle="tooltip" title="{{ $booking->toCounselee->name }}">
-											<img src="{{ is_null($booking->toCounselee) && is_null($booking->toCounselee->avatar) ? '/images/user.png' : asset('storage/'.$booking->toCounselee->avatar) }}" alt="{{ $booking->toCounselee->name }}" class="rounded-circle img-fluid ac-avatar" height="75" width="75">
-										</a>
-									@endif
-								</div>
-							</div>
-						@endif
-
-						@if(auth()->user()->hasRole('member'))
-							<div class="form-group row">
-								<label for="company" class="col-form-label col-sm-4 text-md-right">Psychologist</label>
-								<div class="col-sm-6">
-									<a href="#" data-toggle="tooltip" title="{{ $booking->toSchedule->psych->name }}">
-										<img src="{{ is_null($booking->toSchedule->psych->avatar) ? '/images/user.png' : asset('storage/'.$booking->toSchedule->psych->avatar) }}" alt="{{ $booking->toSchedule->psych->name }}" class="rounded-circle img-fluid ac-avatar" height="75" width="75">
-									</a>
-								</div>
-							</div>
-						@endif
 
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Type Of Session</label>
@@ -192,19 +232,6 @@
 				</div>
 			</div>
 			<!-- for users that has role of psychologist and for booking with the session type of individual / consultation -->
-
-
-			<div class="col-md-4">
-				<div class="card mb-3">
-					<div class="card-header">
-						Message
-					</div>
-
-					<div class="card-body">
-						
-					</div>
-				</div>
-			</div>
 			
 			<!-- end for users that has role of psychologist and for booking with the session type of individual / consultation -->
 		</div>

@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<div v-if="!editMode">
-			<div v-if="sessionStatus === 'Booked' ">
+			<div v-if="sessionStatus === 'Booked' || sessionStatus === 'Rescheduled'">
 				<a href="#" @click.prevent="edit">{{ sessionStatus }}</a>
 			</div>
 
 			<div v-else>
 				<span :class="sessionStatus === 'Cancelled' ? 'text-danger' : ''">{{ sessionStatus }}</span> <br>
-				<span v-if="cancelled !== null">{{ cancelled.reason_option_id === 5 ? cancelled.others_specify : cancelled.reason_option.option_name }}</span>
+				<span v-if="ownBooking.cancelled !== null">{{ ownBooking.cancelled.reason_option_id === 5 ? ownBooking.cancelled.others_specify : ownBooking.cancelled.reason_option.option_name }}</span>
 			</div>
 		</div>
 		<div v-else>

@@ -70,7 +70,7 @@
                 <li class="{{ Route::is('bookings.index') ? 'active' : '' }}">
                     <a href="{{ route('bookings.index') }}">
                         <i class="fa fa-calendar"></i>
-                        <span class="ml-3">Bookings</span>
+                        <span class="ml-3">Sessions</span>
                     </a>
                 </li>
             @endif
