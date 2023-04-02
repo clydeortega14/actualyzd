@@ -30,7 +30,9 @@
 				</div>
 			@endif
 
+			
 			<div class="{{ auth()->user()->hasRole('admin') ? 'col-md-12' : 'col-md-9' }}">
+				
 				<service-utilization></service-utilization>
 			</div>
 		</div>

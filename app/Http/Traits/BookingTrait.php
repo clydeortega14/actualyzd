@@ -34,8 +34,6 @@ trait BookingTrait {
             $bookings->whereNotNull('counselee');
         }
 
-
-
         // query bookings according to auth user role
         $this->queryByRole($bookings);
         
@@ -48,7 +46,7 @@ trait BookingTrait {
             $this->queryByStatus($query, $query);
         });
 
-        $bookings = $this->conditionQuery();
+        // $bookings = $this->conditionQuery();
 
 
         $allBookings = $bookings->with([
@@ -201,7 +199,7 @@ trait BookingTrait {
 
         if($user->hasRole('psychologist')){
 
-            $sched_id = $user->schedules->pluck('id');
+            $sched_id = $user->schedules->pluck('id')->toArray('id');
 
             $query->whereIn('schedule', $sched_id);
         }

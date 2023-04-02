@@ -24,7 +24,11 @@
 	        </div>
 
 	        <div class="col-md-9">
-	        	<ConcernsChart />
+	        	<div class="card">
+	        		<div class="card-body">
+	        			<ConcernsChart />
+	        		</div>
+	        	</div>
 	        </div>
 		</div>
 	</div>
