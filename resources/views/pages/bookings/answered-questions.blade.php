@@ -36,7 +36,7 @@
 									</a>
 								@endif
 
-								@if($booking->session_type_id == 1 && auth()->user()->hasRole('psychologist'))
+								@if($booking->session_type_id == 1 && auth()->user()->hasRole(['psychologist', 'superadmin']))
 
 									@if(!is_null($booking->toCounselee))
 
@@ -45,9 +45,9 @@
 										@endphp
 
 										@if(!is_null($previous_report))
-											<a href="{{ route('progress.report.create-for-booking', $previous_report->booking_id) }}" class="mr-3">
+											<a href="{{ route('progress.report.create-for-booking', $previous_report->booking_id) }}" class="mr-3" target="_blank">
 												<i class="fa fa-book"></i>
-												<span>Report</span>
+												<span>Progress Report</span>
 											</a>
 										@endif
 									@endif
@@ -79,60 +79,49 @@
 							<img src="{{ (is_null($booking->toCounselee) && is_null($booking->toCounselee->avatar)) ? '/images/user.png' : asset('storage/'.$booking->toCounselee->avatar) }}" alt="{{ $booking->toCounselee->name }}" class="mx-auto d-block rounded-circle img-fluid ac-avatar">
 						</div> --}}
 
-						@if(auth()->user()->hasRole('psychologist') || auth()->user()->hasRole('superadmin'))
-							<div class="form-group row">
-								<label for="company" class="col-form-label col-sm-4 text-md-right"></label>
-								<div class="col-sm-6">
-									<h4>Participants</h4>
+						
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right"></label>
+							<div class="col-sm-6">
+								<h4>Participants</h4>
 
+								@if(auth()->user()->hasRole('psychologist') || auth()->user()->hasRole('superadmin'))
 									@if(is_null($booking->counselee) && count($booking->participants) > 0)
-
-
-										<ul class="mt-2 list-unstyled">
+										<ul class="list-unstyled">
 											@foreach($booking->participants as $participant)
 												{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
-												<li class="mb-2">{{ $participant->name }}
+												<li class="mb-0">{{ $participant->name }} |
 													@foreach($participant->roles as $p_role)
-													<small class="mt-0 ml-2">{{ $p_role->name }}</small>
+													<span class="badge badge-primary">{{ $p_role->name }}</span>
 													@endforeach
 												</li>
 											@endforeach
 										</ul>
 									@else
-										{{-- <a href="#" data-toggle="tooltip" title="{{ $booking->toCounselee->name }}">
-											<img src="{{ is_null($booking->toCounselee) && is_null($booking->toCounselee->avatar) ? '/images/user.png' : asset('storage/'.$booking->toCounselee->avatar) }}" alt="{{ $booking->toCounselee->name }}" class="rounded-circle ac-avatar" width="75" height="75">
-										</a> --}}
-										<div class="form-group row">
-											<label class="col-form-label col-sm-4 text-md-right"></label>
-											<div class="col-sm-6">
-												<span class="mb-2">{{ $booking->toCounselee->name }} 
-													@foreach($booking->toCounselee->roles as $counsel_role)
-														<small class="ml-2 mt-0">{{ $counsel_role->name }}</small>
-													@endforeach
-												</span>
-												
-											</div>
-										</div>
+										<ul class="list-unstyled">
+											<li class="mb-0">{{ $booking->toCounselee->name }} |
+												@foreach($booking->toCounselee->roles as $counsel_role)
+													<span class="badge badge-primary">{{ $counsel_role->name }}</span>
+												@endforeach
+											</li>
+										</ul>
 									@endif
-								</div>
-							</div>
-						@endif
 
-						@if(auth()->user()->hasRole('member') || auth()->user()->hasRole('superadmin'))
+								@endif
 
-							
-							<div class="form-group row">
-								<label class="col-form-label col-sm-4 text-md-right"></label>
-								<div class="col-sm-6">
-									<span class="mb-2">{{ $booking->toSchedule->psych->name }} 
-										@foreach($booking->toSchedule->psych->roles as $psych_role)
-											<small class="ml-2 mt-0">{{ $psych_role->name }}</small>
-										@endforeach
-									</span>
-									
-								</div>
+
+								@if(auth()->user()->hasRole('member') || auth()->user()->hasRole('superadmin'))
+									<ul class="list-unstyled">
+										<li class="mb-0">{{ $booking->toSchedule->psych->name }} |
+											@foreach($booking->toSchedule->psych->roles as $psych_role)
+												<span class="badge badge-primary">{{ $psych_role->name }}</span>
+											@endforeach
+										</li>
+									</ul>
+								@endif
 							</div>
-						@endif
+						</div>
+						
 
 						<div class="form-group row">
 							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
@@ -149,16 +138,9 @@
 						</div>
 
 						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Date</label>
+							<label for="company" class="col-form-label col-sm-4 text-md-right">Date & Time</label>
 							<div class="col-sm-6">
-								<input type="text" value="{{ date('F j, Y', strtotime($booking->toSchedule->start)) }}" readonly class="form-control">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Time</label>
-							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}" readonly class="form-control">
+								<input type="text" value="{{ date('l, F j, Y', strtotime($booking->toSchedule->start)).' @ '.$booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo()}}" readonly class="form-control">
 							</div>
 						</div>
 
@@ -194,38 +176,10 @@
 
 						<div class="form-group row">
 							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Status</label>
-							@if($booking->status == 1)
-								
-								<div class="col-sm-6">
-									<form action="{{ route('booking.update.status', $booking->id) }}" method="POST">
-									
-										@csrf
-										<input type="hidden" name="booking_id" value="{{ $booking->id }}">
-										<div class="input-group mb-3">
-											<select name="status" class="form-control">
-												<option value="" disabled selected>{{ $booking->toStatus->name }}</option>
-												@foreach($session_statuses as $status)
-													<option value="{{$status->id}}">{{ $status->name}}</option>
-												@endforeach
-											</select>
-											<div class="input-group-append">
-												<button type="submit" class="btn btn-outline-primary">
-													<i class="fa fa-check"></i>
-												</button>
-											</div>
-										</div>
-									</form>
-								</div>
-							@else
-								<div class="col-sm-3">
-									<input type="text" readonly value="{{ $booking->toStatus->name }}" class="form-control">
-								</div>
-
-								@if($booking->status == 4 && !is_null($booking->cancelled))
-									<span class="mt-2">{{ $booking->cancelled->reasonOption->option_name }}</span>
-								@endif
-
-							@endif
+							<div class="col-sm-6">
+								<input type="text" readonly class="form-control" value="{{ $booking->toStatus->name }}">
+							</div>
+							
 						</div>
 
 					</div>

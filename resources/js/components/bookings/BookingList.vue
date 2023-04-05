@@ -23,11 +23,10 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th style="width: 10px;">Type</th>
-						<th>DateTime</th>
+						<th>Description</th>
 						
-						<th v-if="role !== 'member'" style="width: 15px;">
-							Report
+						<th v-if="role !== 'member'" style="text-align: right;">
+							Progress Report
 						</th>
 						
 						
@@ -36,10 +35,6 @@
 				</thead>
 				<tbody>
 					<tr v-for="booking in allBookings" :key="booking.id">
-						<td>
-							<span>{{ booking.session_type.name }}</span>
-							
-						</td>
 						<!-- <td v-if="role !== 'member'" width="10px" align="center">
 							<a href="#">
 								<img :src="( booking.counselee == null) ? `/images/user.png` : `${baseUrl}/storage/${booking.to_counselee.avatar}`" 
@@ -61,16 +56,16 @@
 							<div>
 								<a :href="`${baseUrl}/bookings/session/${booking.room_id}`">
 									{{ wholeDate(booking.to_schedule.start)+' @ '+`${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`  }}
-								</a>
+								</a> <br />
+								<span class="badge badge-secondary">{{ booking.session_type.name }}</span>
 							</div>
 							
 						</td>
 						
-						<td v-if="role !== 'member'" width="10px">
+						<td v-if="role !== 'member'" align="right">
 							<div v-if="booking.counselee !== null && booking.to_counselee.progress_reports.length && booking.to_status.id == 1">
 								<a :href="oldReportLink(booking.to_counselee.progress_reports[0].booking_id)" target="_blank">
-									<i class="fa fa-book mr-2"></i>
-									<span>report</span>
+									<i class="fa fa-book"></i>
 								</a>
 							</div>
 							<span class="badge badge-info" v-else>N/A</span>
