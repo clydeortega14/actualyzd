@@ -225,6 +225,19 @@ class BookingProcessController extends Controller
                     foreach(session('participants') as $participant){
                         $booking->participants()->attach($participant);
                     }
+
+                }else{ // participants for individual session
+
+                    // participants are the psychologist and the member who booked the session
+                    $member_id = auth()->user()->id;
+
+                    $array_participants = [
+                        $request->psychologist, 
+                        $member_id
+                    ];
+
+                    $booking->participants()->attach($array_participants);
+
                 }
 
                 /**

@@ -182,14 +182,16 @@ class BookingController extends Controller
             }
 
             if($user->hasRole('member')){
-
                 $query->whereIn('id', [4]);
             }
 
         })->get(['id', 'name']);
 
         return view('pages.bookings.answered-questions', compact(
-            'booking', 'categories', 'followup_sessions', 'session_statuses'
+            'booking', 
+            'categories', 
+            'followup_sessions', 
+            'session_statuses'
         ));
     }
 
