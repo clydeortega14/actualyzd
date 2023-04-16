@@ -36,22 +36,16 @@
                                 <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Address</th>
-                                        <th>Contact</th>
-                                        <th>No. of employees</th>
                                         <th>Status</th>
-                                        <th style="text-align: center;">Actions</th>
+                                        <th style="text-align: right;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($clients as $client)
                                         <tr>
-                                            <td>{{ $client->name }}</td>
-                                            <td>{{ $client->email }}</td>
-                                            <td>{{ $client->postal_address }}</td>
-                                            <td>{{ $client->contact_number }}</td>
-                                            <td>{{ $client->number_of_employees }}</td>
+                                            <td>
+                                                {{ $client->name }}
+                                            </td>
                                             <td>
                                                 @php
                                                     $active = $client->is_active;
@@ -60,13 +54,29 @@
                                             </td>
                                             <td align="right">
                                                 @if(auth()->user()->hasRole('superadmin'))
-                                                    <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a> |
+
+                                                    @if($active)
+                                                    
+                                                        @if(is_null($client->subscription))
+
+                                                            <a href="{{ route('client.subscriptions', $client->id) }}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Subscription">
+                                                                <i class="fa fa-bell"></i>
+                                                            </a>
+
+                                                        @else
+                                                            <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Client Profile">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+
+                                                        @endif |
+
+                                                    @endif
+
                                                     <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-{{ $client->is_active ? 'danger' : 'success' }} btn-sm"
                                                         data-toggle="modal" data-target="#update-status-{{ $client->id }}">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
+
                                                     @include('pages.superadmin.clients.modals.update-status')
                                                 @endif
                                             </td>

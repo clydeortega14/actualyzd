@@ -7,6 +7,8 @@ use App\Client;
 use App\Package;
 use App\ClientSubscription;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use DB;
 
 class ClientsController extends Controller
 {
@@ -17,7 +19,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Client::get();
+        $clients = Client::orderBy('created_at', 'desc')->with(['users'])->get();
 
         return view('pages.superadmin.clients.index', compact('clients'));
     }
@@ -44,6 +46,8 @@ class ClientsController extends Controller
 
         $client = $this->storeClient($request->all());
 
+        
+
         return redirect()->back()->with('success', 'New Client Has Been Added!');
     }
 
@@ -54,7 +58,6 @@ class ClientsController extends Controller
 
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:clients'],
-            'no_of_employees' => ['required'],
             'address' => ['required', 'string', 'max:255'],
             'contact' => ['required']
         ]);
@@ -66,9 +69,9 @@ class ClientsController extends Controller
         return Client::firstOrCreate([
             'name' => $data['name'],
             'email' => $data['email'],
-            'number_of_employees' => $data['no_of_employees'],
             'postal_address' => $data['address'],
-            'contact_number' => $data['contact']
+            'contact_number' => $data['contact'],
+            'is_active' => true,
         ]);
     }
 
@@ -132,8 +135,16 @@ class ClientsController extends Controller
         //
     }
 
+    public function subscriptions(Client $client)
+    {
+        $packages = Package::has('services')->with(['services'])->get();
+
+        return view('pages.superadmin.clients.subscription', compact('client', 'packages'));
+    }
+
     public function addSubscription(Request $request)
     {
+
         $client = Client::findOrFail($request->client_id);
 
         if(!$client->is_active){
@@ -143,18 +154,38 @@ class ClientsController extends Controller
 
 
         $package = Package::findOrFail($request->package_id);
+
         $completion_date = now()->addMonths($package->no_of_months)->toDateString();
 
-        $client = ClientSubscription::firstOrCreate([
+        DB::beginTransaction();
 
-            'client_id' => $request->client_id,
-            'package_id' => $package->id,
-            'completion_date' => $completion_date,
-            'subscription_status_id' => 1
-        ]);
+            $client_subscription = ClientSubscription::firstOrCreate([
 
-        return redirect()->back()->with('success', 'Subscribed successfully');
+                'client_id' => $request->client_id,
+                'package_id' => $package->id,
+                'completion_date' => $completion_date,
+                'subscription_status_id' => 1
+            ]);
+
+            // create an admin user to the client
+            $user = $client->users()->firstOrCreate([
+
+                'name' => $client->name,
+                'email' => $client->email,
+                'username' => $client->email,
+                'password' => Hash::make('password'),
+                'is_active' => true
+            ]);
+
+
+            // add roles to user
+            $user->roles()->attach(3);
+
+        DB::commit();
+
+        return redirect()->route('clients.edit', $client->id);
     }
+
     public function clientsWithUsers()
     {
         $clients = Client::where('is_active', true)->whereHas('users', function($query){

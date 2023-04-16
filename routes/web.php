@@ -43,8 +43,13 @@ Route::middleware('auth')->group(function(){
 
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
-	// Client Subscription
+
+	// Add client subscription
+	Route::get('subscriptions/{client}', 'ClientsController@subscriptions')->name('client.subscriptions');
+
+	// Store client subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+	
 	// Client Users Route
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');
 

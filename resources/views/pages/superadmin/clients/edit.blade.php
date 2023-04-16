@@ -74,19 +74,26 @@
 						<div class="tab-content" id="myTabContent">
 							<div class="tab-pane fade show active" id="employees" role="tabpanel" aria-labelledby="employees-tab">
 								<div class="mt-3">
-									<div class="d-flex justify-content-end mb-3">
-										<div>
-											<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" class="btn btn-primary btn-sm">
-												<i class="fa fa-plus"></i>
-												<span>Create User</span>
-											</a>
-											{{-- <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#import-users">
-												<i class="fa fa-upload"></i>
-												<span>Import Users</span>
-											</a>
-											@include('pages.superadmin.users.modals.import-users') --}}
+
+									@if(isset($client) && $client->is_active && !is_null($client->subscription))
+										<div class="d-flex justify-content-end mb-3">
+											<div>
+												<a 
+													href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" 
+													class="btn btn-primary btn-sm"
+
+													>
+													<i class="fa fa-plus"></i>
+													<span>Create User</span>
+												</a>
+												{{-- <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#import-users">
+													<i class="fa fa-upload"></i>
+													<span>Import Users</span>
+												</a>
+												@include('pages.superadmin.users.modals.import-users') --}}
+											</div>
 										</div>
-									</div>
+									@endif
 									<table class="table table-hover" width="100%" cellspacing="0">
 										<thead>
 											<tr>
@@ -146,7 +153,6 @@
 														@include('pages.modals.delete-users')
 													</td>
 												</tr>
-
 											@endforeach
 										</tbody>
 									</table>
@@ -163,16 +169,20 @@
 											<div class="row">
 												@if(is_null($client->subscription))
 
-													<div class="d-flex justify-content-end">
-														<div>
-															<button type="submit" class="btn btn-success btn-sm">
-																<i class="fa fa-plus"></i>
-															</button>
-															<a href="#" class="btn btn-danger btn-sm">
-																<i class="fa fa-times"></i>
-															</a>
+													<div class="col-md-12">
+														<div class="d-flex justify-content-end mb-3">
+															<div>
+																<button type="submit" class="btn btn-success btn-sm" {{ !$client->is_active ? 'disabled' : '' }}>
+																	<i class="fa fa-check"></i>
+																	<span>Subscribe Now</span>
+																</button>
+																{{-- <a href="#" class="btn btn-danger btn-sm">
+																	<i class="fa fa-times"></i>
+																</a> --}}
+															</div>
 														</div>
 													</div>
+													
 													
 													@foreach($packages as $package)
 														<div class="col-md-4">

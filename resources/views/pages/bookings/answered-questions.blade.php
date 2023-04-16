@@ -29,7 +29,16 @@
 									
 								@endif --}}
 
-								@if($booking->status == 1 || $booking->status == 5)
+								@php
+									$session_date_time = $booking->toSchedule->start.' '.$booking->time->from;
+									$date_now = now()->toDateTimeString();
+
+								@endphp
+
+								@if($booking->toSchedule->start == now()->toDateString() &&
+										$booking->time->from >= now()->toTimeString() &&
+										($booking->status == 1 || $booking->status == 5)
+								)
 									<a href="{{ config('app.jitsi_url').$booking->link_to_session }}" target="_blank" class="mr-3">
 										<i class="fa fa-video"></i>
 										<span class="ml-2">Start Video Call</span>
@@ -85,40 +94,22 @@
 							<div class="col-sm-6">
 								<h4>Participants</h4>
 
-								@if(auth()->user()->hasRole('psychologist') || auth()->user()->hasRole('superadmin'))
-									@if(is_null($booking->counselee) && count($booking->participants) > 0)
-										<ul class="list-unstyled">
-											@foreach($booking->participants as $participant)
-												{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
-												<li class="mb-0">{{ $participant->name }} |
-													@foreach($participant->roles as $p_role)
-													<span class="badge badge-primary">{{ $p_role->name }}</span>
-													@endforeach
-												</li>
-											@endforeach
-										</ul>
-									@else
-										<ul class="list-unstyled">
-											<li class="mb-0">{{ $booking->toCounselee->name }} |
-												@foreach($booking->toCounselee->roles as $counsel_role)
-													<span class="badge badge-primary">{{ $counsel_role->name }}</span>
+								@if(auth()->user()->hasRole(['psychologist', 'member', 'superadmin']))
+
+									<ul class="list-unstyled">
+										@foreach($booking->participants as $participant)
+											{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
+											<li class="mb-0 ml-4">{{ $participant->name }} |
+												@foreach($participant->roles as $p_role)
+												<span class="badge badge-primary">{{ $p_role->name }}</span>
 												@endforeach
 											</li>
-										</ul>
-									@endif
-
-								@endif
-
-
-								@if(auth()->user()->hasRole('member') || auth()->user()->hasRole('superadmin'))
-									<ul class="list-unstyled">
-										<li class="mb-0">{{ $booking->toSchedule->psych->name }} |
-											@foreach($booking->toSchedule->psych->roles as $psych_role)
-												<span class="badge badge-primary">{{ $psych_role->name }}</span>
-											@endforeach
-										</li>
+										@endforeach
 									</ul>
+
 								@endif
+
+
 							</div>
 						</div>
 						
