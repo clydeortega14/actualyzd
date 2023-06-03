@@ -19,11 +19,14 @@ class UsersSeeder extends Seeder
     public function run()
     {
         //create roles first
-        $this->createRoles();
+        // $this->createRoles();
+
+
     	// Create Superadmin
         $this->superadmin();
+
         // Create sanmiguel_admin
-        $this->sanmiguel_admin();
+        // $this->sanmiguel_admin();
         // Create lalamove_admin
         // $this->lalamove_admin();
         // Create lalamove_admin
@@ -37,31 +40,31 @@ class UsersSeeder extends Seeder
 
             [
                 'name' => 'Psychologist One', 
-                'email' => 'psychologist1@psychline.ph',
+                'email' => 'psychologist1@actualyzd.com',
                 'username' => 'psychologist1', 
                 'password' => 'password', 
             ],
             [
                 'name' => 'Psychologist Two', 
-                'email' => 'psychologist2@psychline.ph', 
+                'email' => 'psychologist2@actualyzd.com', 
                 'username' => 'psychologist2',
                 'password' => 'password', 
             ],
             [
                 'name' => 'Psychologist Three', 
-                'email' => 'psychologist3@psychline.ph', 
+                'email' => 'psychologist3@actualyzd.com', 
                 'username' => 'psychologist3',
                 'password' => 'password', 
             ],
             [
                 'name' => 'Psychologist Four', 
-                'email' => 'psychologist4@psychline.ph',
+                'email' => 'psychologist4@actualyzd.com',
                 'username' => 'psychologist4', 
                 'password' => 'password', 
             ],
             [
                 'name' => 'Psychologist Five', 
-                'email' => 'psychologist5@psychline.ph',
+                'email' => 'psychologist5@actualyzd.com',
                 'username' => 'psychologist5',
                 'password' => 'password', 
             ],
@@ -72,62 +75,38 @@ class UsersSeeder extends Seeder
         $role = Role::where('name', 'psychologist')->first();
 
         foreach($psychologists as $psycho){
-            $user = User::create([
+            $user = $this->createUser([
                 'name' => $psycho['name'],
-                'email' => $psycho['email'],
-                'username' => $psycho['username'],
-                'password' => Hash::make($psycho['password']),
-                'is_active' => true,
+                'email' => $psycho['email']
             ]);
 
            $user->roles()->attach($role->id); 
         }
     }
-    public function createRoles()
-    {
-        $roles = [
 
-            ['name' => 'superadmin', 'display_name' => 'Superadmin'],
-            ['name' => 'psychologist', 'display_name' => 'Psychologist'],
-            ['name' => 'admin', 'display_name' => 'Admin'],
-            ['name' => 'member', 'display_name' => 'Member'],
-        ];
 
-        foreach($roles as $role){
-            Role::create([
-                'name' => $role['name'], 
-                'display_name' => $role['display_name'], 
-                'class' => array_rand($this->classes()) 
-            ]);
-        }
-    
-    }
     public function superadmin()
     {
-        $user = User::create([
+        $user = $this->createUser([
+
             'name' => 'Superadmin',
-            'email' => 'superadmin@actualyzd.ph',
-            'username' => 'superadmin',
-            'password' => Hash::make('password'),
-            'is_active' => true
+            'email' => 'superadmin@actualyzd.com',
         ]);
 
         $superadmin = Role::where('name', 'superadmin')->first();
 
-        $user->roles()->attach($superadmin->id);
+        $user->roles()->attach($superadmin);
     }
-    public function sanmiguel_admin()
-    {
-        $user = User::create([
-            'name' => 'San Miguel Corporation',
-            'email' => 'sanmiguel@gmail.com',
-            'username' => 'sanmiguel_admin',
+
+    public function createUser(array $data){
+
+        return User::firstOrCreate([
+
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'username' => $data['email'],
             'password' => Hash::make('password'),
             'is_active' => true
         ]);
-
-        $sanmiguel_admin = Role::where('name', 'admin')->first();
-
-        $user->roles()->attach($sanmiguel_admin->id);
     }
 }
