@@ -64,6 +64,41 @@
 
                         @else
 
+                            <li class="nav-item dropdown">
+                                <a href="#" id="notifications" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-bell"></i>
+                                    <span class="badge badge-danger badge-counter">{{ count(auth()->user()->notifications()->whereNull('read_at')->get()) }}</span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notifications">
+                                    @if(count(auth()->user()->unreadNotifications) > 0)
+                                        @foreach(auth()->user()->unreadNotifications->slice(0, 3) as $notification)
+                                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                                <div class="mr-3">
+                                                    <i class="fa fa-bell"></i>
+                                                    
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <span class="{{ is_null($notification->read_at) ? 'font-weight-bold' : '' }}">
+                                                            {{ $notification->data['title'] }}
+                                                        </span>
+                                                        <span class="small text-gray-500">
+                                                            {{ $notification->created_at->diffForHumans() }}
+                                                        </span>
+                                                    </div>
+                                                    <span>
+                                                        {{ $notification->data['description'] }}
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    @else
+                                        <a href="#" class="dropdown-item">No Notifications Available</a>
+                                    @endif
+                                </div>
+                            </li>
+
                             <li class="mr-3">
                                 <faq-icon></faq-icon>
 

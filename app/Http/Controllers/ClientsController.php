@@ -48,14 +48,15 @@ class ClientsController extends Controller
 
         DB::beginTransaction();
 
-        $client = $this->storeClient($request->all());
+            // create client
+            $client = $this->storeClient($request->all());
 
-        // send email
-        Mail::to($client->email)->send(New ClientCreated($client));
+            // send email
+            Mail::to($client->email)->send(New ClientCreated($client));
 
         DB::commit();
 
-        return redirect()->back()->with('success', 'New Client Has Been Added!');
+        return redirect()->back()->with('success', 'Successfully added a new client!');
     }
 
 
