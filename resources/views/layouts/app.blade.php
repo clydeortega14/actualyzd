@@ -64,6 +64,16 @@
 
                         @else
 
+                            <li class="mr-3 border-right">
+                                <a href="#" class="nav-link">
+                                    <faq-icon></faq-icon>
+                                </a>
+
+                                <faq-modal></faq-modal>
+                                <!-- Help Modal -->
+                                {{-- @include('layouts.includes.modals.help-modal') --}}
+                            </li>
+
                             <li class="nav-item dropdown">
                                 <a href="#" id="notifications" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-bell"></i>
@@ -99,17 +109,11 @@
                                 </div>
                             </li>
 
-                            <li class="mr-3">
-                                <faq-icon></faq-icon>
-
-                                <faq-modal></faq-modal>
-                                <!-- Help Modal -->
-                                {{-- @include('layouts.includes.modals.help-modal') --}}
-                            </li>
+                            
                             
                             <li>
                                 <a href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link">
                                     <i class="far fa-arrow-alt-circle-right"></i>
                                     <span class="ml-2">{{ __('Logout') }}</span>
                                 </a>

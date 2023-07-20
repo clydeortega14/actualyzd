@@ -267,7 +267,7 @@
                       // assinged to checked
                       checked = 'checked';
 
-                      let findBookedSchedule = time_schedules.find(time_sched => time_sched.time_id === time.id)
+                      let findBookedSchedule = time_schedules.find(time_sched => time_sched.time_id === time.id);
 
                       // check if shed has already a booking
                       if(findBookedSchedule.is_booked){
