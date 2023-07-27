@@ -28,7 +28,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-body">
-						<ConcernsChart />
+						<ConcernsChart :height="chartHeight"/>
 					</div>
 				</div>
 				
@@ -47,6 +47,13 @@
 
 	export default {
 		name: "Summary",
+		data(){
+
+			return {
+
+				chartHeight: 175
+			}
+		},
 		mixins: [ ServiceUtilization ],
 		components: {
 			ConcernsChart
