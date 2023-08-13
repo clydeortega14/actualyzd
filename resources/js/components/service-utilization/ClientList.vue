@@ -1,22 +1,11 @@
 <template>
-	<div class="list-group">
-
+	<div class="mb-3">
 		<div v-if="allClients.length > 0">
-	        <a href="#" class="list-group-item" :class="{ active: overallActive }" @click.prevent="overAll">
-	        	<i class="fa fa-users"></i>	
-	        	<span class="ml-2">Overall</span>
-	        </a>
 
-	        <a href="#" class="list-group-item" :class="{ active: activeId === client.id}"
-	        	v-for="client in allClients" :key="client.id"
-	        	@click.prevent="toggleClient(client.id)">
-	        	<i class="fa fa-user"></i>
-	        	<span class="ml-2">{{ client.name }}</span>
-	        </a>
-        </div>
-
-        <div v-else>
-        	No Active Clients
+			<select class="custom-select" v-model="selected_client">
+				<option :value="null">All Clients</option>
+				<option v-for="client in allClients" :key="client.id" :value="client.id">{{ client.name }}</option>
+			</select>
         </div>
     </div>
 </template>
@@ -32,7 +21,8 @@
 
 				activeId: null,
 				isActive: false,
-				overallActive: true
+				overallActive: true,
+				selected_client: null
 			}
 		},
 		created(){
@@ -46,21 +36,16 @@
 
 			...mapActions([
 				'serviceUtilization'
-			]),
-			toggleClient(id){
-				this.activeId = id;
-				this.overallActive = false;
+			])
+		},
+		watch: {
+
+			selected_client(value){
 				this.serviceUtilization({
 					params: {
-						client: id
+						client: value
 					}
 				});
-			},
-			overAll(){
-
-				this.activeId = null;
-				this.overallActive = true;
-				this.serviceUtilization();
 			}
 		}
 	}
