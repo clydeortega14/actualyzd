@@ -144,10 +144,12 @@
                     @yield('content')
                 </main>
             @endguest
-        
+            
 
             @auth
+                
                 @include('layouts.includes._sidebar')
+                
             @endauth
         
             

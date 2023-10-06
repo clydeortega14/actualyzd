@@ -17,9 +17,10 @@ class VerifyEmailQueued extends VerifyEmail implements ShouldQueue
      *
      * @return void
      */
+
     public function __construct()
     {
-        //
+        // $this->token = $token;
     }
 
     /**
@@ -41,9 +42,11 @@ class VerifyEmailQueued extends VerifyEmail implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $verificationUrl = $this->verificationUrl($notifiable);
+
         return (new MailMessage)
                     ->line('Please click the button below to verify your email address.')
-                    ->action('Verify Email Address', url('/'))
+                    ->action('Verify Email Address', $verificationUrl)
                     ->line('If you did not create an account, no further action is required.');
     }
 
