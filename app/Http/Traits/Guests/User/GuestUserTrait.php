@@ -6,10 +6,12 @@ use App\Http\Requests\GuestUserRequest;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 
 trait GuestUserTrait {
 
+	use RegistersUsers;
 
 	public function storeApplyingIndividual(GuestUserRequest $request)
 	{
@@ -19,8 +21,9 @@ trait GuestUserTrait {
 
 		event(new Registered($user));
 
+		$this->guard()->login($user);
 
-		return redirect()->back()->with('success', 'Successfully Registered');
+		return redirect()->route('home');
 	}
 
 	public function createUser(array $data)

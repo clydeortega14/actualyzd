@@ -45,9 +45,6 @@ Auth::routes(['verify' => true]);
 /* For Authenticated Users Only*/
 Route::middleware(['auth', 'verified'])->group(function(){
 
-
-	
-
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 
 	Route::get('service-utilization-dashboard', 'HomeController@serviceUtilizationDashboard')->name('service.utilization.dashboard');

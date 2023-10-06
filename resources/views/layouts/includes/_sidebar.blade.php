@@ -1,10 +1,7 @@
 <div class="wrapper">
     <!-- SideBar -->
+    @if(!is_null(auth()->user()->email_verified_at))
     <nav id="sidebar">
-        {{-- <div class="sidebar-header">
-            <h3>{{ config('app.name', 'Laravel') }}</h3>
-        </div> --}}
-
         @if(is_null(auth()->user()->avatar))
             <a href="{{ route('user.profile', auth()->user()->id) }}">
                 <div id="container">
@@ -14,11 +11,11 @@
                 </div>
             </a>
         @else
-            {{-- <div class="d-flex justify-content-center align-items-center"> --}}
-                <a href="{{ route('user.profile', auth()->user()->id) }}">
-                    <img src="{{ file_exists(public_path('storage/'.auth()->user()->avatar)) ? asset('storage/'.auth()->user()->avatar) : '/images/profile.png' }}" class="mt-3 rounded-circle ac-avatar">
-                </a>
-            {{-- </div> --}}
+           
+            <a href="{{ route('user.profile', auth()->user()->id) }}">
+                <img src="{{ file_exists(public_path('storage/'.auth()->user()->avatar)) ? asset('storage/'.auth()->user()->avatar) : '/images/profile.png' }}" class="mt-3 rounded-circle ac-avatar">
+            </a>
+            
         @endif
 
         <ul class="list-unstyled components">
@@ -57,13 +54,6 @@
                         <span class="ml-3">Dashboard</span>
                     </a>
                 </li>
-
-                {{-- <li class="{{ Route::is('users.index') ? 'active' : '' }}">
-                    <a href="{{ route('users.index') }}">
-                        <i class="fa fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                </li> --}}
             @endif
 
             @if($user->hasRole(['superadmin']))
@@ -122,23 +112,7 @@
                                 <span class="ml-3">Packages</span>
                             </a>
                         </li>
-                        {{-- <li>
-                            <a href="#accessRightsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                                <i class="fa fa-wrench"></i>
-                                <span>Access Rights</span>
-                            </a>
-                            <ul class="collapse list-unstyled" id="accessRightsSubmenu">
-                                <li>
-                                    <a href="{{ route('roles.index') }}">
 
-                                        <span>Roles</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('permissions.index') }}">Permissions</a>
-                                </li>
-                            </ul>
-                        </li> --}}
                         <li>
                             <a href="{{ route('assessments') }}">
                                 <i class="fa fa-clipboard-list"></i>
@@ -173,6 +147,7 @@
             @endif
         </ul>
     </nav>
+    @endif
 
     <div id="content">
         <main class="py-4">
