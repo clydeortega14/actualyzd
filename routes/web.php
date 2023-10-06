@@ -20,6 +20,14 @@ Route::prefix('guests')->group(function(){
 
 	Route::get('applying-clients', 'GuestsController@clients')->name('guests.clients');
 
+	Route::get('applying-individual', 'GuestsController@applyingIndividual')->name('guests.applying.individual');
+
+	Route::post(
+		'applying-individual-store', 
+		'GuestsController@storeApplyingIndividual'
+	)
+	->name('guests.store.applying.individual');
+
 });
 
 // Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');
@@ -32,10 +40,13 @@ Route::post('/careers', 'CareersController@store')->name('careers.store');
 
 Route::get('/contact-us', 'GuestsController@contactUs')->name('contact.us');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 /* For Authenticated Users Only*/
-Route::middleware('auth')->group(function(){
+Route::middleware(['auth', 'verified'])->group(function(){
+
+
+	
 
 	Route::get('/home', 'HomeController@index')->middleware('check-role')->name('home');
 

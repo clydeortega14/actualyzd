@@ -63,6 +63,10 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                                <a href="{{ route('guests.applying.individual') }}" class="btn btn-link">
+                                    {{ __('Register as individual customer') }}
+                                </a>
                             </div>
                         </div>
                     </form>
