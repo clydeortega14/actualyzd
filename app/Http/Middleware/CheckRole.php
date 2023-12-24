@@ -22,7 +22,8 @@ class CheckRole
             return redirect()->route('psychologist.home');
         }
 
-        if($user->hasRole('member')){
+        if($user->hasRole('member'))
+        {
 
             return redirect()->route('member.home');
         }
