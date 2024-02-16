@@ -1,0 +1,61 @@
+{
+	"Resources": {
+		"VPC": {
+			"Types": "AWS::EC2::VPC",
+			"Properties": {
+				"CidrBlock": "10.0.0.0/16",
+				"EnableDnsSupport": true,
+				"EnableDnsHostnames": true
+			}
+		},
+		"IntenetGateway": {
+			"Type": "AWS::EC2::IntenetGateway",
+			"Properties": {
+
+			}
+		},
+		"IntenetGatewayAttachment": {
+			"Type": "AWS::EC2::VPCGatewayAttachment",
+			"Properties": {
+				"InternetGatewayId": {
+					"Ref": "IntenetGateway"
+				},
+				"VpcId": {
+					"Ref": "VPC"
+				}
+			}
+		},
+		"PublicSubnet": {
+			"Type": "AWS::EC2::Subnet",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				},
+				"AvailabilityZone": "ap-southeaset-1",
+				"CidrBlock": "10.0.1.0/24",
+				"MapPublicIpOnLaunch": true
+			}
+		},
+		"PublicRouteTable": {
+			"Type": "AWS::EC2::RouteTable",
+			"Properties": {
+				"VpcId": {
+					"Ref": "VPC"
+				}
+			}
+		},
+		"DefaultPublicRoute": {
+			"Type": "AWS::EC2::Route",
+			"DependsOn": "IntenetGatewayAttachment",
+			"Properties": {
+				"RouteTableId": {
+					"Ref": "PublicRouteTable"
+				},
+				"DestinationCidrBlock": "0.0.0.0/0",
+				"GatewayId": {
+					"Ref": "InternetGateway"
+				}
+			}
+		}
+	}
+}
