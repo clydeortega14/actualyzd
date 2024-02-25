@@ -27,7 +27,27 @@ trait BookingTrait {
 
 	public function bookingsQuery()
 	{
-        $bookings = $this->conditionQuery();
+        $bookings = Booking::query();
+
+        if(!auth()->user()->hasRole('superadmin')){
+
+            $bookings->whereNotNull('counselee');
+        }
+
+        // query bookings according to auth user role
+        $this->queryByRole($bookings);
+        
+        // query bookings according to status
+        $this->queryByStatus($bookings, $bookings);
+
+        // with participants
+        $this->withParticipants($bookings)
+        ->where(function($query){
+            $this->queryByStatus($query, $query);
+        });
+
+        // $bookings = $this->conditionQuery();
+
 
         $allBookings = $bookings->with([
             'toSchedule.psych', 
@@ -179,7 +199,7 @@ trait BookingTrait {
 
         if($user->hasRole('psychologist')){
 
-            $sched_id = $user->schedules->pluck('id');
+            $sched_id = $user->schedules->pluck('id')->toArray('id');
 
             $query->whereIn('schedule', $sched_id);
         }

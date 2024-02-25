@@ -24,6 +24,7 @@
 	        </div>
 		</div>
 
+<<<<<<< HEAD
 		<div class="row mb-3">
 			<div class="col-md-12">
 				<div class="card">
@@ -33,6 +34,15 @@
 				</div>
 				
 			</div>
+=======
+	        <div class="col-md-9">
+	        	<div class="card">
+	        		<div class="card-body">
+	        			<ConcernsChart />
+	        		</div>
+	        	</div>
+	        </div>
+>>>>>>> master
 		</div>
 	</div>
 	
