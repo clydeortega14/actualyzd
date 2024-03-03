@@ -10,6 +10,8 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Booking;
 use App\Schedules\Schedule;
+use Illuminate\Support\Facades\Hash;
+use App\Notifications\UserCreated;
 
 class PsychologistsController extends Controller
 {
@@ -102,9 +104,23 @@ class PsychologistsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateUser($request->all())->validate();
+        $this->validate($request, [
 
-        $user = $this->createUser($request->all());
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'unique:users', 'max:255'],
+            'password' => ['required', 'string', 'max:255', 'confirmed'],
+
+        ]);
+
+        $user = User::firstOrCreate([
+            'name' => $request->name,
+            'email' => $request->email,
+            'username' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+
+        // send email to user
+        $user->notify(new UserCreated($user));
 
         // add psychologist role to user
         $user->roles()->attach(2);

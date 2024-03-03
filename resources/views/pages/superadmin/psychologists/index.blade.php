@@ -32,7 +32,7 @@
                                     {{ $psychologists->links() }}
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" name="search" class="form-control" placeholder="Seach Member...">
+                                    <input type="text" name="search" class="form-control" placeholder="Search Psychologist...">
                                 </div>
                             </div>
                             <table class="table mt-3">

@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Traits\Clients\ClientTrait;
+use App\Http\Traits\Guests\User\GuestUserTrait;
 
 class GuestsController extends Controller
 {
-    use ClientTrait;
+    use ClientTrait,
+    GuestUserTrait;
 
 
     public function index()
     {
     	return view('pages.guests.home');
     }
+
+    public function applyingIndividual()
+    {
+        return view('pages.guests.individual-customer.index');
+    }
+
     public function contactUs()
     {
     	return view('pages.guests.contact');

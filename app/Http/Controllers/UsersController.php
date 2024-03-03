@@ -77,9 +77,7 @@ class UsersController extends Controller
 
             'name' => ['required', 'max:255'],
             'email' => ['required', 'unique:users'],
-            'username' => ['required', 'unique:users', 'max:255'],
-            'password' => ['required', 'confirmed'],
-            'roles' => ['required'],
+            'password' => ['required', 'confirmed']
         ]);
 
 
@@ -94,11 +92,19 @@ class UsersController extends Controller
             ]);
 
             // check if request has roles provided
-            if($request->has('roles')){
-
-               
+            if($request->has('roles'))
+            {   
                 // attach roles
                 $this->attachRole($user, $request->roles);
+
+            }else if(count($user->roles) > 0){
+
+                $user->roles()->sync([]);
+
+            }else if($request->has('individual_customer')){
+
+                // attach role as a member
+                $user->roles()->attach(4);
             }
 
             
@@ -191,7 +197,7 @@ class UsersController extends Controller
 
             'name' => $data['name'],
             'email' => $data['email'],
-            'username' => $data['username']
+            'username' => $data['email']
 
         ];
     }

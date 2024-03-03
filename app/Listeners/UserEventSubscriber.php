@@ -46,7 +46,7 @@ class UserEventSubscriber
      */
     public function subscribe($events)
     {
-        $events->listen('Illuminate\Auth\Events\Registered', 'App\Listeners\UserEventSubscriber@handleUserRegister');
+        // $events->listen('Illuminate\Auth\Events\Registered', 'App\Listeners\UserEventSubscriber@handleUserRegister');
         $events->listen('Illuminate\Auth\Events\Login', 'App\Listeners\UserEventSubscriber@handleUserLogin');
         $events->listen('Illuminate\Auth\Events\Logout', 'App\Listeners\UserEventSubscriber@handleUserLogout');
     }

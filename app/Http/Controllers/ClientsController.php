@@ -9,7 +9,10 @@ use App\ClientSubscription;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use DB;
+use App\Mail\ClientCreated;
+use Illuminate\Support\Facades\Mail;
 use App\User;
+
 class ClientsController extends Controller
 {
     /**
@@ -44,11 +47,17 @@ class ClientsController extends Controller
     {
         $validator = $this->validator($request->all())->validate();
 
-        $client = $this->storeClient($request->all());
+        DB::beginTransaction();
 
-        
+            // create client
+            $client = $this->storeClient($request->all());
 
-        return redirect()->back()->with('success', 'New Client Has Been Added!');
+            // send email
+            Mail::to($client->email)->send(New ClientCreated($client));
+
+        DB::commit();
+
+        return redirect()->back()->with('success', 'Successfully added a new client!');
     }
 
 

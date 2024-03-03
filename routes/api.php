@@ -22,6 +22,13 @@ Route::middleware('auth:api')->group(function () {
 });
 
 
+/*
+ * Service Utilization Concerns Chart
+ *
+*/
+Route::post('consultations/chart/data', 'Api\ConsultationsChartController@getConsultations');
+
+
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');
     
