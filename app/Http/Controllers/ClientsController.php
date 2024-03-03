@@ -9,7 +9,7 @@ use App\ClientSubscription;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use DB;
-
+use App\User;
 class ClientsController extends Controller
 {
     /**
@@ -167,16 +167,32 @@ class ClientsController extends Controller
                 'subscription_status_id' => 1
             ]);
 
-            // create an admin user to the client
-            $user = $client->users()->firstOrCreate([
+            $user = User::where('email', $client->email)->first(); 
 
-                'name' => $client->name,
-                'email' => $client->email,
-                'username' => $client->email,
-                'password' => Hash::make('password'),
-                'is_active' => true
-            ]);
+            if(is_null($user))
+            {
+                $user = $client->users()->create([
+                    'client_id' => $client->id,
+                    'name' => $client->name,
+                    'email' => $client->email,
+                    'username' => $client->email,
+                    'password' => Hash::make('password'),
+                    'is_active' => true
+                ]);
+            }
 
+
+            if(is_null($user->client_id))
+            {
+                $user->client_id = $client->id;
+                $user->save();
+            }
+
+
+            if(count($user->roles) > 0){
+
+                $user->roles()->sync([]);
+            }
 
             // add roles to user
             $user->roles()->attach(3);
