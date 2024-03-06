@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 16
-      - run: npm config set legacy-peer-deps=true --location=E:/clyde-projects/actualyzd/src
+      - run: npm config set legacy-peer-deps=true
       - run: npm ci
       - run: npm install
 
