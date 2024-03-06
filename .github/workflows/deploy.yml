@@ -16,7 +16,6 @@ jobs:
           username: actualyzduser
           key: ${{secrets.PRIVATE_KEY}}
           script: "cd www; git pull origin master"
-jobs:
   build-node:
     runs-on: ubuntu-22.04
     steps:
@@ -26,3 +25,4 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm install
+    
