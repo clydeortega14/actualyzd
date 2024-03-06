@@ -23,8 +23,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 16
-      - run: npm config set legacy-peer-deps=true
-      - run: npm ci
-      - run: npm install
+          path: ~/.npm
+          key: ${{ runner.os }}--build-${{ env.cache-name }}-${{ hasFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-${{ runner.os }}-build-${{ runner.os }}-
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: list of node modules
+        continue-on-error: true
+        run: npm list
+      - name: NPM SET CONFIG
+        run: npm config set legacy-peer-deps=true
+      - name: Install CI
+        run: npm ci
+      - name: Install Dependencies
+        run: npm install
 
     
