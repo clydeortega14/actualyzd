@@ -1,0 +1,17 @@
+name: deploy
+
+on: 
+  workflow_dispatch: 
+
+jobs:
+  deploy: Deploy to AWS
+  run-on: ubuntu-22.04
+  steps:
+    - name: Deploy
+      uses: appleboy/ssh-action@0.1.8
+      with:
+        host: 18.141.190.251
+        port: 22
+        username: actualyzduser
+        key: ${{secrets.PRIVATE_KEY}}
+        script: "cd www; git pull origin master"
