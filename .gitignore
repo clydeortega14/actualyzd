@@ -13,3 +13,6 @@ yarn-error.log
 Procfile
 stack.json
 stack-two.json
+storage/key
+storage/key.pub
+storage/debugbar
