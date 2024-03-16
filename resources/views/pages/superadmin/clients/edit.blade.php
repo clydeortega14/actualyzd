@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('custon_styles')
+
+<link rel="stylesheet" type="text/css" href="{{ asset('css/user-lists-styles.css') }}">
+
 @section('content')
 
 	<div class="container-fluid">

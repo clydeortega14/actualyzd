@@ -33,8 +33,9 @@
         border: 5px solid #D5D5D5;
       }
     </style>
-    
 
+    
+    
     @yield('custom_styles')
 </head>
 <body>

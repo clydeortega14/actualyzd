@@ -78,6 +78,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ProgressReport::class, 'counselee', 'id');
     }
 
+    public function getStatusNameAttribute()
+    {
+        return $this->is_active ? 'Active' : 'Inactive';
+    }
+
     /**
      * Send the password reset notification.
      *

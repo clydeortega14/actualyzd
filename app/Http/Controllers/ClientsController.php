@@ -104,9 +104,9 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Client $client)
     {
-        $client = Client::findOrFail($id);
+        // $client = Client::findOrFail($id);
         $packages = Package::has('services')->with(['services'])->get();
 
         return view('pages.superadmin.clients.edit', compact('client', 'packages'));
