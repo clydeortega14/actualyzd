@@ -29,6 +29,10 @@ Route::middleware('auth:api')->group(function () {
 Route::post('consultations/chart/data', 'Api\ConsultationsChartController@getConsultations');
 
 
+// Client Subscriptions
+Route::post('client/subscriptions', 'Api\ClientSubscriptionController@clientSubscriptions');
+
+
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');
     

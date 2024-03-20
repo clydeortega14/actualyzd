@@ -52,8 +52,17 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
 
+	// Client Subscription
+	Route::get('client/{client}/subscription', 'ClientsController@showSubscription')->name('client.show.subscription');
+
+	// Client System Users
+	Route::get('client/{client}/users', 'ClientsController@showClientUsers')->name('client.show.users');
+
 	// Add client subscription
 	Route::get('subscriptions/{client}', 'ClientsController@subscriptions')->name('client.subscriptions');
+
+	// Renew Client Subscription
+	Route::post('client/subscription/renew', 'ClientsController@renew')->name('client.subscription.renew');
 
 	// Store client subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');

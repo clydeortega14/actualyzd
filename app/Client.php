@@ -35,4 +35,9 @@ class Client extends Model
     {
         return $this->hasOne(ClientSubscription::class, 'client_id');
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(ClientSubscription::class, 'client_id');
+    }
 }

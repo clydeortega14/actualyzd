@@ -73,6 +73,9 @@ Vue.component('video-call', require('./components/video-chat/VideoCall.vue').def
  */
 Vue.component('service-utilization', require('./components/service-utilization/ServiceUtilization.vue').default);
 
+// Services Card
+Vue.component('services-card', require('./components/service-utilization/Services.vue').default);
+
 // Clients Lists
 Vue.component('client-lists', require('./components/service-utilization/ClientList.vue').default);
 

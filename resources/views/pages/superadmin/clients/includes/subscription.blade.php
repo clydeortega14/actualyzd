@@ -1,52 +1,64 @@
 <div class="container">
-	<div class="row justify-content-between mb-3">
-		@php
-			$subscription = $client->subscription->package;
-		@endphp
-		<div class="col-md-6">
-			<div>
-				<span>Subscribed to</span>
-			</div>
-			<div>
-				
-				<div>
-					<h1>{{ $subscription->name }}</h1>
-				</div>
-			</div>
-			<div>
-				<span>Exp {{ $client->subscription->wholeDate() }}</span>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div>
-				<span>Subscription Price</span>
-			</div>
-			<div>
-				<h1> &#8369; {{ $subscription->formattedPrice() }}</h1>
-			</div>
-			<div>
-				<span>{{ $subscription->no_of_months.' Month/s' }}</span>
-			</div>
-		</div>
-	</div>
+	@include('alerts.message')
+	<form action="{{ route('client.subscription.renew') }}" method="POST">
 
-	<div class="row mt-5">
+		@csrf
+
+
+		@if(count($client->subscriptions) > 0)
+			@foreach($client->subscriptions as $sub)
+				<div class="row justify-content-between mb-5 border-bottom">
+					<div class="col-md-6">
+						<div>
+							<span>Subscribed to</span>
+						</div>
+						<div>
+							<div>
+								<h5 class="card-title">{{ $sub->package->name }}</h5>
+							</div>
+						</div>
+						<div>
+							<span>Exp {{ $sub->wholeDate() }}</span>
+						</div>
+					</div>
+					<div class="col-md-6 d-flex align-items-center">
+
+						<input type="text" name="client_subscription_id" value="{{ $sub->id }}">
+						<input type="text" name="package_id" value="{{ $sub->package->id }}">
+
+						<button type="submit" class="btn btn-outline-primary btn-sm">Renew</button>
+					</div>
+				</div>
+			@endforeach
+		@endif
+	</form>
+
+	<div class="row">
 		<div class="col-md-12">
-			<div>
-				<h5 class="card-title">
-					Details
-				</h5>
+			<div class="d-flex justify-content-between mb-3">
+				<div class="d-flex align-items-center">
+					<h5 class="card-title">Recent Transactions</h5>
+				</div>
+				<a href="{{ route('client.subscriptions', $client->id) }}" class="btn btn-outline-primary btn-sm">add subscription</a>
 			</div>
-			<div>
-				<ul class="list-group">
-					@foreach($subscription->services as $service)
-						<li class="list-group-item d-flex justify-content-between align-items-center">
-						    <b>{{$service->sessionType->name}}</b>
-						    <span class="badge badge-primary badge-pill">{{ $service->limit }}</span>
-						</li>
-					@endforeach
-				</ul>
-			</div>
+			
+			<ul class="list-group">
+				@foreach($subscriptions as $sub)
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<div>
+							<b>{{ $sub->package->name }}</b>
+							<div class="mt-0">
+								<small class="mt-0">{{ $sub->status->name }}</small>
+							</div>
+						</div>
+						<div class="d-flex align-items-end">
+							<span class="text-gray"><b>&#8369; {{ $sub->package->formattedPrice() }}</b> <br />
+								<small>{{ $sub->created_at }}</small>
+							</span>
+						</div>
+					</li>
+				@endforeach
+			</ul>
 		</div>
 	</div>
 </div>

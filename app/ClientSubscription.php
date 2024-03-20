@@ -8,7 +8,7 @@ class ClientSubscription extends Model
 {
     protected $table = 'client_subscriptions';
 
-    protected $fillable = ['client_id', 'package_id', 'completion_date', 'subscription_status_id'];
+    protected $fillable = ['client_id', 'package_id', 'reference_no', 'completion_date', 'subscription_status_id'];
 
 
     public function client()
@@ -29,5 +29,10 @@ class ClientSubscription extends Model
     public function wholeDate()
     {
         return date('F j, Y', strtotime($this->completion_date));
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(ClientSubscriptionHistory::class);
     }
 }

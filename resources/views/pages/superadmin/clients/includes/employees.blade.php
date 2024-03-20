@@ -1,8 +1,4 @@
 <div class="container mt-3 mb-4">
-
-	@php
-		$employees = $client->users()->with(['roles'])->get();
-	@endphp
 	<div class="row justify-content-center mb-3">
 		<div class="col-md-8 text-center">
 			<div>

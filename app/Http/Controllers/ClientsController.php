@@ -12,9 +12,12 @@ use DB;
 use App\Mail\ClientCreated;
 use Illuminate\Support\Facades\Mail;
 use App\User;
+use App\Http\Traits\Clients\Subscriptions\ClientSubscriptions as ClientSubscriptionTrait;
 
 class ClientsController extends Controller
 {
+    use ClientSubscriptionTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -106,10 +109,7 @@ class ClientsController extends Controller
      */
     public function edit(Client $client)
     {
-        // $client = Client::findOrFail($id);
-        $packages = Package::has('services')->with(['services'])->get();
-
-        return view('pages.superadmin.clients.edit', compact('client', 'packages'));
+        return view('pages.superadmin.clients.edit', $this->mainVars($client));
     }
 
     /**
@@ -151,17 +151,35 @@ class ClientsController extends Controller
         return view('pages.superadmin.clients.subscription', compact('client', 'packages'));
     }
 
+    public function showSubscription(Client $client)
+    {
+
+        return view('pages.superadmin.clients.subscriptions.index', $this->mainVars($client));
+    }
+
+    public function showClientUsers(Client $client)
+    {
+        return view('pages.superadmin.clients.users.show', $this->mainVars($client));
+    }
+
+    public function mainVars(Client $client)
+    {
+        $subscriptions = $client->subscriptions()->with(['package', 'status'])->orderBy('created_at', 'desc')->get();
+
+        $employees = $client->users()->with(['roles'])->get();
+
+        $client_subscriptions = $this->getSubscriptions($client)->get();
+
+        return compact('client', 'subscriptions', 'employees', 'client_subscriptions');
+    }
+
     public function addSubscription(Request $request)
     {
 
         $client = Client::findOrFail($request->client_id);
 
-        if(!$client->is_active){
-
-            return redirect()->back()->with('error', 'Client must be ACTIVATED first before adding subscription');
-        }
-
-
+        if(!$client->is_active) return redirect()->back()->with('error', 'Client must be ACTIVATED first before adding subscription');
+        
         $package = Package::findOrFail($request->package_id);
 
         $completion_date = now()->addMonths($package->no_of_months)->toDateString();
@@ -174,41 +192,48 @@ class ClientsController extends Controller
                 'package_id' => $package->id,
                 'completion_date' => $completion_date,
                 'subscription_status_id' => 1
+                
             ]);
 
-            $user = User::where('email', $client->email)->first(); 
+            $client_subscription->completion_date = $completion_date;
+            $client_subscription->reference_no = 'Cntrct-'.str_pad($client_subscription->id, 20, "0", STR_PAD_LEFT);
+            $client_subscription->save();
 
-            if(is_null($user))
-            {
-                $user = $client->users()->create([
-                    'client_id' => $client->id,
-                    'name' => $client->name,
-                    'email' => $client->email,
-                    'username' => $client->email,
-                    'password' => Hash::make('password'),
-                    'is_active' => true
-                ]);
-            }
+            dd($client_subscription);
+
+            // $user = User::where('email', $client->email)->first(); 
+
+            // if(is_null($user))
+            // {
+            //     $user = $client->users()->create([
+            //         'client_id' => $client->id,
+            //         'name' => $client->name,
+            //         'email' => $client->email,
+            //         'username' => $client->email,
+            //         'password' => Hash::make('password'),
+            //         'is_active' => true
+            //     ]);
+            // }
 
 
-            if(is_null($user->client_id))
-            {
-                $user->client_id = $client->id;
-                $user->save();
-            }
+            // if(is_null($user->client_id))
+            // {
+            //     $user->client_id = $client->id;
+            //     $user->save();
+            // }
 
 
-            if(count($user->roles) > 0){
+            // if(count($user->roles) > 0){
 
-                $user->roles()->sync([]);
-            }
+            //     $user->roles()->sync([]);
+            // }
 
-            // add roles to user
-            $user->roles()->attach(3);
+            // // add roles to user
+            // $user->roles()->attach(3);
 
         DB::commit();
 
-        return redirect()->route('clients.edit', $client->id);
+        return redirect()->route('client.show.subscription', $client->id);
     }
 
     public function clientsWithUsers()
