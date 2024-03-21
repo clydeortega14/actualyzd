@@ -1,9 +1,11 @@
 <div class="container">
 	@include('alerts.message')
+
+	<client-subscription></client-subscription>
+	
+{{-- 
 	<form action="{{ route('client.subscription.renew') }}" method="POST">
-
 		@csrf
-
 
 		@if(count($client->subscriptions) > 0)
 			@foreach($client->subscriptions as $sub)
@@ -23,15 +25,15 @@
 					</div>
 					<div class="col-md-6 d-flex align-items-center">
 
-						<input type="text" name="client_subscription_id" value="{{ $sub->id }}">
-						<input type="text" name="package_id" value="{{ $sub->package->id }}">
+						<input type="hidden" name="client_subscription_id" value="{{ $sub->id }}">
+						<input type="hidden" name="package_id" value="{{ $sub->package->id }}">
 
 						<button type="submit" class="btn btn-outline-primary btn-sm">Renew</button>
 					</div>
 				</div>
 			@endforeach
 		@endif
-	</form>
+	</form> --}}
 
 	<div class="row">
 		<div class="col-md-12">

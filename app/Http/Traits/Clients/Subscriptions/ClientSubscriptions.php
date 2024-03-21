@@ -24,7 +24,7 @@ trait ClientSubscriptions {
                     return $query2->select('id', 'package_id', 'session_type_id', 'limit');
                 }]);
         }])
-        ->where('subscription_status_id', 1);
+        ->whereIn('subscription_status_id', [1, 2]);
 	}
 
 
@@ -42,13 +42,16 @@ trait ClientSubscriptions {
         $history = $client_subscription->histories()->firstOrCreate([
 
             'amount' => $client_subscription->package->price,
-            'subscription_status_id' => 2
+            'subscription_status_id' => 2,
+            'reference_no' => $this->formatReference($client_subscription)
         ]);
 
-        $history->reference_no = date('mdY', strtotime(now()->toDateString())).str_pad($history->id, 7, "0", STR_PAD_LEFT);
-        $history->save();
+        return redirect()->back()->with('success', 'Successfully Renewed!');
+    }
 
-        return redirect()->back();
 
+    public function formatReference($client_subscription)
+    {
+        return $client_subscription->id.'@'.substr($client_subscription->package->name, 0, 3).'@'.date('mdY', strtotime(now()->toDateString()));
     }
 }

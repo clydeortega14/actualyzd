@@ -17,7 +17,7 @@ class CreateClientSubscriptionHistoriesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('client_subscription_id');
             $table->string('reference_no')->nullable();
-            $table->decimal('amount', 19, 4);
+            $table->decimal('amount', 19, 2);
             $table->boolean('paid')->default(false);
             $table->unsignedSmallInteger('subscription_status_id');
             $table->timestamps();

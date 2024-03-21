@@ -13,6 +13,7 @@ import video_call from './modules/video-call.js';
 import reasons_lists from './modules/reasons-lists.js';
 import user from './modules/user.js';
 import faq from './modules/faq.js';
+import client_subscription from './modules/client-subscription.js';
 
 Vue.use(Vuex)
 
@@ -31,6 +32,7 @@ export default new Vuex.Store({
 		video_call,
 		reasons_lists,
 		user,
-		faq
+		faq,
+		client_subscription
 	}
 })

@@ -7,7 +7,7 @@ const state = () => ({
 
 const getters = {
 	getAllClients: state => state.clients,
-	allClientUsers: state => state.client_users,
+	allClientUsers: state => state.client_users
 }
 
 const actions = {

@@ -50,6 +50,9 @@ Vue.component('schedules-component', require('./components/schedules/Main.vue').
 // Progress Report Client Medication Component
 Vue.component('client-medication', require('./components/progress-reports/ClientMedication.vue').default);
 
+// Client Subscription Component
+Vue.component('client-subscription', require('./components/clients/subscriptions/ClientSubscription.vue').default); 
+
 // Report Assignee Vue Component
 Vue.component('report-assignee', require('./components/progress-reports/ReportAssignee.vue').default);
 
