@@ -1,10 +1,17 @@
 const state = () => ({
 
-	subscriptions: []
+	subscriptions: [],
+	package_id: null,
+	package_name: null,
+	package_services: []
 })
 
 const getters = {
-	getSubscriptions: state => state.subscriptions
+	getSubscriptions: state => state.subscriptions,
+	getPackageId: state => state.package_id,
+	getPackageName: state => state.package_name,
+	getPackageServices: state => state.package_services
+
 }
 
 const actions = {
@@ -16,7 +23,10 @@ const actions = {
 }
 
 const mutations = {
-	setSubscriptions: (state, subscriptions) => (state.subscriptions = subscriptions)
+	setSubscriptions: (state, subscriptions) => (state.subscriptions = subscriptions),
+	setPackageId: (state, package_id) => (state.package_id = package_id),
+	setPackageName: (state, package_name) => (state.package_name = package_name),
+	setPackageServices: (state, package_services) => (state.package_services = package_services)
 }
 
 export default {

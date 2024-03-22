@@ -15,7 +15,7 @@ jobs:
           port: 22
           username: actualyzduser
           key: ${{secrets.PRIVATE_KEY}}
-          script: "cd www; git pull origin master; composer dump-autoload -o"
+          script: "cd www; git pull origin master; composer dump-autoload -o; php artisan migrate"
   build-node:
     runs-on: ubuntu-22.04
     steps:

@@ -21,7 +21,10 @@ trait ClientSubscriptions {
         ->with(['package' => function($query){
             return $query->select('id', 'name', 'description', 'price', 'no_of_months')
                 ->with(['services' => function($query2){
-                    return $query2->select('id', 'package_id', 'session_type_id', 'limit');
+                    return $query2->select('id', 'package_id', 'session_type_id', 'limit')
+                            ->with(['sessionType' => function($query3){
+                                return $query3->select('id', 'name');
+                            }]);
                 }]);
         }])
         ->whereIn('subscription_status_id', [1, 2]);
