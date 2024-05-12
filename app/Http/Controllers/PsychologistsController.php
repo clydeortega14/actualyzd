@@ -59,7 +59,7 @@ class PsychologistsController extends Controller
         $schedules = $schedule->query($user)->get();
         $psychologists = User::withRole('psychologist')->get(['id', 'name']);
 
-        return view('pages.psychologists.schedule', compact('schedules', 'psychologists'));
+        return view('pages.psychologists.index2', compact('schedules', 'psychologists'));
     }
 
     protected function psychSessions($status){

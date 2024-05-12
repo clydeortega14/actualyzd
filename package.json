@@ -22,8 +22,9 @@
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.32.13",
         "sass-loader": "^8.0.0",
-        "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        
+        "@vue/compiler-sfc": "^3.1.0",
+        "@vitejs/plugin-vue": "^1.2.2",
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.3",
@@ -44,6 +45,8 @@
         "sweetalert2": "^10.16.9",
         "vue-chartjs": "^3.5.1",
         "vue-js-modal": "^2.0.0-rc.6",
-        "vuex": "^3.6.2"
+        "vuex": "^4.0.2",
+        "@vue/compat": "^3.1.0",
+        "vue": "^3.2.21",
     }
 }

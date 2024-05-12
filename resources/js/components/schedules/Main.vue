@@ -29,8 +29,8 @@
 					select: this.handleSelect,
 					events: [
 
-						{ title: 'event 1', start: '2021-11-17 14:30:00', end: '2021-11-17 15:30:00', allDay: false },
-          				{ title: 'event 2', date: '2021-11-17' }
+						{ title: 'event 1', start: '2024-04-22 14:30:00', end: '2024-04-23 15:30:00', allDay: false },
+          				{ title: 'event 2', date: '2024-04-24' }
 					]
 				},
 			}
