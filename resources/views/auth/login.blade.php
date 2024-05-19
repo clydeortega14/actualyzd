@@ -43,6 +43,18 @@
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="show_password" id="show-password">
+
+                                    <label class="form-check-label" for="show-password">
+                                        {{ __('Show Password') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="remember">
@@ -75,4 +87,10 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+    <script src="{{ asset('js/custom-scripts/show-password.js') }}"></script>
+
 @endsection

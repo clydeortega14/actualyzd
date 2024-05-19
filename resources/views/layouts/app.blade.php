@@ -160,7 +160,9 @@
     <!-- js compiled assets -->
     <script defer src="{{ asset('js/app.js') }}"></script>
 
+    <script src="{{ asset('js/jquery/index.js') }}"></script>
 
-    @stack('scripts')
+
+    @yield('scripts')
 </body>
 </html>
