@@ -1,6 +1,6 @@
-@extends('layouts.sb-admin.master')
+@extends('layouts.app')
 
-@section('css_links')
+@section('custom_styles')
       <link rel="stylesheet" type="text/css" href="{{ asset('assets/fullcalendar/css/main.css') }}">
 @endsection
 
@@ -30,7 +30,7 @@
 	
 @include('pages.schedules.modals.create-schedule')
 @endsection
-@section('js_scripts')
+@section('scripts')
 
       <script type="text/javascript" src="{{ asset('assets/fullcalendar/js/main.js') }}"></script>
       <script type="text/javascript" src="{{ asset('js/date.js') }}"></script>
@@ -350,12 +350,20 @@
                       </td>
                       <td>${ schedule.booking != null && schedule.booking.counselee != null ? schedule.booking.to_counselee.name : ''}</td>
                       <td style="width: 20%;" align="right">
-                      
-                        <a href="#" class="btn btn-primary btn-sm" disabled>
-                          <i class="fa fa-eye"></i>
-                        </a>
+
+                        ${schedule.booking !== null ? 
+                          `<a 
+                            href='${window.location.origin + "/bookings/session/"+ schedule.booking.room_id}' 
+                            class="btn btn-primary btn-sm" 
+                            target="_blank"
+                            ${schedule.booking !== null ? 'disabled' : ''}
+                            >
+                            <i class="fa fa-eye"></i>
+                          </a>` : ''
+                        }
                         
-                        <button type="button" class="btn btn-danger btn-sm btn-del-sched" data-schedule="${schedule.id}">
+                        
+                        <button type="button" class="btn btn-danger btn-sm btn-del-sched" data-schedule="${schedule.id}"${schedule.booking !== null ? 'disabled' : ''}>
                           <i class="fa fa-trash"></i>
                         </button>
                       </td>

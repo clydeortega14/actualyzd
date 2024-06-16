@@ -6,7 +6,7 @@
                     <div class="card-body text-center text-primary">
                         <h5 class="text-primary">{{ service.name }}</h5>
                         <div class="mt-4">
-                            <span>{{ getPercentage(service.bookings.length, service.limit) }} %</span>
+                            <span>{{ getPercentage(service.bookings.length, service.limit) }} Usage</span>
                             <div class="d-sm-flex justify-content-around mt-3">
                                 <div>{{ service.limit }}</div>
                                 <div class="border-right"></div>

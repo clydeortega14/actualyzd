@@ -103,7 +103,7 @@
                                     <td>{{ service.name }}</td>
                                     <td>{{ service.limit }}</td>
                                     <td>{{ service.bookings.length }}</td>
-                                    <td>{{ getPercentage(service.bookings.length, service.limit) }}%</td>
+                                    <td>{{ getPercentage(service.bookings.length, service.limit) }} %</td>
                                     <td>{{ service.completion_date }}</td>
                                 </tr>
                             </tbody>

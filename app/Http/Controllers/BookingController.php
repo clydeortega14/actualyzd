@@ -85,7 +85,7 @@ class BookingController extends Controller
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'is_firstimer' => $request->is_firstimer,
-                    'status' => 1 // booked
+                    'status' => 6 // pending
                 ]);
 
                 // if booked

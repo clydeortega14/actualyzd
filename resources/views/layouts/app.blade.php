@@ -162,6 +162,10 @@
 
     <script src="{{ asset('js/jquery/index.js') }}"></script>
 
+    <script src="{{ asset('assets/sweetalert2/custom/js/custom.js') }}"></script>
+
+    <script src="{{ asset('js/ajax.js') }}"></script>
+
 
     @yield('scripts')
 </body>
