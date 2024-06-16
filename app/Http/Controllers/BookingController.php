@@ -172,6 +172,9 @@ class BookingController extends Controller
     public function getAssessment($room_id)
     {
         $booking = Booking::where('room_id', $room_id)->first();
+
+        if(is_null($booking)) return redirect()->back()->with('error', 'SESSION NOT FOUND!');
+
         $categories = $this->categories;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $session_statuses = BookingStatus::where(function($query){
