@@ -58,6 +58,7 @@
 									{{ wholeDate(booking.to_schedule.start)+' @ '+`${wholeTime(booking.time.from)} - ${wholeTime(booking.time.to) }`  }}
 								</a> <br />
 								<span class="badge badge-secondary">{{ booking.session_type.name }}</span>
+								<span :class=booking.to_status.class>{{ booking.to_status.name }}</span>
 							</div>
 							
 						</td>

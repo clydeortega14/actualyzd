@@ -139,7 +139,7 @@ trait BookingTrait {
             $bookings->whereNotNull('counselee');
         }
 
-        if($status == 1){
+        if($status == 6){
 
             $bookings->whereIn('status', [1, 5])
                 ->where(function($query2){
@@ -148,16 +148,6 @@ trait BookingTrait {
                 ->whereHas('toSchedule', function($query2){
                     $query2->where('start', '>=', now()->toDateString());
                 });
-        }else if($status == 6){
-
-            $bookings->whereIn('status', [1, 5])
-                ->where(function($query2){
-                    $this->queryByRole($query2);
-                })
-                ->orWhereHas('toSchedule', function($query2){
-                    $query2->where('start', '>', now()->toDateString());
-                });
-
         }else{
 
             $bookings->where('status', $status)
@@ -268,26 +258,47 @@ trait BookingTrait {
 
     public function bookingStatuses()
     {
-        $statuses = BookingStatus::whereIn('id', [ 
-                        1, 
-                        2, 
-                        3, 
-                        4,
-                        6
+        $statuses = BookingStatus::whereIn('name', [ 
+                        'Booked', 
+                        'Completed', 
+                        'No Show', 
+                        'Cancelled',
+                        'Pending'
                     ])->get(['id', 'name', 'class']);
+
+        $statuses_v2 = Booking::select(DB::raw('count(*) as status_count, status, id'))
+                    ->whereIn('status', [2, 3, 4])
+                    ->where(function($query){
+                        $this->queryByRole($query);
+                    })
+                    ->with(['toStatus:id,name,class'])
+                    ->groupBy('status')
+                    ->get()->toArray();
+        
+        $upcoming = Booking::select(DB::raw('count(*) as status_count, status, id'))
+                        ->whereIn('status', [1, 5, 6])
+                        ->where(function($query){
+                            $this->queryByRole($query);
+                        })
+                        ->with(['toStatus:id,name,class'])
+                        ->groupBy('status')
+                        ->get()->toArray();
+
+        $merged = array_merge($upcoming, $statuses_v2);
 
         $by_status_with_total = [];
 
         foreach($statuses as $status){
             $by_status_with_total[] = [
                 'id' => $status->id,
-                'name' => $status->name == 'Booked' ? 'Upcoming' : $status->name,
+                'name' => $status->name == 'Pending' || $status->name == 'Rescheduled' || $status->name == 'Booked' ? 'Upcoming' : $status->name,
                 'total' => $this->countByStatus($status->id),
                 'class' => $status->class
             ];
         }
 
         return response()->json([
+            'merged' => $merged,
             'by_status_with_total' => $by_status_with_total,
             'actions' => $this->statusActionByRole()
         ]);
