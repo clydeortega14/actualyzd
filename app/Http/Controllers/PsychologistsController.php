@@ -31,14 +31,20 @@ class PsychologistsController extends Controller
 
         $rescheduled = $this->countByStatus(5);
         
-        $unclosed_bookings = $this->psychSessions(1)
+        $unclosed_bookings = $this->psychSessions([1, 5,6])
                                 ->whereIn('schedule', $this->pluckPastdueSchedules())
                                 ->whereNotNull('counselee')
                                 ->latest()
                                 ->paginate(10);
 
+        $unclosed_bookings_count = $this->psychSessions([1, 5,6])
+                                    ->whereIn('schedule', $this->pluckPastdueSchedules())
+                                    ->whereNotNull('counselee')
+                                    ->count();
+
         return view('pages.psychologists.main', compact(
             'unclosed_bookings', 
+            'unclosed_bookings_count',
             'upcoming_sessions', 
             'completed_sessions', 
             'cancelled_bookings',
@@ -62,9 +68,9 @@ class PsychologistsController extends Controller
         return view('pages.psychologists.schedule', compact('schedules', 'psychologists'));
     }
 
-    protected function psychSessions($status){
+    protected function psychSessions(array $status){
 
-        return Booking::where('status', $status)
+        return Booking::whereIn('status', $status)
             ->where(function($query){
             if(auth()->user()->hasRole('psychologist')){
                 $query->whereIn('schedule', auth()->user()->schedules->pluck('id'));

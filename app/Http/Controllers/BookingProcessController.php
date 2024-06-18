@@ -15,6 +15,7 @@ use App\Client;
 use App\User;
 use App\Bookings\BookingInterface;
 use App\TimeSchedule;
+use App\BookingStatus;
 
 
 class BookingProcessController extends Controller
@@ -189,6 +190,10 @@ class BookingProcessController extends Controller
 
                 $has_selected_session = session()->has('selected_session');
 
+                $status = BookingStatus::where('name', 'Pending')->first();
+
+                if(is_null($status)) return redirect()->back()->with('error', 'Pending status not found!');
+
                 $booking = Booking::create([
 
                     'room_id' => uniqid(),
@@ -201,7 +206,7 @@ class BookingProcessController extends Controller
                     'self_harm' => $has_selected_session ? null : session('assessment.self_harm'),
                     'harm_other_people' => $has_selected_session ? null : session('assessment.harm_other_people'),
                     'is_firstimer' => $has_selected_session ? null : session('assessment.is_firsttimer'),
-                    'status' => 1,
+                    'status' => $status->id,
                     'link_to_session' => md5(uniqid(rand(), true)),
                 ]);
 

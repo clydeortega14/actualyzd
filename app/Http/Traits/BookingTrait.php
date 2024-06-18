@@ -35,10 +35,26 @@ trait BookingTrait {
         }
 
         // query bookings according to auth user role
-        $this->queryByRole($bookings);
+        // $this->queryByRole($bookings);
+
+        $bookings->where(function($query){
+
+            if(request()->has('status')){
+                $query->where('status', request('status'));
+            }
+
+            // upcoming
+            $query->whereIn('status', [1,5,6])
+                ->whereHas('toSchedule', function($query2){
+                    $query2->whereDate('start', '>=', now()->toDateString());
+                });
+        })
+        ->where(function($query){
+            $this->queryByRole($query);
+        });
         
         // query bookings according to status
-        $this->queryByStatus($bookings, $bookings);
+        // $this->queryByStatus($bookings, $bookings);
 
         // with participants
         $this->withParticipants($bookings)
@@ -139,9 +155,9 @@ trait BookingTrait {
             $bookings->whereNotNull('counselee');
         }
 
-        if($status == 6){
+        if($status == 6 || $status == 1 || $status == 5){
 
-            $bookings->whereIn('status', [1, 5])
+            $bookings->whereIn('status', [1, 5, 6])
                 ->where(function($query2){
                     $this->queryByRole($query2);
                 })
@@ -280,26 +296,17 @@ trait BookingTrait {
                         ->where(function($query){
                             $this->queryByRole($query);
                         })
+                        ->whereHas('toSchedule', function($query){
+                            $query->whereDate('start', '>=', now()->toDateString());
+                        })
                         ->with(['toStatus:id,name,class'])
                         ->groupBy('status')
                         ->get()->toArray();
 
         $merged = array_merge($upcoming, $statuses_v2);
 
-        $by_status_with_total = [];
-
-        foreach($statuses as $status){
-            $by_status_with_total[] = [
-                'id' => $status->id,
-                'name' => $status->name == 'Pending' || $status->name == 'Rescheduled' || $status->name == 'Booked' ? 'Upcoming' : $status->name,
-                'total' => $this->countByStatus($status->id),
-                'class' => $status->class
-            ];
-        }
-
         return response()->json([
             'merged' => $merged,
-            'by_status_with_total' => $by_status_with_total,
             'actions' => $this->statusActionByRole()
         ]);
     }

@@ -88,6 +88,8 @@ class BookingController extends Controller
                     'status' => 6 // pending
                 ]);
 
+                dd($booking);
+
                 // if booked
                 if($booking){
 

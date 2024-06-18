@@ -35,7 +35,7 @@ class MemberController extends Controller
         }
 
         $bookings =  $this->bookingsQuery();
-        $upcoming = $this->findUpcomingSession();
+        $upcoming = $this->bookingsQuery();
         $total_bookings = $this->totalBookings();
         $booking_by_statuses = $this->bookingByStatus();
     	
