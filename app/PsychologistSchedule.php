@@ -22,6 +22,11 @@ class PsychologistSchedule extends Model
         return $this->belongsTo(TimeList::class, 'time_id');
     }
 
+    public function getFormatStartAttribute()
+    {
+        return date('F j, Y', strtotime($this->start));
+    }
+
     public function psych()
     {
     	return	$this->belongsTo(User::class, 'psychologist');

@@ -210,6 +210,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
 		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');
 
+		Route::get('schedule/create', 'SchedulesController@create')->name('schedule.create');
+
+		Route::post('update/pending/schedules', 'SchedulesController@updatePending')->name('update.pending.schedule');
+
 		Route::post('schedule', 'SchedulesController@storeSchedule')->name('psychologist.store.schedule');
 
 		Route::post('delete-schedule', 'SchedulesController@delete')->name('psychologist.delete.schedule');

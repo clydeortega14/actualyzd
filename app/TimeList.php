@@ -32,4 +32,9 @@ class TimeList extends Model
 
         return \Carbon\Carbon::parse($date);
     }
+
+    public function getFormatTimeAttribute()
+    {
+        return date("g:i a", strtotime($this->from)).' - '.date("g:i a", strtotime($this->to));
+    }
 }

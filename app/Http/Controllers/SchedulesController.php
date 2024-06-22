@@ -12,10 +12,21 @@ use App\Http\Traits\CarbonTrait;
 use App\Http\Traits\SchedulesTrait;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use App\Schedules\Schedule;
+use App\User;
 
 class SchedulesController extends Controller
 {
     use CarbonTrait, SchedulesTrait;
+
+    public function create(Schedule $schedule)
+    {
+        $schedules = $schedule->query(auth()->user())->get();
+
+        $psychologists = User::withRole('psychologist')->get(['id', 'name']);
+
+        return view('pages.psychologists.schedule', compact('schedules', 'psychologists'));
+    }
 
     public function index()
     {   
@@ -44,6 +55,22 @@ class SchedulesController extends Controller
         
         return response()->json($mapped_schedules);
     }
+
+    public function updatePending(Request $request)
+    {
+        $booking = Booking::where('room_id', $request->room_id)->first();
+
+        if(is_null($booking)){
+            if($request->ajax()){
+                return response()->json(['error' => true, 'message' => 'Not found!'], 404);
+            }
+
+            return redirect()->back()->with('error', 'Not Found!');
+        }
+
+        //
+    }
+
     public function storeSchedule(Request $request)
     {
 

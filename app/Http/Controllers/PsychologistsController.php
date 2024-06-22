@@ -59,13 +59,23 @@ class PsychologistsController extends Controller
         return view('pages.psychologists.bookings', compact('bookings', 'upcoming'));
     }
 
-    public function schedules(Schedule $schedule)
+    public function schedules()
     {
         $user = auth()->user();
-        $schedules = $schedule->query($user)->get();
-        $psychologists = User::withRole('psychologist')->get(['id', 'name']);
 
-        return view('pages.psychologists.schedule', compact('schedules', 'psychologists'));
+        $user_schedules = $user->schedules()->where('start', '>=', now()->toDateString())->pluck('id');
+
+        $pending_schedules = Booking::whereIn('schedule', $user_schedules)
+            ->where('status', 6)
+            ->with([
+                'toSchedule',
+                'time',
+                'sessionType',
+                'toStatus'
+            ])
+            ->get();
+
+        return view('pages.schedules.index2', compact('pending_schedules'));
     }
 
     protected function psychSessions(array $status){
