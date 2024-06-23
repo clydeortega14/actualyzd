@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Booking;
 
 class BookingActivity
 {
@@ -19,9 +20,12 @@ class BookingActivity
      *
      * @return void
      */
-    public function __construct()
+
+    public $booking;
+
+    public function __construct(Booking $booking)
     {
-        //
+        $this->booking = $booking;
     }
 
     /**

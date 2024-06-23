@@ -16,6 +16,7 @@ use App\User;
 use App\Bookings\BookingInterface;
 use App\TimeSchedule;
 use App\BookingStatus;
+use App\Events\BookingActivity;
 
 
 class BookingProcessController extends Controller
@@ -108,8 +109,6 @@ class BookingProcessController extends Controller
     public function storeOnBoardingQuestions(Request $request)
     {
         $this->validate($request, [
-
-            'is_firsttimer' => ['required'],
             'self_harm' => ['required'],
             'harm_other_people' => ['required'],
             'onboarding_answers' => ['require_with_all']
@@ -192,7 +191,13 @@ class BookingProcessController extends Controller
 
                 $status = BookingStatus::where('name', 'Pending')->first();
 
+                $user = auth()->user();
+
                 if(is_null($status)) return redirect()->back()->with('error', 'Pending status not found!');
+
+                // means that the session is individual
+                // if session is individual, the system must check first if the user is firstimer / repeater
+                $is_firstimer = !$has_selected_session ? ($user->bookings->count() > 0 ? false : true) : false;
 
                 $booking = Booking::create([
 
@@ -205,7 +210,7 @@ class BookingProcessController extends Controller
                     'session_type_id' =>  $has_selected_session ? session('selected_session.id') : 1,
                     'self_harm' => $has_selected_session ? null : session('assessment.self_harm'),
                     'harm_other_people' => $has_selected_session ? null : session('assessment.harm_other_people'),
-                    'is_firstimer' => $has_selected_session ? null : session('assessment.is_firsttimer'),
+                    'is_firstimer' => $is_firstimer,
                     'status' => $status->id,
                     'link_to_session' => md5(uniqid(rand(), true)),
                 ]);
@@ -263,6 +268,9 @@ class BookingProcessController extends Controller
         }
 
         DB::commit();
+
+        // Send Email To psychologist / wellness coach
+        event(new BookingActivity($booking));
 
         // flush the session
         $request->session()->forget(['assessment', 'participants']);

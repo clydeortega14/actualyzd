@@ -6,6 +6,7 @@ use App\Events\BookingActivity;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\ActivityLog;
+use Illuminate\Support\Facades\Log;
 
 class RecordBookingActivity
 {
@@ -27,9 +28,13 @@ class RecordBookingActivity
      */
     public function handle(BookingActivity $event)
     {
-        ActivityLog::create([
-            'user_id' => Auth::id(),
+        // email sending
+        
+        $activity_log = ActivityLog::create([
+            'user_id' => $event->booking->counselee,
             'type_id' => 4, // 4 = 'Booked a session'
         ]);
+
+        Log::info('Logging...', ['activity_log' => $activity_log, 'event' => $event->booking]);
     }
 }
