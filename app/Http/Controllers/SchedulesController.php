@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Schedules\Schedule;
 use App\User;
+use App\BookingStatus;
 
 class SchedulesController extends Controller
 {
@@ -68,7 +69,18 @@ class SchedulesController extends Controller
             return redirect()->back()->with('error', 'Not Found!');
         }
 
-        //
+        $booking_status = BookingStatus::where('name', 'Booked')->first();
+
+        if(is_null($booking_status)){
+            return redirect()->back()->with('error', 'Booked Status not found!');
+        }
+        $booking->status = $booking_status->id;
+        $booking->save();
+
+        // must send email to counselee or session participants, indicating that the session has been a accepted
+        // by the psychologist / wellness coach and is scheduled.
+
+        return redirect()->back()->with('success', 'Session has been scheduled!');
     }
 
     public function storeSchedule(Request $request)

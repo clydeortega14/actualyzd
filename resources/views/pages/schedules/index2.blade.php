@@ -16,42 +16,55 @@
         <div class="col-md-12">
 
             @include('pages.schedules.nav-tabs.nav-item')
+
+            @if(session()->has('success'))
+
+                <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+
+            @endif
             
             @if(count($pending_schedules) > 0)
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Session Type</th>
-                                        <th>Date and Time</th>
-                                        <th>action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($pending_schedules as $pending)
-                                        <tr>
-                                            <td>{{ $pending->sessionType->name }}</td>
-                                            <td>{{ $pending->toSchedule->format_start.' - '.$pending->time->format_time }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-success">Accept</button>
-                                                <button type="button" class="btn btn-sm btn-secondary">Reassign</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                        @foreach($pending_schedules as $pending)
+                            <div class="d-flex justify-content-between border-bottom mb-5">
+                                <div>
+                                    <h5 class="card-title">{{ $pending->sessionType->name }}</h5>
+                                    <p class="card-text">{{ $pending->toSchedule->format_start.' - '.$pending->time->format_time }}</td></p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button type="submit" class="btn btn-sm btn-success mr-2" 
+                                        onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
+                                    <button type="button" class="btn btn-sm btn-secondary">Reassign</button>
+                                </div>
+                            </div>
+
+                            <form action="{{ route('update.pending.schedule') }}" method="POST" id="update-pending-form-{{ $pending->id }}">
+                                @csrf
+                                <input type="hidden" name="room_id" value="{{ $pending->room_id }}">
+                            </form>
+                        @endforeach
+                        
+                        
                     </div>
                 </div>
                 
             @else
                 <p class="text-center p-4">No Pending Session</p>
             @endif
+
+            
         </div>
     </div>
 </div>
+@endsection
 
+@section('scripts')
+
+    <script>
+        (function(){
+            //
+        })
+    </script>
 
 @endsection
