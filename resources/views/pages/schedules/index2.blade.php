@@ -4,13 +4,8 @@
 @section('content')
 
 <div class="container-fluid">
-    <div class="d-flex justify-content-between mb-3">
-        <h3 class="text-gray-800 mb-3">Manage Schedules</h3>
-        <a href="{{ route('schedule.create') }}" class="btn btn-primary">
-            <i class="fa fa-calendar"></i>
-            <span>Create New Schedule</span>
-        </a>
-    </div>
+    
+    @include('pages.schedules.header.index')
 
     <div class="row">
         <div class="col-md-12">
@@ -20,6 +15,12 @@
             @if(session()->has('success'))
 
                 <div class="alert alert-success" role="alert">{{ session('success') }}</div>
+
+            @endif
+
+            @if(session()->has('error'))
+
+                <div class="alert alert-error" role="alert">{{ session('error') }}</div>
 
             @endif
             

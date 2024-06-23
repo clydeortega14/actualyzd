@@ -197,6 +197,14 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	// Get psychologists by date and time selected
 	Route::get('psychologists-by-date-time', 'SchedulesController@psychologistsByDateTime');
 
+	// Sessions View Group
+	Route::prefix('session-view')->group(function(){
+		
+		// Calendar
+		Route::get('calendar', 'SessionViewController@calendar')->name('session.view.calendar');
+
+	});
+
 	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
