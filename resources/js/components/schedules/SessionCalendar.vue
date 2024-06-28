@@ -1,6 +1,6 @@
 <template>
     <div>
-        <FullCalendar :options='calendarOptions' />
+        <FullCalendar :options='calendarOptions'/>
     </div>
 </template>
 
@@ -12,22 +12,43 @@
     import interactionPlugin from '@fullcalendar/interaction'
 
     export default {
-        components: {
-            FullCalendar
-        },
-        created(){
-            console.log(new Date())
-        },
         name: "SessionCalendar",
         data(){
             return {
-                calendarOptions: {
+                
+                
+            }
+        },
+        components: {
+            FullCalendar
+        },
+        computed: {
+            calendarOptions(){
+
+                return {
                     plugins: [dayGridPlugin, interactionPlugin],
                     initialView: 'dayGridWeek',
-                    events: [
-                        { title: 'Meeting', start: new Date() }
-                    ]
+                    events: this.getEvents()
                 }
+            }
+        },
+        methods: {
+            getEvents(){
+
+                let events = [];
+    
+                // api call for current week schedules
+
+                events = [
+
+                    { title: 'Individual', start: '2024-06-24 09:30', end: '2024-06-24 11:30'},
+                    { title: 'Individual', start: '2024-06-24 10:30' },
+                    { title: 'Group', start: '2024-06-24 13:00' },
+                    { title: 'Invidual', start: '2024-06-25 14:00' },
+                    { title: 'Webinar', start: '2024-06-25 16:00' }
+                ];
+
+                return events;
             }
         }
     }
