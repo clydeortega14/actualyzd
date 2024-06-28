@@ -47,3 +47,6 @@ Route::prefix('booking')->group(function(){
 Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
 
 Route::post('chat-message', 'Api\ChatMessageController@store');
+
+Route::post('reassign/session', 'Api\SessionController@reassign');
+

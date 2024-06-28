@@ -36,6 +36,7 @@
                                 <div class="d-flex align-items-center">
                                     <button type="submit" class="btn btn-sm btn-success mr-2" 
                                         onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
+                                    
                                     <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#pending-{{ $pending->id }}">Reassign</button>
 
                                     {{-- Modal for reassining a schedule to another assignee --}}

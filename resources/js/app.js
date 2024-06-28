@@ -46,6 +46,12 @@ Vue.component(
     require("./components/schedules/SessionCalendar.vue").default
 );
 
+// Reassign Session Modal
+Vue.component(
+    "reassign-session-modal",
+    require("./components/schedules/ReassignModal.vue").default
+);
+
 // Reschedule Calendar Vue Component
 Vue.component(
     "reschedule-calendar",
