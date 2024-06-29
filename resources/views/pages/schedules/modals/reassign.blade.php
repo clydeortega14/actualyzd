@@ -3,7 +3,8 @@
         <reassign-session-modal 
             date="{{ $pending->toSchedule->start }}" 
             time="{{ $pending->time_id }}" 
-            userid="{{ auth()->user()->id }}">
+            userid="{{ auth()->user()->id }}"
+            booking-reference="{{ $pending->room_id}}">
         
         </reassign-session-modal>
     </div>

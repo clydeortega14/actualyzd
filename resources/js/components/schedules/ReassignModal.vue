@@ -9,7 +9,7 @@
             <div class="form-group row mt-3">
                 <label for="assignee" class="col-form-label text-md-right col-sm-3">Assignee</label>
                 <div class="col-sm-8">
-                    <select name="assignee" id="assignee" class="form-control">
+                    <select v-model="assignee" id="assignee" class="form-control">
                         <option disabled selected> - Select Assignee - </option>
                         <option v-for="(assignee, index) in allPsychologists" :value="assignee.id">{{ assignee.name }}</option>
                     </select>
@@ -17,7 +17,7 @@
             </div>
             
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary waves-effect">Submit</button>
+                <button type="submit" class="btn btn-primary waves-effect" @click.prevent="submitSessionReassigning">Submit</button>
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">CLOSE</button>
             </div>
         </div>
@@ -33,11 +33,12 @@
         props: {
             date: String,
             time: String,
-            userid: String
+            userid: String,
+            bookingReference: String
         },
         data(){
             return {
-                //
+                assignee: 'select assignee'
             }
         },
         computed: {
@@ -45,15 +46,25 @@
         },
         created(){
             // get psychologist lists
-            this.displayAssignees();
+            this.getPsychologists({
+                date: this.date,
+                time_id: this.time
+            })
         },
         methods: {
-            ...mapActions(["getPsychologists"]),
-            displayAssignees(){
-                this.getPsychologists({
+            ...mapActions(["getPsychologists", "reassignSession"]),
+            submitSessionReassigning(){
+
+                let payload = {
                     date: this.date,
                     time_id: this.time,
-                })
+                    assignee: this.assignee,
+                    booking_reference: this.bookingReference
+                }
+
+                this.reassignSession(payload);
+
+                
             }
         }
     }

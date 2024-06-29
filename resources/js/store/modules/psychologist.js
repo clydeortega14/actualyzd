@@ -14,6 +14,21 @@ const actions = {
 
         commit("setPsychologists", response.data);
     },
+
+    reassignSession({ context }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/reassign/session", payload)
+                .then((res) => {
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    reject(error);
+                });
+        });
+    },
 };
 
 const mutations = {
