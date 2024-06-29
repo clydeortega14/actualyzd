@@ -5,6 +5,14 @@
                 <h4 class="modal-title" id="create-schedule-modal-label">Reassigning Session</h4>
                 <hr>
             </div>
+            
+            <div class="alert alert-danger" role="alert" v-if="checkErrors">
+                {{ this.errors }}
+            </div>
+
+            <div class="alert alert-success" role="alert" v-if="isSuccess">
+                {{ success_message }}
+            </div>
 
             <div class="form-group row mt-3">
                 <label for="assignee" class="col-form-label text-md-right col-sm-3">Assignee</label>
@@ -38,11 +46,17 @@
         },
         data(){
             return {
-                assignee: 'select assignee'
+                assignee: null,
+                errors: [],
+                isSuccess: false,
+                success_message: ''
             }
         },
         computed: {
-            ...mapGetters(["allPsychologists"])
+            ...mapGetters(["allPsychologists"]),
+            checkErrors(){
+                return Object.keys(this.errors).length;
+            }
         },
         created(){
             // get psychologist lists
@@ -62,7 +76,22 @@
                     booking_reference: this.bookingReference
                 }
 
-                this.reassignSession(payload);
+                this.reassignSession(payload).then(response => {
+                    let data = response.data;
+                
+                    if(!data.error){
+                        this.errors = this.checkErrors > 0 && [];
+                        this.isSuccess = true;
+                        this.success_message = data.message;
+                        this.assignee = null;
+                    }
+
+                }).catch(error => {
+                    let error_response = error.response;
+                    let error_data = error_response.data.data;
+                    this.errors = error_data;
+                    
+                });
 
                 
             }

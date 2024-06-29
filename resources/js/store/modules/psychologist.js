@@ -20,11 +20,9 @@ const actions = {
             axios
                 .post("/api/reassign/session", payload)
                 .then((res) => {
-                    console.log(res);
                     resolve(res);
                 })
                 .catch((error) => {
-                    console.log(error);
                     reject(error);
                 });
         });

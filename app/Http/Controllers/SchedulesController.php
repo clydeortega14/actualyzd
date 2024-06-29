@@ -273,6 +273,11 @@ class SchedulesController extends Controller
         $schedules = PsychologistSchedule::withStart()
                         ->withTime()
                         ->withNotBooked()
+                        ->where(function($query){
+                            if(auth()->user()->hasRole('psychologist')){
+                                $query->whereNotIn('psychologist', [auth()->user()->id]);
+                            }
+                        })
                         ->with(['psych', 'timeList'])
                         ->get();
 

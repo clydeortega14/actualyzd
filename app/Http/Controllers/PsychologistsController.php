@@ -67,6 +67,12 @@ class PsychologistsController extends Controller
 
         $pending_schedules = Booking::whereIn('schedule', $user_schedules)
             ->where('status', 6)
+            ->whereHas('toSchedule', function($query){
+                $query->where('start', '>', now()->toDateString());
+            })
+            ->orWhereHas('time', function($query){
+                $query->where('from', '>', now()->toTimeString());
+            })
             ->with([
                 'toSchedule',
                 'time',
