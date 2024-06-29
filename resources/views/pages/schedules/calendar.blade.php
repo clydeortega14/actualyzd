@@ -13,7 +13,7 @@
                 @include('pages.schedules.nav-tabs.nav-item')
 
 
-                <session-view-calendar></session-view-calendar>
+                <session-view-calendar user-id="{{ auth()->user()->id }}"></session-view-calendar>
             </div>
         </div>
     </div>

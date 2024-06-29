@@ -55,4 +55,9 @@ class PsychologistSchedule extends Model
     public function scopeWithNotBooked($query){
         $query->where('is_booked', false);
     }
+
+    public function scopeWithDateAhead($query)
+    {
+        $query->where('start', '>=', now()->toDateString());
+    }
 }

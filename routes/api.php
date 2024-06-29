@@ -50,3 +50,5 @@ Route::post('chat-message', 'Api\ChatMessageController@store');
 
 Route::post('reassign/session', 'Api\SessionController@reassign');
 
+Route::get('scheduled/sessions', 'Api\SessionController@scheduledSessions');
+
