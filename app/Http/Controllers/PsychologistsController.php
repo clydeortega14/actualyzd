@@ -63,16 +63,12 @@ class PsychologistsController extends Controller
     {
         $user = auth()->user();
 
-        $user_schedules = $user->schedules()->where('start', '>=', now()->toDateString())->pluck('id');
+        $user_schedules = $user->schedules()->where('is_booked', true)->pluck('id')->toArray();
+
+        // dd($user_schedules);
 
         $pending_schedules = Booking::whereIn('schedule', $user_schedules)
             ->where('status', 6)
-            ->whereHas('toSchedule', function($query){
-                $query->where('start', '>', now()->toDateString());
-            })
-            ->orWhereHas('time', function($query){
-                $query->where('from', '>', now()->toTimeString());
-            })
             ->with([
                 'toSchedule',
                 'time',

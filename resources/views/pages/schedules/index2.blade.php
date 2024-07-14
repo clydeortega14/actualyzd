@@ -34,13 +34,33 @@
                                     <p class="card-text">{{ $pending->toSchedule->format_start.' - '.$pending->time->format_time }}</td></p>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <button type="submit" class="btn btn-sm btn-success mr-2" 
-                                        onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
-                                    
-                                    <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#pending-{{ $pending->id }}">Reassign</button>
 
-                                    {{-- Modal for reassining a schedule to another assignee --}}
-                                    @include('pages.schedules.modals.reassign')
+                                    @php
+                                        $dateNow = now()->toDateString();
+                                        $timeNow = now()->toTimeString();
+                                        
+                                        $scheduled_date = $pending->toSchedule->start;
+                                        $scheduled_time = $pending->time->from;
+
+
+                                    @endphp
+                                    {{-- Check if date and time if it still valid --}}
+                                    @if($scheduled_date >= $dateNow && $scheduled_time >= $timeNow)
+                                        <button type="submit" class="btn btn-sm btn-success mr-2" 
+                                            onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
+                                        
+                                        
+                                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#pending-{{ $pending->id }}">Reassign</button>
+
+                                        {{-- Modal for reassining a schedule to another assignee --}}
+                                        @include('pages.schedules.modals.reassign')
+
+                                    {{-- Else must show a close / decline button --}}
+                                    @else 
+                                        
+                                        <button type="button" class="btn btn-sm btn-danger" >Decline</button>
+
+                                    @endif
                                 </div>
                             </div>
 

@@ -37,7 +37,7 @@ const actions = {
         const response = await axios.get("/api/scheduled/sessions", {
             params: payload,
         });
-        console.log(response.data);
+
         commit("setScheduledSessions", response.data);
     },
 };
