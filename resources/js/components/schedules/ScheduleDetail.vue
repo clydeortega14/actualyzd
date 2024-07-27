@@ -11,13 +11,7 @@
 
                 <div class="modal-body">
 
-                    <div class="btn-group mb-5 btn-block" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-success">Complete</button>
-                        <button type="button" class="btn btn-danger">Cancel</button>
-                        <button type="button" class="btn btn-warning">Reschedule</button>
-                        <button type="button" class="btn btn-secondary">No Show</button>
-                        <button type="button" class="btn btn-primary">Join Now</button>
-                    </div>
+                    <ScheduleAction :bookingid="getBooking.id" :status="getBooking.status"/>
 
                     <div class="border-bottom mb-3">
                         <b>DateTime</b>
@@ -61,10 +55,14 @@
 
     import { mapGetters, mapActions } from "vuex";
     import DateTime from "../../mixins/datetime";
+    import ScheduleAction from "./Actions.vue"
 
     export default {
         name: "ScheduleDetail",
         mixins: [DateTime],
+        components: {
+            ScheduleAction
+        },
         computed: {
             ...mapGetters(["getBooking"]),
         },
