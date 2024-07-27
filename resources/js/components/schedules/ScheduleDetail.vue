@@ -22,35 +22,34 @@
                     <div class="border-bottom mb-3">
                         <b>DateTime</b>
                         <p>
-                            July 15, 2024 10:00 - 11:00 am
+                            {{ getBooking.to_schedule !== undefined && getBooking.time !== undefined ?  
+                                dateAndTimeFormat(getBooking.to_schedule.start, getBooking.time.from, getBooking.time.to) : 
+                                '' 
+                                }}
                         </p>
                     </div>
 
                     <div class="border-bottom mb-3">
                         <b>Type of session</b>
                         <p>
-                            Individual Session
+                            {{ getBooking.session_type !== undefined ?  getBooking.session_type.name : '' }}
                         </p>
                     </div>
 
                     <div class="border-bottom mb-3">
                         <b>Participants</b>
-                        <ul class="list-unstyled ml-3">
-                            <li>
-                                Mark Juaman
-                                <span class="badge badge-success">Member</span>
-                                <a href="#" class="ml-2">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </li>
-                            <li>
-                                Pychologist Two
-                                <span class="badge badge-success">psychologist</span>
-                                <a href="#" class="ml-2">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </li>
-                        </ul>
+                        <div v-if="getBooking.participants !== undefined">
+                            <ul class="list-unstyled ml-3">
+                                <li v-for="participant in getBooking.participants" :key="participant.id">
+                                    {{  participant.name  }}
+                                    <!-- <span class="badge badge-success">Member</span> -->
+                                    <a href="#" class="ml-2">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,8 +58,19 @@
 </template>
 
 <script>
+
+    import { mapGetters, mapActions } from "vuex";
+    import DateTime from "../../mixins/datetime";
+
     export default {
-        name: "Schedule Detail",
+        name: "ScheduleDetail",
+        mixins: [DateTime],
+        computed: {
+            ...mapGetters(["getBooking"]),
+        },
+        methods: {
+            ...mapActions(["showBooking"])
+        }
         
     }
 </script>

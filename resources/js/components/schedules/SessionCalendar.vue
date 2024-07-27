@@ -45,8 +45,10 @@
             }
         },
         methods: {
-            ...mapActions(["RequestScheduledSessions"]),
+            ...mapActions(["RequestScheduledSessions", "showBooking"]),
             handleEventClick(arg){
+
+                this.showBooking(arg.event.id)
                 
                 let element = this.$refs.modal.$el;
                 

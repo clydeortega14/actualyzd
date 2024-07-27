@@ -45,7 +45,7 @@
 
                                     @endphp
                                     {{-- Check if date and time if it still valid --}}
-                                    @if($scheduled_date >= $dateNow && $scheduled_time >= $timeNow)
+                                    
                                         <button type="submit" class="btn btn-sm btn-success mr-2" 
                                             onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
                                         
@@ -56,11 +56,11 @@
                                         @include('pages.schedules.modals.reassign')
 
                                     {{-- Else must show a close / decline button --}}
-                                    @else 
+                                    
                                         
                                         <button type="button" class="btn btn-sm btn-danger" >Decline</button>
 
-                                    @endif
+                                    
                                 </div>
                             </div>
 

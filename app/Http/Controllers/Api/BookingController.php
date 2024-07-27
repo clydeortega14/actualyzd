@@ -159,4 +159,21 @@ class BookingController extends Controller
             'reason_option_id' => $data['reason_option_id']
         ]);
     }
+
+    public function showBooking($booking_id)
+    {
+        $booking = Booking::where('room_id', $booking_id)->first();
+
+        if(is_null($booking)) return response()->json(['error' => true, 'message' => 'booking not found'], 404);
+        
+        $booking->load([
+            "toSchedule",
+            "sessionType",
+            "participants",
+            "time",
+            "toStatus"
+        ]);
+
+        return response()->json(['error' => false, 'message' => 'success', 'data' => $booking], 200);
+    }
 }

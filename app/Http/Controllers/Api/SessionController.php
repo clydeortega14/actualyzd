@@ -92,7 +92,9 @@ class SessionController extends Controller
         
         $formatted_sessions = $sessions->map(function($session){
             return [
+                'id' => $session->room_id,
                 'borderColor' => '#3CB371',
+                'backgroundColor' => '#3CB371',
                 'title' => $session->sessionType->name,
                 'start' => $session->toSchedule->start.' '.$session->time->from,
                 'end' => $session->toSchedule->end.' '.$session->time->to

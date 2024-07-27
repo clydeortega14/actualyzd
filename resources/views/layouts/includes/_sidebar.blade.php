@@ -2,7 +2,7 @@
     <!-- SideBar -->
     @if(!is_null(auth()->user()->email_verified_at))
     <nav id="sidebar">
-        @if(is_null(auth()->user()->avatar))
+        {{-- @if(is_null(auth()->user()->avatar))
             <a href="{{ route('user.profile', auth()->user()->id) }}">
                 <div id="container">
                     <div id="name">
@@ -16,7 +16,7 @@
                 <img src="{{ file_exists(public_path('storage/'.auth()->user()->avatar)) ? asset('storage/'.auth()->user()->avatar) : '/images/profile.png' }}" class="mt-3 rounded-circle ac-avatar">
             </a>
             
-        @endif
+        @endif --}}
 
         <ul class="list-unstyled components">
             <p class="text-center">Hi, {{ auth()->user()->name }}!</p>

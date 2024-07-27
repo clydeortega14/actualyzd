@@ -43,6 +43,8 @@ Route::prefix('booking')->group(function(){
     Route::post('reschedule', 'Api\BookingController@reschedule');
 });
 
+Route::get('show/booking/{booking_id}', 'Api\BookingController@showBooking');
+
 // Chat Messages API
 Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
 

@@ -94,6 +94,11 @@ const actions = {
                 .catch((error) => reject(error));
         });
     },
+
+    async showBooking({ commit }, room_id) {
+        const response = await axios.get(`/api/show/booking/${room_id}`);
+        commit("setBooking", response.data.data);
+    },
 };
 
 const mutations = {
