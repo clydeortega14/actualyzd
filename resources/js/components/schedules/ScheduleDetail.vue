@@ -10,8 +10,25 @@
 				</div>
 
                 <div class="modal-body">
+                    
+                    <div class="row justify-content-between">
+                        <div class="col-md-8">
+                            <ScheduleAction :bookingid="getBooking.id" :status="getBooking.status"/>
+                        </div>
+                        <div class="col-md-4" v-if="getBooking.to_status !== undefined">
+                            <span :class="getBooking.to_status.class" class="ml-auto pull-right float-right">
+                                {{ getBooking.to_status.name }}
+                            </span>
+                        </div>
+                    </div>
+                    
 
-                    <ScheduleAction :bookingid="getBooking.id" :status="getBooking.status"/>
+                    <div class="border-bottom mb-3">
+                        
+                        <a :href="jitsiUrl + getBooking.link_to_session" class="btn btn-sm btn-success mb-3" target="_blank">
+                            Join Now
+                        </a>
+                    </div>
 
                     <div class="border-bottom mb-3">
                         <b>DateTime</b>
@@ -65,6 +82,14 @@
         },
         computed: {
             ...mapGetters(["getBooking"]),
+            baseUrl(){
+                return window.location.origin;
+            },
+            jitsiUrl(){
+
+                console.log(process.env.MIX_JITSI_URL)
+                return process.env.MIX_JITSI_URL;
+            }
         },
         methods: {
             ...mapActions(["showBooking"])

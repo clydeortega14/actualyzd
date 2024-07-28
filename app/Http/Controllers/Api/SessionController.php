@@ -61,7 +61,14 @@ class SessionController extends Controller
 
         $user_schedules = $user->schedules()->withDateAhead()->pluck('id')->toArray();
 
-        $pending_statuses = BookingStatus::whereIn('name', ['Booked', 'Rescheduled'])->pluck('id')->toArray();
+        $pending_statuses = BookingStatus::whereIn('name', [
+            'Booked', 
+            'Rescheduled', 
+            'Completed', 
+            'No Show', 
+            'Cancelled', 
+            'Pending'
+            ])->pluck('id')->toArray();
         
 
         $sessions = Booking::whereIn('status', $pending_statuses)
@@ -93,8 +100,9 @@ class SessionController extends Controller
         $formatted_sessions = $sessions->map(function($session){
             return [
                 'id' => $session->room_id,
-                'borderColor' => '#3CB371',
-                'backgroundColor' => '#3CB371',
+                'borderColor' => $session->toStatus->border_color,
+                'backgroundColor' => $session->toStatus->background_color,
+                'textColor'=> $session->toStatus->text_color,
                 'title' => $session->sessionType->name,
                 'start' => $session->toSchedule->start.' '.$session->time->from,
                 'end' => $session->toSchedule->end.' '.$session->time->to
