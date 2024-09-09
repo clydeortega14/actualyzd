@@ -84,8 +84,6 @@ class SessionController extends Controller
                                 $query->where('counselee', $user->id)
                                 ->orWhere('booked_by', $user->id);
                             }
-
-                            
                         })
                         ->with([
                             'toStatus', 

@@ -12,6 +12,8 @@ const actions = {
             params: payload,
         });
 
+        console.log(payload)
+
         commit("setPsychologists", response.data);
     },
 

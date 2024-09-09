@@ -90,9 +90,8 @@
 
 
 			EventBus.$on('select-time', (data) => {
-
 				this.disabledSaveChanges = true;
-			})
+			});
 		},
 		components: {
 			TimeLists,

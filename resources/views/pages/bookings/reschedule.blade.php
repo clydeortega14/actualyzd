@@ -5,25 +5,15 @@
 
 	<div class="container-fluid">
 
-		<a href="{{ route('home') }}" class="btn btn-outline-secondary mb-3">
-			<i class="fa fa-arrow-left"></i>
-			<span>Back to Home</span>
-		</a>
+		<h3>Rescheduling a session</h3>
 
-		<h3 ></h3>
+
 		
 
 		<!-- Form for rescheduling -->
 		<div class="row">
+			
 			<div class="col-md-12">
-				<div class="card mb-3">
-					<div class="card-header">
-						<h3 class="card-title text-center">Reschedule Session</h3>
-					</div>
-				</div>
-				
-			</div>
-			<div class="col-md-3">
 				<div class="card mb-3">
 					<div class="card-header">
 						Session Summary
@@ -63,20 +53,13 @@
 				</div>
 			</div>
 
-			<div class="col-md-9">
+			<div class="col-md-12">
 
-				<div class="card">
-					<div class="card-header">
-						Choose Reschedule Date
-					</div>
-					<div class="card-body">
-						<reschedule-calendar 
-							:booking="{{ $booking }}"
-							:user="{{ auth()->user() }}">
-								
-						</reschedule-calendar>
-					</div>
-				</div>
+				<reschedule-calendar 
+					:booking="{{ $booking }}"
+					:user="{{ auth()->user() }}">
+						
+				</reschedule-calendar>
 			</div>
 			
 		</div>

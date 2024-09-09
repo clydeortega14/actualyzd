@@ -90,6 +90,7 @@
 		mounted(){
 
 			EventBus.$on('select-time', data => {
+				
 
 				if(this.getSelectedPsychologistId !== null && this.show_psychologist_component){
 
