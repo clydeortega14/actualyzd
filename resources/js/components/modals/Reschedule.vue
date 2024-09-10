@@ -121,18 +121,12 @@
 
 						if(response.status === 200){
 
-							let data = response.data.data;
-
-							if(response.data.success){
-
-								Swal.fire('Success!', response.data.message, 'success');
-
-							}else{
-
-								Swal.fire('Oops!', response.data.message, 'warning');
-							}
+							Swal.fire(
+								response.data.success ? 'Success!' : 'Oops!', 
+								response.data.message, 
+								response.data.success ? 'success' : 'warning'
+							);
 						}
-						// console.log(response)
 					})
 					.catch(error => {
 
@@ -140,17 +134,8 @@
 
 							let data = error.response.data;
 
-							if(!data.success){
-
-								Swal.fire('Oops!', data.message, 'error')
-							}
+							if(!data.success) Swal.fire('Oops!', data.message, 'error');
 						}
-
-						// this means it is an validation error
-						// if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
-
-						
-						// }
 					})
 			}
 		}

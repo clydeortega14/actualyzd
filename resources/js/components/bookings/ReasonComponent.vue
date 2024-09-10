@@ -44,6 +44,7 @@
 				if(!_.isNil(data)){
 
 					this.show_reason = true;
+					this.show_textarea = true;
 				}
 			});
 

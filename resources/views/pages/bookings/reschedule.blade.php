@@ -24,30 +24,39 @@
 						<ul class="list-group mt-3">
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 								 Date
-					    	    <span>{{ $booking->toSchedule->fullStartDate() }}</span>
+					    	    <span>
+									{{ $booking->toSchedule->fullStartDate() }}
+								</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center">
 								 Time
-					    	    <span>{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}</span>
+					    	    <span>
+									{{ $booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo() }}
+								</span>
 							</li>
-							@if(auth()->user()->hasRole('psychologist'))
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-									 Counselee
-									 @if(is_null($booking->counselee) && count($booking->participants) > 0)
-									 	@foreach($booking->participants as $paticipant)
-						    	    		<span>{{ $participant->name }}</span> <br>
-						    	    	@endforeach
 
-						    	    @else
-						    	    	<span>{{ $booking->toCounselee->name }}</span>
-						    	    @endif
-								</li>
-							@else
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-									Psychologist
-									<span>{{ $booking->toSchedule->psych->name }}</span>
-								</li>
-							@endif
+								
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								@php
+									$user_roles = $booking->toSchedule->psych->roles;
+									$format_roles = implode("/",$user_roles->pluck('name')->toArray());
+								@endphp
+								{{  $format_roles }}
+								<span>{{ $booking->toSchedule->psych->name }}</span>
+							</li>
+
+							<li class="list-group-item d-flex justify-content-between align-items-center">
+								Counselee
+								@if(is_null($booking->counselee) && count($booking->participants) > 0)
+									@foreach($booking->participants as $paticipant)
+										<span>{{ $participant->name }}</span> <br>
+									@endforeach
+
+								@else
+									<span>{{ $booking->toCounselee->name }}</span>
+								@endif
+							</li>
+
 						</ul>
 					</div>
 				</div>
