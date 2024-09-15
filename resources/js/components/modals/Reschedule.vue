@@ -112,6 +112,7 @@
 					time_id: this.getSelectedTimeId,
 					psychologist_id: this.getSelectedPsychologistId,
 					reason_option_id: this.getSelectedReasonID,
+					reason_option_name: this.getSelectedReasonName,
 					updated_by: this.getUserId,
 					others_specify: this.getSelectedReasonName
 				}
@@ -126,11 +127,16 @@
 								response.data.message, 
 								response.data.success ? 'success' : 'warning'
 							);
+
+							this.show_psychologists_component = false;
+							this.disabledSaveChanges = true;
+
+							EventBus.$emit('on-rescheduled-success', response.data);
 						}
 					})
 					.catch(error => {
 
-						if(error.response.status === 403 || error.response.status === 422){
+						if(error.response.status === 403 || error.response.status === 422 || error.response.status === 404){
 
 							let data = error.response.data;
 

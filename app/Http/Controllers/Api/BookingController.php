@@ -10,6 +10,7 @@ use App\Booking;
 use App\Http\Traits\SchedulesTrait;
 use App\RescheduledBooking;
 use App\SpecifyOtherReason;
+use App\ReasonOption;
 
 class BookingController extends Controller
 {
@@ -21,26 +22,22 @@ class BookingController extends Controller
         $current_booking = Booking::findOrFail($request->booking_id);
 
         // validate inputs
-        if($validate_schedule->fails()){
-
-            return response()->json(['success' => false, 'message' => 'Validation errors', 'data' => $validate_schedule->errors()->all() ], 422);
-        }
+        if($validate_schedule->fails()) return response()->json(['success' => false, 'message' => 'Validation errors', 'data' => $validate_schedule->errors()->all() ], 422);
 
         // check if current time is 30 minutes before the recent scheduled time
         $timeIsValidForReschedule = $this->isTimeValidForReschedule($request->all(), $current_booking);
 
-        if(!$timeIsValidForReschedule){
+        if(!$timeIsValidForReschedule) return response()->json(['success' => false, 'message' => 'Sorry, but you can only reschedule 30 minutes before the designated schedule', 'data' => [] ], 403);
 
-            return response()->json(['success' => false, 'message' => 'Sorry, but you can only reschedule 30 minutes before the designated schedule', 'data' => [] ], 403);
-        }
 
         $newSchedule = $this->findSchedule($request->all());
 
         // check if current schedule is booked
-        if($newSchedule->is_booked){
+        if($newSchedule->is_booked) return response()->json(['success' => false, 'message' => 'Sorry but the selected schedule is not available', 'data' => [] ], 403);
 
-            return response()->json(['success' => false, 'message' => 'Sorry but the selected schedule is not available', 'data' => [] ], 403);
-        }
+        $find_reason = ReasonOption::where('id', $request->reason_option_id)->first();
+
+        if(is_null($find_reason)) return response()->json(['success' => false, 'message' => 'Reason option not found!'], 404);
 
         DB::beginTransaction();
 
@@ -62,35 +59,17 @@ class BookingController extends Controller
             if($current_booking){
 
                 // check if reason_option_id is 5, this means that it is an open ended answer
-                if($request->reason_option_id == 5){
+                if($find_reason->option_name === "Others" || $find_reason->option_name === "others"){
 
                     // validate others specify field
                     $others_specify_validator = $this->validateOthers($request->all());
 
                     // if fails
-                    if($others_specify_validator->fails()){
-
-                        // return a validation message
-                        return response()->json(['success' => false, 'message' => 'validation errors', 'data' => $others_specify_validator->errors()->all() ], 422);
-                    }
-
-
-                    // create new reschedule for current booking
-                    $reschedule = $this->createReschedule($request->all());
-
-                    // create specify other reason
-                    SpecifyOtherReason::firstOrCreate([
-                        'rescheduled_booking_id' => $reschedule->id,
-                        'reason' => $request->others_specify
-                    ]);
-
-
-                }else{
-
-                    // create new reschedule for current booking
-                    $reschedule = $this->createReschedule($request->all());
-
+                    if($others_specify_validator->fails()) return response()->json(['success' => false, 'message' => 'validation errors', 'data' => $others_specify_validator->errors()->all() ], 422);
                 }
+
+                // create new reschedule for current booking
+                $reschedule = $this->createReschedule($request->all());
             }
             
         } catch (Exception $e) {
@@ -153,11 +132,14 @@ class BookingController extends Controller
 
     protected function createReschedule(array $data){
 
-        return RescheduledBooking::firstOrCreate([
+        $res = RescheduledBooking::create([
             'booking_id' => $data['booking_id'],
             'updated_by' => $data['updated_by'],
-            'reason_option_id' => $data['reason_option_id']
+            'reason_option_id' => $data['reason_option_id'],
+            'reason' => $data['reason_option_name']
         ]);
+
+        return $res;
     }
 
     public function showBooking($booking_id)

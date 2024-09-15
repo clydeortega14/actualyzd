@@ -110,6 +110,10 @@
 
 
 			})
+
+			EventBus.$on('on-rescheduled-success', data => {
+				this.show_psychologist_component = false;
+			})
 		},
 		methods: {
 

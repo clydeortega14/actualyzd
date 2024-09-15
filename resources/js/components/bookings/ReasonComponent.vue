@@ -1,21 +1,26 @@
 <template>
-	<div class="mt-3" v-if="show_reason">
+	
+	<div>
+		<div class="mt-3" v-if="show_reason">
 
-		<h5 class="card-title mb-3 border-bottom">Reason</h5>
+			<h5 class="card-title mb-3 border-bottom">Reason</h5>
 
-		<div class="custom-control custom-radio mb-3 ml-3" v-for="(reason, index) in allReasons" :key="index">
-			<input type="radio" class="custom-control-input" 
-				:id="`reason-${reason.id}`"
-				:value="{ id: reason.id, name: reason.option_name }"
-				v-model="selected_reason">
+			<div class="custom-control custom-radio mb-3 ml-3" v-for="(reason, index) in allReasons" :key="index">
+				<input type="radio" class="custom-control-input" 
+					:id="`reason-${reason.id}`"
+					:value="{ id: reason.id, name: reason.option_name }"
+					v-model="selected_reason">
 
-			<label class="custom-control-label" :for="`reason-${reason.id}`">{{ reason.option_name }}</label>
+				<label class="custom-control-label" :for="`reason-${reason.id}`">{{ reason.option_name }}</label>
+			</div>
+
+			<div class="ml-3 mb-3" v-if="show_textarea">
+				<textarea class="form-control" placeholder="Please state reason" v-model="others_specify"></textarea>
+			</div>
 		</div>
-
-		<div class="ml-3 mb-3" v-if="show_textarea">
-			<textarea class="form-control" placeholder="Please state reason" v-model="others_specify"></textarea>
+		<div v-if="allReasons.length <= 0">
+			<p class="text-danger text-center p-4">List of reasons not provided, please contact system administrator!</p>
 		</div>
-
 	</div>
 </template>
 
@@ -43,8 +48,12 @@
 
 				if(!_.isNil(data)){
 
-					this.show_reason = true;
-					this.show_textarea = true;
+					if(this.allReasons.length > 0){
+						this.show_reason = true;
+						this.show_textarea = true;
+					}
+
+					
 				}
 			});
 
@@ -57,7 +66,12 @@
 					this.$store.commit('setSelectedReasonName', null);
 					this.selected_reason = null;
 				}
-			})
+			});
+
+			EventBus.$on('on-rescheduled-success', data => {
+				this.show_reason = false;
+				this.selected_reason = null;
+			});
 		},
 		created(){
 
@@ -75,14 +89,22 @@
 
 			selected_reason(value){
 
-				this.show_textarea = value.id === 5 ? true : false
+				if(!_.isNil(value)){
+					let check_value_name = value.name === "Others" || value.name === "others"
 
-				this.others_specify = (value.id !== 5 || value.name !== "Others") ? value.name : "";
+					this.show_textarea = check_value_name ? true : false
 
-				this.$store.commit('setSelectedReasonID', value.id);
-				this.$store.commit('setSelectedReasonName', value.name);
+					this.others_specify = !check_value_name ? value.name : "";
 
-				EventBus.$emit('select-a-reason', { 'reason': value, 'others_specify': this.others_specify });
+					this.$store.commit('setSelectedReasonID', value.id);
+					
+					this.$store.commit('setSelectedReasonName', value.name);
+
+					EventBus.$emit('select-a-reason', { 'reason': value, 'others_specify': this.others_specify });
+
+				}
+				
+				
 			},
 			others_specify(value){
 

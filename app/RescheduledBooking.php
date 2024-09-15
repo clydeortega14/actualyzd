@@ -8,7 +8,7 @@ class RescheduledBooking extends Model
 {
     protected $table = 'rescheduled_bookings';
 
-    protected $fillable = ['booking_id', 'updated_by', 'reason_option_id'];
+    protected $fillable = ['booking_id', 'updated_by', 'reason_option_id', 'reason'];
 
     public function booking()
     {
