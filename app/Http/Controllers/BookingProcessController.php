@@ -176,6 +176,19 @@ class BookingProcessController extends Controller
 
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
+
+        $minimum_time = now()->addHour(config('app.hour_before_booking'));
+
+        $time = TimeList::findOrFail($request->time_id);
+
+        $current_date = now()->toDateString();
+
+        // if start date is equal to current date, then check the time if it is less than to minimum time
+        if($request->selected_date == $current_date && $time->from < $minimum_time) return redirect()->back()->with('error', 'Selected time is beyond minimum hours!');
+
+        // check if request scheduled date is less than current date
+        if($request->selected_date < $current_date) return redirect()->back()->with('error', 'Cannot booked behind schedule!');
+
         $schedule = PsychologistSchedule::whereDate('start', $request->selected_date)
                         ->where('time_id', $request->time_id)
                         ->where('psychologist', $request->psychologist)
