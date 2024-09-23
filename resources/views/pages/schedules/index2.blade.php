@@ -45,22 +45,28 @@
 
                                     @endphp
                                     {{-- Check if date and time if it still valid --}}
-                                    
-                                        <button type="submit" class="btn btn-sm btn-success mr-2" 
-                                            onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
-                                        
-                                        
-                                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#pending-{{ $pending->id }}">Reassign</button>
 
-                                        {{-- Modal for reassining a schedule to another assignee --}}
-                                        @include('pages.schedules.modals.reassign')
+                                        @if($scheduled_date >= $dateNow)
+
+                                            @if($scheduled_date == $dateNow && $scheduled_time >= $timeNow)
+                                    
+                                                <button type="submit" class="btn btn-sm btn-success mr-2" 
+                                                    onclick="event.preventDefault(); document.getElementById('update-pending-form-{{$pending->id}}').submit();" name="btn_action">Accept</button>
+                                            
+                                            
+                                                <button type="button" class="btn btn-sm btn-secondary mr-2" data-toggle="modal" data-target="#pending-{{ $pending->id }}">Reassign</button>
+
+                                                {{-- Modal for reassining a schedule to another assignee --}}
+                                                @include('pages.schedules.modals.reassign')
+
+                                            @endif
+
+                                        @endif
 
                                     {{-- Else must show a close / decline button --}}
                                     
                                         
                                         <button type="button" class="btn btn-sm btn-danger" >Decline</button>
-
-                                    
                                 </div>
                             </div>
 

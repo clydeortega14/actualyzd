@@ -8,11 +8,14 @@ const getters = {
 
 const actions = {
     async getPsychologists({ commit }, payload) {
-        const response = await axios.get(`/psychologists-by-date-time`, {
-            params: payload,
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/psychologists-by-date-time', {
+                    params:payload
+                })
+                .then((response) => resolve(response))
+                .catch((error) => reject(error))
         });
-
-        commit("setPsychologists", response.data);
     },
 
     reassignSession({ context }, payload) {

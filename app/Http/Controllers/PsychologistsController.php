@@ -65,8 +65,6 @@ class PsychologistsController extends Controller
 
         $user_schedules = $user->schedules()->where('is_booked', true)->pluck('id')->toArray();
 
-        // dd($user_schedules);
-
         $pending_schedules = Booking::whereIn('schedule', $user_schedules)
             ->where('status', 6)
             ->with([

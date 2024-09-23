@@ -249,6 +249,13 @@ class SchedulesController extends Controller
                                 'time_lists.to as time_to',
                                 'time_lists.id as time_id'
                             )
+                            ->where(function($query) use ($request) {
+                                if($request->date === now()->toDateString()){
+
+                                    $new_hour = now()->addHour(config('app.hour_before_booking'));
+                                    $query->where('from', '>', $new_hour);
+                                }
+                            })
                             ->whereNotIn('id', $used_schedules)
                             ->orderBy('from', 'asc')
                             ->get();
