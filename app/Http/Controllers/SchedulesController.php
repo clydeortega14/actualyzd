@@ -243,17 +243,18 @@ class SchedulesController extends Controller
 
         $used_schedules = PsychologistSchedule::where('start', $request->date)->where('is_booked', true)->pluck('time_id');
 
-        $time_lists = TimeList::has('schedules')
-                            ->select(
+        $time_lists = TimeList::select(
                                 'time_lists.from as time_from',
                                 'time_lists.to as time_to',
                                 'time_lists.id as time_id'
                             )
                             ->where(function($query) use ($request) {
-                                if($request->date === now()->toDateString()){
 
-                                    $new_hour = now()->addHour(config('app.hour_before_booking'));
-                                    $query->where('from', '>', $new_hour);
+                                $new_hour = now()->addHour(config('app.hour_before_booking'));
+
+                                if($request->date === now()->toDateString())
+                                {
+                                    $query->whereTime('from', '>', $new_hour->toDateTimeString());
                                 }
                             })
                             ->whereNotIn('id', $used_schedules)

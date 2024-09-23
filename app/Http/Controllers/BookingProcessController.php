@@ -234,9 +234,7 @@ class BookingProcessController extends Controller
                  * onboarding questions
                  * */
 
-                if(session()->has('assessment.onboarding_answers')){
-                    $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
-                }
+                if(session()->has('assessment.onboarding_answers')) $this->submitAnswers($booking->id, session('assessment.onboarding_answers'));
 
 
                 /**

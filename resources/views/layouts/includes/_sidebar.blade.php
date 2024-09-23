@@ -65,8 +65,8 @@
                 </li>
             @endif
 
-            @if($user->hasRole(['psychologist', 'superadmin']))
-                <li class="{{ Route::is('psychologist.schedules.page') ? 'active' : '' }}">
+            @if($user->hasRole(['psychologist', 'superadmin', 'member']))
+                <li class="{{ Route::is('psychologist.schedules.page') || Route::is('session.view.calendar') ? 'active' : '' }}">
                     <a href="{{ route('psychologist.schedules.page') }}">
                         <i class="fa fa-calendar"></i>
                         <span class="ml-3">Schedules</span>

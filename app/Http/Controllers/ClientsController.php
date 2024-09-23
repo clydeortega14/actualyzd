@@ -199,8 +199,6 @@ class ClientsController extends Controller
             $client_subscription->reference_no = 'Cntrct-'.str_pad($client_subscription->id, 20, "0", STR_PAD_LEFT);
             $client_subscription->save();
 
-            dd($client_subscription);
-
             // $user = User::where('email', $client->email)->first(); 
 
             // if(is_null($user))
@@ -230,6 +228,9 @@ class ClientsController extends Controller
 
             // // add roles to user
             // $user->roles()->attach(3);
+
+
+        // send email to client
 
         DB::commit();
 
