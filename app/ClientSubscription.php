@@ -35,4 +35,12 @@ class ClientSubscription extends Model
     {
         return $this->hasMany(ClientSubscriptionHistory::class);
     }
+
+    public function scopeWithAlmostExpired($query)
+    {
+        return $query->where('completion_date', '>', now()->toDateString())
+                ->orderBy('completion_date', 'asc');
+    }
+
+    
 }

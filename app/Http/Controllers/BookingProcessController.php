@@ -12,6 +12,9 @@ use App\Booking;
 use App\Http\Traits\BookingTrait;
 use App\SessionType;
 use App\Client;
+use App\ClientSubscription;
+use App\Http\Services\ClientSubscriptionService;
+use App\Http\Services\SessionTypeService;
 use App\User;
 use App\Bookings\BookingInterface;
 use App\TimeSchedule;
@@ -22,6 +25,21 @@ use App\Events\BookingActivity;
 class BookingProcessController extends Controller
 {
     use SchedulesTrait, BookingTrait;
+
+
+    protected $client_subscription_service;
+
+    protected $session_type_service;
+
+
+    public function __construct(
+        ClientSubscriptionService $client_subscription_service, 
+        SessionTypeService $session_type_service
+    )
+    {
+        $this->client_subscription_service = $client_subscription_service;
+        $this->session_type_service = $session_type_service;
+    }
 
     public function selectSessionType()
     {
@@ -176,12 +194,15 @@ class BookingProcessController extends Controller
 
     public function bookingConfirm(Request $request, BookingInterface $booking_interface)
     {
+        $user = auth()->user();
 
         $minimum_time = now()->addHour(config('app.hour_before_booking'));
 
         $time = TimeList::findOrFail($request->time_id);
 
         $current_date = now()->toDateString();
+
+        $has_selected_session = session()->has('selected_session');
 
         // if start date is equal to current date, then check the time if it is less than to minimum time
         if($request->selected_date == $current_date && $time->from < $minimum_time) return redirect()->back()->with('error', 'Selected time is beyond minimum hours!');
@@ -195,19 +216,33 @@ class BookingProcessController extends Controller
                         ->where('is_booked', false)
                         ->first();
 
+        $status = BookingStatus::where('name', 'Pending')->first();
+
+        if(is_null($status)) return redirect()->back()->with('error', 'Pending status not found!');
+
+        // get client id
+        $client_id = session()->has('selected_client') ? session('selected_client.id') : $user->client_id;
+
+        // check client subscription package limit
+        $individual_session = $this->session_type_service->getIndividualSession();
+
+        if(!$has_selected_session && is_null($individual_session)) return redirect()->back()->with('error', 'Individual Session Not found!');
+
+        $session_type_id = $has_selected_session ? session('selected_session.id') : $individual_session->id;
+
+         // get client subscription;
+        $client_subscription = $this->client_subscription_service->manageSubscriptionPackage($client_id, $session_type_id);
+
+         // check client subscription existence
+         if(is_null($client_subscription)) return redirect()->back()->with('error', 'No active subscription was found!');
+
         DB::beginTransaction();
 
         try {
             if(!is_null($schedule)){
 
-                $has_selected_session = session()->has('selected_session');
-
-                $status = BookingStatus::where('name', 'Pending')->first();
-
-                $user = auth()->user();
-
-                if(is_null($status)) return redirect()->back()->with('error', 'Pending status not found!');
-
+                
+                
                 // means that the session is individual
                 // if session is individual, the system must check first if the user is firstimer / repeater
                 $is_firstimer = !$has_selected_session ? ($user->bookings->count() > 0 ? false : true) : false;
@@ -217,10 +252,11 @@ class BookingProcessController extends Controller
                     'room_id' => uniqid(),
                     'schedule' => $schedule->id,
                     'time_id' => request('time_id'),
-                    'client_id' => session()->has('selected_client') ? session('selected_client.id') : auth()->user()->client_id,
-                    'booked_by' => auth()->user()->id,
-                    'counselee' => $has_selected_session ? null : auth()->user()->id,
-                    'session_type_id' =>  $has_selected_session ? session('selected_session.id') : 1,
+                    'client_id' => session()->has('selected_client') ? session('selected_client.id') : $user->client_id,
+                    'client_subscription_id' => $client_subscription->id,
+                    'booked_by' => $user->id,
+                    'counselee' => $has_selected_session ? null : $user->id,
+                    'session_type_id' =>  $session_type_id,
                     'self_harm' => $has_selected_session ? null : session('assessment.self_harm'),
                     'harm_other_people' => $has_selected_session ? null : session('assessment.harm_other_people'),
                     'is_firstimer' => $is_firstimer,
@@ -250,15 +286,9 @@ class BookingProcessController extends Controller
                 }else{ // participants for individual session
 
                     // participants are the psychologist and the member who booked the session
-                    $member_id = auth()->user()->id;
-
-                    $array_participants = [
-                        $request->psychologist, 
-                        $member_id
-                    ];
+                    $array_participants = [$request->psychologist, auth()->user()->id];
 
                     $booking->participants()->attach($array_participants);
-
                 }
 
                 /**

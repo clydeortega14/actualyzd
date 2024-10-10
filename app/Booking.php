@@ -13,6 +13,7 @@ class Booking extends Model
             'schedule', 
             'time_id',
             'client_id',
+            'client_subscription_id',
             'counselee',
             'booked_by', 
             'session_type_id',
@@ -33,6 +34,12 @@ class Booking extends Model
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
+
+    public function subscription()
+    {
+        return $this->belongsTo(ClientSubscription::class);
+    }
+
     public function time()
     {
         return $this->belongsTo('App\TimeList', 'time_id');
