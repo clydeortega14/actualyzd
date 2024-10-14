@@ -4,16 +4,19 @@ namespace App\Http\Traits\BookingProcess;
 
 trait BookingProcessTrait {
 
-    public function checkParticipants($request)
+    public function checkParticipants($request, $booking)
     {
         $participants = [];
 
         if(session()->has('participants')){
             foreach(session('participants') as $participant){
-                $participants[] = $participant;
+                
+                $booking->participants()->attach($participant);
             }
         }else{
-            $participants[] = [$request->psychologist, auth()->user()->id];
+            $booking->participants()->attach([$request->psychologist, $request->user()->id]);
         }
+
+        
     }
 }

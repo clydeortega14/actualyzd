@@ -85,14 +85,14 @@ class SessionController extends Controller
                                 ->orWhere('booked_by', $user->id);
                             }
                         })
+                        ->orWhereHas('participants', function($query) use ($user) {
+                            return $query->where('id', $user->id);
+                        })
                         ->with([
                             'toStatus', 
                             'toCounselee', 
                             'sessionType',
-                            'time',
-                            'participants' => function($query) use ($user) {
-                                $query->where('id', $user->id);
-                            }
+                            'time'
                         ])->get();
         
         $formatted_sessions = $sessions->map(function($session){
@@ -102,8 +102,8 @@ class SessionController extends Controller
                 'backgroundColor' => $session->toStatus->background_color,
                 'textColor'=> $session->toStatus->text_color,
                 'title' => $session->sessionType->name,
-                'start' => $session->toSchedule->start.' '.$session->time->from,
-                'end' => $session->toSchedule->end.' '.$session->time->to
+                'start' => $session->toSchedule->start.'T'.$session->time->from,
+                'end' => $session->toSchedule->end.'T'.$session->time->to
             ];
         });
 

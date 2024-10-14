@@ -40,6 +40,11 @@
                     plugins: [timeGridPlugin, interactionPlugin],
                     initialView: 'timeGridWeek',
                     events: this.getScheduledSessions,
+                    eventTimeFormat: {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        meridiem: 'short'
+                    },
                     eventClick : this.handleEventClick
                 }
             }
