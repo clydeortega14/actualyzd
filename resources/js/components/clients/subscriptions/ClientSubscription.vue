@@ -5,8 +5,9 @@
 				<div>
 					<span>
 						<small>subscribed to</small> <br />
-						<h5 class="mb-0">{{ sub.package.name }}</h5>
-						<small>Exp {{ wholeDate(sub.completion_date) }}</small>
+						<h5 class="mb-0">{{ sub.package.name }} </h5>
+						<small class="text-gray">{{ sub.reference_no }}</small> <br />
+						<small>Expires at {{ wholeDate(sub.completion_date) }}</small>
 					</span>
 				</div>
 			</div>
@@ -16,11 +17,14 @@
 					<span>Renew</span>
 				</button>
 
-				
-
 				<button type="button" class="btn btn-outline-secondary btn-sm" @click.prevent="checkPackageDetail">
 					<i class="fas fa-info-circle"></i>
-					<span>Check Usage</span>
+					<span>Usage</span>
+				</button>
+
+				<button type="button" class="btn btn-outline-danger btn-sm">
+					<i class="fas fa-times"></i>
+					<span>Cancel</span>
 				</button>
 			</div>
 		</div>
@@ -51,9 +55,12 @@
 				
 			}
 		},
+		props: {
+			client: Object
+		},
 		created() {
 			this.getSubscriptionsData({
-				ClientID: 1 
+				ClientID: this.client.client.id
 			});
 		},
 		mounted(){

@@ -13,10 +13,19 @@ use App\Mail\ClientCreated;
 use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\Http\Traits\Clients\Subscriptions\ClientSubscriptions as ClientSubscriptionTrait;
+use Hashids\Hashids;
+use App\SubscriptionStatus;
 
 class ClientsController extends Controller
 {
     use ClientSubscriptionTrait;
+
+    protected $hash_id;
+
+    public function __construct()
+    {
+        $this->hash_id = new Hashids('', 10);
+    }
 
     /**
      * Display a listing of the resource.
@@ -175,64 +184,46 @@ class ClientsController extends Controller
 
     public function addSubscription(Request $request)
     {
-
         $client = Client::findOrFail($request->client_id);
 
         if(!$client->is_active) return redirect()->back()->with('error', 'Client must be ACTIVATED first before adding subscription');
         
-        $package = Package::findOrFail($request->package_id);
+        $package = Package::where('id',$request->package_id)->first();
+
+        if(is_null($package)) return redirect()->back()->with('error', 'No Package was selected!');
 
         $completion_date = now()->addMonths($package->no_of_months)->toDateString();
 
+        // Find subscribed status
+        $subscribed = SubscriptionStatus::withStatus('subscribed')->first();
+
+        if(is_null($subscribed)) return redirect()->back()->with('error', 'subscribed status not found!');
+
+        // check client subscription to prevent over subscribing.
+
+        $client_subscription = ClientSubscription::where([
+
+            ['client_id', '=', $request->client_id],
+            ['package_id', '=', $package->id],
+            ['completion_date', '=', $completion_date],
+            ['subscription_status_id', '=', $subscribed->id]
+        ])
+        ->first();
+
+        if(!is_null($client_subscription)) return redirect()->back()->with('error', 'Cannot process the same subscription within a day.');
+
         DB::beginTransaction();
 
-            $client_subscription = ClientSubscription::firstOrCreate([
-
-                'client_id' => $request->client_id,
-                'package_id' => $package->id,
-                'completion_date' => $completion_date,
-                'subscription_status_id' => 1
-                
-            ]);
-
+            $client_subscription->client_id = $request->client_id;
+            $client_subscription->package_id = $package->id;
+            $client_subscription->subscription_status_id = $subscribed->id;
             $client_subscription->completion_date = $completion_date;
-            $client_subscription->reference_no = 'Cntrct-'.str_pad($client_subscription->id, 20, "0", STR_PAD_LEFT);
+            $client_subscription->reference_no = $this->hash_id->encode($client_subscription->id);
             $client_subscription->save();
 
-            // $user = User::where('email', $client->email)->first(); 
-
-            // if(is_null($user))
-            // {
-            //     $user = $client->users()->create([
-            //         'client_id' => $client->id,
-            //         'name' => $client->name,
-            //         'email' => $client->email,
-            //         'username' => $client->email,
-            //         'password' => Hash::make('password'),
-            //         'is_active' => true
-            //     ]);
-            // }
-
-
-            // if(is_null($user->client_id))
-            // {
-            //     $user->client_id = $client->id;
-            //     $user->save();
-            // }
-
-
-            // if(count($user->roles) > 0){
-
-            //     $user->roles()->sync([]);
-            // }
-
-            // // add roles to user
-            // $user->roles()->attach(3);
-
+        DB::commit();
 
         // send email to client
-
-        DB::commit();
 
         return redirect()->route('client.show.subscription', $client->id);
     }

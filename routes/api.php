@@ -50,7 +50,12 @@ Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
 
 Route::post('chat-message', 'Api\ChatMessageController@store');
 
+// Re assign session api
 Route::post('reassign/session', 'Api\SessionController@reassign');
 
+// Scheduled Sessions API
 Route::get('scheduled/sessions', 'Api\SessionController@scheduledSessions');
+
+// Booking History API
+Route::get('booking/history', 'Api\BookingController@bookingHistory');
 

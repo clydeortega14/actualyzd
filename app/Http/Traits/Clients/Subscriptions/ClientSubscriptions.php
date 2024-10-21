@@ -15,9 +15,11 @@ trait ClientSubscriptions {
             'id',
             'client_id',
             'package_id',
+            'reference_no',
             'completion_date',
             'subscription_status_id'
         )
+        ->where('completion_date', '>=', now()->toDateString())
         ->with(['package' => function($query){
             return $query->select('id', 'name', 'description', 'price', 'no_of_months')
                 ->with(['services' => function($query2){
@@ -27,7 +29,11 @@ trait ClientSubscriptions {
                             }]);
                 }]);
         }])
-        ->whereIn('subscription_status_id', [1, 2]);
+        ->with(['status' => function($query){
+            return $query->select('id', 'name');
+        }])
+        ->whereIn('subscription_status_id', [1, 2])
+        ->orderBy('completion_date', 'asc');
 	}
 
 

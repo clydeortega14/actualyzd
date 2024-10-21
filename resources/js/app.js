@@ -187,6 +187,13 @@ Vue.component(
     require("./components/faq/setups/buttons.vue").default
 );
 
+
+// Bookings History Component
+Vue.component(
+    "bookings-history",
+    require("./components/bookings/BookingHistory.vue").default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

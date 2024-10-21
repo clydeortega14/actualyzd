@@ -11,6 +11,7 @@ use App\Http\Traits\SchedulesTrait;
 use App\RescheduledBooking;
 use App\SpecifyOtherReason;
 use App\ReasonOption;
+use App\Client;
 
 class BookingController extends Controller
 {
@@ -157,5 +158,23 @@ class BookingController extends Controller
         ]);
 
         return response()->json(['error' => false, 'message' => 'success', 'data' => $booking], 200);
+    }
+
+    public function bookingHistory(Request $request)
+    {
+        $client = Client::where('id', $request->ClientID)->first();
+
+        if(is_null($client)) return response()->json(['error' => true, 'message' => 'Client Not Found!'], 404);
+
+        $bookings = Booking::where('client_id', $client->id)
+        ->select(DB::raw('count(*) as no_of_bookings'), 'client_subscription_id', 'created_at')
+        ->whereNotNull('client_subscription_id')
+        ->orderBy('created_at', 'asc')
+        ->get()
+        ->groupBy(function($booking){
+            return $booking->created_at->format('F j, Y');
+        });
+
+        return response()->json($bookings);
     }
 }
