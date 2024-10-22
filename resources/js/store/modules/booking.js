@@ -9,6 +9,7 @@ const state = () => ({
     selected_psychologist_id: null,
     selected_psychologist: null,
     show_booking_review: false,
+    booking_history: []
 });
 
 const getters = {
@@ -22,6 +23,7 @@ const getters = {
     getSelectedPsychologistId: (state) => state.selected_psychologist_id,
     getSelectedPsychologist: (state) => state.selected_psychologist,
     showBookingReview: (state) => state.show_booking_review,
+    getBookingHistory: (state) => state.booking_history
 };
 
 const actions = {
@@ -99,6 +101,15 @@ const actions = {
         const response = await axios.get(`/api/show/booking/${room_id}`);
         commit("setBooking", response.data.data);
     },
+
+    async showBookingHistory({ commit }, payload) {
+        const response = await axios.get(`/api/booking/history`, {
+            params: payload
+        });
+        if(!response.data.error){
+            commit("setBookingHistory", response.data.data);
+        }
+    }
 };
 
 const mutations = {
@@ -117,6 +128,7 @@ const mutations = {
         (state.selected_psychologist = psychologist),
     setShowBookingReview: (state, show_booking_review) =>
         (state.show_booking_review = show_booking_review),
+    setBookingHistory: (state, booking_history) => (state.booking_history = booking_history)
 };
 
 export default {

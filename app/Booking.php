@@ -37,7 +37,7 @@ class Booking extends Model
 
     public function subscription()
     {
-        return $this->belongsTo(ClientSubscription::class);
+        return $this->belongsTo(ClientSubscription::class, 'client_subscription_id');
     }
 
     public function time()

@@ -79,7 +79,7 @@
 				<div class="tab-pane fade" id="booking-history" role="tabpanel" aria-labelledby="recent-trans-tab">
 					<div class="pl-4">
 						{{-- Booking History Component --}}
-						<bookings-history></bookings-history>
+						<bookings-history :clientID={{ $client->id }}></bookings-history>
 					</div>
 				</div>
 			</div>

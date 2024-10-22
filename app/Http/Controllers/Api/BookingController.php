@@ -12,6 +12,7 @@ use App\RescheduledBooking;
 use App\SpecifyOtherReason;
 use App\ReasonOption;
 use App\Client;
+use App\BookingStatus;
 
 class BookingController extends Controller
 {
@@ -166,15 +167,30 @@ class BookingController extends Controller
 
         if(is_null($client)) return response()->json(['error' => true, 'message' => 'Client Not Found!'], 404);
 
+        $booking_statuses = BookingStatus::whereIn('name', ['pending'])->pluck('id')->toArray();
+
         $bookings = Booking::where('client_id', $client->id)
-        ->select(DB::raw('count(*) as no_of_bookings'), 'client_subscription_id', 'created_at')
+        ->select(
+            'schedule',
+            DB::raw("DATE(created_at) as created_at"),
+            'client_subscription_id',
+            DB::raw('count(*) as total_booking')
+        )
         ->whereNotNull('client_subscription_id')
+        // ->whereNotIn('status', $booking_statuses)
+        // ->groupBy(DB::raw('DATE(created_at)'))
         ->orderBy('created_at', 'asc')
+        ->with(['subscription' => function($query){
+            return $query->select('id', 'package_id')
+                ->with(['package' => function($query2){
+                    return $query2->select('id', 'name');
+                }]);
+        }])
         ->get()
-        ->groupBy(function($booking){
-            return $booking->created_at->format('F j, Y');
+        ->groupBy(function($item){
+            return $item->toSchedule->start;
         });
 
-        return response()->json($bookings);
+        return response()->json(['error' => false, 'message' => 'Success', 'data' => $bookings], 200);
     }
 }
