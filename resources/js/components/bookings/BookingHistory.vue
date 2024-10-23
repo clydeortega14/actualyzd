@@ -11,8 +11,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="(booking_history, index) in getBookingHistory" :key="index">
-                        <td>{{ wholeDate(booking_history.created_at) }}</td>
-                        <td>{{ booking_history.subscription.package.name }}</td>
+                        <td>{{ booking_history.start_sched }}</td>
+                        <td>{{ booking_history.subscription }}</td>
                         <td>{{ booking_history.total_booking }}</td>
                     </tr>
                 </tbody>

@@ -169,27 +169,19 @@ class BookingController extends Controller
 
         $booking_statuses = BookingStatus::whereIn('name', ['pending'])->pluck('id')->toArray();
 
-        $bookings = Booking::where('client_id', $client->id)
+        $bookings = Booking::where('bookings.client_id', $client->id)
         ->select(
-            'schedule',
-            DB::raw("DATE(created_at) as created_at"),
-            'client_subscription_id',
+            DB::raw("DATE_FORMAT(schd.start, '%M %d, %Y') as start_sched"),
+            'pckg.name as subscription',
             DB::raw('count(*) as total_booking')
         )
-        ->whereNotNull('client_subscription_id')
-        // ->whereNotIn('status', $booking_statuses)
-        // ->groupBy(DB::raw('DATE(created_at)'))
-        ->orderBy('created_at', 'asc')
-        ->with(['subscription' => function($query){
-            return $query->select('id', 'package_id')
-                ->with(['package' => function($query2){
-                    return $query2->select('id', 'name');
-                }]);
-        }])
-        ->get()
-        ->groupBy(function($item){
-            return $item->toSchedule->start;
-        });
+        ->leftjoin('psychologist_schedules as schd', 'schd.id', '=', 'bookings.schedule')
+        ->leftjoin('client_subscriptions as cs', 'cs.id', '=', 'bookings.client_subscription_id')
+        ->leftjoin('packages as pckg', 'pckg.id', '=', 'cs.package_id')
+        ->whereNotNull('bookings.client_subscription_id')
+        ->whereNotIn('bookings.status', [$booking_statuses])
+        ->groupBy('start_sched', 'subscription')
+        ->get();
 
         return response()->json(['error' => false, 'message' => 'Success', 'data' => $bookings], 200);
     }
