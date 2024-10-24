@@ -6,11 +6,31 @@ namespace App\Http\Traits\Clients\Subscriptions;
 use Illuminate\Http\Request;
 use App\Package;
 use App\ClientSubscription;
+use DB;
 
 trait ClientSubscriptions {
 
 	public function getSubscriptions($client)
 	{
+        // $subscription = ClientSubscription::select(
+        //     'c.name as ClientName',
+        //     'pckg.name as Subscription',
+        //     'client_subscriptions.reference_no as Referrence',
+        //     DB::raw("DATE_FORMAT(client_subscriptions.completion_date, '%M %d, %Y') as completion_date"),
+        //     'srvs.limit as SessionLimit',
+        //     'srvs_st.name as SessionType'
+
+        // )
+        // ->leftJoin('clients as c', 'c.id', '=', 'client_subscriptions.client_id')
+        // ->leftJoin('packages as pckg', 'pckg.id', '=', 'client_subscriptions.package_id')
+        // ->leftJoin('package_services as srvs', 'srvs.package_id', '=', 'pckg.id')
+        // ->leftJoin('session_types as srvs_st', 'srvs_st.id', '=', 'srvs.session_type_id')
+        // ->where('client_id', $client->id)
+        // ->whereNotNull('client_subscriptions.reference_no');
+
+        // return $subscription;
+
+
 		return $client->subscriptions()->select(
             'id',
             'client_id',
