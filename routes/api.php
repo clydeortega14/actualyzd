@@ -32,6 +32,12 @@ Route::post('consultations/chart/data', 'Api\ConsultationsChartController@getCon
 // Client Subscriptions
 Route::post('client/subscriptions', 'Api\ClientSubscriptionController@clientSubscriptions');
 
+// Cancel Subscription
+Route::post('update/client/subscription', 'Api\ClientSubscriptionController@updateClientSubscription');
+
+// Renew Subscriptin
+Route::post('renew/client/subscriptions', 'Api\ClientSubscriptionController@renewClientSubscription');
+
 
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');

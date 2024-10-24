@@ -24,4 +24,9 @@ class Package extends Model
     {
     	return $this->hasMany(ClientSubscription::class, 'package_id');
     }
+
+    public function scopeWithActive($query)
+    {
+        return $query->where('active', true);
+    }
 }

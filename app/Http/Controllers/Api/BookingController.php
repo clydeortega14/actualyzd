@@ -173,15 +173,18 @@ class BookingController extends Controller
         ->select(
             DB::raw("DATE_FORMAT(schd.start, '%M %d, %Y') as start_sched"),
             'pckg.name as subscription',
+            'st.name as session_type',
             DB::raw('count(*) as total_booking')
         )
+        ->leftjoin('session_types as st', 'st.id', '=', 'bookings.session_type_id')
         ->leftjoin('psychologist_schedules as schd', 'schd.id', '=', 'bookings.schedule')
         ->leftjoin('client_subscriptions as cs', 'cs.id', '=', 'bookings.client_subscription_id')
         ->leftjoin('packages as pckg', 'pckg.id', '=', 'cs.package_id')
         ->whereNotNull('bookings.client_subscription_id')
         ->whereNotIn('bookings.status', [$booking_statuses])
-        ->groupBy('start_sched', 'subscription')
+        ->groupBy('start_sched', 'subscription', 'session_type')
         ->get();
+        
 
         return response()->json(['error' => false, 'message' => 'Success', 'data' => $bookings], 200);
     }

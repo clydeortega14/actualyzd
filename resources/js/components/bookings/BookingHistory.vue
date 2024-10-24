@@ -6,6 +6,7 @@
                     <tr>
                         <th>Date</th>
                         <th>Subscription</th>
+                        <th>Session Type</th>
                         <th>No. of bookings</th>
                     </tr>
                 </thead>
@@ -13,6 +14,7 @@
                     <tr v-for="(booking_history, index) in getBookingHistory" :key="index">
                         <td>{{ booking_history.start_sched }}</td>
                         <td>{{ booking_history.subscription }}</td>
+                        <td>{{ booking_history.session_type }}</td>
                         <td>{{ booking_history.total_booking }}</td>
                     </tr>
                 </tbody>

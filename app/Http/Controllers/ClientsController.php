@@ -155,7 +155,10 @@ class ClientsController extends Controller
 
     public function subscriptions(Client $client)
     {
-        $packages = Package::has('services')->with(['services'])->get();
+        $packages = Package::has('services')
+                    ->withActive()
+                    ->with(['services'])
+                    ->get();
 
         return view('pages.superadmin.clients.subscription', compact('client', 'packages'));
     }
@@ -205,12 +208,13 @@ class ClientsController extends Controller
 
             ['client_id', '=', $request->client_id],
             ['package_id', '=', $package->id],
-            ['completion_date', '=', $completion_date],
             ['subscription_status_id', '=', $subscribed->id]
         ])
         ->first();
 
         if(!is_null($client_subscription)) return redirect()->back()->with('error', 'Cannot process the same subscription within a day.');
+
+        if($client_subscription->completion_date < now()->toDateString()) return redirect()->back('error', 'You have existing subscription with the same package!');
 
         DB::beginTransaction();
 
@@ -220,6 +224,9 @@ class ClientsController extends Controller
             $client_subscription->completion_date = $completion_date;
             $client_subscription->reference_no = $this->hash_id->encode($client_subscription->id);
             $client_subscription->save();
+
+            // add client subscription history
+            
 
         DB::commit();
 
