@@ -37,6 +37,7 @@ class ClientSubscriptionController extends Controller
         $validator = Validator::make($request->all(), [
             'ClientID' => ['required', 'integer'],
             'subscription' => ['required', 'string', 'max:255'],
+            'client_subscription_reference' => ['required', 'string', 'max:255'],
             'action' => ['required', 'string', 'max:255']
         ]);
 
@@ -52,7 +53,7 @@ class ClientSubscriptionController extends Controller
 
         $client_subscription = ClientSubscription::where('client_id', $client->id)
                                 ->where('package_id', $subscription->id)
-                                ->whereNotNull('reference_no')
+                                ->where('reference_no', $request->client_subscription_reference)
                                 ->first();
         
         if(is_null($client_subscription)) return response()->json(['error' => true, 'message' => 'Client subscription not found'], 404);

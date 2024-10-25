@@ -54,6 +54,7 @@ trait ClientSubscriptions {
         ->with(['status' => function($query){
             return $query->select('id', 'name');
         }])
+        ->whereNotNull('reference_no')
         ->whereIn('subscription_status_id', [1, 2])
         ->orderBy('completion_date', 'asc');
 	}

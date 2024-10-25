@@ -210,20 +210,28 @@ class ClientsController extends Controller
             ['package_id', '=', $package->id],
             ['subscription_status_id', '=', $subscribed->id]
         ])
+        ->whereNotNull('reference_no')
         ->first();
 
-        if(!is_null($client_subscription)) return redirect()->back()->with('error', 'Cannot process the same subscription within a day.');
-
-        if($client_subscription->completion_date < now()->toDateString()) return redirect()->back('error', 'You have existing subscription with the same package!');
-
-        DB::beginTransaction();
-
+        if(!is_null($client_subscription)){
+            return redirect()->back()->with('error', 'You have existing subscription with the selected package.');
+        } else{
+            $client_subscription = new ClientSubscription;
             $client_subscription->client_id = $request->client_id;
             $client_subscription->package_id = $package->id;
             $client_subscription->subscription_status_id = $subscribed->id;
             $client_subscription->completion_date = $completion_date;
+            $client_subscription->save();
+
             $client_subscription->reference_no = $this->hash_id->encode($client_subscription->id);
             $client_subscription->save();
+        }
+
+        DB::beginTransaction();
+
+        
+
+            
 
             // add client subscription history
             
