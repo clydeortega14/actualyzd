@@ -23,10 +23,12 @@ trait ClientSubscriptions {
         // )
         // ->leftJoin('clients as c', 'c.id', '=', 'client_subscriptions.client_id')
         // ->leftJoin('packages as pckg', 'pckg.id', '=', 'client_subscriptions.package_id')
-        // ->leftJoin('package_services as srvs', 'srvs.package_id', '=', 'pckg.id')
+        // ->join('package_services as srvs', 'srvs.package_id', '=', 'pckg.id')
         // ->leftJoin('session_types as srvs_st', 'srvs_st.id', '=', 'srvs.session_type_id')
         // ->where('client_id', $client->id)
-        // ->whereNotNull('client_subscriptions.reference_no');
+        // ->whereNotNull('client_subscriptions.reference_no')
+        // ->groupBy('Referrence', 'SessionType', 'Subscription', 'completion_date', 'SessionLimit')
+        // ->orderBy('completion_date');
 
         // return $subscription;
 

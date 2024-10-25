@@ -52,6 +52,7 @@ class ClientSubscriptionController extends Controller
 
         $client_subscription = ClientSubscription::where('client_id', $client->id)
                                 ->where('package_id', $subscription->id)
+                                ->whereNotNull('reference_no')
                                 ->first();
         
         if(is_null($client_subscription)) return response()->json(['error' => true, 'message' => 'Client subscription not found'], 404);
@@ -102,12 +103,7 @@ class ClientSubscriptionController extends Controller
 
             DB::commit();
 
-            return response()->json(['error' => false, 'message' => 'Subscription Renewed!', 'data' => [ 'new_expiry_date' => $new_expiry_date]], 200);
+            return response()->json(['error' => false, 'message' => 'Subscription Renewed!', 'data' => $client_subscription], 200);
         }
-    }
-
-    public function renewClientSubscription(Request $request)
-    {
-        //
     }
 }

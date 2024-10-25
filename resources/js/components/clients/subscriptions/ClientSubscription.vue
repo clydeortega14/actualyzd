@@ -66,10 +66,24 @@
 		mounted(){
 
 			EventBus.$on('renew-subscription', data => {
-				this.success("Successfully Renewed")
+				console.log(data)
+				this.updateClientSubscription({
+					ClientID: this.client.client.id,
+					subscription: this.getPackageName,
+					action: "renew"
+				})
+				.then((response) => {
 
-				let element = this.$refs.packageInfoModal.$el;
-				$(element).modal("hide");
+					if(!response.data.error){
+						this.success("Successfully Renewed");
+
+						let element = this.$refs.packageInfoModal.$el;
+						$(element).modal("hide");
+					}
+				})
+				.catch((error) => {
+					this.error(error);
+				});
 			});
 		},
 		components: {
@@ -81,7 +95,7 @@
 			...mapGetters(["getSubscriptions", "getPackageId", "getPackageName", "getPackageServices"])
 		},
 		methods: {
-			...mapActions(["getSubscriptionsData"]),
+			...mapActions(["getSubscriptionsData", "updateClientSubscription"]),
 			renewSubscription(subscription_package){
 
 				let element = this.$refs.packageInfoModal.$el;
@@ -97,6 +111,10 @@
 				let element = this.$refs.packageDetailModal.$el;
 
 				$(element).modal("show");
+			},
+			cancelSubscription()
+			{
+				//
 			}
 		}
 	}

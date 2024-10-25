@@ -35,9 +35,6 @@ Route::post('client/subscriptions', 'Api\ClientSubscriptionController@clientSubs
 // Cancel Subscription
 Route::post('update/client/subscription', 'Api\ClientSubscriptionController@updateClientSubscription');
 
-// Renew Subscriptin
-Route::post('renew/client/subscriptions', 'Api\ClientSubscriptionController@renewClientSubscription');
-
 
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');

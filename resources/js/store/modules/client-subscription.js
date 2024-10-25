@@ -19,6 +19,16 @@ const actions = {
 
 		const response = await axios.post(`/api/client/subscriptions`, data);
 		commit('setSubscriptions', response.data.data);
+	},
+
+	updateClientSubscription({context}, data)
+	{
+		return new Promise((resolve, reject) => {
+			axios
+				.post('/api/update/client/subscription', data)
+				.then((response) => resolve(response))
+				.catch((error) => reject(error))
+		});
 	}
 }
 
