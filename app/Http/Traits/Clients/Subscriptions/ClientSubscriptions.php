@@ -30,7 +30,16 @@ trait ClientSubscriptions {
         // ->groupBy('Referrence', 'SessionType', 'Subscription', 'completion_date', 'SessionLimit')
         // ->orderBy('completion_date');
 
-        // return $subscription;
+
+        $bookings_count = DB::table('bookings')
+            ->where('client_id', $client->id)
+            ->select(
+                'id',
+                'session_type_id',
+                DB::raw('count(*) as total_usage', 
+            ))
+            ->groupBy('session_type_id')
+            ->whereNotNull('client_subscription_id');
 
 
 		return $client->subscriptions()->select(
@@ -42,12 +51,16 @@ trait ClientSubscriptions {
             'subscription_status_id'
         )
         ->where('completion_date', '>=', now()->toDateString())
-        ->with(['package' => function($query){
+        ->with(['package' => function($query) use ($bookings_count) {
             return $query->select('id', 'name', 'description', 'price', 'no_of_months')
-                ->with(['services' => function($query2){
+                ->with(['services' => function($query2) use ($bookings_count) {
                     return $query2->select('id', 'package_id', 'session_type_id', 'limit')
-                            ->with(['sessionType' => function($query3){
-                                return $query3->select('id', 'name');
+                            
+                            ->with(['sessionType' => function($query3) use ($bookings_count) {
+                                return $query3->select('session_types.id', 'session_types.name', 'latest_bookings.total_usage')
+                                    ->joinSub($bookings_count, 'latest_bookings', function($join){
+                                        $join->on('session_types.id', '=', 'latest_bookings.session_type_id');
+                                    });
                             }]);
                 }]);
         }])
