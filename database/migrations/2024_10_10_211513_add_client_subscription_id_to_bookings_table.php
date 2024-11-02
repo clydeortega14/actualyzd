@@ -15,11 +15,16 @@ class AddClientSubscriptionIdToBookingsTable extends Migration
     {
         Schema::table('bookings', function (Blueprint $table) {
             $table->unsignedBigInteger('client_subscription_id')->nullable()->after('client_id');
+            $table->unsignedMediumInteger('package_service_id')->nullable()->after('session_type_id');
 
             // foreign key
             $table->foreign('client_subscription_id')->references('id')->on('client_subscriptions')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            
+            $table->foreign('package_service_id')->references('id')->on('package_services')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

@@ -21,6 +21,7 @@ use App\Bookings\BookingInterface;
 use App\TimeSchedule;
 use App\BookingStatus;
 use App\Events\BookingActivity;
+use App\PackageService;
 
 
 class BookingProcessController extends Controller
@@ -239,6 +240,13 @@ class BookingProcessController extends Controller
          // check client subscription existence
          if(is_null($client_subscription)) return redirect()->back()->with('error', 'No active subscription was found!');
 
+         // package service
+         $package_service = PackageService::where('package_id', $client_subscription->package_id)
+                            ->where('session_type_id', $session_type_id)
+                            ->first();
+        
+        if(is_null($package_service)) return redirect()->back()->with('error', 'Package Service Not Found! 404');
+
         DB::beginTransaction();
 
         try {
@@ -257,6 +265,7 @@ class BookingProcessController extends Controller
                 'booked_by' => $user->id,
                 'counselee' => $has_selected_session ? null : $user->id,
                 'session_type_id' =>  $session_type_id,
+                'package_service_id' => $package_service->id,
                 'self_harm' => $has_selected_session ? null : session('assessment.self_harm'),
                 'harm_other_people' => $has_selected_session ? null : session('assessment.harm_other_people'),
                 'is_firstimer' => $is_firstimer,

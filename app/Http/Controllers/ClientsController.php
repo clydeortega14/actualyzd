@@ -229,12 +229,9 @@ class ClientsController extends Controller
 
         DB::beginTransaction();
 
+        // add client subscription history
         
-
-            
-
-            // add client subscription history
-            
+        
 
         DB::commit();
 

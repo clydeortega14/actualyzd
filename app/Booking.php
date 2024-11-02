@@ -17,6 +17,7 @@ class Booking extends Model
             'counselee',
             'booked_by', 
             'session_type_id',
+            'package_service_id',
             'is_firstimer',
             'self_harm',
             'harm_other_people',
@@ -58,6 +59,11 @@ class Booking extends Model
     public function sessionType()
     {
         return $this->belongsTo('App\SessionType', 'session_type_id');
+    }
+
+    public function packageService()
+    {
+        return $this->belongsTo(PackageService::class, 'package_service_id');
     }
 
     public function toStatus()

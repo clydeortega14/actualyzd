@@ -107,4 +107,46 @@ class ClientSubscriptionController extends Controller
             return response()->json(['error' => false, 'message' => 'Subscription Renewed!', 'data' => $client_subscription], 200);
         }
     }
+
+    public function getSubscriptionUsage(Request $request)
+    {
+        $validator = $this->validateSubscriptionUsage($request->all());
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'error' => true,
+                'message' => 'validation error',
+                'data' => $validator->errors()->all()
+            ], 422);
+        }
+
+        // find client base on request clientid
+        $client = $this->findClient($request->ClientID);
+
+        if(is_null($client)) return response()->json([
+            'error' => true,
+            'message' => 'Client Not Found!',
+            'data' => []
+        ], 404);
+
+
+        // find Client SUbscription
+        $client_subscription = $this->findClientSubscription($request->ClientSubscriptionID);
+
+        if(is_null($client_subscription)) return response()->json([
+            'error' => true,
+            'message' => 'Client Subscription Not Found!',
+            'data' => []
+        ], 404);
+
+        if($client_subscription->client_id !== $client->id) return response()->json([
+            'error' => true,
+            'message' => 'Subscription does not belong to the rightful client',
+            'data' => []
+        ], 422);
+
+
+        // $count_usage = DB::table('bookings as b')->get();
+    }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Package;
 use App\ClientSubscription;
 use DB;
+use App\Booking;
 
 trait ClientSubscriptions {
 
@@ -31,41 +32,39 @@ trait ClientSubscriptions {
         // ->orderBy('completion_date');
 
 
-        $bookings_count = DB::table('bookings')
-            ->where('client_id', $client->id)
-            ->select(
-                'id',
-                'session_type_id',
-                DB::raw('count(*) as total_usage', 
-            ))
-            ->groupBy('session_type_id')
-            ->whereNotNull('client_subscription_id');
-
-
-		return $client->subscriptions()->select(
+		return 
+        ClientSubscription::select(
             'id',
             'client_id',
             'package_id',
             'reference_no',
             'completion_date',
-            'subscription_status_id'
+            'subscription_status_id',
+            
         )
+        ->where('client_id', $client->id)
         ->where('completion_date', '>=', now()->toDateString())
-        ->with(['package' => function($query) use ($bookings_count) {
-            return $query->select('id', 'name', 'description', 'price', 'no_of_months')
-                ->with(['services' => function($query2) use ($bookings_count) {
-                    return $query2->select('id', 'package_id', 'session_type_id', 'limit')
-                            
-                            ->with(['sessionType' => function($query3) use ($bookings_count) {
-                                return $query3->select('session_types.id', 'session_types.name', 'latest_bookings.total_usage')
-                                    ->joinSub($bookings_count, 'latest_bookings', function($join){
-                                        $join->on('session_types.id', '=', 'latest_bookings.session_type_id');
-                                    });
-                            }]);
-                }]);
+        ->with(['package' => function($query) {
+            return $query->select('id', 'name', 'description', 'price', 'no_of_months');
         }])
         ->with(['status' => function($query){
             return $query->select('id', 'name');
+        }])
+        ->with(['bookings' => function($query){
+            return $query->select(
+                'client_subscription_id',
+                DB::raw('count(*) as bookings_count'),
+                'session_type_id',
+                'package_service_id'
+            )
+            ->whereNotNull('package_service_id')
+            ->groupBy('session_type_id')
+            ->with(['sessionType' => function($query2){
+                return $query2->select('id', 'name');
+            }])
+            ->with(['packageService' => function($query2){
+                return $query2->select('id','limit');
+            }]);
         }])
         ->whereNotNull('reference_no')
         ->whereIn('subscription_status_id', [1, 2])
@@ -73,30 +72,48 @@ trait ClientSubscriptions {
 	}
 
 
-    public function renew(Request $request)
-    {
-        $client_subscription = ClientSubscription::where('id', $request->client_subscription_id)->first();
+    // public function renew(Request $request)
+    // {
+    //     $client_subscription = ClientSubscription::where('id', $request->client_subscription_id)->first();
 
-        if(is_null($client_subscription)) return redirect()->back()->with('error', 'subscription not found');
+    //     if(is_null($client_subscription)) return redirect()->back()->with('error', 'subscription not found');
 
-        $client_subscription->completion_date = now()->addMonths($client_subscription->package->no_of_months)->toDateTimeString();
-        $client_subscription->subscription_status_id = 2;
-        $client_subscription->save();
+    //     $client_subscription->completion_date = now()->addMonths($client_subscription->package->no_of_months)->toDateTimeString();
+    //     $client_subscription->subscription_status_id = 2;
+    //     $client_subscription->save();
 
-        // history
-        $history = $client_subscription->histories()->firstOrCreate([
+    //     // history
+    //     $history = $client_subscription->histories()->firstOrCreate([
 
-            'amount' => $client_subscription->package->price,
-            'subscription_status_id' => 2,
-            'reference_no' => $this->formatReference($client_subscription)
-        ]);
+    //         'amount' => $client_subscription->package->price,
+    //         'subscription_status_id' => 2,
+    //         'reference_no' => $this->formatReference($client_subscription)
+    //     ]);
 
-        return redirect()->back()->with('success', 'Successfully Renewed!');
-    }
+    //     return redirect()->back()->with('success', 'Successfully Renewed!');
+    // }
 
 
     public function formatReference($client_subscription)
     {
         return $client_subscription->id.'@'.substr($client_subscription->package->name, 0, 3).'@'.date('mdY', strtotime(now()->toDateString()));
+    }
+
+    public function validateSubscriptionUsage(array $data)
+    {
+        return Validator::make($data, [
+            'ClientID' => ['required', 'integer'],
+            'ClientSubscriptionID' => ['required', 'integer']
+        ]);
+    }
+
+    public function findClient($client_id)
+    {
+        return Client::where('id', $client_id)->first();
+    }
+
+    public function findClientSubscription($subscription_id)
+    {
+        return ClientSubscription::where('id', $subscription_id)->first();
     }
 }

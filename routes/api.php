@@ -35,6 +35,9 @@ Route::post('client/subscriptions', 'Api\ClientSubscriptionController@clientSubs
 // Cancel Subscription
 Route::post('update/client/subscription', 'Api\ClientSubscriptionController@updateClientSubscription');
 
+// Subscription computation usage API
+Route::get('subscriptions/usage', 'Api\ClientSubscriptionController@getSubscriptionUsage');
+
 
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');
