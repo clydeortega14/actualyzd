@@ -8,6 +8,7 @@ use App\Package;
 use App\ClientSubscription;
 use DB;
 use App\Booking;
+use App\BookingStatus;
 
 trait ClientSubscriptions {
 
@@ -31,6 +32,7 @@ trait ClientSubscriptions {
         // ->groupBy('Referrence', 'SessionType', 'Subscription', 'completion_date', 'SessionLimit')
         // ->orderBy('completion_date');
 
+        $pending_status = BookingStatus::where('name', 'Pending')->first();
 
 		return 
         ClientSubscription::select(
@@ -50,13 +52,18 @@ trait ClientSubscriptions {
         ->with(['status' => function($query){
             return $query->select('id', 'name');
         }])
-        ->with(['bookings' => function($query){
+        ->with(['bookings' => function($query) use ($pending_status) {
             return $query->select(
                 'client_subscription_id',
                 DB::raw('count(*) as bookings_count'),
                 'session_type_id',
                 'package_service_id'
             )
+            ->where(function($query2) use ($pending_status){
+                if(!is_null($pending_status)){
+                    $query2->whereNotIn('status', [$pending_status->id]);
+                }
+            })
             ->whereNotNull('package_service_id')
             ->groupBy('session_type_id')
             ->with(['sessionType' => function($query2){

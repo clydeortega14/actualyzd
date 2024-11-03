@@ -19,7 +19,11 @@
 					<span>Renew</span>
 				</button>
 
-				<button type="button" class="btn btn-outline-secondary btn-sm" @click.prevent="checkPackageDetail">
+				<button type="button" class="btn btn-outline-secondary btn-sm" @click.prevent="checkPackageDetail({
+					subscription_id: sub.id,
+					subscription_name: sub.package.name,
+					subscription_bookings: sub.bookings
+				})">
 					<i class="fas fa-info-circle"></i>
 					<span>Usage</span>
 				</button>
@@ -37,7 +41,7 @@
 				:package-services="getPackageServices"
 			/>
 
-		<PackageDetail ref="packageDetailModal"/>
+		<PackageDetail ref="packageDetailModal" />
 	</div>
 </template>
 
@@ -131,11 +135,14 @@
 				}
 				
 			},
-			checkPackageDetail(){
+			checkPackageDetail(data){
 
 				let element = this.$refs.packageDetailModal.$el;
 
 				$(element).modal("show");
+
+				this.$store.commit('setPackageName', data.subscription_name);
+				this.$store.commit('setBookings', data.subscription_bookings);
 			},
 			cancelSubscription(sub_id)
 			{

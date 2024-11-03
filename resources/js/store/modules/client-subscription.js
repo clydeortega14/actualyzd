@@ -7,7 +7,8 @@ const state = () => ({
 	subscriptions: [],
 	package_id: null,
 	package_name: null,
-	package_services: []
+	package_services: [],
+	bookings: []
 })
 
 const getters = {
@@ -19,7 +20,8 @@ const getters = {
 	getSubscriptions: state => state.subscriptions,
 	getPackageId: state => state.package_id,
 	getPackageName: state => state.package_name,
-	getPackageServices: state => state.package_services
+	getPackageServices: state => state.package_services,
+	getBookings: state => state.bookings
 
 }
 
@@ -27,7 +29,15 @@ const actions = {
 	async getSubscriptionsData({commit}, data){
 
 		const response = await axios.post(`/api/client/subscriptions`, data);
+		
+		
 		commit('setSubscriptions', response.data.data);
+	},
+
+	async getSubscriptionBookings({ commit }, data){
+		const response = await axios.post(`/api/client/subscriptions`, data);
+		console.log(response.data.data)
+		commit('setBookings', response.data.data.bookings);
 	},
 
 	updateClientSubscription({context}, data)
@@ -50,7 +60,8 @@ const mutations = {
 	setSubscriptions: (state, subscriptions) => (state.subscriptions = subscriptions),
 	setPackageId: (state, package_id) => (state.package_id = package_id),
 	setPackageName: (state, package_name) => (state.package_name = package_name),
-	setPackageServices: (state, package_services) => (state.package_services = package_services)
+	setPackageServices: (state, package_services) => (state.package_services = package_services),
+	setBookings: (state, bookings) => (state.bookings = bookings)
 }
 
 export default {
