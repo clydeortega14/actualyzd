@@ -127,3 +127,13 @@ Breadcrumbs::for('faqs.edit', function ($trail, $faq) {
 	$trail->parent('faqs.index', route('faqs.index'));
     $trail->push('Edit', route('faqs.edit', $faq));
 });
+
+// BILLINGS Breadcrumbs
+Breadcrumbs::for('client.billings', function($trail, $client){
+	$trail->push('Home', route('client.billings', $client));
+});
+
+// Billings Details
+
+
+

@@ -52,11 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
 
-	// Client Subscription
-	Route::get('client/{client}/subscription', 'ClientsController@showSubscription')->name('client.show.subscription');
-
 	// Client System Users
 	Route::get('client/{client}/users', 'ClientsController@showClientUsers')->name('client.show.users');
+
+	// Client Subscription
+	Route::get('client/{client}/subscription', 'ClientsController@showSubscription')->name('client.show.subscription');
 
 	// Add client subscription
 	Route::get('subscriptions/{client}', 'ClientsController@subscriptions')->name('client.subscriptions');
@@ -66,6 +66,19 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
 	// Store client subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+
+	// Billing Module
+	Route::prefix('billings')->group(function(){
+
+		// Billings Index
+		Route::get('client/{client}', 'BillingController@clientBilling')->name('client.billings');
+
+		Route::get('client/{invoice_no}/payments', 'PaymentController@index')->name('client.billing.payments');
+	});
+
+	Route::prefix('payments')->group(function(){
+		Route::get('/', 'PaymentController@show')->name('payments.show');
+	});
 	
 	// Client Users Route
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');

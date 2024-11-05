@@ -194,6 +194,18 @@ Vue.component(
     require("./components/bookings/BookingHistory.vue").default
 );
 
+// Client Billings Component
+Vue.component(
+    "billing",
+    require("./components/billings/ClientBilling.vue").default
+);
+
+// Billing Payment Form
+Vue.component(
+    'payment-form',
+    require("./components/payments/PaymentForm.vue").default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
