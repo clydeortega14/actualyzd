@@ -11,10 +11,18 @@ use App\SubscriptionStatus;
 use DB;
 use App\Http\Traits\Clients\Subscriptions\ClientSubscriptions as ClientSubscriptionTrait;
 use Validator;
+use Hashids\Hashids;
 
 class ClientSubscriptionController extends Controller
 {
     use ClientSubscriptionTrait;
+
+    private $hash_ids;
+
+    public function __construct()
+    {
+        $this->hash_ids = new Hashids('', 10);
+    }
 
     public function clientSubscriptions(Request $request)
     {
@@ -92,11 +100,32 @@ class ClientSubscriptionController extends Controller
             // extends completion date
             $new_expiry_date = now()->addMonths($subscription->no_of_months)->toDateString();
 
+            $end_subscription_status = SubscriptionStatus::where('name', 'end')->first();
+
+            $renew_status = SubscriptionStatus::where('name', 'renewed')->first();
+
+            if(is_null($end_subscription_status)) return response()->json(['error' => false, 'message' => 'end subscription status was not found!', 'data' => []], 404);
+
+            if(is_null($renew_status)) return response()->json(['error' => false, 'message' => 'renewed subscription status was not found!', 'data' => []], 404);
+
             DB::beginTransaction();
 
-            $client_subscription->completion_date = $new_expiry_date;
-            $client_subscription->subscription_status_id = $subscribed_status->id;
+
+            // update the current subscription to end
+            $client_subscription->subscription_status_id = $end_subscription_status->id;
             $client_subscription->save();
+            
+            // create new subscription with a end status, base on the current subscription
+            $new_client_subscription = new ClientSubscription;
+            $new_client_subscription->client_id = $client_subscription->client_id;
+            $new_client_subscription->package_id = $client_subscription->package_id;
+            $new_client_subscription->reference_no = 
+            $new_client_subscription->completion_date = $new_expiry_date;
+            $new_client_subscription->subscription_status_id = $renew_status->id;
+            $new_client_subscription->save();
+
+            $new_client_subscription->reference_no = $this->hash_ids->encode($new_client_subscription->id);
+            $new_client_subscription->save();
 
             // add logs to client subscription history
 
@@ -106,47 +135,5 @@ class ClientSubscriptionController extends Controller
 
             return response()->json(['error' => false, 'message' => 'Subscription Renewed!', 'data' => $client_subscription], 200);
         }
-    }
-
-    public function getSubscriptionUsage(Request $request)
-    {
-        $validator = $this->validateSubscriptionUsage($request->all());
-
-        if($validator->fails())
-        {
-            return response()->json([
-                'error' => true,
-                'message' => 'validation error',
-                'data' => $validator->errors()->all()
-            ], 422);
-        }
-
-        // find client base on request clientid
-        $client = $this->findClient($request->ClientID);
-
-        if(is_null($client)) return response()->json([
-            'error' => true,
-            'message' => 'Client Not Found!',
-            'data' => []
-        ], 404);
-
-
-        // find Client SUbscription
-        $client_subscription = $this->findClientSubscription($request->ClientSubscriptionID);
-
-        if(is_null($client_subscription)) return response()->json([
-            'error' => true,
-            'message' => 'Client Subscription Not Found!',
-            'data' => []
-        ], 404);
-
-        if($client_subscription->client_id !== $client->id) return response()->json([
-            'error' => true,
-            'message' => 'Subscription does not belong to the rightful client',
-            'data' => []
-        ], 422);
-
-
-        // $count_usage = DB::table('bookings as b')->get();
     }
 }

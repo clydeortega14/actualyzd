@@ -135,6 +135,13 @@
                         <span class="ml-3">FAQ's</span>
                     </a>
                 </li>
+
+                <li class="{{ \Request::is('payments/*') ? 'active' : '' }}">
+                    <a href="{{ route('payments.show') }}">
+                        <i class="fa fa-address-card"></i>
+                        <span class="ml-3">Payments</span>
+                    </a>
+                </li>
             @endif
 
             @if($user->hasRole(['superadmin', 'psychologist']))

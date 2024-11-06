@@ -76,6 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 		Route::get('client/{invoice_no}/payments', 'PaymentController@index')->name('client.billing.payments');
 	});
 
+	// Payments Module Group
 	Route::prefix('payments')->group(function(){
 		Route::get('/', 'PaymentController@show')->name('payments.show');
 	});
