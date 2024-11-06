@@ -136,4 +136,3 @@ Breadcrumbs::for('client.billings', function($trail, $client){
 // Billings Details
 
 
-
