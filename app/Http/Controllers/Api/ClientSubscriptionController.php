@@ -119,7 +119,6 @@ class ClientSubscriptionController extends Controller
             $new_client_subscription = new ClientSubscription;
             $new_client_subscription->client_id = $client_subscription->client_id;
             $new_client_subscription->package_id = $client_subscription->package_id;
-            $new_client_subscription->reference_no = 
             $new_client_subscription->completion_date = $new_expiry_date;
             $new_client_subscription->subscription_status_id = $renew_status->id;
             $new_client_subscription->save();
