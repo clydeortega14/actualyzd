@@ -30,6 +30,12 @@ const actions = {
                 });
         });
     },
+
+    async getPsychLists({ commit })
+    {
+        const response = await axios.get('/api/psychologists/lists');
+        commit("setPsychologists", response.data);
+    }
 };
 
 const mutations = {

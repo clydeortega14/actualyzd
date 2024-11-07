@@ -28,7 +28,7 @@
 					<span>Usage</span>
 				</button>
 
-				<button type="button" class="btn btn-outline-danger btn-sm" @click.prevent="cancelSubscription(sub.id)">
+				<button type="button" class="btn btn-outline-danger btn-sm" @click.prevent="cancelSubscription(sub.id)" v-if="roles.includes('superadmin')">
 					<i class="fas fa-times"></i>
 					<span>Cancel</span>
 				</button>
@@ -62,7 +62,8 @@
 			}
 		},
 		props: {
-			client: Object
+			client: Object,
+			roles: Array
 		},
 		created() {
 			this.getSubscriptionsData({

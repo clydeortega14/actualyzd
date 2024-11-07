@@ -1,14 +1,17 @@
 <div class="container">
 	@include('alerts.message')
-	<div class="row d-flex justify-content-end mb-5">
-		 <div class="col-md-4" align="right">
-			<a href="{{ route('client.subscriptions', $client->id) }}" class="btn btn-primary btn-sm">Add More Subscription</a>
-		 </div>
-	</div>
+
+	@if(auth()->user()->hasRole('superadmin'))
+		<div class="row d-flex justify-content-end mb-5">
+			<div class="col-md-4" align="right">
+				<a href="{{ route('client.subscriptions', $client->id) }}" class="btn btn-primary btn-sm">Add More Subscription</a>
+			</div>
+		</div>
+	@endif
 	
 	<client-subscription :client="{
-		client: {{ $client }},
-	}"></client-subscription>
+		client: {{ $client }}
+	}" :roles="{{ auth()->user()->roles->pluck('name') }}"></client-subscription>
 	
 {{-- 
 	<form action="{{ route('client.subscription.renew') }}" method="POST">

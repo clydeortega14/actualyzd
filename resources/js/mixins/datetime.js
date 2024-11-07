@@ -19,5 +19,9 @@ export default {
             let time_to_format = this.wholeTime(time_to);
             return `${date_format} @ ${time_form_format} - ${time_to_format}`;
         },
+        diffForHumans(date)
+        {
+            return moment(date).startOf('hour').fromNow();
+        }
     },
 };

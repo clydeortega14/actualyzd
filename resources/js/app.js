@@ -213,6 +213,12 @@ Vue.component(
 
 );
 
+// Psychologists / Wellness Coach Main Component
+Vue.component(
+    'psychologist',
+    require("./components/psychologist/PsychologistComponent.vue").default
+);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

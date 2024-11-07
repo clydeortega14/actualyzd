@@ -96,7 +96,6 @@ class PsychologistsController extends Controller
      */
     public function index()
     {
-
         $psychologists = User::withRole('psychologist')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('pages.superadmin.psychologists.index', compact('psychologists'));

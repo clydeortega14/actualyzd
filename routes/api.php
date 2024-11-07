@@ -62,3 +62,6 @@ Route::get('scheduled/sessions', 'Api\SessionController@scheduledSessions');
 // Booking History API
 Route::get('booking/history', 'Api\BookingController@bookingHistory');
 
+// Psychologists Lists API
+Route::get('psychologists/lists', 'Api\PsychologistController@index');
+
