@@ -202,8 +202,12 @@ class UsersController extends Controller
         ];
     }
 
-    public function profile(User $user)
+    public function profile($username)
     {
+        $user = User::where('username', $username)->first();
+
+        if(is_null($user)) return redirect()->route('psychologists.index')->with('error', 'User not found');
+
         if (Auth::id() === $user->id) {
             $user->api_token = Str::random(60);
             $user->save();

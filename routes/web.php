@@ -112,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
 	// User Profile
-	Route::get('profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{username}', 'UsersController@profile')->name('user.profile');
 	Route::get('profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
 	Route::put('profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
 	Route::put('profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');

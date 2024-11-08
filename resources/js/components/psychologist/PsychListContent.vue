@@ -29,12 +29,16 @@
                         </td>
                         <td>{{ diffForHumans(psych.created_at) }}</td>
                         <td>
-                            <button class="btn btn-sm" :class="psych.is_active ? 'btn-danger' : 'btn-success' ">
+                            <button
+                                @click.prevent="updatePsychStatus(psych.id)"
+                                class="btn btn-sm" 
+                                :class="psych.is_active ? 'btn-danger' : 'btn-success' "
+                            >
                                 {{ psych.is_active ? 'Deactivate' : 'Activate' }}
                             </button>
-                            <button class="btn btn-sm btn-primary">
+                            <a :href="URLS.BASE+`/profile/${psych.username}`" class="btn btn-sm btn-primary">
                                 Profile
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -46,23 +50,56 @@
 
 <script>
 
+import URLS from "../../constants/url";
+import SweetAlert from "../../mixins/sweet-alert";
 import { mapGetters, mapActions } from "vuex";
 import datetime from "../../mixins/datetime";
 export default {
     name: "PsychListContent",
+    data(){
+        return {
+            URLS
+        }
+    },
     computed: {
         ...mapGetters([
             "allPsychologists"
         ])
     },
-    mixins: [datetime],
+    mixins: [datetime, SweetAlert],
     created(){
         this.getPsychLists();
     },
     methods: {
         ...mapActions([
-            "getPsychLists"
-        ])
+            "getPsychLists",
+            "statusUpdate"
+        ]),
+        updatePsychStatus(id){
+
+            let findPsych = this.allPsychologists.find(psych => psych.id == id);
+            let index = this.allPsychologists.findIndex( psych => psych.id == id);
+
+            if(findPsych !== undefined && index > -1){
+
+                this.dialog(
+                    'Are you sure?',
+                    `You want to ${findPsych.is_active ? ` Deactivate` : ` Activate`} ${findPsych.name}`,
+                    'warning',
+                    'Cancel',
+                    findPsych.is_active ? ' Deactivate' : 'Activate'
+                )
+                .then((result) =>{
+                    if(result.isConfirmed){
+
+                        this.statusUpdate({user_id: findPsych.id})
+                        .then(response => this.allPsychologists.splice(index, 1, response.data.data))
+                        .catch(error => this.error(error))
+                    }
+                })
+                
+            }
+        }
     }
 }
 </script>

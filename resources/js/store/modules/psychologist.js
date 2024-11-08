@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const state = () => ({
     psychologists: [],
 });
@@ -35,6 +37,19 @@ const actions = {
     {
         const response = await axios.get('/api/psychologists/lists');
         commit("setPsychologists", response.data);
+    },
+
+    statusUpdate({ context }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/psychologist/update/status", payload)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        })
     }
 };
 

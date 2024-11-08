@@ -65,3 +65,6 @@ Route::get('booking/history', 'Api\BookingController@bookingHistory');
 // Psychologists Lists API
 Route::get('psychologists/lists', 'Api\PsychologistController@index');
 
+// Psychologist Activate / Deactivate API
+Route::post('psychologist/update/status', 'Api\PsychologistController@updateStatus');
+
