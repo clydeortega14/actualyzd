@@ -1,34 +1,66 @@
-const state = () => ({
+import axios from "axios";
 
-	psychologists: []
-})
+const state = () => ({
+    psychologists: [],
+});
 
 const getters = {
-
-	allPsychologists: state => state.psychologists
-}
+    allPsychologists: (state) => state.psychologists,
+};
 
 const actions = {
+    async getPsychologists({ commit }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get('/psychologists-by-date-time', {
+                    params:payload
+                })
+                .then((response) => resolve(response))
+                .catch((error) => reject(error))
+        });
+    },
 
-	async getPsychologists({ commit }, payload)
-	{
-		const response = await axios.get(`/psychologists-by-date-time`, {
-			params: payload
-		});
-		commit('setPsychologists', response.data)
-	}
-}
+    reassignSession({ context }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/reassign/session", payload)
+                .then((res) => {
+                    resolve(res);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    },
+
+    async getPsychLists({ commit })
+    {
+        const response = await axios.get('/api/psychologists/lists');
+        commit("setPsychologists", response.data);
+    },
+
+    statusUpdate({ context }, payload) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post("/api/psychologist/update/status", payload)
+                .then((response) => {
+                    resolve(response)
+                })
+                .catch((error) => {
+                    reject(error)
+                })
+        })
+    }
+};
 
 const mutations = {
-
-	setPsychologists: (state, psychologists) => (state.psychologists = psychologists)
-}
-
+    setPsychologists: (state, psychologists) =>
+        (state.psychologists = psychologists),
+};
 
 export default {
-
-	state: state(),
-	getters,
-	actions,
-	mutations
-}
+    state: state(),
+    getters,
+    actions,
+    mutations,
+};

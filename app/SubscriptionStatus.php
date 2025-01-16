@@ -11,4 +11,10 @@ class SubscriptionStatus extends Model
     protected $fillable = ['name', 'class'];
 
     public $timestamps = false;
+
+
+    public function scopeWithStatus($query, $status)
+    {
+        return $query->where('name', $status);
+    }
 }

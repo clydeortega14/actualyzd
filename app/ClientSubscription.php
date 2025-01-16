@@ -26,6 +26,11 @@ class ClientSubscription extends Model
     	return $this->belongsTo(SubscriptionStatus::class, 'subscription_status_id');
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function wholeDate()
     {
         return date('F j, Y', strtotime($this->completion_date));
@@ -35,4 +40,12 @@ class ClientSubscription extends Model
     {
         return $this->hasMany(ClientSubscriptionHistory::class);
     }
+
+    public function scopeWithAlmostExpired($query)
+    {
+        return $query->where('completion_date', '>', now()->toDateString())
+                ->orderBy('completion_date', 'asc');
+    }
+
+    
 }

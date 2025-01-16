@@ -2,7 +2,7 @@
     <!-- SideBar -->
     @if(!is_null(auth()->user()->email_verified_at))
     <nav id="sidebar">
-        @if(is_null(auth()->user()->avatar))
+        {{-- @if(is_null(auth()->user()->avatar))
             <a href="{{ route('user.profile', auth()->user()->id) }}">
                 <div id="container">
                     <div id="name">
@@ -16,7 +16,7 @@
                 <img src="{{ file_exists(public_path('storage/'.auth()->user()->avatar)) ? asset('storage/'.auth()->user()->avatar) : '/images/profile.png' }}" class="mt-3 rounded-circle ac-avatar">
             </a>
             
-        @endif
+        @endif --}}
 
         <ul class="list-unstyled components">
             <p class="text-center">Hi, {{ auth()->user()->name }}!</p>
@@ -65,8 +65,8 @@
                 </li>
             @endif
 
-            @if($user->hasRole(['psychologist', 'superadmin']))
-                <li class="{{ Route::is('psychologist.schedules.page') ? 'active' : '' }}">
+            @if($user->hasRole(['psychologist', 'superadmin', 'member']))
+                <li class="{{ Route::is('psychologist.schedules.page') || Route::is('session.view.calendar') ? 'active' : '' }}">
                     <a href="{{ route('psychologist.schedules.page') }}">
                         <i class="fa fa-calendar"></i>
                         <span class="ml-3">Schedules</span>
@@ -133,6 +133,13 @@
                     <a href="{{ route('faqs.index') }}">
                         <i class="fa fa-address-card"></i>
                         <span class="ml-3">FAQ's</span>
+                    </a>
+                </li>
+
+                <li class="{{ \Request::is('payments/*') ? 'active' : '' }}">
+                    <a href="{{ route('payments.show') }}">
+                        <i class="fa fa-address-card"></i>
+                        <span class="ml-3">Payments</span>
                     </a>
                 </li>
             @endif

@@ -208,43 +208,45 @@
 					onboarding_answers: this.form.onboarding_answers
 				}
 
-				axios.post('/bookings/book', payload)
-					.then(response => {
+				console.log(payload)
 
-						let result = response.data;
+				// axios.post('/bookings/book', payload)
+				// 	.then(response => {
 
-						if(result.success){
+				// 		let result = response.data;
 
-							// clear form
-							this.form.schedule = null;
-							this.form.scheduled_date = null;
-							this.form.time = null;
-							this.form.selected.client = null;
-							this.form.selected.counselee = null;
-							this.form.selected.session = null;
-							this.form.psychologist = null;
-							this.form.choice = [];
-							this.form.is_firstimer = null;
-							this.form.onboarding_answers = [];
+				// 		if(result.success){
 
-							// hide some components
-							this.time.show = false;
-							this.psychologist.show = false;
-							this.showSessionType = false;
-							this.onboarding.show = false;
-							this.show_actions = false;
-							this.hasSelectedDate = false;
+				// 			// clear form
+				// 			this.form.schedule = null;
+				// 			this.form.scheduled_date = null;
+				// 			this.form.time = null;
+				// 			this.form.selected.client = null;
+				// 			this.form.selected.counselee = null;
+				// 			this.form.selected.session = null;
+				// 			this.form.psychologist = null;
+				// 			this.form.choice = [];
+				// 			this.form.is_firstimer = null;
+				// 			this.form.onboarding_answers = [];
 
-							alert(result.message);
+				// 			// hide some components
+				// 			this.time.show = false;
+				// 			this.psychologist.show = false;
+				// 			this.showSessionType = false;
+				// 			this.onboarding.show = false;
+				// 			this.show_actions = false;
+				// 			this.hasSelectedDate = false;
 
-						}else{
+				// 			alert(result.message);
 
-							alert(result.message)
-						}
-					})
-					.catch(error => {
-						console.log(error)
-					})
+				// 		}else{
+
+				// 			alert(result.message)
+				// 		}
+				// 	})
+				// 	.catch(error => {
+				// 		console.log(error)
+				// 	})
 			}
 		}
 	}

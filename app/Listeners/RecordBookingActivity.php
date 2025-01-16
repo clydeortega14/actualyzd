@@ -6,6 +6,8 @@ use App\Events\BookingActivity;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\ActivityLog;
+use App\ActivityType;
+use Illuminate\Support\Facades\Log;
 
 class RecordBookingActivity
 {
@@ -27,9 +29,22 @@ class RecordBookingActivity
      */
     public function handle(BookingActivity $event)
     {
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'type_id' => 4, // 4 = 'Booked a session'
+        // email sending
+
+        // check if booking booked by is null
+        if(is_null($event->booking->booked_by)) Log::error('ERROR: booked_by is null');
+        
+        // find specific activity type
+        $activity_type = ActivityType::where('description', 'Booked a session')->first();
+
+        // check activity type
+        if(is_null($activity_type)) Log::error('ERROR: Booked a session ActivityType was not found!');
+
+        $activity_log = ActivityLog::create([
+            'user_id' => $event->booking->booked_by,
+            'type_id' => $activity_type->id,
         ]);
+        
+        Log::info('New booking has been created!');
     }
 }

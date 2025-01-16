@@ -54,6 +54,11 @@
 			this.$store.commit('setUserId', this.user.id);
 			this.$store.commit('setUserName', this.user.name);
 			this.$store.commit('setUserEmail', this.user.email);
+
+			EventBus.$on('on-rescheduled-success', data => {
+				let element = this.$refs.rescheduleModal.$el;
+				$(element).modal('hide')
+			})
 		},
 		methods: {
 			...mapActions(["timeByDate"]),

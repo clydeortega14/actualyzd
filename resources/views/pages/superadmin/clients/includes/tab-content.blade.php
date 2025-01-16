@@ -9,9 +9,16 @@
   			@include('pages.superadmin.clients.includes.subscription')
   		</div>
   	</div>
-  	<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+	
+  	<div class="tab-pane fade {{ Route::is('clients.users', $client->id) ? 'show active' : '' }}">
   		<div class="m-3">
   			@include('pages.superadmin.clients.includes.employees')
   		</div>
   	</div>
+
+	<div class="tab-pane fade">
+		<div class="m-3">
+			{{-- @include('pages.superadmin.clients.includes.employees') --}}
+		</div>
+	</div>
 </div>

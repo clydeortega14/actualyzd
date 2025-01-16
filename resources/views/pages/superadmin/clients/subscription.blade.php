@@ -10,6 +10,13 @@
 		<div class="row clearfix mb-3">
 	    	<div class="col-12">
                 <h3 class="mb-3 text-gray-800">Subscriptions</h3>
+
+				@if(session()->has('error'))
+					<div class="alert alert-danger" role="alert">
+						{{ session('error') }}
+					</div>
+
+				@endif
             </div>
         </div>
 

@@ -82,6 +82,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->is_active ? 'Active' : 'Inactive';
     }
+    public function scopeWithActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 
     /**
      * Send the password reset notification.

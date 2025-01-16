@@ -4,27 +4,18 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
-						Package One
+						{{ getPackageName }}
 					</h5>
 				</div>
 				<div class="modal-body">
+					<div v-if="getBookings.length === 0">
+						<h5 class="card-title text-center text-gray">No Calculated Usages Yet!</h5>
+					</div>
 					<ul class="list-group">
-						<li class="list-group-item d-flex justify-content-between align-items-center">
-							Individual
+						<li class="list-group-item d-flex justify-content-between align-items-center" v-for="(booking, index) in getBookings" :key="index">
+							{{ booking.session_type.name }}
 							<span class="badge badge-primary badge-pill">
-								3 of 30 used
-							</span>
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center">
-							Group
-							<span class="badge badge-primary badge-pill">
-								1 of 2 used
-							</span>
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center">
-							Webinar
-							<span class="badge badge-primary badge-pill">
-								0 of 1 used
+								{{ booking.bookings_count }} of {{ booking.package_service.limit }} used
 							</span>
 						</li>
 					</ul>
@@ -41,8 +32,14 @@
 
 <script>
 	
-
+	import { mapGetters } from "vuex";
 	export default {
-		name: "PackageDetails"
+		name: "PackageDetails",
+		computed: {
+			...mapGetters([
+				"getPackageName",
+				"getBookings"
+			])
+		}
 	}
 </script>

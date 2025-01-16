@@ -20,6 +20,19 @@ export default {
 			  title: 'Oops...',
 			  text: text
 			})
+		},
+		dialog(title, message, icon, cancelButtonText, confirmButtonText)
+		{
+			return Swal.fire({
+				title: title,
+				text: message,
+				icon: icon,
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				cancelButtonText: cancelButtonText,
+				confirmButtonText: confirmButtonText
+			});
 		}
 	}
 }

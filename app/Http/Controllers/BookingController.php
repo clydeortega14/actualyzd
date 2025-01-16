@@ -85,8 +85,10 @@ class BookingController extends Controller
                     'booked_by' => auth()->user()->id,
                     'session_type_id' => is_null($request->session_type_id) ? 1 : $request->session_type_id,
                     'is_firstimer' => $request->is_firstimer,
-                    'status' => 1 // booked
+                    'status' => 6 // pending
                 ]);
+
+                dd($booking);
 
                 // if booked
                 if($booking){
@@ -172,6 +174,9 @@ class BookingController extends Controller
     public function getAssessment($room_id)
     {
         $booking = Booking::where('room_id', $room_id)->first();
+
+        if(is_null($booking)) return redirect()->back()->with('error', 'SESSION NOT FOUND!');
+
         $categories = $this->categories;
         $followup_sessions = FollowupSession::get(['id', 'name']);
         $session_statuses = BookingStatus::where(function($query){

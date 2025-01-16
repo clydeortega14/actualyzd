@@ -90,9 +90,8 @@
 
 
 			EventBus.$on('select-time', (data) => {
-
 				this.disabledSaveChanges = true;
-			})
+			});
 		},
 		components: {
 			TimeLists,
@@ -113,6 +112,7 @@
 					time_id: this.getSelectedTimeId,
 					psychologist_id: this.getSelectedPsychologistId,
 					reason_option_id: this.getSelectedReasonID,
+					reason_option_name: this.getSelectedReasonName,
 					updated_by: this.getUserId,
 					others_specify: this.getSelectedReasonName
 				}
@@ -122,36 +122,26 @@
 
 						if(response.status === 200){
 
-							let data = response.data.data;
+							Swal.fire(
+								response.data.success ? 'Success!' : 'Oops!', 
+								response.data.message, 
+								response.data.success ? 'success' : 'warning'
+							);
 
-							if(response.data.success){
+							this.show_psychologists_component = false;
+							this.disabledSaveChanges = true;
 
-								Swal.fire('Success!', response.data.message, 'success');
-
-							}else{
-
-								Swal.fire('Oops!', response.data.message, 'warning');
-							}
+							EventBus.$emit('on-rescheduled-success', response.data);
 						}
-						// console.log(response)
 					})
 					.catch(error => {
 
-						if(error.response.status === 403 || error.response.status === 422){
+						if(error.response.status === 403 || error.response.status === 422 || error.response.status === 404){
 
 							let data = error.response.data;
 
-							if(!data.success){
-
-								Swal.fire('Oops!', data.message, 'error')
-							}
+							if(!data.success) Swal.fire('Oops!', data.message, 'error');
 						}
-
-						// this means it is an validation error
-						// if(error.response.status === 422 || !error.response.data.success || error.response.status === 403){
-
-						
-						// }
 					})
 			}
 		}

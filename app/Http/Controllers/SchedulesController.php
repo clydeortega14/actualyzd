@@ -12,10 +12,22 @@ use App\Http\Traits\CarbonTrait;
 use App\Http\Traits\SchedulesTrait;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use App\Schedules\Schedule;
+use App\User;
+use App\BookingStatus;
 
 class SchedulesController extends Controller
 {
     use CarbonTrait, SchedulesTrait;
+
+    public function create(Schedule $schedule)
+    {
+        $schedules = $schedule->query(auth()->user())->get();
+
+        $psychologists = User::withRole('psychologist')->get(['id', 'name']);
+
+        return view('pages.psychologists.schedule', compact('schedules', 'psychologists'));
+    }
 
     public function index()
     {   
@@ -44,6 +56,33 @@ class SchedulesController extends Controller
         
         return response()->json($mapped_schedules);
     }
+
+    public function updatePending(Request $request)
+    {
+        $booking = Booking::where('room_id', $request->room_id)->first();
+
+        if(is_null($booking)){
+            if($request->ajax()){
+                return response()->json(['error' => true, 'message' => 'Not found!'], 404);
+            }
+
+            return redirect()->back()->with('error', 'Not Found!');
+        }
+
+        $booking_status = BookingStatus::where('name', 'Booked')->first();
+
+        if(is_null($booking_status)){
+            return redirect()->back()->with('error', 'Booked Status not found!');
+        }
+        $booking->status = $booking_status->id;
+        $booking->save();
+
+        // must send email to counselee or session participants, indicating that the session has been a accepted
+        // by the psychologist / wellness coach and is scheduled.
+
+        return redirect()->back()->with('success', 'Session has been scheduled!');
+    }
+
     public function storeSchedule(Request $request)
     {
 
@@ -204,12 +243,20 @@ class SchedulesController extends Controller
 
         $used_schedules = PsychologistSchedule::where('start', $request->date)->where('is_booked', true)->pluck('time_id');
 
-        $time_lists = TimeList::has('schedules')
-                            ->select(
+        $time_lists = TimeList::select(
                                 'time_lists.from as time_from',
                                 'time_lists.to as time_to',
                                 'time_lists.id as time_id'
                             )
+                            ->where(function($query) use ($request) {
+
+                                $new_hour = now()->addHour(config('app.hour_before_booking'));
+
+                                if($request->date === now()->toDateString())
+                                {
+                                    $query->whereTime('from', '>', $new_hour->toDateTimeString());
+                                }
+                            })
                             ->whereNotIn('id', $used_schedules)
                             ->orderBy('from', 'asc')
                             ->get();
@@ -234,6 +281,11 @@ class SchedulesController extends Controller
         $schedules = PsychologistSchedule::withStart()
                         ->withTime()
                         ->withNotBooked()
+                        ->where(function($query){
+                            if(auth()->user()->hasRole('psychologist')){
+                                $query->whereNotIn('psychologist', [auth()->user()->id]);
+                            }
+                        })
                         ->with(['psych', 'timeList'])
                         ->get();
 

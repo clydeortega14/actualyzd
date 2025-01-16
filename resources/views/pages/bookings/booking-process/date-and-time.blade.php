@@ -53,6 +53,13 @@
 
 			<div class="col-md-12">
 
+				@if(session()->has('error'))
+			
+					<div class="alert alert-danger pl-3" role="alert">
+						{{  session('error')  }}
+					</div>
+				@endif
+
 				<form action="{{ route('booking.confirm') }}" method="POST">
 					@csrf
 					<bookings-calendar

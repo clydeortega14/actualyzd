@@ -22,6 +22,11 @@ class PsychologistSchedule extends Model
         return $this->belongsTo(TimeList::class, 'time_id');
     }
 
+    public function getFormatStartAttribute()
+    {
+        return date('F j, Y', strtotime($this->start));
+    }
+
     public function psych()
     {
     	return	$this->belongsTo(User::class, 'psychologist');
@@ -49,5 +54,10 @@ class PsychologistSchedule extends Model
     }
     public function scopeWithNotBooked($query){
         $query->where('is_booked', false);
+    }
+
+    public function scopeWithDateAhead($query)
+    {
+        $query->where('start', '>=', now()->toDateString());
     }
 }

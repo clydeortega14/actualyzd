@@ -11,8 +11,7 @@ class AssessmentCategories extends Seeder
 
 			['name' => 'Mental Challenges'],
 			['name' => 'Work Issues'],
-			['name' => 'Personal Problems'],
-			['name' => 'Intent to self harm'],
+			['name' => 'Personal Problems']
 
 		];
 	}

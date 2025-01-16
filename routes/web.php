@@ -52,11 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	// Clients Routes
 	Route::resource('clients', 'ClientsController');
 
-	// Client Subscription
-	Route::get('client/{client}/subscription', 'ClientsController@showSubscription')->name('client.show.subscription');
-
 	// Client System Users
 	Route::get('client/{client}/users', 'ClientsController@showClientUsers')->name('client.show.users');
+
+	// Client Subscription
+	Route::get('client/{client}/subscription', 'ClientsController@showSubscription')->name('client.show.subscription');
 
 	// Add client subscription
 	Route::get('subscriptions/{client}', 'ClientsController@subscriptions')->name('client.subscriptions');
@@ -66,6 +66,20 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
 	// Store client subscription
 	Route::post('client-subscription', 'ClientsController@addSubscription')->name('add.client.subscription');
+
+	// Billing Module
+	Route::prefix('billings')->group(function(){
+
+		// Billings Index
+		Route::get('client/{client}', 'BillingController@clientBilling')->name('client.billings');
+
+		Route::get('client/{invoice_no}/payments', 'PaymentController@index')->name('client.billing.payments');
+	});
+
+	// Payments Module Group
+	Route::prefix('payments')->group(function(){
+		Route::get('/', 'PaymentController@show')->name('payments.show');
+	});
 	
 	// Client Users Route
 	Route::get('client-users/{client}', 'ClientsController@clientUsers');
@@ -98,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	Route::post('modal_logo_update', 'CompanyInfoController@update_companyLogo')->name('update.comapany_logo');
 
 	// User Profile
-	Route::get('profile/{user}', 'UsersController@profile')->name('user.profile');
+	Route::get('profile/{username}', 'UsersController@profile')->name('user.profile');
 	Route::get('profile/{user}/edit', 'UsersController@editProfile')->name('user.profile.edit');
 	Route::put('profile/{user}', 'UsersController@updateProfile')->name('user.profile.update');
 	Route::put('profile/{user}/change-password', 'UsersController@updatePassword')->name('user.profile.updatePassword');
@@ -197,6 +211,14 @@ Route::middleware(['auth', 'verified'])->group(function(){
 	// Get psychologists by date and time selected
 	Route::get('psychologists-by-date-time', 'SchedulesController@psychologistsByDateTime');
 
+	// Sessions View Group
+	Route::prefix('session-view')->group(function(){
+		
+		// Calendar
+		Route::get('calendar', 'SessionViewController@calendar')->name('session.view.calendar');
+
+	});
+
 	// Psychologist Page
 	Route::prefix('psychologist')->group(function(){
 
@@ -209,6 +231,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
 		Route::get('schedules', 'SchedulesController@getSchedules')->name('psychologist.get.schedule');
 
 		Route::get('progress-reports', 'ProgressReportController@index')->name('psychologist.progress.reports');
+
+		Route::get('schedule/create', 'SchedulesController@create')->name('schedule.create');
+
+		Route::post('update/pending/schedules', 'SchedulesController@updatePending')->name('update.pending.schedule');
 
 		Route::post('schedule', 'SchedulesController@storeSchedule')->name('psychologist.store.schedule');
 

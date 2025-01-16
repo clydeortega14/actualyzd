@@ -17,5 +17,7 @@ class SubscriptionStatusSeeder extends Seeder
         SubscriptionStatus::create(['name' => 'cancelled']);
         SubscriptionStatus::create(['name' => 'expired']);
         SubscriptionStatus::create(['name' => 'pastdue']);
+        SubscriptionStatus::create(['name' => 'stopped']);
+        SubscriptionStatus::create(['name' => 'end']);
     }
 }

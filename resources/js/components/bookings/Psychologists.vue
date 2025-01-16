@@ -52,23 +52,27 @@
 
 
 <template>
-	<div v-if="show_psychologist_component">
-		<h5 class="card-title mb-3 border-bottom">Select Psychologist</h5>
-		<div class="row">
-			<div class="col-md-12" v-for="(psychologist, index) in allPsychologists">
+	<div>
+		
+		<div v-if="show_psychologist_component && allPsychologists.length > 0">
+			<h5 class="card-title mb-3 border-bottom">Select Psychologist</h5>
+			<div class="row">
+				<div class="col-md-12" v-for="(psychologist, index) in allPsychologists">
 
-				<div class="psych-container" :class="{ selected: getSelectedPsychologistId === psychologist.id}" @click="selectPsychologist({ id: psychologist.id, name: psychologist.name })">
-					<img src="/images/profile.png" alt="Profile" class="mr-3 rounded-circle" height="65" width="65">
-					<div class="psych-name">
-						{{ psychologist.name }}
-						<!-- <a href="#" class="ml-3 float-right">
-							<i class="fa fa-eye"></i>
-						</a> -->
+					<div class="psych-container" :class="{ selected: getSelectedPsychologistId === psychologist.id}" @click="selectPsychologist({ id: psychologist.id, name: psychologist.name })">
+						<img src="/images/profile.png" alt="Profile" class="mr-3 rounded-circle" height="65" width="65">
+						<div class="psych-name">
+							{{ psychologist.name }}
+							<!-- <a href="#" class="ml-3 float-right">
+								<i class="fa fa-eye"></i>
+							</a> -->
+						</div>
 					</div>
-				</div>
 
+				</div>
 			</div>
 		</div>
+		<p class="text-center text-danger" v-else>No Assignees Available!</p>
 	</div>
 </template>
 
@@ -91,23 +95,32 @@
 
 			EventBus.$on('select-time', data => {
 
-				if(this.getSelectedPsychologistId !== null && this.show_psychologist_component){
-
-					this.show_psychologist_component = false;
-					this.selected_psychologist = null;
-					this.$store.commit('setSelectedPsychologistId', null);
-					this.$store.commit('setSelectedPsychologist', null);
-
-				}
-
-				this.show_psychologist_component = true
-
 				this.getPsychologists({
 					date: this.getSelectedDate,
 					time_id: data.id
 				})
+				.then(response => {
 
+					this.$store.commit('setPsychologists', response.data);
 
+					if(response.data.length > 0){
+
+						this.show_psychologist_component = true
+
+						if(this.getSelectedPsychologistId !== null && this.show_psychologist_component){
+
+						this.show_psychologist_component = false;
+						this.selected_psychologist = null;
+						this.$store.commit('setSelectedPsychologistId', null);
+						this.$store.commit('setSelectedPsychologist', null);
+						}
+					}
+				})
+				.catch(err => console.log(err))
+			})
+
+			EventBus.$on('on-rescheduled-success', data => {
+				this.show_psychologist_component = false;
 			})
 		},
 		methods: {

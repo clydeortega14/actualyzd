@@ -14,6 +14,7 @@
         "doctrine/dbal": "^2.0",
         "fideloper/proxy": "^4.4",
         "halpdesk/zizaco-entrust-laravel-6.0": "^1.9",
+        "hashids/hashids": "^4.1",
         "laravel/framework": "^6.20",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "~3.1.0"

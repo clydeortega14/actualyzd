@@ -15,19 +15,7 @@
 					<div class="card-header">
 						<div class="d-sm-flex justify-content-between">
 							<div>
-								{{-- @if(is_null($booking->link_to_session))
-									@if(auth()->user()->hasRole('psychologist'))
-										<a href="#" data-toggle="modal" data-target="#link-to-session-{{ $booking->id }}" class="mr-3">
-											<i class="fa fa-link"></i>
-											<span>add link to session</span>
-										</a>
-										@include('pages.bookings.modals.link-to-session-modal')
-									@else
-										<span class="badge badge-secondary">link to session will be added soon!</span>
-									@endif
-								@else
-									
-								@endif --}}
+								
 
 								@php
 									$session_date_time = $booking->toSchedule->start.' '.$booking->time->from;
@@ -35,15 +23,9 @@
 
 								@endphp
 
-								@if($booking->toSchedule->start == now()->toDateString() &&
-										$booking->time->from >= now()->toTimeString() &&
-										($booking->status == 1 || $booking->status == 5)
-								)
-									<a href="{{ config('app.jitsi_url').$booking->link_to_session }}" target="_blank" class="mr-3">
-										<i class="fa fa-video"></i>
-										<span class="ml-2">Start Video Call</span>
-									</a>
-								@endif
+								
+								
+								
 
 								@if($booking->session_type_id == 1 && auth()->user()->hasRole(['psychologist', 'superadmin']))
 
@@ -90,88 +72,56 @@
 
 						
 						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right"></label>
+							<label for="company" class="col-form-label col-sm-4 text-md-right"><i class="fa fa-calendar"></i></label>
 							<div class="col-sm-6">
-								<h4>Participants</h4>
+								<!-- <input type="text" value="" readonly class="form-control"> -->
+								 <h5 class="card-title"><b>{{ $booking->sessionType->name }}</b> <br />
+									<small>{{ date('l, F j, Y', strtotime($booking->toSchedule->start)).' @ '.$booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo()}}</small>
+								</h5>
+								 <p class="card-text mt-0">
+								 	
+								 </p>
+							</div>
+						</div>
 
-								@if(auth()->user()->hasRole(['psychologist', 'member', 'superadmin']))
-
-									<ul class="list-unstyled">
-										@foreach($booking->participants as $participant)
-											{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
-											<li class="mb-0 ml-4">{{ $participant->name }} |
-												@foreach($participant->roles as $p_role)
-												<span class="badge badge-primary">{{ $p_role->name }}</span>
-												@endforeach
-											</li>
-										@endforeach
-									</ul>
-
-								@endif
-
-
+						<div class="form-group row">
+							<label for="company" class="col-form-label col-sm-4 text-md-right"><i class="fa fa-video"></i></label>
+							<div class="col-sm-6">
+								<a href="{{ config('app.jitsi_url').$booking->link_to_session }}" target="_blank" class="mr-3 btn btn-primary btn-lg">
+									<span class="ml-2">Join Session</span>
+								</a> <br />
+								<small>{{ config('app.jitsi_url').$booking->link_to_session }}</small>
 							</div>
 						</div>
 						
 
 						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Company</label>
+							<label for="company" class="col-form-label col-sm-4 text-md-right"><i class="fas fa-building"></i></label>
 							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->toClient->name }}" readonly class="form-control">
+								<!-- <input type="text" value="" readonly class="form-control"> -->
+								 <h5 class="card-title mt-2">{{ $booking->toClient->name }}</h5>
 							</div>
 						</div>
 
 						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Type Of Session</label>
+							<label for="company" class="col-form-label col-sm-4 text-md-right"><i class="fa fa-users"></i></label>
 							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->sessionType->name }}" readonly class="form-control">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Date & Time</label>
-							<div class="col-sm-6">
-								<input type="text" value="{{ date('l, F j, Y', strtotime($booking->toSchedule->start)).' @ '.$booking->time->parseTimeFrom().' - '.$booking->time->parseTimeTo()}}" readonly class="form-control">
+								
+								<ul class="list-unstyled">
+									@foreach($booking->participants as $participant)
+										{{-- <input type="text" name="participants[]" value="{{ $participant->name }}" readonly class="form-control mb-2" /> --}}
+										<li class="">{{ $participant->name }} |
+											@foreach($participant->roles as $p_role)
+											<span class="badge badge-primary">{{ $p_role->name }}</span>
+											@endforeach
+										</li>
+									@endforeach
+								</ul>
+								 
 							</div>
 						</div>
 
 						
-
-						<div class="form-group row">
-							<label for="company" class="col-form-label col-sm-4 text-md-right">Session Status</label>
-							<div class="col-sm-6">
-								<input type="text" value="{{ $booking->toStatus->name }}" class="form-control" readonly>
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Firstimer / Repeater</label>
-							<div class="col-sm-6">
-								<input type="text" readonly value="{{ $booking->is_firstimer ? 'Firstimer' : 'Repeater' }}" class="form-control">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Intent to self harm</label>
-							<div class="col-sm-6">
-								<input type="text" readonly value="{{ $booking->self_harm ? 'YES' : 'NO' }}" class="form-control">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Intent to harm other people</label>
-							<div class="col-sm-6">
-								<input type="text" readonly value="{{ $booking->harm_other_people ? 'YES' : 'NO' }}" class="form-control">
-							</div>
-						</div>
-
-						<div class="form-group row">
-							<label for="is-firstimer" class="col-form-label col-sm-4 text-md-right">Status</label>
-							<div class="col-sm-6">
-								<input type="text" readonly class="form-control" value="{{ $booking->toStatus->name }}">
-							</div>
-							
-						</div>
 
 					</div>
 				</div>

@@ -9,9 +9,16 @@
   			Subscription
   		</a>
   	</li>
+	
   	<li class="nav-item">
   		<a href="{{ route('client.show.users', $client->id) }}" class="nav-link {{ Route::is('client.show.users', $client->id) ? 'active' : '' }}">
   			Employees
   		</a>
   	</li>
+
+	<li class="nav-item">
+		<a href="{{ route('client.billings', $client->id) }}" class="nav-link {{ Route::is('client.billings', $client->id) ? 'active' : '' }}">
+			Billing
+		</a>
+	</li>
 </ul>

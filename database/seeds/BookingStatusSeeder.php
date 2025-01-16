@@ -12,6 +12,7 @@ class BookingStatusSeeder extends Seeder
 			['name' => 'No Show', 'class' => 'badge badge-secondary'],
 			['name' => 'Cancelled', 'class' => 'badge badge-danger'],
 			['name' => 'Rescheduled', 'class' => 'badge badge-warning'],
+			['name' => 'Pending', 'class' => 'badge badge-warning'],
 		];
 	}
     /**

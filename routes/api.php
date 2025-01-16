@@ -32,6 +32,9 @@ Route::post('consultations/chart/data', 'Api\ConsultationsChartController@getCon
 // Client Subscriptions
 Route::post('client/subscriptions', 'Api\ClientSubscriptionController@clientSubscriptions');
 
+// Cancel Subscription
+Route::post('update/client/subscription', 'Api\ClientSubscriptionController@updateClientSubscription');
+
 
 /*-- Reason Option Route -- */
 Route::get('get-reasons-lists', 'Api\ReasonController@index');
@@ -43,7 +46,25 @@ Route::prefix('booking')->group(function(){
     Route::post('reschedule', 'Api\BookingController@reschedule');
 });
 
+Route::get('show/booking/{booking_id}', 'Api\BookingController@showBooking');
+
 // Chat Messages API
 Route::get('chat-messages/{room_id}', 'Api\ChatMessageController@chatMessages');
 
 Route::post('chat-message', 'Api\ChatMessageController@store');
+
+// Re assign session api
+Route::post('reassign/session', 'Api\SessionController@reassign');
+
+// Scheduled Sessions API
+Route::get('scheduled/sessions', 'Api\SessionController@scheduledSessions');
+
+// Booking History API
+Route::get('booking/history', 'Api\BookingController@bookingHistory');
+
+// Psychologists Lists API
+Route::get('psychologists/lists', 'Api\PsychologistController@index');
+
+// Psychologist Activate / Deactivate API
+Route::post('psychologist/update/status', 'Api\PsychologistController@updateStatus');
+

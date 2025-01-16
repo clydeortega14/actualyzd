@@ -59,7 +59,7 @@
 								<ul class="list-unstyled ml-4 mt-4">
 
 									{{-- First Timer / Repeater --}}
-									<li class="mb-3">
+									{{-- <li class="mb-3">
 										
 										<h3 class="text-primary">Is this your first time to book a session?</h3>
 										
@@ -74,7 +74,7 @@
 												<label class="custom-control-label" for="repeater">Repeater</label>
 											</div>
 										</div>
-									</li>
+									</li> --}}
 
 									{{-- Self Harm  --}}
 									<li class="mb-3">

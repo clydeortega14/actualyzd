@@ -4,7 +4,7 @@
 				
 		  	<li class="nav-item" v-for="status in allBookingStatuses" :key="status.id">
 		    	<a class="nav-link" :class="{ active: status.id == selected_tab }" href="#" @click.prevent="filterByStatus(status.id)">
-		    	{{ status.name }}
+		    	{{ checkName(status.name) }}
 		    	<span :class="status.class">{{ status.total }}</span>
 		    	</a>
 		    	
@@ -36,6 +36,9 @@
 			filterByStatus(id){
 				this.selected_tab = id
 				this.$emit('filter-by-status', id);
+			},
+			checkName(name){
+				return (name === 'Booked' || name === 'Pending' || name === 'Rescheduled' ? 'Upcoming' : name)
 			}
 		}
 	}
