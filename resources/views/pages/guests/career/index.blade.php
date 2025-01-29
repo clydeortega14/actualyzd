@@ -1,18 +1,15 @@
-@extends('guest-layouts.master')
+@extends('layouts.app')
 
 @section('title', 'Careers')
 
 @section('content')
-	
-	<div class="login-box">
-		<div class="logo">
-            <a href="javascript:void(0);">Careers</a>
-            <small></small>
-        </div>
 
-        <div class="card">
-        	<div class="body">
-        		<div class="msg">Please Fill out this form</div>
+    <div class="container">
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <h3 class="mb-5">Careers</h3>
 
                 @include('alerts.message')
 
@@ -167,9 +164,8 @@
                     </div>
 
                 </form>
-
-        	</div>
+            </div>
         </div>
-	</div>
+    </div>
 
 @endsection

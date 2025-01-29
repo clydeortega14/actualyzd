@@ -6,9 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use DB;
+use App\Http\Traits\handleUsersTraits;
+use App\Http\Traits\Roles\RoleTrait;
+use App\Http\Traits\Files\FileTrait;
 
 class PsychologistController extends Controller
 {
+
+    use handleUsersTraits, RoleTrait, FileTrait;
+
     public function index()
     {
         $users = User::select(
@@ -44,5 +50,56 @@ class PsychologistController extends Controller
 
         return response()->json(['error' => true, 'message' => 'User status updated!', 'data' => $user], 200);
 
+    }
+
+    public function storePsychologist(Request $request)
+    {
+        $validator = $this->validateUserData($request);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'error' => true,
+                'message' => 'Validation errors',
+                'data' => $validator->errors()->all()
+            ]);
+        }
+
+        // find role by name
+        $find_role = $this->findRoleByName($request->role_name);
+
+        if(is_null($find_role)) return response()->json([
+            'error' => true,
+            'message' => 'Role not found',
+        ], 404);
+
+
+        DB::beginTransaction();
+
+        $user = $this->createUserData($request);
+
+        $user->roles()->attach($find_role->id);
+
+        $file = $request->file('resume');
+
+
+        $filename = $this->fileNameToStore($file);
+
+        $user->avatar = $filename;
+        $user->save();
+
+        DB::commit();
+
+        if($user)
+        {
+            $file->storeAs($request->role_name, $filename);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => $request->role_name.' has successfully created!',
+            'data' => $user
+        ], 200);
+        
     }
 }

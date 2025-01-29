@@ -27,7 +27,6 @@ Route::prefix('guests')->group(function(){
 		'GuestsController@storeApplyingIndividual'
 	)
 	->name('guests.store.applying.individual');
-
 });
 
 // Route::get('/guest-clients', 'GuestsController@clients')->name('guest.clients');

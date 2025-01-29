@@ -17,10 +17,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\handleUsersTraits;
 
 class UsersController extends Controller
 {
-    use RoleTrait;
+    use RoleTrait, handleUsersTraits;
 
     /**
      * Display a listing of the resource.

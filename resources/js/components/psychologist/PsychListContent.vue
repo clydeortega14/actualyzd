@@ -1,6 +1,24 @@
 <template>
     <div>
-        <div class="table-responsive">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-sm-8">
+                <div class="input-group mb-3" v-if="!show_create_psychologist_form">
+                    <input type="text" class="form-control" placeholder="Search Psychologist" aria-label="Search Psychologist" aria-describedby="search-psychologist">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" id="search-psychologist">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" v-if="!show_create_psychologist_form" class="btn btn-primary mb-3 d-flex align-items-center float-right" @click="clickedCreateNewPsychologist">
+                    New Psychologist
+                </button>
+            </div>
+        </div>
+        
+        <div class="table-responsive" v-if="!show_create_psychologist_form">
             <table class="table">
                 <thead>
                     <tr>
@@ -44,6 +62,11 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- CREATE NEW PSYCHOLOGIST COMPONENT UI -->
+        <div v-if="show_create_psychologist_form">
+            <CreatePsychologistForm />
+        </div>
     </div>
 </template>
 
@@ -54,12 +77,23 @@ import URLS from "../../constants/url";
 import SweetAlert from "../../mixins/sweet-alert";
 import { mapGetters, mapActions } from "vuex";
 import datetime from "../../mixins/datetime";
+import CreatePsychologistForm from "./CreatePsychologistForm.vue";
 export default {
     name: "PsychListContent",
     data(){
         return {
-            URLS
+            URLS,
+            show_create_psychologist_form: false
         }
+    },
+    mounted()
+    {
+        EventBus.$on('clicked-cancel-create-psychologist', () => {
+            this.show_create_psychologist_form = false;
+        })
+    },
+    components: {
+        CreatePsychologistForm
     },
     computed: {
         ...mapGetters([
@@ -75,6 +109,9 @@ export default {
             "getPsychLists",
             "statusUpdate"
         ]),
+        clickedCreateNewPsychologist(){
+            this.show_create_psychologist_form = true;
+        },
         updatePsychStatus(id){
 
             let findPsych = this.allPsychologists.find(psych => psych.id == id);

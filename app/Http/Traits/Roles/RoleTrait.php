@@ -68,4 +68,9 @@ trait RoleTrait {
         foreach($values as $value)
         $this->attachRole($user, Role::where($column, $value)->first());
     }
+
+    public function findRoleByName($role_name)
+    {
+        return Role::where('name', $role_name)->first();
+    }
 }

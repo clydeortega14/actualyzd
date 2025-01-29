@@ -24,4 +24,11 @@ trait FileTrait {
 	{
 		return $file->storeAs($path, $this->fileNameToStore($file));
 	}
+
+	public function handleSingleFile($file, $path)
+	{
+		$filename = $this->fileNameToStore($file);
+
+		$this->storeToStorage($file, $path);
+	}
 }
