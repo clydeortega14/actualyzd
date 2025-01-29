@@ -14,8 +14,9 @@ trait handleUsersTraits {
             'role_name' => ['required', 'string', 'max:50'],
             'firstname' => ['required', 'string', 'max:50'],
             'lastname' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', 'max:50'],
-            'password' => ['required', 'confirmed', 'min:8']
+            'email' => ['required', 'email', 'unique:users', 'max:50'],
+            'password' => ['required', 'confirmed', 'min:8'],
+            'resume.*' => ['required', 'mimes:jpg,jpeg,png,pdf,docx', 'max:2048']
         ]);
     }
 

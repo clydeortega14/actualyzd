@@ -23,7 +23,6 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Status</th>
                         <th>Registered At</th>
                         <th></th>
                     </tr>
@@ -34,18 +33,17 @@
                             <div class="d-flex">
                                 <img src="/images/profile.png" :alt="psych.id" height="48" width="48" class="img-circle mr-2">
                                 <div>
-                                    <span>{{  psych.name }} <br />
+                                    <span>{{  psych.name }} <small>
+                                        <span class="badge" :class="psych.is_active ? 'badge-success' : 'badge-danger'">
+                                            {{ psych.is_active ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </small><br />
                                         <small class="mb-0 text-gray-100">{{ psych.email }}</small>
                                     </span>
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <span class="badge" :class="psych.is_active ? 'badge-success' : 'badge-danger'">
-                                {{ psych.is_active ? 'Active' : 'Inactive' }}
-                            </span>
-                        </td>
-                        <td>{{ diffForHumans(psych.created_at) }}</td>
+                        <td>{{ wholeDate(psych.created_at)+' '+wholeTime(psych.created_at) }}</td>
                         <td>
                             <button
                                 @click.prevent="updatePsychStatus(psych.id)"
@@ -90,6 +88,12 @@ export default {
     {
         EventBus.$on('clicked-cancel-create-psychologist', () => {
             this.show_create_psychologist_form = false;
+        });
+
+        EventBus.$on('on-succesfull-psychologist-creation', (data) => {
+            this.show_create_psychologist_form = false;
+            this.getPsychLists();
+            this.success(data.message)
         })
     },
     components: {

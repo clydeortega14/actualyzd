@@ -82,18 +82,29 @@ class PsychologistController extends Controller
 
         $file = $request->file('resume');
 
+        if(is_array($file) && count($file) >= 1){
 
-        $filename = $this->fileNameToStore($file);
+            $arr_filenames = [];
+
+            foreach($file as $f){
+                $filename_to_store = $this->fileNameToStore($f);
+                $f->storeAs($request->role_name, $filename_to_store);
+                $arr_filenames[] = $filename_to_store;
+            }
+
+            $filename = implode(",", $arr_filenames);
+
+        }else{
+
+            $filename_to_store = $this->fileNameToStore($file);
+            $file->storeAs($request->role_name, $filename_to_store);
+            $filename = $filename_to_store;
+        }
 
         $user->avatar = $filename;
         $user->save();
 
         DB::commit();
-
-        if($user)
-        {
-            $file->storeAs($request->role_name, $filename);
-        }
 
         return response()->json([
             'error' => false,

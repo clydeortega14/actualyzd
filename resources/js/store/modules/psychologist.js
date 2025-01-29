@@ -33,6 +33,40 @@ const actions = {
         });
     },
 
+    storePsychologist({ context }, params){
+
+        const form_data = new FormData();
+        form_data.append('role_name', params.role_name);
+        form_data.append('firstname', params.firstname);
+        form_data.append('lastname', params.lastname);
+        form_data.append('email', params.email);
+        form_data.append('password', params.password);
+        form_data.append('password_confirmation', params.password_confirmation);
+
+        params.resume.forEach((r, index) => {
+            form_data.append('resume[]', r, r.name);
+        });
+        
+        const config = {
+            url: 'api/store/psychologist',
+            method: 'POST',
+            data: form_data,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+            
+        }
+        return new Promise((resolve, reject) => {
+            axios(config)
+                .then( ( response) => {
+                    resolve(response)
+                })
+                .catch(( error ) => {
+                    reject(error)
+                });
+        })
+    },
+
     async getPsychLists({ commit })
     {
         const response = await axios.get('/api/psychologists/lists');
