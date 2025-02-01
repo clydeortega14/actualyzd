@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\handleUsersTraits;
+use Illuminate\Auth\Events\Registered;
+use App\Notifications\UserCreated;
 
 class UsersController extends Controller
 {
@@ -118,7 +120,10 @@ class UsersController extends Controller
 
         DB::commit();
 
-        return redirect()->route('clients.edit', $user->client_id)->with('success', 'New users has been added');
+        event(new Registered($user));
+        $user->notify(new UserCreated($user));
+
+        return redirect()->route('clients.edit', $user->client_id)->with('success', 'New user has been added');
         
     }
 

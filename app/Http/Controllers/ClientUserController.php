@@ -99,6 +99,10 @@ class ClientUserController extends Controller
         }
 
         DB::commit();
+
+        // SEND EMAIL TO USER
+        
+
         return redirect()->back('pages.superadmin.client.users.index')->with('success', 'New users has been added');
     }
 

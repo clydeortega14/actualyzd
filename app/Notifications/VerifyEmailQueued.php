@@ -58,10 +58,8 @@ class VerifyEmailQueued extends VerifyEmail implements ShouldQueue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

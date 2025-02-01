@@ -82,8 +82,10 @@
 
 									<div class="form-group">
 										<button type="submit"  class="btn btn-primary">Submit</button>
+										@if(isset($client))
 										<!-- <button type="button" id="submit" data-toggle="modal" data-target="#remind-users"  class="btn btn-primary" >Submit</button> -->
 										<a href={{ route('client.show.users', $client->id) }} class="btn btn-danger">Cancel</a>
+										@endif
 									</div>
 
 
