@@ -68,5 +68,5 @@ Route::get('psychologists/lists', 'Api\PsychologistController@index');
 // Psychologist Activate / Deactivate API
 Route::post('psychologist/update/status', 'Api\PsychologistController@updateStatus');
 
-
+// Create New Psychologist API
 Route::post('store/psychologist', 'Api\PsychologistController@storePsychologist');

@@ -59,7 +59,10 @@ trait RoleTrait {
     {
         foreach($roles as $role){
 
-            $user->roles()->attach($role);
+            $find_role = $this->findRoleByName($role);
+
+            if(!is_null($find_role)) $user->roles()->attach($find_role->id);
+            
         }
     }
 

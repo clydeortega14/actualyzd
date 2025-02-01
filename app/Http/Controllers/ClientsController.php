@@ -178,7 +178,9 @@ class ClientsController extends Controller
     {
         $subscriptions = $client->subscriptions()->with(['package', 'status'])->orderBy('created_at', 'desc')->get();
 
-        $employees = $client->users()->with(['roles'])->get();
+        $employees = $client->users()->whereHas('roles', function($query){
+            $query->where('name', 'member');
+        })->get();
 
         $client_subscriptions = $this->getSubscriptions($client)->get();
 

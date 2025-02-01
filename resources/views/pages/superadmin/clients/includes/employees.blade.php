@@ -11,16 +11,23 @@
 	</div>
 
 	<div class="row">
-		<div class="d-flex align-content-end mb-3">
-			<div>
-				<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" 
-					class="btn btn-primary btn-sm"
-					>
-					<i class="fa fa-plus"></i>
-					<span>Create User</span>
-				</a>
+		<div class="col-md-8 mb-3">
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+				<div class="input-group-append">
+				  <button class="btn btn-primary" type="button" id="button-addon2">Search</button>
+				</div>
 			</div>
 		</div>
+		<div class="col-md-4">
+			<a href="{{ isset($client) ? route('client.user.create', $client->id) : route('users.create') }}" 
+				class="btn btn-primary btn-sm float-right"
+				>
+				<i class="fa fa-plus"></i>
+				<span>Add Employee</span>
+			</a>
+		</div>
+			
 		<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
 			<table class="table manage-candidates-top mb-0">
 				<thead>
@@ -71,17 +78,7 @@
 					@endforeach 
 				</tbody>
 			</table>
-			<div class="text-center mt-3 mt-sm-3">
-            	<ul class="pagination justify-content-center mb-0">
-              		<li class="page-item disabled"> <span class="page-link">Prev</span> </li>
-              		<li class="page-item active" aria-current="page"><span class="page-link">1 </span> <span class="sr-only">(current)</span></li>
-              		<li class="page-item"><a class="page-link" href="#">2</a></li>
-              		<li class="page-item"><a class="page-link" href="#">3</a></li>
-              		<li class="page-item"><a class="page-link" href="#">...</a></li>
-              		<li class="page-item"><a class="page-link" href="#">25</a></li>
-              		<li class="page-item"> <a class="page-link" href="#">Next</a> </li>
-            	</ul>
-          	</div>
+			
 		</div>
 	</div>
 </div>

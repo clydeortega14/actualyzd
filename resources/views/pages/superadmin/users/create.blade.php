@@ -54,6 +54,8 @@
 										<!-- make a hidden input with the value of current user client_id -->
 										<input type="hidden" name="client_id" value="{{ auth()->user()->client_id }}">
 
+										<input type="hidden" name="roles[]" value="member" />
+
 									@endif
 									
 									<div class="form-group">
@@ -64,11 +66,6 @@
 									<div class="form-group">
 										<label>Email<small class="text-danger">*</small></label>
 										<input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ $isUser ? $user->email : old('email') }}" required {{ $isUser ? 'readonly' : ''}}>
-									</div>
-
-									<div class="form-group">
-										<label>Username<small class="text-danger">*</small></label>
-										<input type="text" name="username" class="form-control" placeholder="Enter username" value="{{ $isUser? $user->username : old('username') }}" required {{ $isUser ? 'readonly' : ''}}>
 									</div>
 
 									@if(!$isUser)
@@ -86,71 +83,74 @@
 									<div class="form-group">
 										<button type="submit"  class="btn btn-primary">Submit</button>
 										<!-- <button type="button" id="submit" data-toggle="modal" data-target="#remind-users"  class="btn btn-primary" >Submit</button> -->
-										<a href="#" class="btn btn-danger">Cancel</a>
+										<a href={{ route('client.show.users', $client->id) }} class="btn btn-danger">Cancel</a>
 									</div>
 
 
 									
 								</div>
-								<div class="col-sm-7">
-									
-									<h3 style="display: inline-block;">Roles </h3>
-									<span style="float: right;color: red;">NOTE : Please double check when assigning roles to users.</span>
-									<div class="table-responsive">
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th></th>
-													<th>Role</th>
-													<th>Permissions</th>
-												</tr>
-											</thead>
+								@if(Auth::user()->hasRole('superadmin'))
+									<div class="col-sm-7">
+										<h3 style="display: inline-block;">Roles </h3>
+										<span style="float: right;color: red;">NOTE : Please double check when assigning roles to users.</span>
+										<div class="table-responsive">
+											<table class="table table-bordered">
+												<thead>
+													<tr>
+														<th></th>
+														<th>Role</th>
+														<th>Permissions</th>
+													</tr>
+												</thead>
 
-											<tbody>
-												@foreach($roles as $role)
-												<tr>
-													<td>
-														<!-- for default checked  -->
-														@if($isUser)
-															@php
-																$checked = '';
-															@endphp
-															@if(count($user->roles) > 0)
-																@foreach($user->roles as $user_role)
-																	@if($user_role->id == $role->id)
-																		@php
-																			$checked = 'checked';
-																		@endphp
-																	@endif
-																@endforeach
+												<tbody>
+													
+													@foreach($roles as $role)
+													<tr>
+														<td>
+															<!-- for default checked  -->
+															@if($isUser)
+																@php
+																	$checked = '';
+																@endphp
+																@if(count($user->roles) > 0)
+																	@foreach($user->roles as $user_role)
+																		@if($user_role->id == $role->id)
+																			@php
+																				$checked = 'checked';
+																			@endphp
+																		@endif
+																	@endforeach
 
-																<input type="checkbox"  name="roles[]" value="{{ $role->id }}" {{ $checked }}>
+																	<input type="checkbox"  name="roles[]" value="{{ $role->id }}" {{ $checked }}>
+																@else
+																	<input type="checkbox"  name="roles[]" value="{{ $role->id }}">
+																@endif
 															@else
 																<input type="checkbox"  name="roles[]" value="{{ $role->id }}">
 															@endif
-														@else
-															<input type="checkbox"  name="roles[]" value="{{ $role->id }}">
-														@endif
-														<!-- end for default checked -->
+															<!-- end for default checked -->
+															
+														</td>
+														<td>{{ $role->display_name }}</td>
+														<td>
+															@if(count($role->permissions) > 0)
+																@foreach($role->permissions as $permission)
+																	<span class="{{ $permission->class }}">{{ $permission->name }}</span>
+																@endforeach
+															@else
+																<span class="badge badge-danger">no permissions available</span>
+															@endif
+														</td>
 														
-													</td>
-													<td>{{ $role->display_name }}</td>
-													<td>
-														@if(count($role->permissions) > 0)
-															@foreach($role->permissions as $permission)
-																<span class="{{ $permission->class }}">{{ $permission->name }}</span>
-															@endforeach
-														@else
-															<span class="badge badge-danger">no permissions available</span>
-														@endif
-													</td>
+													</tr>
+													@endforeach
 													
-												</tr>
-												@endforeach
-											</tbody>
-										</table>
+												</tbody>
+											</table>
+										</div>
 									</div>
-								</div>
+								@endif
 							</div>
 						</form>
 					</div>

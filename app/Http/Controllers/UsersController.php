@@ -76,7 +76,7 @@ class UsersController extends Controller
     {
         $request->validate([
 
-            'name' => ['required', 'max:255'],
+            'name' => ['required', 'max:50'],
             'email' => ['required', 'unique:users'],
             'password' => ['required', 'confirmed']
         ]);
@@ -94,7 +94,7 @@ class UsersController extends Controller
 
             // check if request has roles provided
             if($request->has('roles'))
-            {   
+            {
                 // attach roles
                 $this->attachRole($user, $request->roles);
 
