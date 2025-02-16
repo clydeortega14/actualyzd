@@ -57,8 +57,8 @@
             @endif
 
             @if($user->hasRole(['superadmin']))
-                <li class="{{ Route::is('bookings.index') ? 'active' : '' }}">
-                    <a href="{{ route('bookings.index') }}">
+                <li class="{{ Route::is('session.view.calendar') ? 'active' : '' }}">
+                    <a href="{{ route('session.view.calendar') }}">
                         <i class="fa fa-calendar"></i>
                         <span class="ml-3">Sessions</span>
                     </a>

@@ -162,23 +162,21 @@
 			          					@if(count($booking->bookedBy->bookings) > 0)
 				          					@foreach($booking->bookedBy->bookings()->groupBy('created_at')->orderBy('created_at', 'desc')->get() as $booking_date )
 						          				<li>
-						          					<h5 class="mb-3">{{ $booking_date->whole_date }}</h5>
+						          					<h5 class="mb-3">Wed, March 1, 2024</h5>
 
-						          					@if(count($booking_date->assessmentAnswers) > 0)
+						          					{{-- @if(count($booking->assessmentAnsers) > 0) --}}
 
-						          						@php
-						          							$assessment_answers = $booking_date->assessmentAnswers()->where('answer', 'like', '%yes%')->get();
-						          						@endphp
+						          						
 
-							          					<ul class="list-group mb-3 ml-3">
-							          					  	@foreach($assessment_answers as $answers)
+							          					{{-- <ul class="list-group mb-3 ml-3">
+							          					  	@foreach($booking->assessmentAnsers as $answers)
 														  		<li class="list-group-item d-flex justify-content-between align-items-center">
 														    		{{ $answers->questionnaire->question }}
 														    		<span></span>
 														  		</li>
 															@endforeach
-														</ul>
-													@endif
+														</ul> --}}
+													{{-- @endif --}}
 						          				</li>
 				          					@endforeach
 			          					@endif

@@ -25,6 +25,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('send:notification')->daily();
+
+        // Update Pending Sessions that are past due
+        $schedule->command('update:pastdue')->everyMinute();
     }
 
     /**
