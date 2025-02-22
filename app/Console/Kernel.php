@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('send:notification')->daily();
 
         // Update Pending Sessions that are past due
-        $schedule->command('update:pastdue')->everyMinute();
+        $schedule->command('update:pastdue')->daily();
     }
 
     /**
