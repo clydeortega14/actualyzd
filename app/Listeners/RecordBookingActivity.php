@@ -8,6 +8,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\ActivityLog;
 use App\ActivityType;
 use Illuminate\Support\Facades\Log;
+use App\Mail\SessionBooked;
+use Illuminate\Support\Facades\Mail;
 
 class RecordBookingActivity
 {
@@ -29,8 +31,6 @@ class RecordBookingActivity
      */
     public function handle(BookingActivity $event)
     {
-        // email sending
-
         // check if booking booked by is null
         if(is_null($event->booking->booked_by)) Log::error('ERROR: booked_by is null');
         
@@ -39,6 +39,10 @@ class RecordBookingActivity
 
         // check activity type
         if(is_null($activity_type)) Log::error('ERROR: Booked a session ActivityType was not found!');
+
+        // email sending
+        $psychologist = $event->booking->toSchedule->psych;
+        Mail::to($psychologist)->send(new SessionBooked);
 
         $activity_log = ActivityLog::create([
             'user_id' => $event->booking->booked_by,

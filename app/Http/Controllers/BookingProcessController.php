@@ -236,9 +236,10 @@ class BookingProcessController extends Controller
 
          // get client subscription;
         $client_subscription = $this->client_subscription_service->manageSubscriptionPackage($client_id, $session_type_id);
+        
+        if($client_subscription['code'] == 404) return redirect()->back()->with('error', $client_subscription['message']);
 
-         // check client subscription existence
-         if(is_null($client_subscription)) return redirect()->back()->with('error', 'No active subscription was found!');
+        if($client_subscription['code'] == 422) return redirect()->back()->with('error', $client_subscription['message']);
 
          // package service
          $package_service = PackageService::where('package_id', $client_subscription->package_id)
@@ -286,7 +287,6 @@ class BookingProcessController extends Controller
              * check if session has participants
              * this means that the session is webinar or group
              * */
-
             $this->checkParticipants($request, $booking);
 
             /**
@@ -301,10 +301,12 @@ class BookingProcessController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        DB::commit();
-
         // Send Email To psychologist / wellness coach
         event(new BookingActivity($booking));
+
+        DB::commit();
+
+        
 
         // flush the session
         $request->session()->forget(['assessment', 'participants']);
