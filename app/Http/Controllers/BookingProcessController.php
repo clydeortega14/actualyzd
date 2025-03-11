@@ -242,7 +242,7 @@ class BookingProcessController extends Controller
         if($client_subscription['code'] == 422) return redirect()->back()->with('error', $client_subscription['message']);
 
          // package service
-         $package_service = PackageService::where('package_id', $client_subscription->package_id)
+         $package_service = PackageService::where('package_id', $client_subscription['subscription']->package_id)
                             ->where('session_type_id', $session_type_id)
                             ->first();
         
@@ -262,7 +262,7 @@ class BookingProcessController extends Controller
                 'schedule' => $schedule->id,
                 'time_id' => request('time_id'),
                 'client_id' => session()->has('selected_client') ? session('selected_client.id') : $user->client_id,
-                'client_subscription_id' => $client_subscription->id,
+                'client_subscription_id' => $client_subscription['subscription']->id,
                 'booked_by' => $user->id,
                 'counselee' => $has_selected_session ? null : $user->id,
                 'session_type_id' =>  $session_type_id,

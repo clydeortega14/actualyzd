@@ -12,7 +12,7 @@
             <div class="col-md-12">
                 @include('pages.schedules.nav-tabs.nav-item')
 
-                <session-view-calendar user-id="{{ auth()->user()->id }}"></session-view-calendar>
+                <session-view-calendar user-id="{{ auth()->user()->id }}" :userRoles="{{ json_encode(auth()->user()->roles->pluck('name')->toArray()) }}"></session-view-calendar>
             </div>
         </div>
     </div>

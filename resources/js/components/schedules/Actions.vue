@@ -1,11 +1,11 @@
 <template>
     <div>
         <div class="btn-group mb-5" role="group" aria-label="Basic example">
-            <button type="submit" v-if="sessionStatusName == 'Pending'" class="btn btn-outline-primary" @click.prevent="actionClicked('accept', 1)">Accept</button>
-            <button type="button" v-if="sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled'" class="btn btn-outline-primary" @click.prevent="actionClicked('complete', 2)">Complete</button>
-            <button type="button" v-if="sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled'" class="btn btn-outline-primary" @click.prevent="actionClicked('cancel', 4)">Cancel</button>
-            <button type="button" v-if="sessionStatusName == 'Booked'" class="btn btn-outline-primary" @click.prevent="actionClicked('reschedule', 5)">Reschedule</button>
-            <button type="button" v-if="sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled'" class="btn btn-outline-primary" @click.prevent="actionClicked('no-show', 3)">No Show</button>
+            <button type="submit" v-if="sessionStatusName == 'Pending' && userRoles.includes('psychologist')" class="btn btn-outline-primary" @click.prevent="actionClicked('accept', 1)">Accept</button>
+            <button type="button" v-if="(sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled') && (userRoles.includes('psychologist') || userRoles.includes('superadmin'))" class="btn btn-outline-primary" @click.prevent="actionClicked('complete', 2)">Complete</button>
+            <button type="button" v-if="(sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled') && (userRoles.includes('psychologist') || userRoles.includes('superadmin') || userRoles.includes('member'))" class="btn btn-outline-primary" @click.prevent="actionClicked('cancel', 4)">Cancel</button>
+            <button type="button" v-if="(sessionStatusName == 'Booked') && (userRoles.includes('psychologist') || userRoles.includes('superadmin'))" class="btn btn-outline-primary" @click.prevent="actionClicked('reschedule', 5)">Reschedule</button>
+            <button type="button" v-if="(sessionStatusName == 'Booked' || sessionStatusName === 'Rescheduled') && (userRoles.includes('psycholgist') || userRoles.includes('superadmin'))" class="btn btn-outline-primary" @click.prevent="actionClicked('no-show', 3)">No Show</button>
             <!-- <button type="button" class="btn btn-primary">Join Now</button> -->
         </div>
     </div>
@@ -16,6 +16,7 @@
 
 import { mapActions } from "vuex";
 import Swal from "sweetalert2"
+import UserRoles from "../../mixins/user-roles";
 
 export default {
     name: "Actions",
@@ -24,11 +25,13 @@ export default {
             action: ""
         }
     },
+    mixins: [UserRoles],
     props: {
         bookingid: Number,
         status: Number,
         sessionStatusName: String,
         sessionTypeName: String,
+        userRoles: Array
     },
     methods: {
         ...mapActions([

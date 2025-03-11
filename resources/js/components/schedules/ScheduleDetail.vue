@@ -18,6 +18,7 @@
                                 :status="getBooking.status"
                                 :session-status-name="getBooking.to_status.name"
                                 :session-type-name="getBooking.session_type.name"
+                                :user-roles="userroles"
                             />
                         </div>
                         <div class="col-md-4">
@@ -83,6 +84,9 @@
         mixins: [DateTime],
         components: {
             ScheduleAction
+        },
+        props: {
+            userroles: Array
         },
         computed: {
             ...mapGetters(["getBooking"]),

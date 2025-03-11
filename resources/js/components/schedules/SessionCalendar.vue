@@ -4,7 +4,7 @@
 
 
         <div>
-            <ScheduleDetail ref="modal" />
+            <ScheduleDetail ref="modal" :userroles="userroles"/>
         </div>
     </div>
 </template>
@@ -24,7 +24,8 @@
             this.RequestScheduledSessions({user_id: this.userId});
         },
         props: {
-            userId: String
+            userId: String,
+            userroles: Array
         },
         components: {
             FullCalendar,

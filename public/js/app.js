@@ -20609,12 +20609,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _mixins_user_roles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/user-roles */ "./resources/js/mixins/user-roles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -20624,11 +20626,13 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
       action: ""
     };
   },
+  mixins: [_mixins_user_roles__WEBPACK_IMPORTED_MODULE_2__["default"]],
   props: {
     bookingid: Number,
     status: Number,
     sessionStatusName: String,
-    sessionTypeName: String
+    sessionTypeName: String,
+    userRoles: Array
   },
   methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(["updateStatus"])), {}, {
     updateNewStatus: function updateNewStatus(actionStatus) {
@@ -20833,6 +20837,9 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
   components: {
     ScheduleAction: _Actions_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  props: {
+    userroles: Array
+  },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["getBooking"])), {}, {
     baseUrl: function baseUrl() {
       return window.location.origin;
@@ -20880,7 +20887,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
     });
   },
   props: {
-    userId: String
+    userId: String,
+    userroles: Array
   },
   components: {
     FullCalendar: _fullcalendar_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -24647,7 +24655,7 @@ var render = function render() {
       role: "group",
       "aria-label": "Basic example"
     }
-  }, [_vm.sessionStatusName == "Pending" ? _c("button", {
+  }, [_vm.sessionStatusName == "Pending" && _vm.userRoles.includes("psychologist") ? _c("button", {
     staticClass: "btn btn-outline-primary",
     attrs: {
       type: "submit"
@@ -24658,7 +24666,7 @@ var render = function render() {
         return _vm.actionClicked("accept", 1);
       }
     }
-  }, [_vm._v("Accept")]) : _vm._e(), _vm._v(" "), _vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled" ? _c("button", {
+  }, [_vm._v("Accept")]) : _vm._e(), _vm._v(" "), (_vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled") && (_vm.userRoles.includes("psychologist") || _vm.userRoles.includes("superadmin")) ? _c("button", {
     staticClass: "btn btn-outline-primary",
     attrs: {
       type: "button"
@@ -24669,7 +24677,7 @@ var render = function render() {
         return _vm.actionClicked("complete", 2);
       }
     }
-  }, [_vm._v("Complete")]) : _vm._e(), _vm._v(" "), _vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled" ? _c("button", {
+  }, [_vm._v("Complete")]) : _vm._e(), _vm._v(" "), (_vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled") && (_vm.userRoles.includes("psychologist") || _vm.userRoles.includes("superadmin") || _vm.userRoles.includes("member")) ? _c("button", {
     staticClass: "btn btn-outline-primary",
     attrs: {
       type: "button"
@@ -24680,7 +24688,7 @@ var render = function render() {
         return _vm.actionClicked("cancel", 4);
       }
     }
-  }, [_vm._v("Cancel")]) : _vm._e(), _vm._v(" "), _vm.sessionStatusName == "Booked" ? _c("button", {
+  }, [_vm._v("Cancel")]) : _vm._e(), _vm._v(" "), _vm.sessionStatusName == "Booked" && (_vm.userRoles.includes("psychologist") || _vm.userRoles.includes("superadmin")) ? _c("button", {
     staticClass: "btn btn-outline-primary",
     attrs: {
       type: "button"
@@ -24691,7 +24699,7 @@ var render = function render() {
         return _vm.actionClicked("reschedule", 5);
       }
     }
-  }, [_vm._v("Reschedule")]) : _vm._e(), _vm._v(" "), _vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled" ? _c("button", {
+  }, [_vm._v("Reschedule")]) : _vm._e(), _vm._v(" "), (_vm.sessionStatusName == "Booked" || _vm.sessionStatusName === "Rescheduled") && (_vm.userRoles.includes("psycholgist") || _vm.userRoles.includes("superadmin")) ? _c("button", {
     staticClass: "btn btn-outline-primary",
     attrs: {
       type: "button"
@@ -24884,7 +24892,8 @@ var render = function render() {
       bookingid: _vm.getBooking.id,
       status: _vm.getBooking.status,
       "session-status-name": _vm.getBooking.to_status.name,
-      "session-type-name": _vm.getBooking.session_type.name
+      "session-type-name": _vm.getBooking.session_type.name,
+      "user-roles": _vm.userroles
     }
   })], 1), _vm._v(" "), _c("div", {
     staticClass: "col-md-4"
@@ -24971,7 +24980,10 @@ var render = function render() {
       options: _vm.calendarOptions
     }
   }), _vm._v(" "), _c("div", [_c("ScheduleDetail", {
-    ref: "modal"
+    ref: "modal",
+    attrs: {
+      userroles: _vm.userroles
+    }
   })], 1)], 1);
 };
 var staticRenderFns = [];
@@ -122951,6 +122963,35 @@ __webpack_require__.r(__webpack_exports__);
         cancelButtonText: cancelButtonText,
         confirmButtonText: confirmButtonText
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/mixins/user-roles.js":
+/*!*******************************************!*\
+  !*** ./resources/js/mixins/user-roles.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    checkRole: function checkRole(roles, check_value) {
+      if (Array.isArray(check_value)) {
+        for (var i = 0; i < check_value.length; i++) {
+          if (roles.includes(check_value[i])) return true;else return false;
+        }
+      } else if (roles.includes(check_value)) {
+        console.log('not array');
+        return true;
+      } else {
+        console.log('none at all');
+        return false;
+      }
     }
   }
 });
